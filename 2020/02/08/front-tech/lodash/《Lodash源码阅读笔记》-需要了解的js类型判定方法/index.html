@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端大数据业务，可视化推动业务高速发展，钻研技术原理、源码分析定型技术，革新技术保证效率">
+  <meta name="keyword" content="前端可视化、技术实践、性能优化、技术原理、源码分析">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Lodash源码阅读笔记》- 需要了解的js类型判定方法 | 前端漫谈
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端漫谈</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 细分领域,探究业务,乃创业绩 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Lodash源码阅读笔记》- 需要了解的js类型判定方法</h2>
+  <p class="post-date">2020-02-08</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>前端开发，js是一个避开不了的一门技术。js的诞生为了美化交互。</p>
+<h4 id="js类型"><a href="#js类型" class="headerlink" title="js类型"></a>js类型</h4><ul>
+<li>null</li>
+<li>undefined</li>
+<li>boolean</li>
+<li>string</li>
+<li>number</li>
+<li>Object</li>
+<li>引用类型(object、array、function) </li>
+<li>symbol </li>
+</ul>
+<h3 id="js类型判定"><a href="#js类型判定" class="headerlink" title="js类型判定"></a>js类型判定</h3><h4 id="null"><a href="#null" class="headerlink" title="null"></a>null</h4><ul>
+<li>值确定，直接比较<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isNull()&#123;</span><br><span class="line">   return  value &#x3D;&#x3D;&#x3D; null ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>typeof不能作为唯一判断<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typeof null &#x3D;&#x3D;&#x3D; &#39;object&#39;   &#x2F;&#x2F;true ,由于最初的设计缺陷导致</span><br><span class="line">typeof &#123;&#125; &#x3D;&#x3D;&#x3D; &#39;object&#39; &#x2F;&#x2F;true </span><br></pre></td></tr></table></figure></li>
+<li>toString <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call(null) &#x3D;&#x3D;&#x3D; &#39;[object Null]&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="undefined"><a href="#undefined" class="headerlink" title="undefined"></a>undefined</h4><ul>
+<li>值确定，直接比较<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> function isUndefined(value) &#123;</span><br><span class="line">  return value &#x3D;&#x3D;&#x3D; undefined</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>typeof 不能作为唯一标准<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typeof undefined &#x3D;&#x3D;&#x3D; &#39;undefined&#39; &#x2F;&#x2F;true </span><br><span class="line">typeof void 0  &#x3D;&#x3D;&#x3D; &#39;undefined&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li>toString <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call(undefined) &#x3D;&#x3D;&#x3D; &#39;[object Undefined]&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="boolean"><a href="#boolean" class="headerlink" title="boolean"></a>boolean</h4><ul>
+<li>值确定直接比较</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isBoolean(value)&#123;</span><br><span class="line">  return value &#x3D;&#x3D;&#x3D; true || value &#x3D;&#x3D;&#x3D; false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>typeof 写法 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typeof true  &#x3D;&#x3D;&#x3D; &#39;boolean&#39;  &#x2F;&#x2F;true</span><br><span class="line">typeof false &#x3D;&#x3D;&#x3D; &#39;boolean&#39;   &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li><p>toString </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call(true) &#x3D;&#x3D;&#x3D; &#39;[object Boolean]&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>lodash写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is classified as a boolean primitive or object.</span><br><span class="line"> *</span><br><span class="line"> * @since 0.1.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is a boolean, else &#96;false&#96;.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isBoolean(false)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isBoolean(null)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isBoolean(value) &#123;</span><br><span class="line">  return value &#x3D;&#x3D;&#x3D; true || value &#x3D;&#x3D;&#x3D; false ||</span><br><span class="line">    (isObjectLike(value) &amp;&amp; getTag(value) &#x3D;&#x3D; &#39;[object Boolean]&#39;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="string"><a href="#string" class="headerlink" title="string"></a>string</h4><ul>
+<li><p>typeof</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isString(value)&#123;</span><br><span class="line">    return typeof value &#x3D;&#x3D;&#x3D; &#39;string&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>toString </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isString(value)&#123;</span><br><span class="line">    return  toString.call(value) &#x3D;&#x3D;&#x3D; &#39;[object String]&#39;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>lodash写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is classified as a &#96;String&#96; primitive or object.</span><br><span class="line"> *</span><br><span class="line"> * @since 0.1.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is a string, else &#96;false&#96;.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isString(&#39;abc&#39;)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isString(1)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isString(value) &#123;</span><br><span class="line">  const type &#x3D; typeof value</span><br><span class="line">  return type &#x3D;&#x3D;&#x3D; &#39;string&#39; || (type &#x3D;&#x3D;&#x3D; &#39;object&#39; &amp;&amp; value !&#x3D; null &amp;&amp; !Array.isArray(value) &amp;&amp; getTag(value) &#x3D;&#x3D; &#39;[object String]&#39;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h4 id="number"><a href="#number" class="headerlink" title="number"></a>number</h4><ul>
+<li><p>typeof</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isNumber(value)&#123;</span><br><span class="line">    return typeof value &#x3D;&#x3D;&#x3D; &#39;number&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>toString </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isNumber(value)&#123;</span><br><span class="line">    return  toString.call(value) &#x3D;&#x3D;&#x3D; &#39;[object Number]&#39;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>lodash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is classified as a &#96;Number&#96; primitive or object.</span><br><span class="line"> *</span><br><span class="line"> * **Note:** To exclude &#96;Infinity&#96;, &#96;-Infinity&#96;, and &#96;NaN&#96;, which are</span><br><span class="line"> * classified as numbers, use the &#96;Number.isFinite&#96; method.</span><br><span class="line"> *</span><br><span class="line"> * @since 0.1.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is a number, else &#96;false&#96;.</span><br><span class="line"> * @see isInteger, toInteger, toNumber</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isNumber(3)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isNumber(Number.MIN_VALUE)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isNumber(Infinity)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isNumber(&#39;3&#39;)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isNumber(value) &#123;</span><br><span class="line">  return typeof value &#x3D;&#x3D;&#x3D; &#39;number&#39; ||</span><br><span class="line">    (isObjectLike(value) &amp;&amp; getTag(value) &#x3D;&#x3D; &#39;[object Number]&#39;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h4><ul>
+<li><p>typeof</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isObject(value)&#123;</span><br><span class="line">    return value !&#x3D;&#x3D; null &amp;&amp; typeof value &#x3D;&#x3D;&#x3D; &#39;object&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>toString </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isObject(value)&#123;</span><br><span class="line">    return  value !&#x3D;&#x3D; null &amp;&amp; toString.call(value) &#x3D;&#x3D;&#x3D; &#39;[object Object]&#39;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>lodash </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is object-like. A value is object-like if it&#39;s not &#96;null&#96;</span><br><span class="line"> * and has a &#96;typeof&#96; result of &quot;object&quot;.</span><br><span class="line"> *</span><br><span class="line"> * @since 4.0.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is object-like, else &#96;false&#96;.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isObjectLike(&#123;&#125;)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isObjectLike([1, 2, 3])</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isObjectLike(Function)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *</span><br><span class="line"> * isObjectLike(null)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isObjectLike(value) &#123;</span><br><span class="line">  return typeof value &#x3D;&#x3D;&#x3D; &#39;object&#39; &amp;&amp; value !&#x3D;&#x3D; null</span><br><span class="line">&#125;</span><br><span class="line">function isObject(value) &#123;</span><br><span class="line">  const type &#x3D; typeof value</span><br><span class="line">  return value !&#x3D; null &amp;&amp; (type &#x3D;&#x3D;&#x3D; &#39;object&#39; || type &#x3D;&#x3D;&#x3D; &#39;function&#39;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h4><ul>
+<li>typeof 不能用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof [] &#x3D;&#x3D;&#x3D; &#39;object&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li>toString<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call([]) &#x3D;&#x3D;&#x3D; &#39;[object Array]&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li>Constructor<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[].constructor &#x3D;&#x3D;&#x3D; Array &#x2F;&#x2F;true </span><br></pre></td></tr></table></figure></li>
+<li>lodash<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is array-like. A value is considered array-like if it&#39;s</span><br><span class="line"> * not a function and has a &#96;value.length&#96; that&#39;s an integer greater than or</span><br><span class="line"> * equal to &#96;0&#96; and less than or equal to &#96;Number.MAX_SAFE_INTEGER&#96;.</span><br><span class="line"> *</span><br><span class="line"> * @since 4.0.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is array-like, else &#96;false&#96;.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isArrayLike([1, 2, 3])</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isArrayLike(document.body.children)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isArrayLike(&#39;abc&#39;)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isArrayLike(Function)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isArrayLike(value) &#123;</span><br><span class="line">  return value !&#x3D; null &amp;&amp; typeof value !&#x3D;&#x3D; &#39;function&#39; &amp;&amp; isLength(value.length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h4><ul>
+<li>typeof<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof function()&#123;&#125; &#x3D;&#x3D;&#x3D; &#39;function&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li>toString<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call(function()&#123;&#125;) &#x3D;&#x3D;&#x3D; &#39;[object Function]&#39; &#x2F;&#x2F;true </span><br></pre></td></tr></table></figure></li>
+<li>lodash <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function isFunction(value) &#123;</span><br><span class="line">  return typeof value &#x3D;&#x3D;&#x3D; &#39;function&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="Symbol"><a href="#Symbol" class="headerlink" title="Symbol"></a>Symbol</h4><ul>
+<li>typeof <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof Symbol &#x3D;&#x3D;&#x3D; &#39;symbol&#39; &#x2F;&#x2F;true </span><br></pre></td></tr></table></figure></li>
+<li>toString<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toString.call(Symbol) &#x3D;&#x3D;&#x3D; &#39;[object Symbol]&#39; &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure></li>
+<li>lodash<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * Checks if &#96;value&#96; is classified as a &#96;Symbol&#96; primitive or object.</span><br><span class="line"> *</span><br><span class="line"> * @since 4.0.0</span><br><span class="line"> * @category Lang</span><br><span class="line"> * @param &#123;*&#125; value The value to check.</span><br><span class="line"> * @returns &#123;boolean&#125; Returns &#96;true&#96; if &#96;value&#96; is a symbol, else &#96;false&#96;.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * isSymbol(Symbol.iterator)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; true</span><br><span class="line"> *</span><br><span class="line"> * isSymbol(&#39;abc&#39;)</span><br><span class="line"> * &#x2F;&#x2F; &#x3D;&gt; false</span><br><span class="line"> *&#x2F;</span><br><span class="line">function isSymbol(value) &#123;</span><br><span class="line">  const type &#x3D; typeof value</span><br><span class="line">  return type &#x3D;&#x3D; &#39;symbol&#39; || (type &#x3D;&#x3D;&#x3D; &#39;object&#39; &amp;&amp; value !&#x3D; null &amp;&amp; getTag(value) &#x3D;&#x3D; &#39;[object Symbol]&#39;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端漫谈</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: simple2012hcz@126.com">simple2012hcz@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#Lodash" >
+    <span class="tag-code">Lodash</span>
+  </a>
+
+  <a target="_blank" href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+  <a target="_blank" href="/tags#阅读笔记" >
+    <span class="tag-code">阅读笔记</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/02/05/workspace/%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD%E3%80%8B-%20%E6%88%91%E7%9A%84%E5%9F%9F%E5%90%8D%E5%A4%87%E6%A1%88%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+        <span class="nav-arrow">← </span>
+        
+          《软技能》- 我的域名备案的那些事儿
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/02/12/devTool/git/%E3%80%8AGitHub%E3%80%8B-xxx-github-io%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/">
+        
+          《GitHub》-xxx.github.io自定义域名配置
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#js%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">js类型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#js%E7%B1%BB%E5%9E%8B%E5%88%A4%E5%AE%9A"><span class="toc-nav-text">js类型判定</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-text">null</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-text">undefined</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#boolean"><span class="toc-nav-text">boolean</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#string"><span class="toc-nav-text">string</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#number"><span class="toc-nav-text">number</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Object"><span class="toc-nav-text">Object</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Array"><span class="toc-nav-text">Array</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Function"><span class="toc-nav-text">Function</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Symbol"><span class="toc-nav-text">Symbol</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/02/08/front-tech/lodash/《Lodash源码阅读笔记》-需要了解的js类型判定方法/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2021 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端漫谈</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<!-- <script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
+<script>
+    const btw = new BTWPlugin();
+    btw.init({
+        id: 'article-content',
+        blogId: '16897-1582457741870-132',
+        name: '前端漫谈',
+        qrcode: 'https://s2.ax1x.com/2020/01/08/lR9qmR.jpg',
+        keyword: '芝麻开门',
+    });
+</script> -->
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
