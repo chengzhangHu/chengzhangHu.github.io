@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      css Rule tree | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>css Rule tree</h2>
+  <p class="post-date">20205-05-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><hr>
+<h2 id="🌳-什么是-Rule-Tree？"><a href="#🌳-什么是-Rule-Tree？" class="headerlink" title="🌳 什么是 Rule Tree？"></a>🌳 什么是 Rule Tree？</h2><p><strong>Rule Tree</strong> 是浏览器在构建 CSSOM 时的一部分结构，<strong>它组织了 CSS 中的所有规则（Rule）</strong>，即每一个选择器+声明组合的结构体。</p>
+<blockquote>
+<p>它的作用是：把从不同来源（内部、外部、继承）来的规则，按“层叠规则（Cascading Rules）”归并起来，为后续匹配和计算样式做准备。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-Rule-Tree-的结构本质（简化版）"><a href="#🧩-Rule-Tree-的结构本质（简化版）" class="headerlink" title="🧩 Rule Tree 的结构本质（简化版）"></a>🧩 Rule Tree 的结构本质（简化版）</h2><p>每个 Rule 节点代表一条规则：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;selector&quot;</span><span class="punctuation">:</span> <span class="string">&quot;div.main&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;declarations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span> <span class="attr">&quot;property&quot;</span><span class="punctuation">:</span> <span class="string">&quot;color&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;red&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span> <span class="attr">&quot;property&quot;</span><span class="punctuation">:</span> <span class="string">&quot;font-size&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;16px&quot;</span> <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;origin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;author&quot;</span><span class="punctuation">,</span>     <span class="comment">// 来源（浏览器、用户、作者）</span></span><br><span class="line">  <span class="attr">&quot;important&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span>     <span class="comment">// 是否有 !important</span></span><br><span class="line">  <span class="attr">&quot;specificity&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">]</span> <span class="comment">// 优先级（ID数、类数、标签数）</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔁-Rule-Tree-是怎么“合并规则”的？"><a href="#🔁-Rule-Tree-是怎么“合并规则”的？" class="headerlink" title="🔁 Rule Tree 是怎么“合并规则”的？"></a>🔁 Rule Tree 是怎么“合并规则”的？</h2><h3 id="假设我们有如下三条规则："><a href="#假设我们有如下三条规则：" class="headerlink" title="假设我们有如下三条规则："></a>假设我们有如下三条规则：</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 默认浏览器样式 */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: black;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 外部样式表 */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 内联样式 */</span></span><br><span class="line">&lt;<span class="selector-tag">p</span> style=&quot;<span class="attribute">color</span>: blue;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>浏览器处理的顺序：</p>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>优先级高低</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器默认（user agent）</td>
+<td>最低</td>
+<td>最后被覆盖</td>
+</tr>
+<tr>
+<td>作者样式表（外部CSS）</td>
+<td>中等</td>
+<td>一般使用的样式</td>
+</tr>
+<tr>
+<td>行内样式</td>
+<td>高</td>
+<td><code>style=&quot;&quot;</code> 写的样式</td>
+</tr>
+<tr>
+<td><code>!important</code></td>
+<td>最高</td>
+<td>无视一般优先级</td>
+</tr>
+</tbody></table>
+<p>按选择器 + 来源 + specificity + 是否 important 区分不同规则  , 浏览器会将匹配到的多条规则收集到一个集合，然后根据这些因素合并：<br>多个 CSS 规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为层叠（cascading）。</p>
+<h3 id="💡-合并规则优先级判断标准："><a href="#💡-合并规则优先级判断标准：" class="headerlink" title="💡 合并规则优先级判断标准："></a>💡 合并规则优先级判断标准：</h3><ol>
+<li><code>!important</code> 有无</li>
+<li>来源（user &#x2F; author &#x2F; user-agent）</li>
+<li>specificity（选择器的具体程度）</li>
+<li>声明的先后顺序</li>
+</ol>
+<hr>
+<h2 id="📚-举个合并例子"><a href="#📚-举个合并例子" class="headerlink" title="📚 举个合并例子"></a>📚 举个合并例子</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* style1.css */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123; <span class="attribute">color</span>: red; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* style2.css */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123; <span class="attribute">color</span>: green <span class="meta">!important</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 页面上： */</span></span><br><span class="line">&lt;<span class="selector-tag">p</span> style=&quot;<span class="attribute">color</span>: blue;&quot;&gt;Hello&lt;/<span class="selector-tag">p</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最终谁胜出？</p>
+<ol>
+<li><code>color: blue</code>（内联） specificity 高</li>
+<li>但 <code>color: green !important</code> 是重要声明</li>
+</ol>
+<p>✅ <strong>最终显示颜色为绿色</strong>（因为 <code>!important</code> 胜出）。</p>
+<hr>
+<h2 id="🔍-浏览器内部：如何构造-Rule-Tree？"><a href="#🔍-浏览器内部：如何构造-Rule-Tree？" class="headerlink" title="🔍 浏览器内部：如何构造 Rule Tree？"></a>🔍 浏览器内部：如何构造 Rule Tree？</h2><p>浏览器内部通常会用如下数据结构：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CSSRule</span><br><span class="line"> └─ Selector (p)</span><br><span class="line"> └─ Declarations (color: red)</span><br><span class="line"> └─ Specificity (0,0,1)</span><br><span class="line"> └─ Origin (author)</span><br><span class="line"> └─ Important (false)</span><br></pre></td></tr></table></figure>
+
+<p>Rule Tree 并不是对 DOM 树的映射，而是对<strong>选择器规则集合</strong>的映射，它将这些规则组合、排序、归类以便查找和比较。</p>
+<hr>
+<h2 id="🛠️-现代浏览器优化：Rule-Tree-Style-Sharing"><a href="#🛠️-现代浏览器优化：Rule-Tree-Style-Sharing" class="headerlink" title="🛠️ 现代浏览器优化：Rule Tree + Style Sharing"></a>🛠️ 现代浏览器优化：Rule Tree + Style Sharing</h2><p>像 Firefox 的 Gecko 和 Chrome 的 Blink 引擎，会：</p>
+<ul>
+<li>使用“Rule Tree”缓存共享规则，避免重复样式计算</li>
+<li>使用“Computed Style”缓存结果，优化性能</li>
+</ul>
+<hr>
+<h2 id="✅-总结：Rule-Tree-如何区分和合并规则？"><a href="#✅-总结：Rule-Tree-如何区分和合并规则？" class="headerlink" title="✅ 总结：Rule Tree 如何区分和合并规则？"></a>✅ 总结：Rule Tree 如何区分和合并规则？</h2><table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>区分</td>
+<td>按选择器 + 来源 + specificity + 是否 important 区分不同规则</td>
+</tr>
+<tr>
+<td>合并</td>
+<td>把所有匹配同一元素的规则，按层叠规则合并</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>得出一个元素的最终“计算样式”（Computed Style）</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>具体拆解</strong>你提到的这四个关键维度：<strong>选择器 + 来源 + specificity + 是否 <code>!important</code></strong> 是如何让浏览器区分并决定“哪条 CSS 规则最终生效”的。</p>
+<hr>
+<h2 id="🧠-背景：多个-CSS-规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为层叠（cascading）。"><a href="#🧠-背景：多个-CSS-规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为层叠（cascading）。" class="headerlink" title="🧠 背景：多个 CSS 规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为层叠（cascading）。"></a>🧠 背景：多个 CSS 规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为<strong>层叠（cascading）</strong>。</h2><hr>
+<h2 id="✅-四大决策因子详解"><a href="#✅-四大决策因子详解" class="headerlink" title="✅ 四大决策因子详解"></a>✅ 四大决策因子详解</h2><h3 id="①-选择器（Selector）"><a href="#①-选择器（Selector）" class="headerlink" title="① 选择器（Selector）"></a>① <strong>选择器（Selector）</strong></h3><p>哪个选择器能匹配当前元素？可能匹配上多个，例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123; <span class="attribute">color</span>: red; &#125;</span><br><span class="line"><span class="selector-id">#main</span> &#123; <span class="attribute">color</span>: green; &#125;</span><br><span class="line"><span class="selector-tag">div</span><span class="selector-id">#main</span> &#123; <span class="attribute">color</span>: blue; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些都会匹配 <code>&lt;div id=&quot;main&quot;&gt;</code>，但最终只能取其中一个。</p>
+<hr>
+<h3 id="②-来源（Origin）"><a href="#②-来源（Origin）" class="headerlink" title="② 来源（Origin）"></a>② <strong>来源（Origin）</strong></h3><p>CSS 有三种来源，优先级不同：</p>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>权重（从低到高）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User agent（浏览器默认）</td>
+<td>最低</td>
+</tr>
+<tr>
+<td>用户样式（用户设置）</td>
+<td>中（通常可被覆盖）</td>
+</tr>
+<tr>
+<td>作者样式（网站写的）</td>
+<td>高（一般我们写的 CSS）</td>
+</tr>
+<tr>
+<td><code>!important</code> 版本</td>
+<td>会覆盖上面所有</td>
+</tr>
+</tbody></table>
+<p>例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 浏览器默认 */</span></span><br><span class="line"><span class="selector-tag">body</span> &#123; <span class="attribute">font-size</span>: <span class="number">16px</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 作者样式 */</span></span><br><span class="line"><span class="selector-tag">body</span> &#123; <span class="attribute">font-size</span>: <span class="number">20px</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 用户设置 */</span></span><br><span class="line"><span class="selector-tag">body</span> &#123; <span class="attribute">font-size</span>: <span class="number">18px</span> <span class="meta">!important</span>; &#125;  &lt;-- 覆盖作者样式</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="③-Specificity（选择器优先级）"><a href="#③-Specificity（选择器优先级）" class="headerlink" title="③ Specificity（选择器优先级）"></a>③ <strong>Specificity（选择器优先级）</strong></h3><p>浏览器给选择器打“分”，越具体，分越高，越容易胜出：</p>
+<table>
+<thead>
+<tr>
+<th>选择器类型</th>
+<th>分值表示形式（a,b,c,d）</th>
+<th>举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>!important</code></td>
+<td>特殊处理，最高</td>
+<td></td>
+<td>特例，详见下一项</td>
+</tr>
+<tr>
+<td>行内样式（style）</td>
+<td>1,0,0,0</td>
+<td><code>style=&quot;...&quot;</code></td>
+<td>优先级高于任何选择器</td>
+</tr>
+<tr>
+<td>ID 选择器（#id）</td>
+<td>0,1,0,0</td>
+<td><code>#header</code></td>
+<td>高优先级</td>
+</tr>
+<tr>
+<td>类、属性、伪类选择器</td>
+<td>0,0,1,0</td>
+<td><code>.box</code>, <code>[type=]</code></td>
+<td>常见</td>
+</tr>
+<tr>
+<td>元素、伪元素选择器</td>
+<td>0,0,0,1</td>
+<td><code>div</code>, <code>p</code>, <code>::after</code></td>
+<td>优先级最低</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* specificity: (0,0,0,1) */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123; <span class="attribute">color</span>: red; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* specificity: (0,0,1,0) */</span></span><br><span class="line"><span class="selector-class">.text</span> &#123; <span class="attribute">color</span>: green; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* specificity: (0,1,0,0) */</span></span><br><span class="line"><span class="selector-id">#main</span> &#123; <span class="attribute">color</span>: blue; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>优先级从高到低：<code>#main</code> &gt; <code>.text</code> &gt; <code>p</code></p>
+<hr>
+<h3 id="④-是否有-important"><a href="#④-是否有-important" class="headerlink" title="④ 是否有 !important"></a>④ <strong>是否有 <code>!important</code></strong></h3><p>这相当于“加特权”：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即使 <code>.box</code> 的 specificity 低于其他规则，它也会胜出。</p>
+<p>但是：<strong>多个 <code>!important</code> 要比 specificity！</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;       <span class="comment">/* specificity: 0,0,1,0 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#main</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: blue <span class="meta">!important</span>;      <span class="comment">/* specificity: 0,1,0,0 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>✅ <code>#main</code> 的规则胜出，因为 <code>!important</code> 且 specificity 更高。</p>
+<hr>
+<h2 id="🎯-决策流程图（简化文字版）"><a href="#🎯-决策流程图（简化文字版）" class="headerlink" title="🎯 决策流程图（简化文字版）"></a>🎯 决策流程图（简化文字版）</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">是否有 !important？</span><br><span class="line">├── 是 → specificity 高者胜出</span><br><span class="line">├── 否 → 来源高者胜出（作者 &gt; 用户 &gt; 浏览器）</span><br><span class="line">        └── 若来源相同 → specificity 高者胜</span><br><span class="line">               └── 若 specificity 相同 → 后写的覆盖前写的</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧪-实战举例分析"><a href="#🧪-实战举例分析" class="headerlink" title="🧪 实战举例分析"></a>🧪 实战举例分析</h2><p>HTML：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;main&quot;</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: orange;&quot;</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>CSS：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* specificity: 0,0,1,0 */</span></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* specificity: 0,1,0,0 */</span></span><br><span class="line"><span class="selector-id">#main</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* inline style, specificity: 1,0,0,0 */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="→-谁胜出？"><a href="#→-谁胜出？" class="headerlink" title="→ 谁胜出？"></a>→ 谁胜出？</h3><p>最终颜色是：<strong>橙色</strong>（来自 inline <code>style</code>）</p>
+<hr>
+<p>加一条：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: purple <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>→ 此时颜色是：<strong>紫色</strong>（因为 <code>!important</code> 胜出，即使 specificity 低）</p>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/20205/05/01/front_skills/css3/css%E5%8E%9F%E7%90%86/">
+        <span class="nav-arrow">← </span>
+        
+          css原理
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8C%B3-%E4%BB%80%E4%B9%88%E6%98%AF-Rule-Tree%EF%BC%9F"><span class="toc-nav-text">🌳 什么是 Rule Tree？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-Rule-Tree-%E7%9A%84%E7%BB%93%E6%9E%84%E6%9C%AC%E8%B4%A8%EF%BC%88%E7%AE%80%E5%8C%96%E7%89%88%EF%BC%89"><span class="toc-nav-text">🧩 Rule Tree 的结构本质（简化版）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-Rule-Tree-%E6%98%AF%E6%80%8E%E4%B9%88%E2%80%9C%E5%90%88%E5%B9%B6%E8%A7%84%E5%88%99%E2%80%9D%E7%9A%84%EF%BC%9F"><span class="toc-nav-text">🔁 Rule Tree 是怎么“合并规则”的？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%81%87%E8%AE%BE%E6%88%91%E4%BB%AC%E6%9C%89%E5%A6%82%E4%B8%8B%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99%EF%BC%9A"><span class="toc-nav-text">假设我们有如下三条规则：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E5%90%88%E5%B9%B6%E8%A7%84%E5%88%99%E4%BC%98%E5%85%88%E7%BA%A7%E5%88%A4%E6%96%AD%E6%A0%87%E5%87%86%EF%BC%9A"><span class="toc-nav-text">💡 合并规则优先级判断标准：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%9A-%E4%B8%BE%E4%B8%AA%E5%90%88%E5%B9%B6%E4%BE%8B%E5%AD%90"><span class="toc-nav-text">📚 举个合并例子</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%EF%BC%9A%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0-Rule-Tree%EF%BC%9F"><span class="toc-nav-text">🔍 浏览器内部：如何构造 Rule Tree？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A0%EF%B8%8F-%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%98%E5%8C%96%EF%BC%9ARule-Tree-Style-Sharing"><span class="toc-nav-text">🛠️ 现代浏览器优化：Rule Tree + Style Sharing</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%EF%BC%9ARule-Tree-%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E5%92%8C%E5%90%88%E5%B9%B6%E8%A7%84%E5%88%99%EF%BC%9F"><span class="toc-nav-text">✅ 总结：Rule Tree 如何区分和合并规则？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E8%83%8C%E6%99%AF%EF%BC%9A%E5%A4%9A%E4%B8%AA-CSS-%E8%A7%84%E5%88%99%E5%8F%AF%E8%83%BD%E5%8C%B9%E9%85%8D%E5%90%8C%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E6%97%B6%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BF%85%E9%A1%BB%E9%80%89%E5%87%BA%E2%80%9C%E8%B5%A2%E5%AE%B6%E2%80%9D%EF%BC%8C%E8%BF%99%E4%B8%AA%E8%BF%87%E7%A8%8B%E7%A7%B0%E4%B8%BA%E5%B1%82%E5%8F%A0%EF%BC%88cascading%EF%BC%89%E3%80%82"><span class="toc-nav-text">🧠 背景：多个 CSS 规则可能匹配同一个元素时，浏览器必须选出“赢家”，这个过程称为层叠（cascading）。</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%9B%9B%E5%A4%A7%E5%86%B3%E7%AD%96%E5%9B%A0%E5%AD%90%E8%AF%A6%E8%A7%A3"><span class="toc-nav-text">✅ 四大决策因子详解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A0-%E9%80%89%E6%8B%A9%E5%99%A8%EF%BC%88Selector%EF%BC%89"><span class="toc-nav-text">① 选择器（Selector）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A1-%E6%9D%A5%E6%BA%90%EF%BC%88Origin%EF%BC%89"><span class="toc-nav-text">② 来源（Origin）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A2-Specificity%EF%BC%88%E9%80%89%E6%8B%A9%E5%99%A8%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%89"><span class="toc-nav-text">③ Specificity（选择器优先级）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A3-%E6%98%AF%E5%90%A6%E6%9C%89-important"><span class="toc-nav-text">④ 是否有 !important</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E5%86%B3%E7%AD%96%E6%B5%81%E7%A8%8B%E5%9B%BE%EF%BC%88%E7%AE%80%E5%8C%96%E6%96%87%E5%AD%97%E7%89%88%EF%BC%89"><span class="toc-nav-text">🎯 决策流程图（简化文字版）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E5%AE%9E%E6%88%98%E4%B8%BE%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-nav-text">🧪 实战举例分析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%86%92-%E8%B0%81%E8%83%9C%E5%87%BA%EF%BC%9F"><span class="toc-nav-text">→ 谁胜出？</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/20205/05/04/front_skills/css3/css rule tree/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
