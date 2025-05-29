@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      go学习笔记一 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>go学习笔记一</h2>
+  <p class="post-date">2022-07-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="go"><a href="#go" class="headerlink" title="go"></a>go</h1><h2 id="语言特点"><a href="#语言特点" class="headerlink" title="语言特点"></a>语言特点</h2><ul>
+<li>全新的静态类型开发语言</li>
+<li>具有自动垃圾回收、丰富的内置类型</li>
+<li>函数多返回值、错误处理</li>
+<li>匿名函数、闭包、并发编程</li>
+<li>反射、defer、接口</li>
+<li>简洁、更加安全、开源等特性</li>
+<li>充分利用Cpu多核，运行速度媲美C、C++</li>
+<li>内置<strong>运行时</strong>，支持基础、对象等，开发工具丰富</li>
+<li>标准库完备，强大网络库，web服务开发容易，尤其适合服务器编程、网络编程、分布式编程，特别适合云计算领域</li>
+<li>提供了海量并行的支持，适合游戏服务端的开发</li>
+<li>另外，编译运行快 + 学习上手快，学习曲线并不陡峭</li>
+</ul>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="go-支持的命令"><a href="#go-支持的命令" class="headerlink" title="go 支持的命令"></a>go 支持的命令</h3><ul>
+<li>bug         : start a bug report</li>
+<li>build       : compile packages and dependencies</li>
+<li>clean       : remove object files and cached files</li>
+<li>doc         : show documentation for package or symbol</li>
+<li>env         : print Go environment information</li>
+<li>fix         : update packages to use new APIs</li>
+<li>fmt         : gofmt (reformat) package sources</li>
+<li>generate    : generate Go files by processing source</li>
+<li>get         : add dependencies to current module and install them</li>
+<li>install     : compile and install packages and dependencies</li>
+<li>list        : list packages or modules</li>
+<li>mod         : module maintenance</li>
+<li>run         : compile and run Go program</li>
+<li>test        : test packages</li>
+<li>tool        : run specified go tool</li>
+<li>version     : print Go version</li>
+<li>vet         : report likely mistakes in packages</li>
+</ul>
+<h3 id="一个go文件组成"><a href="#一个go文件组成" class="headerlink" title="一个go文件组成"></a>一个go文件组成</h3><ul>
+<li>包声明<blockquote>
+<p>开头定义包名，形成命名空间; 与文件名没有任何关系，两者可以不一致，也可以一致；</p>
+</blockquote>
+</li>
+<li>引入包  </li>
+<li>函数</li>
+<li>变量</li>
+<li>语句 &amp; 表达式</li>
+<li>注释</li>
+</ul>
+<h3 id="go-vs-js"><a href="#go-vs-js" class="headerlink" title="go vs js"></a>go vs js</h3><table>
+<thead>
+<tr>
+<th>特点</th>
+<th>go</th>
+<th>js</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>书写</td>
+<td>不需要；结尾</td>
+<td>不需要;结尾</td>
+</tr>
+<tr>
+<td>编译器</td>
+<td>先编译在执行</td>
+<td>解释性语言</td>
+</tr>
+<tr>
+<td>标准</td>
+<td>仅此一套</td>
+<td>commonjs、amd、umd、es module</td>
+</tr>
+<tr>
+<td>注释</td>
+<td>支持 &#x2F;&#x2F;, &#x2F;** &#x2F;</td>
+<td>支持 &#x2F;&#x2F;, &#x2F;**&#x2F;</td>
+</tr>
+<tr>
+<td>字符串拼接</td>
+<td>“a” + “b”</td>
+<td>“a” + “b” or <code>$&#123;a&#125;</code></td>
+</tr>
+<tr>
+<td>变量声明</td>
+<td>var age int (直接跟在后面，不用 var age: int )</td>
+<td>var age or let age or const age</td>
+</tr>
+<tr>
+<td>数据类型</td>
+<td>数据： int，float32, float64,支持complex64,complex128,还有其他无符号整数</td>
+<td>number</td>
+</tr>
+</tbody></table>
+<h3 id="go-默认值"><a href="#go-默认值" class="headerlink" title="go 默认值"></a>go 默认值</h3><ul>
+<li>数值类型（包括complex64&#x2F;128）为 0</li>
+<li>布尔类型为 false</li>
+<li>字符串为 “”（空字符串）</li>
+</ul>
+<blockquote>
+<p>以下几种类型为 nil：<br>var a *int<br>var a []int<br>var a map[string] int<br>var a chan int<br>var a func(string) int<br>var a error &#x2F;&#x2F; error 是接口 </p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#学习笔记" >
+    <span class="tag-code">学习笔记</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/02/16/front_skills/react/%E3%80%8Areact%E3%80%8B-%20%E5%86%8D%E6%AC%A1%E5%9B%9E%E9%A1%BE/">
+        <span class="nav-arrow">← </span>
+        
+          《react》- 再次回顾
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/08/02/backend_skills/go/go%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C/">
+        
+          go学习笔记二
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#go"><span class="toc-nav-text">go</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%AF%AD%E8%A8%80%E7%89%B9%E7%82%B9"><span class="toc-nav-text">语言特点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-nav-text">基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#go-%E6%94%AF%E6%8C%81%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">go 支持的命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E4%B8%AAgo%E6%96%87%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-nav-text">一个go文件组成</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#go-vs-js"><span class="toc-nav-text">go vs js</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#go-%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="toc-nav-text">go 默认值</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/07/26/backend_skills/go/go学习笔记一/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
