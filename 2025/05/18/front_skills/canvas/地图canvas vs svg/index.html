@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      地图canvas和svg选择 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>地图canvas和svg选择</h2>
+  <p class="post-date">2025-05-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="在开发地图时，选择使用-Canvas-还是-SVG-主要取决于你项目的需求、地图的复杂程度、交互性能要求以及渲染对象的数量。"><a href="#在开发地图时，选择使用-Canvas-还是-SVG-主要取决于你项目的需求、地图的复杂程度、交互性能要求以及渲染对象的数量。" class="headerlink" title="在开发地图时，选择使用 Canvas 还是 SVG 主要取决于你项目的需求、地图的复杂程度、交互性能要求以及渲染对象的数量。"></a>在开发地图时，选择使用 Canvas 还是 SVG 主要取决于你项目的需求、地图的复杂程度、交互性能要求以及渲染对象的数量。</h2><h3 id="一、Canvas-与-SVG-的核心区别"><a href="#一、Canvas-与-SVG-的核心区别" class="headerlink" title="一、Canvas 与 SVG 的核心区别"></a>一、Canvas 与 SVG 的核心区别</h3><h4 id="1-渲染机制"><a href="#1-渲染机制" class="headerlink" title="1. 渲染机制"></a>1. 渲染机制</h4><ul>
+<li><strong>Canvas</strong> 是一种基于位图（bitmap）的渲染方式，操作的是像素。你每次绘图都在一张“画布”上进行，而图形绘制后不再保持 DOM 元素结构。</li>
+<li><strong>SVG</strong> 是一种基于矢量的 XML 标记语言，渲染的是 DOM 节点，图形在页面中作为可操作的元素存在。</li>
+</ul>
+<hr>
+<h3 id="二、地图开发中如何选择？"><a href="#二、地图开发中如何选择？" class="headerlink" title="二、地图开发中如何选择？"></a>二、地图开发中如何选择？</h3><h4 id="✔-使用-Canvas-的场景（推荐用于大规模、复杂地图）"><a href="#✔-使用-Canvas-的场景（推荐用于大规模、复杂地图）" class="headerlink" title="✔ 使用 Canvas 的场景（推荐用于大规模、复杂地图）"></a>✔ 使用 Canvas 的场景（推荐用于大规模、复杂地图）</h4><ol>
+<li><p><strong>需要高性能渲染的大量对象（如地理信息系统 GIS、游戏地图）</strong>：</p>
+<ul>
+<li>如果地图上有成千上万的要素（如道路、建筑、点标记等），SVG 会因为 DOM 元素太多而明显卡顿。</li>
+<li>例子：在一张城市地图上渲染几万条公交线路，Canvas 的性能会远优于 SVG。</li>
+</ul>
+</li>
+<li><p><strong>动态绘制、频繁刷新（如拖拽、缩放、实时数据变化）</strong>：</p>
+<ul>
+<li>Canvas 的像素渲染方式更适合快速连续重绘，例如地图缩放、平移时刷新整个画布。</li>
+</ul>
+</li>
+<li><p><strong>需要手动控制图层渲染顺序、粒度精细（如图层叠加、着色、热点分析）</strong>。</p>
+</li>
+</ol>
+<h4 id="✔-使用-SVG-的场景（推荐用于交互复杂、对象较少的地图）"><a href="#✔-使用-SVG-的场景（推荐用于交互复杂、对象较少的地图）" class="headerlink" title="✔ 使用 SVG 的场景（推荐用于交互复杂、对象较少的地图）"></a>✔ 使用 SVG 的场景（推荐用于交互复杂、对象较少的地图）</h4><ol>
+<li><p><strong>需要每个地图元素具备独立交互能力（如点击、悬停、拖拽）</strong>：</p>
+<ul>
+<li>SVG 的每个形状都是独立的 DOM 元素，便于添加事件监听器，例如点击显示弹窗、改变样式。</li>
+<li>例子：一个展示 100 个省份边界的可交互地图，可以用 SVG 来高效实现点击、悬浮等交互。</li>
+</ul>
+</li>
+<li><p><strong>需要响应式布局和 CSS 样式控制（如响应式仪表盘、主题变换）</strong>。</p>
+<ul>
+<li>SVG 元素可直接通过 CSS 控制样式，方便适配不同屏幕或主题切换。</li>
+</ul>
+</li>
+<li><p><strong>开发迭代需求高、便于调试与扩展的项目</strong>：</p>
+<ul>
+<li>SVG 的结构清晰、调试方便，适合团队协作和未来维护。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="三、混合使用的建议（高阶策略）"><a href="#三、混合使用的建议（高阶策略）" class="headerlink" title="三、混合使用的建议（高阶策略）"></a>三、混合使用的建议（高阶策略）</h3><p>现代地图库（如 D3.js、Leaflet、Mapbox、ECharts）已经支持 <strong>Canvas + SVG 的混合渲染</strong>，可以根据具体图层特点进行优化：</p>
+<ul>
+<li><strong>底图（复杂背景）用 Canvas</strong>：提升性能。</li>
+<li><strong>前景元素（标注、交互点）用 SVG</strong>：保留良好的交互体验。</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mapbox 使用 canvas 渲染地形数据</span></span><br><span class="line"><span class="comment">// 然后使用 D3 的 SVG 叠加图层实现省份标签交互</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="四、性能对比总结表"><a href="#四、性能对比总结表" class="headerlink" title="四、性能对比总结表"></a>四、性能对比总结表</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Canvas</th>
+<th>SVG</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>渲染性能</td>
+<td>高，适合大数据量</td>
+<td>较低，数据多时性能下降</td>
+</tr>
+<tr>
+<td>交互性</td>
+<td>需手动计算元素命中</td>
+<td>原生支持 DOM 事件绑定</td>
+</tr>
+<tr>
+<td>可维护性&#x2F;调试</td>
+<td>较低，画布上无法直接识别元素</td>
+<td>高，可通过开发者工具查看和修改元素</td>
+</tr>
+<tr>
+<td>响应式支持</td>
+<td>较差，需要手动适配</td>
+<td>好，支持 CSS 和 ViewBox 响应式设计</td>
+</tr>
+<tr>
+<td>渲染复杂图形</td>
+<td>高效，支持像素级别渲染效果（阴影、渐变等）</td>
+<td>限制较多，不支持复杂图像处理</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="五、推荐实践框架"><a href="#五、推荐实践框架" class="headerlink" title="五、推荐实践框架"></a>五、推荐实践框架</h3><ul>
+<li><strong>轻量级地图交互</strong>：使用 SVG + <a target="_blank" rel="noopener" href="https://d3js.org/">D3.js</a></li>
+<li><strong>高性能地图渲染</strong>：使用 Canvas + <a target="_blank" rel="noopener" href="https://pixijs.com/">PixiJS</a></li>
+<li><strong>复杂地图平台</strong>：使用 <a target="_blank" rel="noopener" href="https://docs.mapbox.com/mapbox-gl-js/">Mapbox GL JS</a> 或 <a target="_blank" rel="noopener" href="https://leafletjs.com/">Leaflet</a>（可 Canvas 或 SVG 自选）</li>
+</ul>
+<hr>
+<h3 id="六、结语建议"><a href="#六、结语建议" class="headerlink" title="六、结语建议"></a>六、结语建议</h3><blockquote>
+<p>如果你要做一个<strong>数据量庞大、需要性能优化的地图系统</strong>，选择 Canvas 更为合适；如果是一个<strong>强调交互和美观展示的小型地图组件</strong>，SVG 会带来更好的开发体验。对于大多数现代项目，<strong>混合使用是最佳实践</strong>。</p>
+</blockquote>
+<h2 id="SVG-Canvas-混合地图的实现，核心在于将两者作为不同的图层叠加渲染，分别处理不同任务："><a href="#SVG-Canvas-混合地图的实现，核心在于将两者作为不同的图层叠加渲染，分别处理不同任务：" class="headerlink" title="SVG + Canvas 混合地图的实现，核心在于将两者作为不同的图层叠加渲染，分别处理不同任务："></a>SVG + Canvas 混合地图的实现，核心在于<strong>将两者作为不同的图层叠加渲染</strong>，分别处理不同任务：</h2><ul>
+<li><strong>Canvas</strong> 用于绘制大量、高性能图形（底图、热力图等）。</li>
+<li><strong>SVG</strong> 用于添加可交互的图形元素（例如标注、点击区域等）。</li>
+</ul>
+<hr>
+<p>我们可以通过 HTML 结构，将 <code>&lt;canvas&gt;</code> 和 <code>&lt;svg&gt;</code> 标签放在同一个容器内，并通过 <strong>绝对定位 + 透明背景</strong> 来叠加两者。</p>
+<h3 id="📦-HTML-CSS-结构"><a href="#📦-HTML-CSS-结构" class="headerlink" title="📦 HTML + CSS 结构"></a>📦 HTML + CSS 结构</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;map-container&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 800px; height: 600px;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;map-canvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;800&quot;</span> <span class="attr">height</span>=<span class="string">&quot;600&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; top: 0; left: 0; z-index: 0;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">svg</span> <span class="attr">id</span>=<span class="string">&quot;map-svg&quot;</span> <span class="attr">width</span>=<span class="string">&quot;800&quot;</span> <span class="attr">height</span>=<span class="string">&quot;600&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none;&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 交互图形放这里 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="🎨-JS-渲染示例"><a href="#🎨-JS-渲染示例" class="headerlink" title="🎨 JS 渲染示例"></a>🎨 JS 渲染示例</h3><h4 id="1-绘制-Canvas-底图（用于性能优先的地理要素）"><a href="#1-绘制-Canvas-底图（用于性能优先的地理要素）" class="headerlink" title="1. 绘制 Canvas 底图（用于性能优先的地理要素）"></a>1. 绘制 Canvas 底图（用于性能优先的地理要素）</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;map-canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.<span class="title function_">getContext</span>(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例：绘制若干城市热力点</span></span><br><span class="line"><span class="keyword">const</span> cities = [</span><br><span class="line">  &#123; <span class="attr">x</span>: <span class="number">100</span>, <span class="attr">y</span>: <span class="number">120</span>, <span class="attr">value</span>: <span class="number">80</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">x</span>: <span class="number">300</span>, <span class="attr">y</span>: <span class="number">200</span>, <span class="attr">value</span>: <span class="number">50</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">x</span>: <span class="number">500</span>, <span class="attr">y</span>: <span class="number">300</span>, <span class="attr">value</span>: <span class="number">70</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">cities.<span class="title function_">forEach</span>(<span class="function"><span class="params">city</span> =&gt;</span> &#123;</span><br><span class="line">  ctx.<span class="title function_">beginPath</span>();</span><br><span class="line">  ctx.<span class="title function_">arc</span>(city.<span class="property">x</span>, city.<span class="property">y</span>, city.<span class="property">value</span> / <span class="number">2</span>, <span class="number">0</span>, <span class="title class_">Math</span>.<span class="property">PI</span> * <span class="number">2</span>);</span><br><span class="line">  ctx.<span class="property">fillStyle</span> = <span class="string">&quot;rgba(255,0,0,0.4)&quot;</span>;</span><br><span class="line">  ctx.<span class="title function_">fill</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-绘制-SVG-图层（用于交互元素）"><a href="#2-绘制-SVG-图层（用于交互元素）" class="headerlink" title="2. 绘制 SVG 图层（用于交互元素）"></a>2. 绘制 SVG 图层（用于交互元素）</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> svg = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;map-svg&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个交互性强的 SVG 标签（如城市标记）</span></span><br><span class="line"><span class="keyword">const</span> marker = <span class="variable language_">document</span>.<span class="title function_">createElementNS</span>(<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span>, <span class="string">&quot;circle&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;cx&quot;</span>, <span class="string">&quot;100&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;cy&quot;</span>, <span class="string">&quot;120&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;r&quot;</span>, <span class="string">&quot;10&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;fill&quot;</span>, <span class="string">&quot;blue&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;stroke&quot;</span>, <span class="string">&quot;white&quot;</span>);</span><br><span class="line">marker.<span class="title function_">setAttribute</span>(<span class="string">&quot;stroke-width&quot;</span>, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">marker.<span class="property">style</span>.<span class="property">pointerEvents</span> = <span class="string">&quot;auto&quot;</span>;  <span class="comment">// 允许事件穿透到此元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加事件监听</span></span><br><span class="line">marker.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">alert</span>(<span class="string">&quot;点击了城市标记！&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">svg.<span class="title function_">appendChild</span>(marker);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🚀-技术要点与优化建议"><a href="#🚀-技术要点与优化建议" class="headerlink" title="🚀 技术要点与优化建议"></a>🚀 技术要点与优化建议</h2><table>
+<thead>
+<tr>
+<th>关键点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>图层分离</td>
+<td>使用 <code>z-index</code> 控制 Canvas（底层）与 SVG（上层）</td>
+</tr>
+<tr>
+<td>事件穿透</td>
+<td>设定 <code>pointer-events: none</code> 给 SVG 容器，让事件默认落到 Canvas；对具体 SVG 元素可单独设置 <code>pointer-events: auto</code></td>
+</tr>
+<tr>
+<td>坐标同步</td>
+<td>保持 Canvas 与 SVG 使用相同的坐标系统，适配缩放&#x2F;平移需要联动</td>
+</tr>
+<tr>
+<td>响应式支持</td>
+<td>使用 <code>viewBox</code> 或监听 <code>resize</code> 来适配变化</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-高阶整合（结合地图框架）"><a href="#🧠-高阶整合（结合地图框架）" class="headerlink" title="🧠 高阶整合（结合地图框架）"></a>🧠 高阶整合（结合地图框架）</h2><p>如果你在用 Mapbox 或 Leaflet 等库，可以利用其已有的底图和坐标系统：</p>
+<h3 id="📍Mapbox-D3（SVG-图层）"><a href="#📍Mapbox-D3（SVG-图层）" class="headerlink" title="📍Mapbox + D3（SVG 图层）"></a>📍Mapbox + D3（SVG 图层）</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">map.<span class="title function_">on</span>(<span class="string">&#x27;render&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> center = map.<span class="title function_">getCenter</span>();</span><br><span class="line">  <span class="keyword">const</span> zoom = map.<span class="title function_">getZoom</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将地理坐标转换为屏幕坐标，用于 SVG 定位</span></span><br><span class="line">  <span class="keyword">const</span> screenPos = map.<span class="title function_">project</span>([lng, lat]);</span><br><span class="line">  d3.<span class="title function_">select</span>(<span class="string">&quot;#marker&quot;</span>)</span><br><span class="line">    .<span class="title function_">attr</span>(<span class="string">&quot;cx&quot;</span>, screenPos.<span class="property">x</span>)</span><br><span class="line">    .<span class="title function_">attr</span>(<span class="string">&quot;cy&quot;</span>, screenPos.<span class="property">y</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+  <a target="_blank" href="/tags#svg" >
+    <span class="tag-code">svg</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/15/front_package_build_skills/vite/webpack%20react%E8%BF%81%E7%A7%BB%E5%88%B0vite/">
+        <span class="nav-arrow">← </span>
+        
+          webpack react迁移到vite
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/19/front_skills/canvas/%E5%9C%B0%E5%9B%BEvue%20react%20angular%E6%94%AF%E6%8C%81/">
+        
+          地图vue react angular支持
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9C%A8%E5%BC%80%E5%8F%91%E5%9C%B0%E5%9B%BE%E6%97%B6%EF%BC%8C%E9%80%89%E6%8B%A9%E4%BD%BF%E7%94%A8-Canvas-%E8%BF%98%E6%98%AF-SVG-%E4%B8%BB%E8%A6%81%E5%8F%96%E5%86%B3%E4%BA%8E%E4%BD%A0%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%9C%80%E6%B1%82%E3%80%81%E5%9C%B0%E5%9B%BE%E7%9A%84%E5%A4%8D%E6%9D%82%E7%A8%8B%E5%BA%A6%E3%80%81%E4%BA%A4%E4%BA%92%E6%80%A7%E8%83%BD%E8%A6%81%E6%B1%82%E4%BB%A5%E5%8F%8A%E6%B8%B2%E6%9F%93%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%95%B0%E9%87%8F%E3%80%82"><span class="toc-nav-text">在开发地图时，选择使用 Canvas 还是 SVG 主要取决于你项目的需求、地图的复杂程度、交互性能要求以及渲染对象的数量。</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81Canvas-%E4%B8%8E-SVG-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">一、Canvas 与 SVG 的核心区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1. 渲染机制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E5%9C%B0%E5%9B%BE%E5%BC%80%E5%8F%91%E4%B8%AD%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%EF%BC%9F"><span class="toc-nav-text">二、地图开发中如何选择？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%94-%E4%BD%BF%E7%94%A8-Canvas-%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%88%E6%8E%A8%E8%8D%90%E7%94%A8%E4%BA%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E3%80%81%E5%A4%8D%E6%9D%82%E5%9C%B0%E5%9B%BE%EF%BC%89"><span class="toc-nav-text">✔ 使用 Canvas 的场景（推荐用于大规模、复杂地图）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%94-%E4%BD%BF%E7%94%A8-SVG-%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%88%E6%8E%A8%E8%8D%90%E7%94%A8%E4%BA%8E%E4%BA%A4%E4%BA%92%E5%A4%8D%E6%9D%82%E3%80%81%E5%AF%B9%E8%B1%A1%E8%BE%83%E5%B0%91%E7%9A%84%E5%9C%B0%E5%9B%BE%EF%BC%89"><span class="toc-nav-text">✔ 使用 SVG 的场景（推荐用于交互复杂、对象较少的地图）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E6%B7%B7%E5%90%88%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AE%AE%EF%BC%88%E9%AB%98%E9%98%B6%E7%AD%96%E7%95%A5%EF%BC%89"><span class="toc-nav-text">三、混合使用的建议（高阶策略）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93%E8%A1%A8"><span class="toc-nav-text">四、性能对比总结表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%E6%8E%A8%E8%8D%90%E5%AE%9E%E8%B7%B5%E6%A1%86%E6%9E%B6"><span class="toc-nav-text">五、推荐实践框架</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81%E7%BB%93%E8%AF%AD%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">六、结语建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SVG-Canvas-%E6%B7%B7%E5%90%88%E5%9C%B0%E5%9B%BE%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%8C%E6%A0%B8%E5%BF%83%E5%9C%A8%E4%BA%8E%E5%B0%86%E4%B8%A4%E8%80%85%E4%BD%9C%E4%B8%BA%E4%B8%8D%E5%90%8C%E7%9A%84%E5%9B%BE%E5%B1%82%E5%8F%A0%E5%8A%A0%E6%B8%B2%E6%9F%93%EF%BC%8C%E5%88%86%E5%88%AB%E5%A4%84%E7%90%86%E4%B8%8D%E5%90%8C%E4%BB%BB%E5%8A%A1%EF%BC%9A"><span class="toc-nav-text">SVG + Canvas 混合地图的实现，核心在于将两者作为不同的图层叠加渲染，分别处理不同任务：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%A6-HTML-CSS-%E7%BB%93%E6%9E%84"><span class="toc-nav-text">📦 HTML + CSS 结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%8E%A8-JS-%E6%B8%B2%E6%9F%93%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">🎨 JS 渲染示例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E7%BB%98%E5%88%B6-Canvas-%E5%BA%95%E5%9B%BE%EF%BC%88%E7%94%A8%E4%BA%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%85%88%E7%9A%84%E5%9C%B0%E7%90%86%E8%A6%81%E7%B4%A0%EF%BC%89"><span class="toc-nav-text">1. 绘制 Canvas 底图（用于性能优先的地理要素）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E7%BB%98%E5%88%B6-SVG-%E5%9B%BE%E5%B1%82%EF%BC%88%E7%94%A8%E4%BA%8E%E4%BA%A4%E4%BA%92%E5%85%83%E7%B4%A0%EF%BC%89"><span class="toc-nav-text">2. 绘制 SVG 图层（用于交互元素）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9%E4%B8%8E%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">🚀 技术要点与优化建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E9%AB%98%E9%98%B6%E6%95%B4%E5%90%88%EF%BC%88%E7%BB%93%E5%90%88%E5%9C%B0%E5%9B%BE%E6%A1%86%E6%9E%B6%EF%BC%89"><span class="toc-nav-text">🧠 高阶整合（结合地图框架）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%8DMapbox-D3%EF%BC%88SVG-%E5%9B%BE%E5%B1%82%EF%BC%89"><span class="toc-nav-text">📍Mapbox + D3（SVG 图层）</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/18/front_skills/canvas/地图canvas vs svg/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
