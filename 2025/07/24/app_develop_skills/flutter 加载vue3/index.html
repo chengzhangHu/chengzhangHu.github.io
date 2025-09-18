@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Flutter 加载vue3 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Flutter 加载vue3</h2>
+  <p class="post-date">2025-07-24</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="✅-一、确保已经具备的环境"><a href="#✅-一、确保已经具备的环境" class="headerlink" title="✅ 一、确保已经具备的环境"></a>✅ 一、确保已经具备的环境</h2><table>
+<thead>
+<tr>
+<th>工具&#x2F;组件</th>
+<th>检查方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ Flutter SDK</td>
+<td><code>flutter --version</code></td>
+</tr>
+<tr>
+<td>✅ Dart 插件（VS Code）</td>
+<td>VS Code 插件区搜索 “Dart”</td>
+</tr>
+<tr>
+<td>✅ Flutter 插件（VS Code）</td>
+<td>VS Code 插件区搜索 “Flutter”</td>
+</tr>
+<tr>
+<td>✅ Android SDK</td>
+<td>Android Studio 安装时默认附带</td>
+</tr>
+<tr>
+<td>✅ AVD 模拟器或真机</td>
+<td><code>flutter devices</code> 能检测到设备</td>
+</tr>
+<tr>
+<td>✅ 正确初始化的工程</td>
+<td><code>pubspec.yaml</code> 存在 <code>flutter:</code> 字段</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-二、运行调试命令（VS-Code）"><a href="#✅-二、运行调试命令（VS-Code）" class="headerlink" title="✅ 二、运行调试命令（VS Code）"></a>✅ 二、运行调试命令（VS Code）</h2><h3 id="🎯-推荐方式（图形化）："><a href="#🎯-推荐方式（图形化）：" class="headerlink" title="🎯 推荐方式（图形化）："></a>🎯 推荐方式（图形化）：</h3><ol>
+<li><p>打开 <code>main.dart</code> 文件（位于 <code>lib/</code> 下）</p>
+</li>
+<li><p>点击右上角的 ▶️（Run）按钮，或按下快捷键：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">F5 （调试模式运行）</span><br><span class="line">Ctrl + F5（直接运行）</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="🎯-命令行方式："><a href="#🎯-命令行方式：" class="headerlink" title="🎯 命令行方式："></a>🎯 命令行方式：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Android 模拟器/真机</span></span><br><span class="line">flutter run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动 Web 模式（需 flutter config --enable-web）</span></span><br><span class="line">flutter run -d chrome</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动 iOS 模拟器（macOS）</span></span><br><span class="line">flutter run -d ios</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看所有可用设备：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter devices</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-三、常见调试目标说明"><a href="#✅-三、常见调试目标说明" class="headerlink" title="✅ 三、常见调试目标说明"></a>✅ 三、常见调试目标说明</h2><table>
+<thead>
+<tr>
+<th>目标平台</th>
+<th>运行方式</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Android</td>
+<td><code>flutter run</code>（需设备或模拟器）</td>
+<td>模拟器需先开启</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td><code>flutter run -d ios</code></td>
+<td>仅限 macOS，需 Xcode 支持</td>
+</tr>
+<tr>
+<td>Web（Chrome）</td>
+<td><code>flutter run -d chrome</code></td>
+<td>需先启用 Web 支持</td>
+</tr>
+<tr>
+<td>多平台调试</td>
+<td>选择 VS Code 左下角的设备栏切换设备</td>
+<td>适合测试 Tab 和 WebView 兼容性</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-四、调试-Vue3-HTML-Tab-的特殊配置（如果在-Flutter-中用-WebView-加载-Vue3）"><a href="#✅-四、调试-Vue3-HTML-Tab-的特殊配置（如果在-Flutter-中用-WebView-加载-Vue3）" class="headerlink" title="✅ 四、调试 Vue3 HTML Tab 的特殊配置（如果在 Flutter 中用 WebView 加载 Vue3）"></a>✅ 四、调试 Vue3 HTML Tab 的特殊配置（如果在 Flutter 中用 WebView 加载 Vue3）</h2><p>如果运行的 Flutter 工程中嵌入了 Vue 页面（WebView），确保以下：</p>
+<h3 id="1-WebView-权限（Android）"><a href="#1-WebView-权限（Android）" class="headerlink" title="1. WebView 权限（Android）"></a>1. WebView 权限（Android）</h3><p>在 <code>android/app/src/main/AndroidManifest.xml</code> 中添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-iOS-权限（可选）"><a href="#2-iOS-权限（可选）" class="headerlink" title="2. iOS 权限（可选）"></a>2. iOS 权限（可选）</h3><p>在 <code>ios/Runner/Info.plist</code> 中添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>NSAppTransportSecurity<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>NSAllowsArbitraryLoads<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-五、调试技巧与建议"><a href="#✅-五、调试技巧与建议" class="headerlink" title="✅ 五、调试技巧与建议"></a>✅ 五、调试技巧与建议</h2><table>
+<thead>
+<tr>
+<th>技巧</th>
+<th>快捷键 &#x2F; 命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>打断点调试（VS Code）</td>
+<td>在代码左侧点红点，按 F5</td>
+</tr>
+<tr>
+<td>热重载（保持状态）</td>
+<td><code>r</code>（终端）或点击雷电图标</td>
+</tr>
+<tr>
+<td>热重启（重新构建）</td>
+<td><code>R</code>（终端）或点击 ↻ 图标</td>
+</tr>
+<tr>
+<td>查看日志输出</td>
+<td>VS Code 终端 &#x2F; Debug Console</td>
+</tr>
+<tr>
+<td>显示 UI 帧率 &#x2F; 性能监控</td>
+<td>添加 <code>showPerformanceOverlay: true</code> 到 MaterialApp</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-终极调试-checklist（排错利器）"><a href="#✅-终极调试-checklist（排错利器）" class="headerlink" title="✅ 终极调试 checklist（排错利器）"></a>✅ 终极调试 checklist（排错利器）</h2><p>运行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter doctor -v</span><br></pre></td></tr></table></figure>
+
+<p>查看所有环境是否都已就绪。出现 <code>!</code> 或 <code>✗</code> 的部分需要重点修复（比如缺设备、SDK 路径错误、模拟器未运行等）。</p>
+<hr>
+<h2 id="✅-Bonus：添加调试配置-launch-json（可选）"><a href="#✅-Bonus：添加调试配置-launch-json（可选）" class="headerlink" title="✅ Bonus：添加调试配置 launch.json（可选）"></a>✅ Bonus：添加调试配置 launch.json（可选）</h2><p>在 <code>.vscode/launch.json</code> 中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Flutter: Launch app&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dart&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样可以通过 <code>F5</code> 快速调试而无需手动选择设备。</p>
+<hr>
+<p>贴出的 <code>flutter doctor</code> 输出显示有几项关键问题和一些可忽略项，我来逐条分析并给清晰的修复建议：</p>
+<hr>
+<h2 id="🔴-❶-Android-SDK-缺失-android-36-平台"><a href="#🔴-❶-Android-SDK-缺失-android-36-平台" class="headerlink" title="🔴 ❶ Android SDK 缺失 android-36 平台"></a>🔴 ❶ <strong>Android SDK 缺失 android-36 平台</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X Android SDK file not found: D:\android_sdk\platforms\android-36\android.jar</span><br></pre></td></tr></table></figure>
+
+<h3 id="💡-问题原因："><a href="#💡-问题原因：" class="headerlink" title="💡 问题原因："></a>💡 问题原因：</h3><p>当前的 Flutter 项目或 IDE 使用了 <strong>Android 36（API 36）</strong>，但这个 SDK 没有安装或不完整。</p>
+<hr>
+<h3 id="✅-解决方法："><a href="#✅-解决方法：" class="headerlink" title="✅ 解决方法："></a>✅ 解决方法：</h3><h4 id="方法-A：安装-Android-36（推荐）"><a href="#方法-A：安装-Android-36（推荐）" class="headerlink" title="方法 A：安装 Android 36（推荐）"></a>方法 A：安装 Android 36（推荐）</h4><p>打开 <strong>Android Studio</strong> → <code>SDK Manager</code>：</p>
+<ol>
+<li>点击菜单栏：<code>Tools → SDK Manager</code></li>
+<li>切换到 <code>SDK Platforms</code> 选项卡</li>
+<li>勾选 <strong>Android 14 (API Level 34)</strong> 或 <strong>Android 15 Preview &#x2F; 36</strong></li>
+<li>点击 Apply → 安装</li>
+</ol>
+<p>如果找不到 API 36，可以用命令行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sdkmanager <span class="string">&quot;platforms;android-36&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ 如果 Android 36 是预览版不稳定，建议改用 Android 33 或 34。</p>
+</blockquote>
+<hr>
+<h4 id="方法-B：修改-compileSdkVersion-降级到-33-或-34"><a href="#方法-B：修改-compileSdkVersion-降级到-33-或-34" class="headerlink" title="方法 B：修改 compileSdkVersion 降级到 33 或 34"></a>方法 B：修改 <code>compileSdkVersion</code> 降级到 33 或 34</h4><p>如果不想用 Android 36，可以手动更改 Flutter 项目的构建版本：</p>
+<ol>
+<li>打开 <code>android/app/build.gradle</code></li>
+<li>找到以下配置：</li>
+</ol>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compileSdkVersion <span class="number">36</span></span><br></pre></td></tr></table></figure>
+
+<p>改成：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compileSdkVersion <span class="number">33</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>同时确认 <code>targetSdkVersion</code> 与 <code>minSdkVersion</code> 合理设置，例如：</li>
+</ol>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">    minSdkVersion <span class="number">21</span></span><br><span class="line">    targetSdkVersion <span class="number">33</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>保存后重新运行：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter clean</span><br><span class="line">flutter pub get</span><br><span class="line">flutter run</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🟠-❷-网络资源错误：信号灯超时"><a href="#🟠-❷-网络资源错误：信号灯超时" class="headerlink" title="🟠 ❷ 网络资源错误：信号灯超时"></a>🟠 ❷ 网络资源错误：<code>信号灯超时</code></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X A network error occurred while checking &quot;https://pub.dev/&quot;</span><br><span class="line">X A network error occurred while checking &quot;https://maven.google.com/&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="💡-问题原因：-1"><a href="#💡-问题原因：-1" class="headerlink" title="💡 问题原因："></a>💡 问题原因：</h3><p>Flutter 连接不上 pub.dev 和 maven.google.com，常见于：</p>
+<ul>
+<li>国内网络被墙</li>
+<li>无代理 &#x2F; VPN</li>
+<li>公司网络限制</li>
+</ul>
+<hr>
+<h3 id="✅-解决方法：-1"><a href="#✅-解决方法：-1" class="headerlink" title="✅ 解决方法："></a>✅ 解决方法：</h3><h4 id="方法-A：配置国内镜像"><a href="#方法-A：配置国内镜像" class="headerlink" title="方法 A：配置国内镜像"></a>方法 A：配置国内镜像</h4><p><strong>1. Flutter 包镜像设置：</strong></p>
+<p>创建或修改文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\&lt;的用户名&gt;\.flutter_settings</span><br></pre></td></tr></table></figure>
+
+<p>添加内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br><span class="line">FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 临时设置（命令行）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> PUB_HOSTED_URL=https://pub.flutter-io.cn</span><br><span class="line"><span class="built_in">set</span> FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</span><br><span class="line">flutter pub get</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. Maven 镜像设置（for Android）</strong></p>
+<p>修改 <code>android/build.gradle</code>：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        maven &#123; url <span class="string">&#x27;https://maven.aliyun.com/repository/google&#x27;</span> &#125;</span><br><span class="line">        maven &#123; url <span class="string">&#x27;https://maven.aliyun.com/repository/jcenter&#x27;</span> &#125;</span><br><span class="line">        mavenCentral()</span><br><span class="line">        google()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🟡-❸-Visual-Studio-缺失（可忽略，除非开发-Windows-桌面-app）"><a href="#🟡-❸-Visual-Studio-缺失（可忽略，除非开发-Windows-桌面-app）" class="headerlink" title="🟡 ❸ Visual Studio 缺失（可忽略，除非开发 Windows 桌面 app）"></a>🟡 ❸ Visual Studio 缺失（可忽略，除非开发 Windows 桌面 app）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X Visual Studio not installed; this is necessary to develop Windows apps.</span><br></pre></td></tr></table></figure>
+
+<h3 id="✅-如果只做-Android-Web-开发：可忽略此项"><a href="#✅-如果只做-Android-Web-开发：可忽略此项" class="headerlink" title="✅ 如果只做 Android &#x2F; Web 开发：可忽略此项"></a>✅ 如果只做 Android &#x2F; Web 开发：<strong>可忽略此项</strong></h3><h3 id="✅-如果想开发-Windows-桌面应用："><a href="#✅-如果想开发-Windows-桌面应用：" class="headerlink" title="✅ 如果想开发 Windows 桌面应用："></a>✅ 如果想开发 Windows 桌面应用：</h3><ol>
+<li><p>下载 Visual Studio：<br><a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/downloads/">https://visualstudio.microsoft.com/downloads/</a></p>
+</li>
+<li><p>勾选 <strong>Desktop development with C++</strong><br>安装后重新运行 <code>flutter doctor</code></p>
+</li>
+</ol>
+<hr>
+<h2 id="🟢-其余都是正常状态："><a href="#🟢-其余都是正常状态：" class="headerlink" title="🟢 其余都是正常状态："></a>🟢 其余都是正常状态：</h2><ul>
+<li>✅ Android Studio 正常</li>
+<li>✅ VS Code 正常</li>
+<li>✅ 有 3 个连接设备（模拟器或真机）</li>
+<li>✅ Flutter SDK 可用</li>
+</ul>
+<hr>
+<h2 id="✅-最终操作建议顺序"><a href="#✅-最终操作建议顺序" class="headerlink" title="✅ 最终操作建议顺序"></a>✅ 最终操作建议顺序</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 降低或安装 Android SDK 36</span></span><br><span class="line">flutter clean</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 修改 compileSdkVersion 或安装 SDK</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 配置 pub 和 maven 镜像</span></span><br><span class="line">flutter pub get</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 启动项目</span></span><br><span class="line">flutter run</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>这段 <code>build.gradle.kts</code>（Kotlin DSL） 是 Flutter Android 项目中的配置文件，用于设置 Android 原生层的构建参数，配合 Flutter 插件运行。这表示创建的是一个 <strong>Flutter 与 Kotlin 混合项目</strong>。</p>
+<hr>
+<h2 id="✅-配置解读说明（适用于-Flutter-多平台开发）"><a href="#✅-配置解读说明（适用于-Flutter-多平台开发）" class="headerlink" title="✅ 配置解读说明（适用于 Flutter 多平台开发）"></a>✅ 配置解读说明（适用于 Flutter 多平台开发）</h2><h3 id="🔧-plugins-部分"><a href="#🔧-plugins-部分" class="headerlink" title="🔧 plugins 部分"></a>🔧 <code>plugins</code> 部分</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id(<span class="string">&quot;com.android.application&quot;</span>)         <span class="comment">// 应用程序构建支持</span></span><br><span class="line">    id(<span class="string">&quot;kotlin-android&quot;</span>)                  <span class="comment">// 支持 Kotlin for Android</span></span><br><span class="line">    id(<span class="string">&quot;dev.flutter.flutter-gradle-plugin&quot;</span>) <span class="comment">// Flutter Gradle 插件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>顺序很重要</strong>：Flutter 插件必须在 <code>com.android.application</code> 和 <code>kotlin-android</code> 后加载。</li>
+<li>使用 Kotlin DSL 而不是 Groovy 是 Android Studio 最新推荐方式。</li>
+</ul>
+<hr>
+<h3 id="⚙️-android-配置详解"><a href="#⚙️-android-配置详解" class="headerlink" title="⚙️ android 配置详解"></a>⚙️ <code>android</code> 配置详解</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    namespace = <span class="string">&quot;com.example.zhangxiaozhi&quot;</span></span><br><span class="line">    compileSdk = flutter.compileSdkVersion</span><br><span class="line">    ndkVersion = flutter.ndkVersion</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>namespace</code>：Android 包名，实际用于 AndroidManifest。</li>
+<li><code>compileSdk</code>、<code>ndkVersion</code>：从 Flutter 定义中读取，通常无需手动设置。</li>
+</ul>
+<hr>
+<h3 id="📱-defaultConfig"><a href="#📱-defaultConfig" class="headerlink" title="📱 defaultConfig"></a>📱 <code>defaultConfig</code></h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">    applicationId = <span class="string">&quot;com.example.zhangxiaozhi&quot;</span></span><br><span class="line">    minSdk = flutter.minSdkVersion</span><br><span class="line">    targetSdk = flutter.targetSdkVersion</span><br><span class="line">    versionCode = flutter.versionCode</span><br><span class="line">    versionName = flutter.versionName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这些值是 Flutter 工具链自动注入的，保持一致性。</li>
+<li>可以修改 <code>applicationId</code> 来设定最终 Android 应用的唯一标识。</li>
+</ul>
+<hr>
+<h3 id="🔐-buildTypes"><a href="#🔐-buildTypes" class="headerlink" title="🔐 buildTypes"></a>🔐 <code>buildTypes</code></h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        signingConfig = signingConfigs.getByName(<span class="string">&quot;debug&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里 <code>release</code> 使用了 <code>debug</code> 签名，是 Flutter 默认的调试构建方式。如果要上传到 Google Play，需自定义 release 签名。</li>
+</ul>
+<hr>
+<h3 id="🧩-flutter-块"><a href="#🧩-flutter-块" class="headerlink" title="🧩 flutter 块"></a>🧩 <code>flutter</code> 块</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter &#123;</span><br><span class="line">    source = <span class="string">&quot;../..&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>表明 Flutter 源代码主目录在哪里，通常在 Android 子项目之外。</li>
+</ul>
+<hr>
+<h2 id="🚀-如何调试运行这个-Flutter-工程？"><a href="#🚀-如何调试运行这个-Flutter-工程？" class="headerlink" title="🚀 如何调试运行这个 Flutter 工程？"></a>🚀 如何调试运行这个 Flutter 工程？</h2><h3 id="1-使用-VS-Code-调试步骤："><a href="#1-使用-VS-Code-调试步骤：" class="headerlink" title="1. 使用 VS Code 调试步骤："></a>1. 使用 VS Code 调试步骤：</h3><ol>
+<li>打开 <code>flutter</code> 项目根目录（不是 <code>android</code> 子目录）。</li>
+<li>确保 <code>flutter doctor</code> 通过（特别是 SDK、AVD）。</li>
+<li>连接真机或启动虚拟设备。</li>
+<li>打开 VS Code → 左侧 ▶️图标 → Run → “Flutter: Launch Android emulator”。</li>
+<li>F5 或运行 <code>Flutter: Run</code> 命令。</li>
+</ol>
+<hr>
+<h3 id="2-Android-Studio-调试："><a href="#2-Android-Studio-调试：" class="headerlink" title="2. Android Studio 调试："></a>2. Android Studio 调试：</h3><ol>
+<li>打开整个 Flutter 工程。</li>
+<li>顶部下拉选择运行目标设备。</li>
+<li>点击 <code>Run</code> 图标。</li>
+</ol>
+<hr>
+<h2 id="🧱-如何开发-App-Shell-动态加载-Vue3-HTML？"><a href="#🧱-如何开发-App-Shell-动态加载-Vue3-HTML？" class="headerlink" title="🧱 如何开发 App Shell + 动态加载 Vue3 HTML？"></a>🧱 如何开发 App Shell + 动态加载 Vue3 HTML？</h2><p>如果想在 Flutter 中加载 HTML5&#x2F;Vue3 页面作为“Tab 内容”，可以通过以下方式：</p>
+<hr>
+<h3 id="✅-步骤一：构建-Flutter-壳（App-Shell）"><a href="#✅-步骤一：构建-Flutter-壳（App-Shell）" class="headerlink" title="✅ 步骤一：构建 Flutter 壳（App Shell）"></a>✅ 步骤一：构建 Flutter 壳（App Shell）</h3><p>用 Flutter 的 <code>Scaffold + BottomNavigationBar</code> 创建基本壳：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Scaffold(</span><br><span class="line">  body: _tabs[_selectedIndex],</span><br><span class="line">  bottomNavigationBar: BottomNavigationBar(</span><br><span class="line">    currentIndex: _selectedIndex,</span><br><span class="line">    items: [...],</span><br><span class="line">    onTap: (index) =&gt; setState(() =&gt; _selectedIndex = index),</span><br><span class="line">  ),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="✅-步骤二：加载-Vue-页面（通过-WebView）"><a href="#✅-步骤二：加载-Vue-页面（通过-WebView）" class="headerlink" title="✅ 步骤二：加载 Vue 页面（通过 WebView）"></a>✅ 步骤二：加载 Vue 页面（通过 WebView）</h3><p>使用 <code>webview_flutter</code> 插件，加载本地或远程 Vue3 页面：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WebView(</span><br><span class="line">  initialUrl: <span class="string">&#x27;http://localhost:8080/index.html&#x27;</span>,</span><br><span class="line">  javascriptMode: JavascriptMode.unrestricted,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以将 Vue3 应用打包成静态文件，部署到本地服务器或嵌入到 Flutter 中（如 assets&#x2F;web 下）。</li>
+<li>使用 <code>flutter_inappwebview</code> 可获得更强的功能控制（如 JS 通信）。</li>
+</ul>
+<hr>
+<h3 id="✅-步骤三：支持动态-Tab（Tab-可增删）"><a href="#✅-步骤三：支持动态-Tab（Tab-可增删）" class="headerlink" title="✅ 步骤三：支持动态 Tab（Tab 可增删）"></a>✅ 步骤三：支持动态 Tab（Tab 可增删）</h3><p>可以用 <code>List&lt;Widget&gt;</code> 来管理动态 tabs：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;Widget&gt; _tabs = [TabA(), TabB(), WebViewTab(url: <span class="string">&#x27;...&#x27;</span>)];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以通过配置文件或远程 JSON 动态创建 tab 内容和加载的 Vue 页面。</li>
+<li>可以实现如下结构：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;首页&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;native&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;component&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HomePage&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;动态页&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;web&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://xxx/vue.html&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p>在 Flutter 中解析这个配置，动态构建 tab 列表和内容组件。</p>
+<hr>
+<h2 id="🧠-总结"><a href="#🧠-总结" class="headerlink" title="🧠 总结"></a>🧠 总结</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>配置说明&#x2F;操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Flutter App Shell</td>
+<td>使用 <code>Scaffold</code> + <code>BottomNavigationBar</code></td>
+</tr>
+<tr>
+<td>加载 Vue3 页面</td>
+<td>使用 <code>webview_flutter</code> 插件</td>
+</tr>
+<tr>
+<td>动态加载 Tab 页面</td>
+<td>从 JSON 或接口动态创建 tab + widget</td>
+</tr>
+<tr>
+<td>Android 构建配置</td>
+<td>提供的 <code>build.gradle.kts</code> 是标准配置</td>
+</tr>
+<tr>
+<td>调试运行</td>
+<td>VS Code F5 &#x2F; Android Studio ▶️按钮</td>
+</tr>
+</tbody></table>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/24/app_develop_skills/flutter%20app%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
+        <span class="nav-arrow">← </span>
+        
+          Flutter Windows 开发过程问题解决
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/25/app_develop_skills/flutter%20%E5%8A%A0%E8%BD%BD%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6/">
+        
+          Flutter 加载本地文件
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E7%A1%AE%E4%BF%9D%E5%B7%B2%E7%BB%8F%E5%85%B7%E5%A4%87%E7%9A%84%E7%8E%AF%E5%A2%83"><span class="toc-nav-text">✅ 一、确保已经具备的环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BA%8C%E3%80%81%E8%BF%90%E8%A1%8C%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4%EF%BC%88VS-Code%EF%BC%89"><span class="toc-nav-text">✅ 二、运行调试命令（VS Code）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E6%8E%A8%E8%8D%90%E6%96%B9%E5%BC%8F%EF%BC%88%E5%9B%BE%E5%BD%A2%E5%8C%96%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">🎯 推荐方式（图形化）：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-nav-text">🎯 命令行方式：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81%E5%B8%B8%E8%A7%81%E8%B0%83%E8%AF%95%E7%9B%AE%E6%A0%87%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">✅ 三、常见调试目标说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%9B%9B%E3%80%81%E8%B0%83%E8%AF%95-Vue3-HTML-Tab-%E7%9A%84%E7%89%B9%E6%AE%8A%E9%85%8D%E7%BD%AE%EF%BC%88%E5%A6%82%E6%9E%9C%E5%9C%A8-Flutter-%E4%B8%AD%E7%94%A8-WebView-%E5%8A%A0%E8%BD%BD-Vue3%EF%BC%89"><span class="toc-nav-text">✅ 四、调试 Vue3 HTML Tab 的特殊配置（如果在 Flutter 中用 WebView 加载 Vue3）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-WebView-%E6%9D%83%E9%99%90%EF%BC%88Android%EF%BC%89"><span class="toc-nav-text">1. WebView 权限（Android）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-iOS-%E6%9D%83%E9%99%90%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-nav-text">2. iOS 权限（可选）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BA%94%E3%80%81%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7%E4%B8%8E%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">✅ 五、调试技巧与建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E7%BB%88%E6%9E%81%E8%B0%83%E8%AF%95-checklist%EF%BC%88%E6%8E%92%E9%94%99%E5%88%A9%E5%99%A8%EF%BC%89"><span class="toc-nav-text">✅ 终极调试 checklist（排错利器）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-Bonus%EF%BC%9A%E6%B7%BB%E5%8A%A0%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE-launch-json%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-nav-text">✅ Bonus：添加调试配置 launch.json（可选）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%B4-%E2%9D%B6-Android-SDK-%E7%BC%BA%E5%A4%B1-android-36-%E5%B9%B3%E5%8F%B0"><span class="toc-nav-text">🔴 ❶ Android SDK 缺失 android-36 平台</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E9%97%AE%E9%A2%98%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-nav-text">💡 问题原因：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-nav-text">✅ 解决方法：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95-A%EF%BC%9A%E5%AE%89%E8%A3%85-Android-36%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-nav-text">方法 A：安装 Android 36（推荐）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95-B%EF%BC%9A%E4%BF%AE%E6%94%B9-compileSdkVersion-%E9%99%8D%E7%BA%A7%E5%88%B0-33-%E6%88%96-34"><span class="toc-nav-text">方法 B：修改 compileSdkVersion 降级到 33 或 34</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9F%A0-%E2%9D%B7-%E7%BD%91%E7%BB%9C%E8%B5%84%E6%BA%90%E9%94%99%E8%AF%AF%EF%BC%9A%E4%BF%A1%E5%8F%B7%E7%81%AF%E8%B6%85%E6%97%B6"><span class="toc-nav-text">🟠 ❷ 网络资源错误：信号灯超时</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E9%97%AE%E9%A2%98%E5%8E%9F%E5%9B%A0%EF%BC%9A-1"><span class="toc-nav-text">💡 问题原因：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A-1"><span class="toc-nav-text">✅ 解决方法：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95-A%EF%BC%9A%E9%85%8D%E7%BD%AE%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F"><span class="toc-nav-text">方法 A：配置国内镜像</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9F%A1-%E2%9D%B8-Visual-Studio-%E7%BC%BA%E5%A4%B1%EF%BC%88%E5%8F%AF%E5%BF%BD%E7%95%A5%EF%BC%8C%E9%99%A4%E9%9D%9E%E5%BC%80%E5%8F%91-Windows-%E6%A1%8C%E9%9D%A2-app%EF%BC%89"><span class="toc-nav-text">🟡 ❸ Visual Studio 缺失（可忽略，除非开发 Windows 桌面 app）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%A6%82%E6%9E%9C%E5%8F%AA%E5%81%9A-Android-Web-%E5%BC%80%E5%8F%91%EF%BC%9A%E5%8F%AF%E5%BF%BD%E7%95%A5%E6%AD%A4%E9%A1%B9"><span class="toc-nav-text">✅ 如果只做 Android &#x2F; Web 开发：可忽略此项</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%A6%82%E6%9E%9C%E6%83%B3%E5%BC%80%E5%8F%91-Windows-%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8%EF%BC%9A"><span class="toc-nav-text">✅ 如果想开发 Windows 桌面应用：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9F%A2-%E5%85%B6%E4%BD%99%E9%83%BD%E6%98%AF%E6%AD%A3%E5%B8%B8%E7%8A%B6%E6%80%81%EF%BC%9A"><span class="toc-nav-text">🟢 其余都是正常状态：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%9C%80%E7%BB%88%E6%93%8D%E4%BD%9C%E5%BB%BA%E8%AE%AE%E9%A1%BA%E5%BA%8F"><span class="toc-nav-text">✅ 最终操作建议顺序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E9%85%8D%E7%BD%AE%E8%A7%A3%E8%AF%BB%E8%AF%B4%E6%98%8E%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E-Flutter-%E5%A4%9A%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%EF%BC%89"><span class="toc-nav-text">✅ 配置解读说明（适用于 Flutter 多平台开发）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A7-plugins-%E9%83%A8%E5%88%86"><span class="toc-nav-text">🔧 plugins 部分</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-android-%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3"><span class="toc-nav-text">⚙️ android 配置详解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%B1-defaultConfig"><span class="toc-nav-text">📱 defaultConfig</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%90-buildTypes"><span class="toc-nav-text">🔐 buildTypes</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%A9-flutter-%E5%9D%97"><span class="toc-nav-text">🧩 flutter 块</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%E8%BF%90%E8%A1%8C%E8%BF%99%E4%B8%AA-Flutter-%E5%B7%A5%E7%A8%8B%EF%BC%9F"><span class="toc-nav-text">🚀 如何调试运行这个 Flutter 工程？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E4%BD%BF%E7%94%A8-VS-Code-%E8%B0%83%E8%AF%95%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-nav-text">1. 使用 VS Code 调试步骤：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-Android-Studio-%E8%B0%83%E8%AF%95%EF%BC%9A"><span class="toc-nav-text">2. Android Studio 调试：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E5%A6%82%E4%BD%95%E5%BC%80%E5%8F%91-App-Shell-%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD-Vue3-HTML%EF%BC%9F"><span class="toc-nav-text">🧱 如何开发 App Shell + 动态加载 Vue3 HTML？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%9A%E6%9E%84%E5%BB%BA-Flutter-%E5%A3%B3%EF%BC%88App-Shell%EF%BC%89"><span class="toc-nav-text">✅ 步骤一：构建 Flutter 壳（App Shell）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E5%8A%A0%E8%BD%BD-Vue-%E9%A1%B5%E9%9D%A2%EF%BC%88%E9%80%9A%E8%BF%87-WebView%EF%BC%89"><span class="toc-nav-text">✅ 步骤二：加载 Vue 页面（通过 WebView）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E6%94%AF%E6%8C%81%E5%8A%A8%E6%80%81-Tab%EF%BC%88Tab-%E5%8F%AF%E5%A2%9E%E5%88%A0%EF%BC%89"><span class="toc-nav-text">✅ 步骤三：支持动态 Tab（Tab 可增删）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🧠 总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/24/app_develop_skills/flutter 加载vue3/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
