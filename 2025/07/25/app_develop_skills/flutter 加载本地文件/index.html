@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Flutter 加载本地文件 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Flutter 加载本地文件</h2>
+  <p class="post-date">2025-07-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><ul>
+<li><code>Flutter SDK</code>: ^3.8.1</li>
+<li><code>webview_flutter</code>: ^4.0.7 ✅（是较新的版本）</li>
+<li>报告的问题：<code>JavascriptMode</code> 无法导入 &#x2F; 使用。</li>
+</ul>
+<hr>
+<h2 id="✅-正确使用-webview-flutter-4-x-的方式"><a href="#✅-正确使用-webview-flutter-4-x-的方式" class="headerlink" title="✅ 正确使用 webview_flutter: ^4.x 的方式"></a>✅ 正确使用 <code>webview_flutter: ^4.x</code> 的方式</h2><p>从 <code>webview_flutter</code> 4.x 起，官方推荐的新用法如下 👇：</p>
+<h3 id="🔧-示例代码（适配-webview-flutter-4-0-7）"><a href="#🔧-示例代码（适配-webview-flutter-4-0-7）" class="headerlink" title="🔧 示例代码（适配 webview_flutter: ^4.0.7）"></a>🔧 示例代码（适配 <code>webview_flutter: ^4.0.7</code>）</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:webview_flutter/webview_flutter.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../services/resource_manager.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TabWebView</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> tabName;</span><br><span class="line">  <span class="keyword">const</span> TabWebView(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.tabName, <span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;TabWebView&gt; createState() =&gt; _TabWebViewState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_TabWebViewState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TabWebView</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> <span class="keyword">final</span> WebViewController _controller;</span><br><span class="line">  <span class="built_in">bool</span> _isReady = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _setupWebView();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; _setupWebView() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> path = <span class="keyword">await</span> ResourceManager().getTabHtmlPath(widget.tabName);</span><br><span class="line"></span><br><span class="line">    _controller = WebViewController()</span><br><span class="line">      ..setJavaScriptMode(JavaScriptMode.unrestricted)</span><br><span class="line">      ..loadFile(path) <span class="comment">// 本地 HTML 文件路径</span></span><br><span class="line">      ..setNavigationDelegate(NavigationDelegate(</span><br><span class="line">        onPageFinished: (_) =&gt; setState(() =&gt; _isReady = <span class="keyword">true</span>),</span><br><span class="line">      ));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> _isReady</span><br><span class="line">        ? WebViewWidget(controller: _controller)</span><br><span class="line">        : <span class="keyword">const</span> Center(child: CircularProgressIndicator());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📌-注意点汇总："><a href="#📌-注意点汇总：" class="headerlink" title="📌 注意点汇总："></a>📌 注意点汇总：</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ WebViewWidget</td>
+<td>替代旧版 <code>WebView(...)</code> 构造函数方式。</td>
+</tr>
+<tr>
+<td>✅ WebViewController</td>
+<td>用于加载本地 HTML、设置 JS 模式、导航等。</td>
+</tr>
+<tr>
+<td>✅ loadFile(path)</td>
+<td>加载本地 HTML 文件，返回的是 <code>file://</code> 路径。</td>
+</tr>
+<tr>
+<td>⚠ <code>initialUrl</code></td>
+<td>已不推荐直接传本地路径（容易出现跨平台问题）。</td>
+</tr>
+<tr>
+<td>✅ <code>NavigationDelegate</code></td>
+<td>可用于处理加载完成、跳转等事件。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔍-还要确保的内容"><a href="#🔍-还要确保的内容" class="headerlink" title="🔍 还要确保的内容"></a>🔍 还要确保的内容</h2><h3 id="1-在-Android-项目中添加网络权限："><a href="#1-在-Android-项目中添加网络权限：" class="headerlink" title="1. 在 Android 项目中添加网络权限："></a>1. 在 Android 项目中添加网络权限：</h3><p><code>android/app/src/main/AndroidManifest.xml</code> 中添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.INTERNET&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-在-main-dart-初始化-WebView："><a href="#2-在-main-dart-初始化-WebView：" class="headerlink" title="2. 在 main.dart 初始化 WebView："></a>2. 在 <code>main.dart</code> 初始化 WebView：</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:webview_flutter/webview_flutter.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  WidgetsFlutterBinding.ensureInitialized();</span><br><span class="line">  <span class="keyword">if</span> (Platform.isAndroid) &#123;</span><br><span class="line">    WebView.platform = SurfaceAndroidWebView();</span><br><span class="line">  &#125;</span><br><span class="line">  runApp(<span class="keyword">const</span> MyApp());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-结论"><a href="#✅-结论" class="headerlink" title="✅ 结论"></a>✅ 结论</h2><p>当前的 <code>webview_flutter</code> 版本（4.0.7）确实已经 <strong>弃用了旧的 <code>WebView(...)</code></strong> 构造方式，请用 <code>WebViewWidget + WebViewController</code> 的组合方式来替代，否则 <code>JavascriptMode</code> 无法被正确使用或识别。</p>
+<p>已为生成了一份完整的 Flutter 项目模板，包含以下功能：</p>
+<h3 id="✅-功能特性："><a href="#✅-功能特性：" class="headerlink" title="✅ 功能特性："></a>✅ 功能特性：</h3><ul>
+<li>✅ 本地 Vue3 页面打包为静态资源</li>
+<li>✅ 动态加载并展示 Tab 页面（WebView 实现）</li>
+<li>✅ 支持远程检测更新并下载替换本地资源（模拟热更新机制）</li>
+<li>✅ 资源管理封装在 <code>ResourceManager</code> 中</li>
+<li>✅ Flutter WebView 支持本地文件加载</li>
+</ul>
+<p>可以通过以下链接下载这个完整项目的压缩包：<br>👉 <a href="sandbox:/mnt/data/flutter_vue_tab_loader.zip">点击下载 Flutter+Vue3 热更新项目模板</a></p>
+<hr>
+<h3 id="📁-项目结构简要说明："><a href="#📁-项目结构简要说明：" class="headerlink" title="📁 项目结构简要说明："></a>📁 项目结构简要说明：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">flutter_vue_tab_loader/</span><br><span class="line">├── assets/</span><br><span class="line">│   └── tabs/</span><br><span class="line">│       ├── tab1.html</span><br><span class="line">│       └── tab2.html</span><br><span class="line">├── lib/</span><br><span class="line">│   ├── main.dart</span><br><span class="line">│   ├── tab_webview.dart</span><br><span class="line">│   └── services/</span><br><span class="line">│       └── resource_manager.dart</span><br><span class="line">├── pubspec.yaml</span><br><span class="line">└── ...</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="🔧-核心文件说明："><a href="#🔧-核心文件说明：" class="headerlink" title="🔧 核心文件说明："></a>🔧 核心文件说明：</h3><h4 id="main-dart"><a href="#main-dart" class="headerlink" title="main.dart"></a><code>main.dart</code></h4><p>入口文件，包含 Tab 控制界面和底部导航。</p>
+<h4 id="tab-webview-dart"><a href="#tab-webview-dart" class="headerlink" title="tab_webview.dart"></a><code>tab_webview.dart</code></h4><p>通过 WebView 加载本地 HTML 页面。</p>
+<h4 id="resource-manager-dart"><a href="#resource-manager-dart" class="headerlink" title="resource_manager.dart"></a><code>resource_manager.dart</code></h4><p>封装资源检测、加载和远程更新逻辑。</p>
+<hr>
+<h3 id="🧪-模拟热更新说明："><a href="#🧪-模拟热更新说明：" class="headerlink" title="🧪 模拟热更新说明："></a>🧪 模拟热更新说明：</h3><p><code>resource_manager.dart</code> 中包含伪代码逻辑：</p>
+<ul>
+<li><code>checkForUpdates()</code>：通过远程 JSON 文件检测是否有更新。</li>
+<li><code>downloadResources()</code>：下载更新的 HTML 文件替换本地资源。</li>
+</ul>
+<hr>
+<h3 id="🚀-下一步操作建议："><a href="#🚀-下一步操作建议：" class="headerlink" title="🚀 下一步操作建议："></a>🚀 下一步操作建议：</h3><ol>
+<li>使用 Flutter ≥ 3.13 版本运行</li>
+<li>使用 <code>webview_flutter</code> 版本 <code>4.0.7</code> 或更高</li>
+<li>本地打包的 Vue3 项目，产出 HTML，复制到 <code>assets/tabs/</code></li>
+<li>启动模拟更新服务或放置资源包 zip 于的服务器</li>
+</ol>
+<hr>
+<p>在 VS Code 中使用 Android Studio 安装的 AVD（模拟器）是完全可行的。以下是详细步骤：</p>
+<hr>
+<h3 id="✅-前提条件"><a href="#✅-前提条件" class="headerlink" title="✅ 前提条件"></a>✅ 前提条件</h3><p>已经：</p>
+<ol>
+<li>安装了 <strong>Android Studio</strong></li>
+<li>配置了 <strong>Android SDK</strong></li>
+<li>在 Android Studio 中使用 AVD Manager 创建了一个或多个模拟器</li>
+</ol>
+<hr>
+<h3 id="🧭-步骤一：确保-VS-Code-能找到-AVD-和-SDK"><a href="#🧭-步骤一：确保-VS-Code-能找到-AVD-和-SDK" class="headerlink" title="🧭 步骤一：确保 VS Code 能找到 AVD 和 SDK"></a>🧭 步骤一：确保 VS Code 能找到 AVD 和 SDK</h3><h4 id="1-设置环境变量（非常重要）"><a href="#1-设置环境变量（非常重要）" class="headerlink" title="1. 设置环境变量（非常重要）"></a>1. 设置环境变量（非常重要）</h4><p>需要配置以下环境变量：</p>
+<h5 id="Windows："><a href="#Windows：" class="headerlink" title="Windows："></a><strong>Windows：</strong></h5><p>打开系统环境变量设置，添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ANDROID_HOME = C:\Users\&lt;的用户名&gt;\AppData\Local\Android\Sdk</span><br></pre></td></tr></table></figure>
+
+<p>然后编辑 <code>Path</code>，添加以下两项（根据安装路径微调）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%ANDROID_HOME%\emulator</span><br><span class="line">%ANDROID_HOME%\platform-tools</span><br></pre></td></tr></table></figure>
+
+<h5 id="macOS-Linux："><a href="#macOS-Linux：" class="headerlink" title="macOS&#x2F;Linux："></a><strong>macOS&#x2F;Linux：</strong></h5><p>在 <code>~/.bashrc</code> 或 <code>~/.zshrc</code> 添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ANDROID_HOME=<span class="variable">$HOME</span>/Library/Android/sdk</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$ANDROID_HOME</span>/emulator</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$ANDROID_HOME</span>/platform-tools</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>source ~/.zshrc</code> 以生效。</p>
+<hr>
+<h3 id="🧭-步骤二：在-VS-Code-中运行模拟器"><a href="#🧭-步骤二：在-VS-Code-中运行模拟器" class="headerlink" title="🧭 步骤二：在 VS Code 中运行模拟器"></a>🧭 步骤二：在 VS Code 中运行模拟器</h3><h4 id="方法一：命令行启动"><a href="#方法一：命令行启动" class="headerlink" title="方法一：命令行启动"></a>方法一：命令行启动</h4><p>打开 VS Code 的终端（Terminal）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator -list-avds</span><br></pre></td></tr></table></figure>
+
+<p>会看到已安装的模拟器名称，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pixel_5_API_34</span><br></pre></td></tr></table></figure>
+
+<p>然后运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator -avd Pixel_5_API_34</span><br></pre></td></tr></table></figure>
+
+<p>模拟器将启动。</p>
+<hr>
+<h4 id="方法二：使用-Flutter-插件集成"><a href="#方法二：使用-Flutter-插件集成" class="headerlink" title="方法二：使用 Flutter 插件集成"></a>方法二：使用 Flutter 插件集成</h4><ol>
+<li><p>确保已安装 VS Code 插件：</p>
+<ul>
+<li><strong>Flutter</strong></li>
+<li><strong>Dart</strong></li>
+</ul>
+</li>
+<li><p>在 VS Code 左下角点击 <code>No Device</code> 或当前设备名称 ➜ 会弹出设备列表。</p>
+</li>
+<li><p>如果模拟器未显示，可点击 <code>Open Android Emulator</code>（Flutter 插件提供）来手动启动。</p>
+</li>
+</ol>
+<hr>
+<h3 id="🧭-步骤三：在-VS-Code-运行-App-到模拟器"><a href="#🧭-步骤三：在-VS-Code-运行-App-到模拟器" class="headerlink" title="🧭 步骤三：在 VS Code 运行 App 到模拟器"></a>🧭 步骤三：在 VS Code 运行 App 到模拟器</h3><ol>
+<li>启动模拟器后，重新打开 VS Code 项目</li>
+<li>点击顶部工具栏的 “Run” ▶ 或 <code>F5</code> 即可运行 App 到该模拟器上。</li>
+</ol>
+<hr>
+<h3 id="🛠️-补充：检查-SDK-和环境配置"><a href="#🛠️-补充：检查-SDK-和环境配置" class="headerlink" title="🛠️ 补充：检查 SDK 和环境配置"></a>🛠️ 补充：检查 SDK 和环境配置</h3><p>可以运行以下命令来确认：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter doctor</span><br></pre></td></tr></table></figure>
+
+<p>确保输出中没有关于 Android SDK 的错误。如果提示缺失，检查 <code>ANDROID_HOME</code> 和 SDK 路径配置。</p>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/24/app_develop_skills/flutter%20%E5%8A%A0%E8%BD%BDvue3/">
+        <span class="nav-arrow">← </span>
+        
+          Flutter 加载vue3
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/25/app_develop_skills/flutter%20java%20vs%20code%E9%85%8D%E7%BD%AE/">
+        
+          Flutter vscode java配置
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8-webview-flutter-4-x-%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">✅ 正确使用 webview_flutter: ^4.x 的方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%EF%BC%88%E9%80%82%E9%85%8D-webview-flutter-4-0-7%EF%BC%89"><span class="toc-nav-text">🔧 示例代码（适配 webview_flutter: ^4.0.7）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E6%B3%A8%E6%84%8F%E7%82%B9%E6%B1%87%E6%80%BB%EF%BC%9A"><span class="toc-nav-text">📌 注意点汇总：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E8%BF%98%E8%A6%81%E7%A1%AE%E4%BF%9D%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-nav-text">🔍 还要确保的内容</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%9C%A8-Android-%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%B7%BB%E5%8A%A0%E7%BD%91%E7%BB%9C%E6%9D%83%E9%99%90%EF%BC%9A"><span class="toc-nav-text">1. 在 Android 项目中添加网络权限：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%9C%A8-main-dart-%E5%88%9D%E5%A7%8B%E5%8C%96-WebView%EF%BC%9A"><span class="toc-nav-text">2. 在 main.dart 初始化 WebView：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E7%BB%93%E8%AE%BA"><span class="toc-nav-text">✅ 结论</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7%EF%BC%9A"><span class="toc-nav-text">✅ 功能特性：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%81-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E7%AE%80%E8%A6%81%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-nav-text">📁 项目结构简要说明：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E6%A0%B8%E5%BF%83%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-nav-text">🔧 核心文件说明：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#main-dart"><span class="toc-nav-text">main.dart</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#tab-webview-dart"><span class="toc-nav-text">tab_webview.dart</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#resource-manager-dart"><span class="toc-nav-text">resource_manager.dart</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E6%A8%A1%E6%8B%9F%E7%83%AD%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-nav-text">🧪 模拟热更新说明：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E4%B8%8B%E4%B8%80%E6%AD%A5%E6%93%8D%E4%BD%9C%E5%BB%BA%E8%AE%AE%EF%BC%9A"><span class="toc-nav-text">🚀 下一步操作建议：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="toc-nav-text">✅ 前提条件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%9A%E7%A1%AE%E4%BF%9D-VS-Code-%E8%83%BD%E6%89%BE%E5%88%B0-AVD-%E5%92%8C-SDK"><span class="toc-nav-text">🧭 步骤一：确保 VS Code 能找到 AVD 和 SDK</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%88%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-nav-text">1. 设置环境变量（非常重要）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Windows%EF%BC%9A"><span class="toc-nav-text">Windows：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#macOS-Linux%EF%BC%9A"><span class="toc-nav-text">macOS&#x2F;Linux：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E5%9C%A8-VS-Code-%E4%B8%AD%E8%BF%90%E8%A1%8C%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="toc-nav-text">🧭 步骤二：在 VS Code 中运行模拟器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">方法一：命令行启动</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8-Flutter-%E6%8F%92%E4%BB%B6%E9%9B%86%E6%88%90"><span class="toc-nav-text">方法二：使用 Flutter 插件集成</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E5%9C%A8-VS-Code-%E8%BF%90%E8%A1%8C-App-%E5%88%B0%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="toc-nav-text">🧭 步骤三：在 VS Code 运行 App 到模拟器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%9B%A0%EF%B8%8F-%E8%A1%A5%E5%85%85%EF%BC%9A%E6%A3%80%E6%9F%A5-SDK-%E5%92%8C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">🛠️ 补充：检查 SDK 和环境配置</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/25/app_develop_skills/flutter 加载本地文件/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

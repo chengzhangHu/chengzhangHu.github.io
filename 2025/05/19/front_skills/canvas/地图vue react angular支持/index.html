@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      地图vue react angular支持 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>地图vue react angular支持</h2>
+  <p class="post-date">2025-05-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>React、Vue、Angular</strong> 都有封装得非常成熟的地图组件或生态插件，常用地图平台（如 Mapbox、Leaflet、Google Maps、高德地图、百度地图等）基本都有对应的官方或社区封装，可以直接使用。</p>
+<hr>
+<h2 id="✅-一、React-封装的地图组件"><a href="#✅-一、React-封装的地图组件" class="headerlink" title="✅ 一、React 封装的地图组件"></a>✅ 一、React 封装的地图组件</h2><h3 id="1-react-leaflet"><a href="#1-react-leaflet" class="headerlink" title="1. react-leaflet"></a>1. <a target="_blank" rel="noopener" href="https://react-leaflet.js.org/"><strong>react-leaflet</strong></a></h3><ul>
+<li>Leaflet 的 React 封装（社区成熟度高）</li>
+<li>优点：轻量、插件多、易上手</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">MapContainer</span>, <span class="title class_">TileLayer</span>, <span class="title class_">Marker</span>, <span class="title class_">Popup</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-leaflet&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">MapContainer</span> <span class="attr">center</span>=<span class="string">&#123;[51.505,</span> <span class="attr">-0.09</span>]&#125; <span class="attr">zoom</span>=<span class="string">&#123;13&#125;</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">height:</span> &quot;<span class="attr">100vh</span>&quot; &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">TileLayer</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">url</span>=<span class="string">&quot;https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">Marker</span> <span class="attr">position</span>=<span class="string">&#123;[51.505,</span> <span class="attr">-0.09</span>]&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">Popup</span>&gt;</span>这里是伦敦<span class="tag">&lt;/<span class="name">Popup</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">Marker</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">MapContainer</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-react-map-gl"><a href="#2-react-map-gl" class="headerlink" title="2. react-map-gl"></a>2. <a target="_blank" rel="noopener" href="https://visgl.github.io/react-map-gl/"><strong>react-map-gl</strong></a></h3><ul>
+<li>Mapbox 的 React 封装（由 Uber 推出）</li>
+<li>高性能、现代感强，适合可视化项目</li>
+<li>支持 WebGL、DeckGL 等高阶功能</li>
+</ul>
+<hr>
+<h3 id="3-google-maps-react"><a href="#3-google-maps-react" class="headerlink" title="3. google-maps-react"></a>3. <a target="_blank" rel="noopener" href="https://github.com/fullstackreact/google-maps-react"><strong>google-maps-react</strong></a></h3><ul>
+<li>对接 Google 地图</li>
+<li>适合全球数据项目、自动路线规划等场景</li>
+</ul>
+<hr>
+<h2 id="✅-二、Vue-封装的地图组件"><a href="#✅-二、Vue-封装的地图组件" class="headerlink" title="✅ 二、Vue 封装的地图组件"></a>✅ 二、Vue 封装的地图组件</h2><h3 id="1-vue2-leaflet-vue3-leaflet"><a href="#1-vue2-leaflet-vue3-leaflet" class="headerlink" title="1. vue2-leaflet &#x2F; vue3-leaflet"></a>1. <a target="_blank" rel="noopener" href="https://vue-leaflet.github.io/"><strong>vue2-leaflet &#x2F; vue3-leaflet</strong></a></h3><ul>
+<li>Leaflet 的 Vue 封装，支持 Vue 2 和 Vue 3</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;LMap :zoom=&quot;13&quot; :center=&quot;[47.413220, -1.219482]&quot;&gt;</span><br><span class="line">  &lt;LTileLayer :url=&quot;&#x27;https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png&#x27;&quot; /&gt;</span><br><span class="line">  &lt;LMarker :lat-lng=&quot;[47.413220, -1.219482]&quot; /&gt;</span><br><span class="line">&lt;/LMap&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-vue3-openlayers"><a href="#2-vue3-openlayers" class="headerlink" title="2. vue3-openlayers"></a>2. <a target="_blank" rel="noopener" href="https://github.com/MelihAltintas/vue3-openlayers"><strong>vue3-openlayers</strong></a></h3><ul>
+<li>封装 OpenLayers（支持投影坐标、轨迹等专业 GIS 功能）</li>
+</ul>
+<hr>
+<h3 id="3-高德-百度地图封装："><a href="#3-高德-百度地图封装：" class="headerlink" title="3. 高德&#x2F;百度地图封装："></a>3. 高德&#x2F;百度地图封装：</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://elemefe.github.io/vue-amap/">vue-amap</a>（高德）</li>
+<li><a target="_blank" rel="noopener" href="https://dafrok.github.io/vue-baidu-map/#/">vue-baidu-map-3x</a>（百度）</li>
+</ul>
+<hr>
+<h2 id="✅-三、Angular-地图组件"><a href="#✅-三、Angular-地图组件" class="headerlink" title="✅ 三、Angular 地图组件"></a>✅ 三、Angular 地图组件</h2><h3 id="1-ngx-leaflet"><a href="#1-ngx-leaflet" class="headerlink" title="1. ngx-leaflet"></a>1. <a target="_blank" rel="noopener" href="https://github.com/Asymmetrik/ngx-leaflet"><strong>ngx-leaflet</strong></a></h3><ul>
+<li>Angular 的 Leaflet 封装，结构清晰、文档完备</li>
+<li>示例：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">leaflet</span> </span></span><br><span class="line"><span class="tag">     [<span class="attr">leafletOptions</span>]=<span class="string">&quot;options&quot;</span> </span></span><br><span class="line"><span class="tag">     [<span class="attr">leafletLayers</span>]=<span class="string">&quot;layers&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-angular-google-maps"><a href="#2-angular-google-maps" class="headerlink" title="2. @angular&#x2F;google-maps"></a>2. <a target="_blank" rel="noopener" href="https://angular.io/components/google-maps/overview"><strong>@angular&#x2F;google-maps</strong></a></h3><ul>
+<li>官方提供的 Google Maps 组件</li>
+<li>安全、依赖稳定</li>
+</ul>
+<hr>
+<h3 id="3-angular-mapbox-gl"><a href="#3-angular-mapbox-gl" class="headerlink" title="3. angular-mapbox-gl"></a>3. <a target="_blank" rel="noopener" href="https://github.com/Wykks/ngx-mapbox-gl"><strong>angular-mapbox-gl</strong></a></h3><ul>
+<li>Mapbox 的 Angular 封装</li>
+<li>支持 GeoJSON、交互事件等功能</li>
+</ul>
+<hr>
+<h2 id="🎯-总结对比表"><a href="#🎯-总结对比表" class="headerlink" title="🎯 总结对比表"></a>🎯 总结对比表</h2><table>
+<thead>
+<tr>
+<th>框架</th>
+<th>Leaflet 支持</th>
+<th>Mapbox 支持</th>
+<th>Google Maps 支持</th>
+<th>其他平台支持（高德&#x2F;百度）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>React</td>
+<td>✅ react-leaflet</td>
+<td>✅ react-map-gl</td>
+<td>✅ google-maps-react</td>
+<td>🟡（需要社区封装）</td>
+</tr>
+<tr>
+<td>Vue</td>
+<td>✅ vue-leaflet</td>
+<td>🟡 vue-mapbox-gl</td>
+<td>🟡（较少）</td>
+<td>✅ vue-amap、vue-baidu-map</td>
+</tr>
+<tr>
+<td>Angular</td>
+<td>✅ ngx-leaflet</td>
+<td>✅ angular-mapbox-gl</td>
+<td>✅ @angular&#x2F;google-maps</td>
+<td>🟡</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="建议选型"><a href="#建议选型" class="headerlink" title="建议选型"></a>建议选型</h2><ul>
+<li><strong>简单可视化、轻量级地图</strong>：Leaflet（react-leaflet、vue-leaflet）</li>
+<li><strong>高性能、3D 地图或 WebGL 需要</strong>：Mapbox（react-map-gl、ngx-mapbox-gl）</li>
+<li><strong>精准路线、街景等功能</strong>：Google Maps</li>
+<li><strong>国内项目、导航&#x2F;定位</strong>：高德（vue-amap）或百度（vue-baidu-map）</li>
+</ul>
+<hr>
+<p><strong>不是所有地图组件都默认使用 GPU 加速（即 WebGL）</strong>。是否支持 GPU 取决于它们底层的渲染引擎，而不是仅仅是 React&#x2F;Vue&#x2F;Angular 框架本身。</p>
+<blockquote>
+<p>常见地图库的 GPU 支持情况。</p>
+</blockquote>
+<hr>
+<h2 id="✅-判断地图是否使用-GPU：看是否基于-WebGL"><a href="#✅-判断地图是否使用-GPU：看是否基于-WebGL" class="headerlink" title="✅ 判断地图是否使用 GPU：看是否基于 WebGL"></a>✅ 判断地图是否使用 GPU：看是否基于 WebGL</h2><table>
+<thead>
+<tr>
+<th>渲染技术</th>
+<th>是否使用 GPU</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Canvas 2D</strong></td>
+<td>❌ 不使用 GPU（纯 CPU 绘图）</td>
+<td>性能好，但不如 GPU 适合大数据</td>
+</tr>
+<tr>
+<td><strong>SVG</strong></td>
+<td>❌ 不使用 GPU</td>
+<td>交互友好，性能较差</td>
+</tr>
+<tr>
+<td><strong>WebGL</strong></td>
+<td>✅ 使用 GPU</td>
+<td>高性能、适合复杂数据、3D、动画等</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧭-主流地图库-GPU-支持情况"><a href="#🧭-主流地图库-GPU-支持情况" class="headerlink" title="🧭 主流地图库 GPU 支持情况"></a>🧭 主流地图库 GPU 支持情况</h2><table>
+<thead>
+<tr>
+<th>地图平台 &#x2F; 库</th>
+<th>是否用 WebGL (GPU)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Leaflet</strong></td>
+<td>❌ 否</td>
+<td>使用 DOM + Canvas；不支持 WebGL</td>
+</tr>
+<tr>
+<td><strong>Mapbox GL JS</strong></td>
+<td>✅ 是</td>
+<td>基于 WebGL，支持 3D、实时动画等</td>
+</tr>
+<tr>
+<td><strong>Google Maps JS API</strong></td>
+<td>🟡 部分是</td>
+<td>默认不是 WebGL，但某些功能（如 3D View）使用 GPU</td>
+</tr>
+<tr>
+<td><strong>OpenLayers</strong></td>
+<td>✅ 支持（可选）</td>
+<td>有 Canvas 和 WebGL 两种渲染模式</td>
+</tr>
+<tr>
+<td><strong>CesiumJS</strong></td>
+<td>✅ 是</td>
+<td>专为 3D 地球设计，强烈依赖 GPU</td>
+</tr>
+<tr>
+<td><strong>ECharts 地图</strong></td>
+<td>✅（Canvas&#x2F;WebGL）</td>
+<td>ECharts5 开始默认优先使用 GPU</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="📦-React-Vue-Angular-的地图封装是否支持-GPU？"><a href="#📦-React-Vue-Angular-的地图封装是否支持-GPU？" class="headerlink" title="📦 React &#x2F; Vue &#x2F; Angular 的地图封装是否支持 GPU？"></a>📦 React &#x2F; Vue &#x2F; Angular 的地图封装是否支持 GPU？</h2><table>
+<thead>
+<tr>
+<th>框架地图封装</th>
+<th>GPU 支持</th>
+<th>底层依赖</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>react-leaflet</strong></td>
+<td>❌</td>
+<td>Leaflet（不支持 WebGL）</td>
+</tr>
+<tr>
+<td><strong>vue-leaflet &#x2F; ngx-leaflet</strong></td>
+<td>❌</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><strong>react-map-gl</strong></td>
+<td>✅</td>
+<td>Mapbox GL JS（WebGL）</td>
+</tr>
+<tr>
+<td><strong>angular-mapbox-gl</strong></td>
+<td>✅</td>
+<td>Mapbox GL JS</td>
+</tr>
+<tr>
+<td><strong>@angular&#x2F;google-maps</strong></td>
+<td>🟡</td>
+<td>Google Maps JS API</td>
+</tr>
+<tr>
+<td><strong>vue3-openlayers</strong></td>
+<td>✅（可选）</td>
+<td>OpenLayers v6+</td>
+</tr>
+<tr>
+<td><strong>vue-amap &#x2F; vue-baidu-map</strong></td>
+<td>🟡</td>
+<td>高德&#x2F;百度支持部分 WebGL（例如热力图、3D 建筑）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-GPU-地图推荐选型"><a href="#✅-GPU-地图推荐选型" class="headerlink" title="✅ GPU 地图推荐选型"></a>✅ GPU 地图推荐选型</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐地图引擎</th>
+<th>GPU 使用情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高性能、大数据、实时地图</td>
+<td>Mapbox GL JS</td>
+<td>✅ WebGL</td>
+</tr>
+<tr>
+<td>3D 地图、数字地球</td>
+<td>CesiumJS</td>
+<td>✅ WebGL</td>
+</tr>
+<tr>
+<td>国内定位、路线、静态地图为主</td>
+<td>高德&#x2F;百度地图 API</td>
+<td>🟡 有部分支持</td>
+</tr>
+<tr>
+<td>简单静态地图或交互有限场景</td>
+<td>Leaflet</td>
+<td>❌ CPU Canvas</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="如何确认浏览器正在用-GPU-渲染地图？"><a href="#如何确认浏览器正在用-GPU-渲染地图？" class="headerlink" title="如何确认浏览器正在用 GPU 渲染地图？"></a>如何确认浏览器正在用 GPU 渲染地图？</h2><p>你可以打开浏览器的 DevTools（开发者工具） → <code>Performance</code> → 录制地图渲染，或者看 Chrome 的：</p>
+<ul>
+<li><code>chrome://gpu</code> 页面：查看 WebGL 是否启用</li>
+<li>查看 Canvas 的上下文类型：<code>canvas.getContext(&#39;webgl&#39;)</code> 成功则表示使用 GPU</li>
+</ul>
+<hr>
+<h2 id="🔧-结论总结"><a href="#🔧-结论总结" class="headerlink" title="🔧 结论总结"></a>🔧 结论总结</h2><ul>
+<li>框架（React、Vue、Angular）本身<strong>不决定是否用 GPU</strong>，关键是地图库底层是否基于 WebGL。</li>
+<li>如果你要实现<strong>大规模数据渲染、高频率交互、动画&#x2F;3D 地图</strong>，<strong>务必选择基于 WebGL 的地图库</strong>（如 Mapbox、Cesium）。</li>
+<li>如果你使用的是 Leaflet 或其封装（如 react-leaflet），默认不会用 GPU，但可以搭配 WebGL 插件（如 leaflet.glify）来提升性能。</li>
+</ul>
+<hr>
+<h2 id="✅-目前主流地图引擎还📌几乎都未全面支持-WebGPU-。但："><a href="#✅-目前主流地图引擎还📌几乎都未全面支持-WebGPU-。但：" class="headerlink" title="✅ 目前主流地图引擎还📌几乎都未全面支持 WebGPU**。但："></a>✅ 目前主流地图引擎还<strong>📌</strong>几乎都未全面支持 WebGPU**。但：</h2><ul>
+<li>WebGPU 是未来图形渲染的方向，<strong>比 WebGL 更强大（更接近原生 GPU 能力）</strong>；</li>
+<li>有极个别项目正在探索 WebGPU，但大多仍处于实验阶段；</li>
+<li>实际生产中地图仍使用 WebGL 或 Canvas（如 Mapbox GL、Cesium）；</li>
+<li>如果你对 <strong>WebGPU + 地图结合开发</strong> 感兴趣，那是前沿探索领域，值得关注。</li>
+</ul>
+<hr>
+<h2 id="什么是-WebGPU？"><a href="#什么是-WebGPU？" class="headerlink" title="什么是 WebGPU？"></a>什么是 WebGPU？</h2><p>WebGPU 是一种 <strong>新一代浏览器图形 API</strong>，相对于 WebGL，它更接近 Vulkan &#x2F; Metal &#x2F; Direct3D 12，优点：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>WebGL</th>
+<th>WebGPU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>图形性能</td>
+<td>好</td>
+<td>更好（低开销）</td>
+</tr>
+<tr>
+<td>计算能力（GPGPU）</td>
+<td>弱</td>
+<td>强（支持 Compute）</td>
+</tr>
+<tr>
+<td>开发粒度</td>
+<td>高层封装</td>
+<td>更底层，更灵活</td>
+</tr>
+<tr>
+<td>支持平台</td>
+<td>全面</td>
+<td>现代浏览器才支持</td>
+</tr>
+<tr>
+<td>上手难度</td>
+<td>低</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🗺️-地图引擎对-WebGPU-的支持现状（截至-2025）"><a href="#🗺️-地图引擎对-WebGPU-的支持现状（截至-2025）" class="headerlink" title="🗺️ 地图引擎对 WebGPU 的支持现状（截至 2025）"></a>🗺️ 地图引擎对 WebGPU 的支持现状（截至 2025）</h2><table>
+<thead>
+<tr>
+<th>地图引擎 &#x2F; 框架</th>
+<th>WebGPU 支持</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Mapbox GL JS</strong></td>
+<td>❌ 不支持</td>
+<td>基于 WebGL</td>
+</tr>
+<tr>
+<td><strong>CesiumJS</strong></td>
+<td>❌ 不支持</td>
+<td>WebGL 专家级使用，暂无 WebGPU</td>
+</tr>
+<tr>
+<td><strong>Leaflet</strong></td>
+<td>❌ 不支持</td>
+<td>基于 DOM&#x2F;Canvas</td>
+</tr>
+<tr>
+<td><strong>OpenLayers</strong></td>
+<td>❌ 不支持</td>
+<td>支持 Canvas&#x2F;WebGL</td>
+</tr>
+<tr>
+<td><strong>Google Maps</strong></td>
+<td>❌ 不支持</td>
+<td>封闭 API，不支持 WebGPU</td>
+</tr>
+<tr>
+<td><strong>deck.gl（可扩展）</strong></td>
+<td>🟡 实验中</td>
+<td>部分研究使用 WebGPU adapter</td>
+</tr>
+<tr>
+<td><strong>raw WebGPU 实现地图</strong></td>
+<td>🧪 纯研究&#x2F;自研</td>
+<td>可做但要手动实现投影、渲染流程</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-想做-WebGPU-地图，有哪些途径？"><a href="#🚀-想做-WebGPU-地图，有哪些途径？" class="headerlink" title="🚀 想做 WebGPU + 地图，有哪些途径？"></a>🚀 想做 WebGPU + 地图，有哪些途径？</h2><ol>
+<li><p><strong>自己用 WebGPU 编写地图引擎（高门槛）</strong></p>
+<ul>
+<li>需要：地理投影、瓦片加载、坐标变换、图层管理、着色器编写</li>
+<li>框架推荐：<a target="_blank" rel="noopener" href="https://github.com/gfx-rs/wgpu">wgpu</a>（Rust）、<a target="_blank" rel="noopener" href="https://gpuweb.github.io/gpuweb/">WebGPU native bindings</a></li>
+</ul>
+</li>
+<li><p><strong>使用支持 WebGPU 的 3D 渲染引擎 + 自建地图逻辑</strong></p>
+<ul>
+<li>比如：Babylon.js、Three.js（部分 WebGPU 适配中）</li>
+<li>适合：3D 地球、场景地图</li>
+</ul>
+</li>
+<li><p><strong>关注 WebGPU 地图探索项目</strong></p>
+<ul>
+<li>示例：<a target="_blank" rel="noopener" href="https://www.unfolded.ai/">Unfolded.ai</a>（由 Uber deck.gl 团队支持）</li>
+<li>deck.gl 虽然还基于 WebGL，但已架构上适配下一代渲染（未来可扩展到 WebGPU）</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="✅-总结"><a href="#✅-总结" class="headerlink" title="✅ 总结"></a>✅ 总结</h2><p>| 引擎<br>    | 当前可用手段                       |</p>
+<p>| ———– | —————————- |<br>| 高性能地图渲染     | 使用 WebGL（Mapbox GL、Cesium）   |<br>| WebGPU 地图探索 | 自研 or deck.gl 实验项目           |<br>| 跨平台强渲染      | 可用 Rust&#x2F;WebAssembly + WebGPU |<br>| 未来技术储备      | 关注 WebGPU 标准与浏览器支持           |</p>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+  <a target="_blank" href="/tags#svg" >
+    <span class="tag-code">svg</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/18/front_skills/canvas/%E5%9C%B0%E5%9B%BEcanvas%20vs%20svg/">
+        <span class="nav-arrow">← </span>
+        
+          地图canvas和svg选择
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/19/front_skills/canvas/webgl%20vs%20webgpu/">
+        
+          webgl vs webgpu
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81React-%E5%B0%81%E8%A3%85%E7%9A%84%E5%9C%B0%E5%9B%BE%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">✅ 一、React 封装的地图组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-react-leaflet"><span class="toc-nav-text">1. react-leaflet</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-react-map-gl"><span class="toc-nav-text">2. react-map-gl</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-google-maps-react"><span class="toc-nav-text">3. google-maps-react</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BA%8C%E3%80%81Vue-%E5%B0%81%E8%A3%85%E7%9A%84%E5%9C%B0%E5%9B%BE%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">✅ 二、Vue 封装的地图组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-vue2-leaflet-vue3-leaflet"><span class="toc-nav-text">1. vue2-leaflet &#x2F; vue3-leaflet</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-vue3-openlayers"><span class="toc-nav-text">2. vue3-openlayers</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E9%AB%98%E5%BE%B7-%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BE%E5%B0%81%E8%A3%85%EF%BC%9A"><span class="toc-nav-text">3. 高德&#x2F;百度地图封装：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81Angular-%E5%9C%B0%E5%9B%BE%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">✅ 三、Angular 地图组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-ngx-leaflet"><span class="toc-nav-text">1. ngx-leaflet</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-angular-google-maps"><span class="toc-nav-text">2. @angular&#x2F;google-maps</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-angular-mapbox-gl"><span class="toc-nav-text">3. angular-mapbox-gl</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94%E8%A1%A8"><span class="toc-nav-text">🎯 总结对比表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BB%BA%E8%AE%AE%E9%80%89%E5%9E%8B"><span class="toc-nav-text">建议选型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%88%A4%E6%96%AD%E5%9C%B0%E5%9B%BE%E6%98%AF%E5%90%A6%E4%BD%BF%E7%94%A8-GPU%EF%BC%9A%E7%9C%8B%E6%98%AF%E5%90%A6%E5%9F%BA%E4%BA%8E-WebGL"><span class="toc-nav-text">✅ 判断地图是否使用 GPU：看是否基于 WebGL</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%BB%E6%B5%81%E5%9C%B0%E5%9B%BE%E5%BA%93-GPU-%E6%94%AF%E6%8C%81%E6%83%85%E5%86%B5"><span class="toc-nav-text">🧭 主流地图库 GPU 支持情况</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%A6-React-Vue-Angular-%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%B0%81%E8%A3%85%E6%98%AF%E5%90%A6%E6%94%AF%E6%8C%81-GPU%EF%BC%9F"><span class="toc-nav-text">📦 React &#x2F; Vue &#x2F; Angular 的地图封装是否支持 GPU？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-GPU-%E5%9C%B0%E5%9B%BE%E6%8E%A8%E8%8D%90%E9%80%89%E5%9E%8B"><span class="toc-nav-text">✅ GPU 地图推荐选型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E8%AE%A4%E6%B5%8F%E8%A7%88%E5%99%A8%E6%AD%A3%E5%9C%A8%E7%94%A8-GPU-%E6%B8%B2%E6%9F%93%E5%9C%B0%E5%9B%BE%EF%BC%9F"><span class="toc-nav-text">如何确认浏览器正在用 GPU 渲染地图？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E7%BB%93%E8%AE%BA%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🔧 结论总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E7%9B%AE%E5%89%8D%E4%B8%BB%E6%B5%81%E5%9C%B0%E5%9B%BE%E5%BC%95%E6%93%8E%E8%BF%98%F0%9F%93%8C%E5%87%A0%E4%B9%8E%E9%83%BD%E6%9C%AA%E5%85%A8%E9%9D%A2%E6%94%AF%E6%8C%81-WebGPU-%E3%80%82%E4%BD%86%EF%BC%9A"><span class="toc-nav-text">✅ 目前主流地图引擎还📌几乎都未全面支持 WebGPU**。但：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-WebGPU%EF%BC%9F"><span class="toc-nav-text">什么是 WebGPU？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%97%BA%EF%B8%8F-%E5%9C%B0%E5%9B%BE%E5%BC%95%E6%93%8E%E5%AF%B9-WebGPU-%E7%9A%84%E6%94%AF%E6%8C%81%E7%8E%B0%E7%8A%B6%EF%BC%88%E6%88%AA%E8%87%B3-2025%EF%BC%89"><span class="toc-nav-text">🗺️ 地图引擎对 WebGPU 的支持现状（截至 2025）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E6%83%B3%E5%81%9A-WebGPU-%E5%9C%B0%E5%9B%BE%EF%BC%8C%E6%9C%89%E5%93%AA%E4%BA%9B%E9%80%94%E5%BE%84%EF%BC%9F"><span class="toc-nav-text">🚀 想做 WebGPU + 地图，有哪些途径？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">✅ 总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/19/front_skills/canvas/地图vue react angular支持/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
