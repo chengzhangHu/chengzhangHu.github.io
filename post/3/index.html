@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/14/bigdata_for_analyze/Resnet/">Resnet</a>
+      </h2>
+      <p class="article-date">October 14, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧠 一、ResNet 是什么？ResNet（Residual Network，残差网络）由 何恺明（Kaiming He）等人 在 2015 年提出，论文是
+
+《Deep Residual Learning for Image Recognition》
+
+ResNet 最初用于 Image ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/14/bigdata_for_analyze/Resnet/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/13/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E9%99%8D%E7%BB%B4/">数据分析算法</a>
+      </h2>
+      <p class="article-date">October 13, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          “降维（Dimensionality Reduction）” 是数据分析和机器学习中一个非常重要但常被误解的概念。我们可以从直觉、数学、算法、应用场景四个层面，一步步讲清楚它。
+
+🧭 一、核心定义（一句话理解）
+降维就是把“高维数据”压缩到“低维空间”，同时尽量保留原有信息。
+
+换句话说： ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/13/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E9%99%8D%E7%BB%B4/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/13/bigdata_for_analyze/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">特征工程</a>
+      </h2>
+      <p class="article-date">October 13, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#特征工程" >
+    <span class="tag-code">特征工程</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧠 一、特征工程是什么特征工程（Feature Engineering） 是指在模型训练前，对原始数据进行加工、提取、转换，以让模型“看懂”数据的过程。一句话总结：
+
+“数据决定上限，特征决定逼近上限的速度。”
+
+
+⚙️ 二、为什么需要特征工程（核心原因）1️⃣ 模型本身无法直接理解原始数 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/13/bigdata_for_analyze/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/12/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95/">数据分析算法</a>
+      </h2>
+      <p class="article-date">October 12, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          算法分成五大类，从基础到AI级别，覆盖从描述性分析 → 预测性分析 → 生成性分析的全流程。
+
+🧭 一、总体分类总览
+
+
+算法类型
+主要目的
+场景举例
+
+
+
+① 描述统计类
+总结数据特征、发现规律
+报表分析、KPI监控
+
+
+② 诊断分析类
+找出变化原因与关系
+异常检测、因果分析
+
+
+③ 预 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/12/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/11/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+      </h2>
+      <p class="article-date">October 11, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析" >
+    <span class="tag-code">数据分析</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧭 一、整体学习路线图概览123阶段 1：数据分析基础入门→ 阶段 2：进阶分析与自动化→ 阶段 3：AI模型驱动的数据分析（机器学习/深度学习）
+
+
+🌱 阶段 1：数据分析基础入门目标： 学会用数据讲故事、发现规律。
+🎯 核心能力
+
+
+模块
+学习重点
+工具&#x2F;语言
+
+
+
+数据 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/11/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/03/ai_tools/dmaic+ml%20%E5%AD%A6%E4%B9%A0%E5%88%97%E8%A1%A8/">dmaic+ml 学习列表</a>
+      </h2>
+      <p class="article-date">October 3, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#webgpu" >
+    <span class="tag-code">webgpu</span>
+  </a>
+
+  <a target="_blank" href="/tags#webnn" >
+    <span class="tag-code">webnn</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          第4、5章学习清单（最终版）
+一、理论与方法（必须掌握）
+DMAIC方法论
+
+各阶段目标与方法：
+
+Define：问题定义、CTQ指标确定
+Measure：数据收集、指标定义、阶段映射
+Analyze：统计分析、机器学习建模、关键因子识别
+Improve：改进方案设计
+Control：控制方 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/03/ai_tools/dmaic+ml%20%E5%AD%A6%E4%B9%A0%E5%88%97%E8%A1%A8/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/2/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/4/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

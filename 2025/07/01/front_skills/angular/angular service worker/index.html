@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Angular Service Worker | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Angular Service Worker</h2>
+  <p class="post-date">2025-07-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="Angular-Service-Worker-使用指南"><a href="#Angular-Service-Worker-使用指南" class="headerlink" title="Angular Service Worker 使用指南"></a>Angular Service Worker 使用指南</h1><p>Angular 提供了内建的 Service Worker 支持，用于构建 PWA（渐进式 Web 应用），实现离线体验、缓存优化和更快的加载速度。</p>
+<h2 id="📦-安装与配置"><a href="#📦-安装与配置" class="headerlink" title="📦 安装与配置"></a>📦 安装与配置</h2><h3 id="1-添加-Service-Worker-支持"><a href="#1-添加-Service-Worker-支持" class="headerlink" title="1. 添加 Service Worker 支持"></a>1. 添加 Service Worker 支持</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng add @angular/pwa</span><br></pre></td></tr></table></figure>
+
+<p>此命令将自动：</p>
+<ul>
+<li>添加 <code>@angular/service-worker</code> 包</li>
+<li>修改 <code>angular.json</code> 构建配置</li>
+<li>创建 <code>ngsw-config.json</code> 配置文件</li>
+<li>在 <code>index.html</code> 中添加必要的 meta 标签</li>
+</ul>
+<h3 id="2-生产环境构建"><a href="#2-生产环境构建" class="headerlink" title="2. 生产环境构建"></a>2. 生产环境构建</h3><p>Service Worker 仅在生产构建中启用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod</span><br></pre></td></tr></table></figure>
+
+<p>构建后会在 <code>dist/</code> 目录生成以下文件：</p>
+<ul>
+<li><code>ngsw-worker.js</code>：Service Worker 主文件</li>
+<li><code>ngsw.json</code>：缓存配置文件</li>
+</ul>
+<h3 id="3-注册-Service-Worker"><a href="#3-注册-Service-Worker" class="headerlink" title="3. 注册 Service Worker"></a>3. 注册 Service Worker</h3><p>在 <code>app.module.ts</code> 中自动添加：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ServiceWorkerModule</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@angular/service-worker&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; environment &#125; <span class="keyword">from</span> <span class="string">&#x27;../environments/environment&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  <span class="attr">imports</span>: [</span><br><span class="line">    <span class="title class_">ServiceWorkerModule</span>.<span class="title function_">register</span>(<span class="string">&#x27;ngsw-worker.js&#x27;</span>, &#123;</span><br><span class="line">      <span class="attr">enabled</span>: environment.<span class="property">production</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AppModule</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="⚙️-配置文件：ngsw-config-json"><a href="#⚙️-配置文件：ngsw-config-json" class="headerlink" title="⚙️ 配置文件：ngsw-config.json"></a>⚙️ 配置文件：<code>ngsw-config.json</code></h2><p>用于控制缓存行为的核心文件，示例结构如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;index&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/index.html&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;assetGroups&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;app&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;installMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prefetch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;resources&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;files&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="string">&quot;/favicon.ico&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/index.html&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/*.css&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/*.js&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;assets&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;installMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lazy&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;updateMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prefetch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;resources&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;files&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;/assets/**&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/*.(png|jpg|svg)&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dataGroups&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;api-freshness&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;urls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;/api/**&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;cacheConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;strategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;freshness&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxSize&quot;</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxAge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1h&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10s&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="属性解释"><a href="#属性解释" class="headerlink" title="属性解释"></a>属性解释</h3><ul>
+<li><p><code>installMode: prefetch | lazy</code></p>
+<ul>
+<li><code>prefetch</code>: 安装时立即缓存</li>
+<li><code>lazy</code>: 首次访问时才缓存</li>
+</ul>
+</li>
+<li><p><code>updateMode</code>: 更新缓存的方式</p>
+<ul>
+<li><code>prefetch</code>: 后台下载新版本</li>
+</ul>
+</li>
+<li><p><code>dataGroups</code>: 用于控制 API 响应缓存（支持 freshness &#x2F; performance 策略）</p>
+</li>
+</ul>
+<hr>
+<h2 id="🔁-更新检测与提示"><a href="#🔁-更新检测与提示" class="headerlink" title="🔁 更新检测与提示"></a>🔁 更新检测与提示</h2><p>Angular 不会自动刷新页面，需手动监听更新：</p>
+<h3 id="示例：自动提示用户更新"><a href="#示例：自动提示用户更新" class="headerlink" title="示例：自动提示用户更新"></a>示例：自动提示用户更新</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">constructor</span>(<span class="params"><span class="keyword">private</span> swUpdate: SwUpdate</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (swUpdate.<span class="property">isEnabled</span>) &#123;</span><br><span class="line">    swUpdate.<span class="property">available</span>.<span class="title function_">subscribe</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="title function_">confirm</span>(<span class="string">&#x27;新版本可用，是否刷新以更新？&#x27;</span>)) &#123;</span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">reload</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧪-开发调试技巧"><a href="#🧪-开发调试技巧" class="headerlink" title="🧪 开发调试技巧"></a>🧪 开发调试技巧</h2><ul>
+<li>使用 Chrome DevTools &gt; Application &gt; Service Workers 面板进行调试</li>
+<li>本地需通过 HTTPS 或 <code>localhost</code> 运行</li>
+<li>重新部署时务必更新文件哈希或构建资源，否则更新不会触发</li>
+</ul>
+<hr>
+<h2 id="📚-参考资源"><a href="#📚-参考资源" class="headerlink" title="📚 参考资源"></a>📚 参考资源</h2><ul>
+<li>官方文档: <a target="_blank" rel="noopener" href="https://angular.io/guide/service-worker-intro">Angular Service Worker</a></li>
+<li>PWA 规范: <a target="_blank" rel="noopener" href="https://web.dev/progressive-web-apps/">https://web.dev/progressive-web-apps/</a></li>
+</ul>
+<hr>
+<p> <strong>定制化的 <code>ngsw-config.json</code> 文件</strong>，包含：</p>
+<ul>
+<li>常见资源的缓存规则（如 CSS&#x2F;JS、图片、字体、assets）</li>
+<li>对后端 API 的缓存策略（支持离线读取 + 更新）</li>
+<li>更新策略（后台更新、新版本提醒）</li>
+<li>性能与离线体验兼顾的配置</li>
+</ul>
+<hr>
+<h2 id="✅-适用场景（你可以根据需要修改）："><a href="#✅-适用场景（你可以根据需要修改）：" class="headerlink" title="✅ 适用场景（你可以根据需要修改）："></a>✅ 适用场景（你可以根据需要修改）：</h2><ul>
+<li>应用资源希望首次加载后离线可用</li>
+<li>图片等静态资源懒加载缓存</li>
+<li>API 使用 <code>freshness</code> 策略（优先网络，失败用缓存）</li>
+<li>启动页&#x2F;首页等要尽快预加载</li>
+<li>每次部署都更新版本（自动对比文件 hash）</li>
+</ul>
+<hr>
+<h3 id="🧩-定制-ngsw-config-json："><a href="#🧩-定制-ngsw-config-json：" class="headerlink" title="🧩 定制 ngsw-config.json："></a>🧩 定制 <code>ngsw-config.json</code>：</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;$schema&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./node_modules/@angular/service-worker/config/schema.json&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;index&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/index.html&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;assetGroups&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;app-shell&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;installMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prefetch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;updateMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prefetch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;resources&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;files&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="string">&quot;/favicon.ico&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/index.html&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/*.css&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/*.js&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;assets&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;installMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lazy&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;updateMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prefetch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;resources&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;files&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="string">&quot;/assets/**&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="string">&quot;/*.(png|jpg|jpeg|svg|webp|woff2|woff|ttf|eot)&quot;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dataGroups&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;api-data&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;urls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;https://api.example.com/**&quot;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;cacheConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;strategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;freshness&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxSize&quot;</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxAge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;6h&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10s&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;fallback-api&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;urls&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;/assets/mock/**&quot;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;cacheConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;strategy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;performance&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxSize&quot;</span><span class="punctuation">:</span> <span class="number">50</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;maxAge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;12h&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="🔄-更新策略说明"><a href="#🔄-更新策略说明" class="headerlink" title="🔄 更新策略说明"></a>🔄 更新策略说明</h3><p>Angular 默认采用 <strong>版本对比 + hash 检查</strong> 方式更新静态资源：</p>
+<ul>
+<li>每次 <code>ng build --prod</code> 会生成新的哈希值</li>
+<li>用户访问旧版本时，Service Worker 会在后台拉取新版本</li>
+<li>可通过 <code>SwUpdate</code> 监听并提示用户刷新</li>
+</ul>
+<h4 id="示例代码（放在-AppComponent-或-CoreService）："><a href="#示例代码（放在-AppComponent-或-CoreService）：" class="headerlink" title="示例代码（放在 AppComponent 或 CoreService）："></a>示例代码（放在 <code>AppComponent</code> 或 CoreService）：</h4><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">SwUpdate</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@angular/service-worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">constructor</span>(<span class="params"><span class="keyword">private</span> swUpdate: SwUpdate</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">swUpdate</span>.<span class="property">isEnabled</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">swUpdate</span>.<span class="property">versionUpdates</span>.<span class="title function_">subscribe</span>(<span class="function"><span class="params">evt</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (evt.<span class="property">type</span> === <span class="string">&#x27;VERSION_READY&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> update = <span class="title function_">confirm</span>(<span class="string">&#x27;检测到新版本，是否立即刷新？&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> (update) &#123;</span><br><span class="line">          <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">reload</span>();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="⚙️-进阶优化建议"><a href="#⚙️-进阶优化建议" class="headerlink" title="⚙️ 进阶优化建议"></a>⚙️ 进阶优化建议</h2><table>
+<thead>
+<tr>
+<th>内容</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>图片资源缓存</td>
+<td>使用 <code>installMode: lazy</code> + <code>updateMode: prefetch</code></td>
+</tr>
+<tr>
+<td>API 缓存策略</td>
+<td><code>freshness</code> 更适合动态内容，失败时用缓存</td>
+</tr>
+<tr>
+<td>字体等静态资源</td>
+<td>长期缓存，<code>performance</code> 策略</td>
+</tr>
+<tr>
+<td>缓存清理</td>
+<td>设置 <code>maxSize</code> 和 <code>maxAge</code> 避免无限增长</td>
+</tr>
+<tr>
+<td>多语言版本页面</td>
+<td>每种语言单独配置为不同缓存组（可加路径匹配规则）</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#Service Worker" >
+    <span class="tag-code">Service Worker</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/06/26/backend_skills/go/go%20%E5%92%8C%E5%89%8D%E7%AB%AF%E4%B8%80%E8%B5%B7%E6%95%B4%E5%90%88/">
+        <span class="nav-arrow">← </span>
+        
+          Go为啥解决了现代编程难题？
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/03/front_skills/js/js%20%E5%A0%86%E6%A0%88/">
+        
+          js 堆栈
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Angular-Service-Worker-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="toc-nav-text">Angular Service Worker 使用指南</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%A6-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">📦 安装与配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E6%B7%BB%E5%8A%A0-Service-Worker-%E6%94%AF%E6%8C%81"><span class="toc-nav-text">1. 添加 Service Worker 支持</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA"><span class="toc-nav-text">2. 生产环境构建</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E6%B3%A8%E5%86%8C-Service-Worker"><span class="toc-nav-text">3. 注册 Service Worker</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9Angsw-config-json"><span class="toc-nav-text">⚙️ 配置文件：ngsw-config.json</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B1%9E%E6%80%A7%E8%A7%A3%E9%87%8A"><span class="toc-nav-text">属性解释</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-%E6%9B%B4%E6%96%B0%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%8F%90%E7%A4%BA"><span class="toc-nav-text">🔁 更新检测与提示</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A%E8%87%AA%E5%8A%A8%E6%8F%90%E7%A4%BA%E7%94%A8%E6%88%B7%E6%9B%B4%E6%96%B0"><span class="toc-nav-text">示例：自动提示用户更新</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="toc-nav-text">🧪 开发调试技巧</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%9A-%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-nav-text">📚 参考资源</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%88%E4%BD%A0%E5%8F%AF%E4%BB%A5%E6%A0%B9%E6%8D%AE%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">✅ 适用场景（你可以根据需要修改）：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E5%AE%9A%E5%88%B6-ngsw-config-json%EF%BC%9A"><span class="toc-nav-text">🧩 定制 ngsw-config.json：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%84-%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">🔄 更新策略说明</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81%EF%BC%88%E6%94%BE%E5%9C%A8-AppComponent-%E6%88%96-CoreService%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">示例代码（放在 AppComponent 或 CoreService）：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E8%BF%9B%E9%98%B6%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">⚙️ 进阶优化建议</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/01/front_skills/angular/angular service worker/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

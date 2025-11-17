@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Angular rxjs 性能问题 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Angular rxjs 性能问题</h2>
+  <p class="post-date">2025-07-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>分析 Angular + RxJS 性能问题，最有效的方法是结合：</p>
+<ul>
+<li>浏览器工具（如 Chrome DevTools）</li>
+<li>Angular 自带调试工具（如 Angular DevTools）</li>
+<li>RxJS 专项技巧（如追踪流、订阅分析、内存泄漏检查）</li>
+</ul>
+<hr>
+<h2 id="🔍-一、常见-RxJS-性能问题类型"><a href="#🔍-一、常见-RxJS-性能问题类型" class="headerlink" title="🔍 一、常见 RxJS 性能问题类型"></a>🔍 一、常见 RxJS 性能问题类型</h2><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>❌ 多余订阅</td>
+<td>多次订阅同一流，或组件重建导致重复订阅</td>
+</tr>
+<tr>
+<td>♻️ 未取消订阅</td>
+<td>组件销毁时没释放订阅，造成内存泄漏</td>
+</tr>
+<tr>
+<td>🌀 高频率流（事件&#x2F;轮询）</td>
+<td>滚动、输入等流未节流，触发变更过多</td>
+</tr>
+<tr>
+<td>🔗 流链条过长</td>
+<td><code>pipe</code> 中操作符太多，逻辑嵌套复杂，调试困难</td>
+</tr>
+<tr>
+<td>⚠️ 误用 <code>combineLatest</code>, <code>switchMap</code> 等</td>
+<td>引发额外 HTTP 请求、内存占用、竞态等问题</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧰-二、核心工具与步骤"><a href="#🧰-二、核心工具与步骤" class="headerlink" title="🧰 二、核心工具与步骤"></a>🧰 二、核心工具与步骤</h2><hr>
+<h3 id="✅-1-Chrome-DevTools-Performance-面板"><a href="#✅-1-Chrome-DevTools-Performance-面板" class="headerlink" title="✅ 1. Chrome DevTools Performance 面板"></a>✅ 1. <strong>Chrome DevTools Performance 面板</strong></h3><blockquote>
+<p>📌 定位变更频率过高、调用栈异常、微任务泛滥</p>
+</blockquote>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li><p>打开 Chrome DevTools → <code>Performance</code> 标签页</p>
+</li>
+<li><p>点击“录制”按钮，重现性能问题场景（如页面卡顿）</p>
+</li>
+<li><p>查看：</p>
+<ul>
+<li><strong>Major GC</strong>：垃圾回收频率</li>
+<li><strong>Scripting&#x2F;Rendering</strong>：脚本耗时</li>
+<li>关键：找出频繁调用 <code>ɵdetectChanges</code>、<code>Zone.runTask</code> 的位置</li>
+</ul>
+</li>
+<li><p>**火焰图（flame chart）**中查看触发 <code>subscribe</code>, <code>next</code>, <code>tick</code> 等函数的次数与位置</p>
+</li>
+</ol>
+<hr>
+<h3 id="✅-2-Angular-DevTools"><a href="#✅-2-Angular-DevTools" class="headerlink" title="✅ 2. Angular DevTools"></a>✅ 2. <strong>Angular DevTools</strong></h3><blockquote>
+<p>📌 专用于 Angular 项目的调试工具，分析变更检测与组件订阅关系</p>
+</blockquote>
+<p><strong>安装</strong>：<a target="_blank" rel="noopener" href="https://angular.dev/tools/devtools">Chrome 插件</a></p>
+<p><strong>使用</strong>：</p>
+<ul>
+<li><p>切换到 <code>Profiler</code> 选项卡</p>
+</li>
+<li><p>点击“Record”</p>
+</li>
+<li><p>重现操作后，查看：</p>
+<ul>
+<li>哪些组件频繁触发 change detection（变更检测）</li>
+<li>哪些组件订阅了 observables</li>
+</ul>
+</li>
+<li><p>点击组件，查看其 <code>Inputs</code>, <code>Change Detection Strategy</code>, <code>Lifecycle Hooks</code></p>
+</li>
+</ul>
+<blockquote>
+<p>👉 结合使用 <code>ChangeDetectionStrategy.OnPush</code> 可以极大降低变更检测开销</p>
+</blockquote>
+<hr>
+<h3 id="✅-3-RxJS-调试技巧"><a href="#✅-3-RxJS-调试技巧" class="headerlink" title="✅ 3. RxJS 调试技巧"></a>✅ 3. <strong>RxJS 调试技巧</strong></h3><h4 id="🔍-a-使用-tap-或-debug-自定义日志："><a href="#🔍-a-使用-tap-或-debug-自定义日志：" class="headerlink" title="🔍 a. 使用 tap 或 debug() 自定义日志："></a>🔍 a. 使用 <code>tap</code> 或 <code>debug()</code> 自定义日志：</h4><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; tap &#125; <span class="keyword">from</span> <span class="string">&#x27;rxjs/operators&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">myStream$</span>.<span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">tap</span>(<span class="function"><span class="params">val</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;流值:&#x27;</span>, val))</span><br><span class="line">).<span class="title function_">subscribe</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="🔥-b-打印订阅与取消订阅："><a href="#🔥-b-打印订阅与取消订阅：" class="headerlink" title="🔥 b. 打印订阅与取消订阅："></a>🔥 b. 打印订阅与取消订阅：</h4><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; finalize &#125; <span class="keyword">from</span> <span class="string">&#x27;rxjs/operators&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">data$</span>.<span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">tap</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Subscribed&#x27;</span>)),</span><br><span class="line">  <span class="title function_">finalize</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Unsubscribed&#x27;</span>))</span><br><span class="line">).<span class="title function_">subscribe</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="🧪-c-封装通用日志工具："><a href="#🧪-c-封装通用日志工具：" class="headerlink" title="🧪 c. 封装通用日志工具："></a>🧪 c. 封装通用日志工具：</h4><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> debug&lt;T&gt;(<span class="attr">label</span>: <span class="built_in">string</span>): <span class="title class_">MonoTypeOperatorFunction</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">pipe</span>(</span><br><span class="line">    <span class="title function_">tap</span>(</span><br><span class="line">      <span class="function"><span class="params">val</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[<span class="subst">$&#123;label&#125;</span>] next:`</span>, val),</span><br><span class="line">      <span class="function"><span class="params">err</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[<span class="subst">$&#123;label&#125;</span>] error:`</span>, err),</span><br><span class="line">      <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[<span class="subst">$&#123;label&#125;</span>] complete`</span>)</span><br><span class="line">    )</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="💡-三、RxJS-性能优化建议"><a href="#💡-三、RxJS-性能优化建议" class="headerlink" title="💡 三、RxJS 性能优化建议"></a>💡 三、RxJS 性能优化建议</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>多次订阅</td>
+<td>多处 <code>subscribe()</code> 无合并</td>
+<td>用 <code>shareReplay</code>, <code>async pipe</code>, <code>takeUntil</code> 管理订阅</td>
+</tr>
+<tr>
+<td>组件销毁未取消订阅</td>
+<td><code>ngOnDestroy</code> 忽略了清理</td>
+<td>用 <code>takeUntil</code>, <code>Subscription</code> 管理</td>
+</tr>
+<tr>
+<td>高频输入或滚动触发过多</td>
+<td><code>keyup</code>, <code>scroll</code> 等原始流未节流</td>
+<td>使用 <code>debounceTime</code>, <code>throttleTime</code> 降低频率</td>
+</tr>
+<tr>
+<td><code>switchMap</code> 内嵌请求混乱</td>
+<td>多个请求未被正确取消</td>
+<td>仅使用 <code>switchMap</code> 或 <code>exhaustMap</code> 管理竞态请求</td>
+</tr>
+<tr>
+<td>数据层逻辑过于复杂</td>
+<td>链式 <code>pipe</code> 太长，难调试</td>
+<td>拆分流逻辑，用命名函数封装操作符</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🛡️-四、检测内存泄漏（RxJS-特别常见）"><a href="#🛡️-四、检测内存泄漏（RxJS-特别常见）" class="headerlink" title="🛡️ 四、检测内存泄漏（RxJS 特别常见）"></a>🛡️ 四、检测内存泄漏（RxJS 特别常见）</h2><h3 id="✅-使用-Chrome-DevTools-→-Memory-快照"><a href="#✅-使用-Chrome-DevTools-→-Memory-快照" class="headerlink" title="✅ 使用 Chrome DevTools → Memory 快照"></a>✅ 使用 Chrome DevTools → Memory 快照</h3><ol>
+<li>打开 Memory 面板</li>
+<li>创建快照 → 触发交互 → 再拍快照</li>
+<li>查看是否有组件或流对象未被释放</li>
+<li>使用 “Retainers” 找出引用链是否是未清理的 Subscription</li>
+</ol>
+<hr>
+<h2 id="🚀-示例：RxJS-内存泄漏典型场景"><a href="#🚀-示例：RxJS-内存泄漏典型场景" class="headerlink" title="🚀 示例：RxJS 内存泄漏典型场景"></a>🚀 示例：RxJS 内存泄漏典型场景</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;...&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">implements</span> <span class="title class_">OnInit</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> destroy$ = <span class="keyword">new</span> <span class="title class_">Subject</span>&lt;<span class="built_in">void</span>&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="title function_">ngOnInit</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">service</span>.<span class="title function_">getData</span>().<span class="title function_">pipe</span>(</span><br><span class="line">      <span class="title function_">takeUntil</span>(<span class="variable language_">this</span>.<span class="property">destroy$</span>)</span><br><span class="line">    ).<span class="title function_">subscribe</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">ngOnDestroy</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">destroy$</span>.<span class="title function_">next</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">destroy$</span>.<span class="title function_">complete</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📘-五、实用工具推荐"><a href="#📘-五、实用工具推荐" class="headerlink" title="📘 五、实用工具推荐"></a>📘 五、实用工具推荐</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rxjs-spy</code></td>
+<td>观察流的生命周期，自动打印</td>
+</tr>
+<tr>
+<td><code>ng-profiler</code>（Node）</td>
+<td>分析 Angular 渲染调用栈</td>
+</tr>
+<tr>
+<td><code>Zone.js Profiler</code></td>
+<td>分析异步任务（定时器、HTTP）调度</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-总结流程图"><a href="#✅-总结流程图" class="headerlink" title="✅ 总结流程图"></a>✅ 总结流程图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">用户操作 → DevTools Record</span><br><span class="line">              ↓</span><br><span class="line">      Angular DevTools 检查变更次数</span><br><span class="line">              ↓</span><br><span class="line">   RxJS tap/debug 检查流频率和订阅</span><br><span class="line">              ↓</span><br><span class="line">       Memory Snapshot 排查泄漏</span><br><span class="line">              ↓</span><br><span class="line">       优化：取消订阅 + 节流 + 合并流</span><br></pre></td></tr></table></figure>
+
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#Service Worker" >
+    <span class="tag-code">Service Worker</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">
+        <span class="nav-arrow">← </span>
+        
+          js v8内存空间
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/06/backend_skills/go/go%20vs%20java/">
+        
+          Go 与 java
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E4%B8%80%E3%80%81%E5%B8%B8%E8%A7%81-RxJS-%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">🔍 一、常见 RxJS 性能问题类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B0-%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">🧰 二、核心工具与步骤</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-1-Chrome-DevTools-Performance-%E9%9D%A2%E6%9D%BF"><span class="toc-nav-text">✅ 1. Chrome DevTools Performance 面板</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-2-Angular-DevTools"><span class="toc-nav-text">✅ 2. Angular DevTools</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-3-RxJS-%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="toc-nav-text">✅ 3. RxJS 调试技巧</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%94%8D-a-%E4%BD%BF%E7%94%A8-tap-%E6%88%96-debug-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%EF%BC%9A"><span class="toc-nav-text">🔍 a. 使用 tap 或 debug() 自定义日志：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%94%A5-b-%E6%89%93%E5%8D%B0%E8%AE%A2%E9%98%85%E4%B8%8E%E5%8F%96%E6%B6%88%E8%AE%A2%E9%98%85%EF%BC%9A"><span class="toc-nav-text">🔥 b. 打印订阅与取消订阅：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%A7%AA-c-%E5%B0%81%E8%A3%85%E9%80%9A%E7%94%A8%E6%97%A5%E5%BF%97%E5%B7%A5%E5%85%B7%EF%BC%9A"><span class="toc-nav-text">🧪 c. 封装通用日志工具：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%B8%89%E3%80%81RxJS-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">💡 三、RxJS 性能优化建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A1%EF%B8%8F-%E5%9B%9B%E3%80%81%E6%A3%80%E6%B5%8B%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%EF%BC%88RxJS-%E7%89%B9%E5%88%AB%E5%B8%B8%E8%A7%81%EF%BC%89"><span class="toc-nav-text">🛡️ 四、检测内存泄漏（RxJS 特别常见）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BD%BF%E7%94%A8-Chrome-DevTools-%E2%86%92-Memory-%E5%BF%AB%E7%85%A7"><span class="toc-nav-text">✅ 使用 Chrome DevTools → Memory 快照</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E7%A4%BA%E4%BE%8B%EF%BC%9ARxJS-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">🚀 示例：RxJS 内存泄漏典型场景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%98-%E4%BA%94%E3%80%81%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">📘 五、实用工具推荐</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-nav-text">✅ 总结流程图</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/05/front_skills/angular/angular rxjs性能问题/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2025 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
