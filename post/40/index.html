@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/20/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-isEmpty/">《Lodash源码阅读笔记》- isEmpty</a>
+      </h2>
+      <p class="article-date">January 20, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#Lodash" >
+    <span class="tag-code">Lodash</span>
+  </a>
+
+  <a target="_blank" href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+  <a target="_blank" href="/tags#阅读笔记" >
+    <span class="tag-code">阅读笔记</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          isEmpty，用于判断传入值，是否为空对象、空集合([],map,set).判断依据的标准为：
+
+没有可迭代的字符串键
+array,str 等参数的 length &lt; 1 
+map,set 类 ，size &lt; 1.
+其余的一律认为空，譬如true
+
+源码如下：123456789 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/20/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-isEmpty/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/19/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-delay/">《Lodash源码阅读笔记》- delay</a>
+      </h2>
+      <p class="article-date">January 19, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#Lodash" >
+    <span class="tag-code">Lodash</span>
+  </a>
+
+  <a target="_blank" href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+  <a target="_blank" href="/tags#阅读笔记" >
+    <span class="tag-code">阅读笔记</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          需求背景D3 tooltip内容过多，需要展示滚动条。鼠标离开定位后，立刻触发mouseout,此时tooltip会隐藏。但是，需求是不能隐藏。那么久从离开到隐藏之间，存在一定时间的隐藏。
+用delay实现12345678# 全局变量控制 cancelDealHandler()&#123;  ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/19/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-delay/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/18/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BA%91%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《微信小程序》-云开发学习笔记</a>
+      </h2>
+      <p class="article-date">January 18, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          2019年，小程序云端开发上线，一直没有好好的去学习，如今serverless如火如荼。今天，重新学习下，并记录如下理解心得：假定小程序云端开发，简称云端，便于下文使用，减少累赘。
+云端能力
+
+
+能力
+作用
+说明
+
+
+
+云函数
+无需自建服务器
+在云端运行的代码，微信私有协议天然鉴权，开发者只 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/18/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BA%91%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/18/dev_tool_skills/git/%E3%80%8AGithub%20Action%E3%80%8B-%20%E4%B8%80%E9%94%AEpush-code%EF%BC%8C%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9/">《Github Action》- 一键push-code，自动构建个人博客站点</a>
+      </h2>
+      <p class="article-date">January 18, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+  <a target="_blank" href="/tags#GitHub Action" >
+    <span class="tag-code">GitHub Action</span>
+  </a>
+
+  <a target="_blank" href="/tags#构建" >
+    <span class="tag-code">构建</span>
+  </a>
+
+  <a target="_blank" href="/tags#云" >
+    <span class="tag-code">云</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          个人博客站点，本人使用是hexo.常规的操作就是本地编辑好，然后手动部署。有了GitHub action，就解决了自动化部署问题。更多关于手动部署，请查阅 Hexo。
+GitHub 新建个人博客分支my-blog 假设读者已会，不做赘述。 另外提一句，GitHub针对3人一下，支持新建pri ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/18/dev_tool_skills/git/%E3%80%8AGithub%20Action%E3%80%8B-%20%E4%B8%80%E9%94%AEpush-code%EF%BC%8C%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%AB%99%E7%82%B9/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/17/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20%E5%8F%AA%E8%BE%93%E5%85%A5%E4%B8%80%E6%AC%A1%E5%AF%86%E7%A0%81%E6%93%8D%E4%BD%9C%E9%85%8D%E7%BD%AE/">《Git》- 只输入一次密码操作配置</a>
+      </h2>
+      <p class="article-date">January 17, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          直接进入主题，每次提交代码，都需要输入一次username、password，有点繁琐。那如何配置一次即可呢？本文假设前提，你已有git账户密码、配置好了key。
+git安装  直接一步步next
+查看git system配置git config –systeml -l 12 $ git c ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/17/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20%E5%8F%AA%E8%BE%93%E5%85%A5%E4%B8%80%E6%AC%A1%E5%AF%86%E7%A0%81%E6%93%8D%E4%BD%9C%E9%85%8D%E7%BD%AE/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/01/16/front_skills/node/%E3%80%8ANode%E3%80%8B-node%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD/">《Node》- node安装与卸载</a>
+      </h2>
+      <p class="article-date">January 16, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          mac环境下，pkg包安装nodejs 官网下载验证12&gt; which node/User/&lt;your&#x27;s-user-name&gt;/.nvm/versions/node/&lt;latest-node-lts-version&gt;/bin/node
+12&gt;  ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/01/16/front_skills/node/%E3%80%8ANode%E3%80%8B-node%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/39/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/41/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Flutter》- flutter环境搭建 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Flutter》- flutter环境搭建</h2>
+  <p class="post-date">2020-12-27</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="git-代码"><a href="#git-代码" class="headerlink" title="git 代码"></a>git 代码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/flutter/flutter.git -b stable</span><br></pre></td></tr></table></figure>
+<h4 id="git-Doc"><a href="#git-Doc" class="headerlink" title="git Doc"></a>git Doc</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Using-Flutter-in-China">https://github.com/flutter/flutter/wiki/Using-Flutter-in-China </a></p>
+</blockquote>
+<h4 id="flutter-SDK"><a href="#flutter-SDK" class="headerlink" title="flutter SDK"></a>flutter SDK</h4><blockquote>
+<p>git 下载地址:<br><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/releases">https://github.com/flutter/flutter/releases</a></p>
+</blockquote>
+<h4 id="配置加速"><a href="#配置加速" class="headerlink" title="配置加速"></a>配置加速</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn //国内用户需要设置</span><br><span class="line">export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn //国内用户需要设置</span><br></pre></td></tr></table></figure>
+<h4 id="配置path"><a href="#配置path" class="headerlink" title="配置path"></a>配置path</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 仅仅当前window有效</span><br><span class="line">export PATH=&lt;path&gt;flutter/bin:$PATH </span><br><span class="line"></span><br><span class="line"># 长久有效,配置 $HOME/.bash_profile or $HOME/.bashrc</span><br><span class="line">192:~ hu$ flutter --version</span><br><span class="line">Flutter 1.12.13+hotfix.8 • channel stable •</span><br><span class="line">https://github.com/flutter/flutter.git</span><br><span class="line">Framework • revision 0b8abb4724 (6 weeks ago) • 2020-02-11 11:44:36 -0800</span><br><span class="line">Engine • revision e1e6ced81d</span><br><span class="line">Tools • Dart 2.7.0</span><br></pre></td></tr></table></figure>
+<h4 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/03/24/8bwjeJ.md.png"></p>
+<h4 id="xcode"><a href="#xcode" class="headerlink" title="xcode"></a>xcode</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer</span><br><span class="line">$ sudo xcodebuild -runFirstLaunch</span><br><span class="line">$ sudo xcodebuild -license </span><br><span class="line">....</span><br><span class="line">you can view the license agreements in Xcode&#x27;s About Box, or at /Applications/Xcode.app/Contents/Resources/English.lproj/License.rtf</span><br></pre></td></tr></table></figure>
+<h4 id="模拟器"><a href="#模拟器" class="headerlink" title="模拟器"></a>模拟器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ open -a Simulator</span><br></pre></td></tr></table></figure>
+<p> <img src="https://s1.ax1x.com/2020/03/24/8brInU.md.png" width="180" height="330"></img></p>
+<h4 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ flutter create my_app</span><br><span class="line">$ flutter pub get </span><br><span class="line">$ flutter run </span><br></pre></td></tr></table></figure>
+<p> <img src="https://s1.ax1x.com/2020/03/24/8bs6KK.md.png" width="500" height="400"></img></p>
+<h4 id="deploy-to-ios"><a href="#deploy-to-ios" class="headerlink" title="deploy to ios"></a>deploy to ios</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gem install cocoapods</span><br><span class="line"></span><br><span class="line">#打开xcode</span><br><span class="line">open ios/Runner.xcworkspace</span><br><span class="line"></span><br><span class="line">$ pod setup</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="查看模拟器列表"><a href="#查看模拟器列表" class="headerlink" title="查看模拟器列表"></a>查看模拟器列表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm install ios-sim -g</span><br><span class="line"></span><br><span class="line"># 查看列表</span><br><span class="line">xcrun simctl list</span><br><span class="line"></span><br><span class="line">#关闭所有模拟器</span><br><span class="line">xcrun simctl shutdown all</span><br><span class="line"></span><br><span class="line">#启动特定模拟器</span><br><span class="line">xcrun simctl boot xuuid</span><br><span class="line"></span><br><span class="line">xcrun xctrace -l </span><br></pre></td></tr></table></figure>
+
+<h3 id="如何选择Flutter-vs-Nativescript"><a href="#如何选择Flutter-vs-Nativescript" class="headerlink" title="如何选择Flutter vs Nativescript "></a><a target="_blank" rel="noopener" href="https://www.simform.com/flutter-vs-nativescript/#performance">如何选择Flutter vs Nativescript </a></h3><blockquote>
+<p>如果要执行以下操作，请选择Flutter： </p>
+</blockquote>
+<ul>
+<li>开发具有前端和后端功能的单个代码。 </li>
+<li>创造强大的物质主义和流畅的设计体验。 </li>
+<li>使用实时数据库和现代云服务构建本机应用。 </li>
+<li>使用反应性小部件和按需移动功能构建MVP。 </li>
+<li>提供未来的UI更新和升级到可与Jellybean OS和iOS 8一起使用的平台。 </li>
+<li>通过集成代码魔术来支持持续集成（CI），确保无缝开发过程。</li>
+</ul>
+<blockquote>
+<p>如果要执行以下操作，请选择NativeScript： </p>
+</blockquote>
+<ul>
+<li>利用您现有的开发团队的Angular，TypeScript或Vue技能来构建本机应用程序。 </li>
+<li>以指数方式重用Android SDK和CocoaPods来创建可扩展的本机应用程序。 </li>
+<li>从开发人员那里获得强大的社区支持，他们还支持NativeScript for NASDAQ。 </li>
+<li>在Android和iOS平台之间共享单个代码库，以将应用程序扩展到Web平台。</li>
+<li>借助MVP之类的功能并以更快的开发速度构建企业级移动应用程序。 </li>
+<li>将Angular或基于Vue的Web应用程序过渡到移动平台。</li>
+</ul>
+<h4 id="extension"><a href="#extension" class="headerlink" title="extension"></a><a target="_blank" rel="noopener" href="https://flutter.dev/docs/development/tools/devtools/vscode">extension</a></h4><p> <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code">Dart</a><br> <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter">Flutter</a></p>
+<h4 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h4><p> <a target="_blank" rel="noopener" href="https://flutter.dev/docs/development/tools/devtools">devTool</a></p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p> <a target="_blank" rel="noopener" href="https://flutter.dev/docs/get-started/install/macos#update-your-path">flutter</a><br> <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019770176">flutter配置</a></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/12/25/app_develop_skills/%E3%80%8ADNS%E3%80%8B-%20DNS%E6%B1%A1%E6%9F%93HomeBrew%E5%A4%B1%E8%B4%A5/">
+        <span class="nav-arrow">← </span>
+        
+          《DNS》- DNS污染HomeBrew失败
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2021/01/12/dev_tool_skills/mac/%E3%80%8AMac%E3%80%8B-%20mac%E4%B8%8B%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98%E5%86%99%E5%85%A5%E4%B8%8D%E4%BA%86/">
+        
+          《Mac》- mac下移动硬盘写入不了
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#git-%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">git 代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#git-Doc"><span class="toc-nav-text">git Doc</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#flutter-SDK"><span class="toc-nav-text">flutter SDK</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8A%A0%E9%80%9F"><span class="toc-nav-text">配置加速</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AEpath"><span class="toc-nav-text">配置path</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A3%80%E6%9F%A5"><span class="toc-nav-text">检查</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#xcode"><span class="toc-nav-text">xcode</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="toc-nav-text">模拟器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">新建项目</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#deploy-to-ios"><span class="toc-nav-text">deploy to ios</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%A8%A1%E6%8B%9F%E5%99%A8%E5%88%97%E8%A1%A8"><span class="toc-nav-text">查看模拟器列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9Flutter-vs-Nativescript"><span class="toc-nav-text">如何选择Flutter vs Nativescript </span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#extension"><span class="toc-nav-text">extension</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#debug"><span class="toc-nav-text">debug</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/12/27/app_develop_skills/《Flutter》- flutter环境搭建/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

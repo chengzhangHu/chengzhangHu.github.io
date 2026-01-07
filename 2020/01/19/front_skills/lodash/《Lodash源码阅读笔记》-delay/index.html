@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Lodash源码阅读笔记》- delay | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Lodash源码阅读笔记》- delay</h2>
+  <p class="post-date">2020-01-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><p>D3 tooltip内容过多，需要展示滚动条。鼠标离开定位后，立刻触发mouseout,此时tooltip会隐藏。<br>但是，需求是不能隐藏。那么久从离开到隐藏之间，存在一定时间的隐藏。</p>
+<h4 id="用delay实现"><a href="#用delay实现" class="headerlink" title="用delay实现"></a>用delay实现</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 全局变量控制</span><br><span class="line"> cancelDealHandler()&#123;</span><br><span class="line">     if(something)&#123; //取消</span><br><span class="line">         cancle = true;</span><br><span class="line">     &#125;else &#123;</span><br><span class="line">         cancle = false;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">line.on(&#x27;mouseover&#x27;,() =&gt; &#123;</span><br><span class="line">    //触发tooltip显示</span><br><span class="line">    showTip();</span><br><span class="line">&#125;).on(&#x27;mouseout&#x27;,() =&gt; &#123; </span><br><span class="line">   _.delay(() =&gt; &#123;</span><br><span class="line">       if(cancle)&#123; //取消隐藏,全局变量控制</span><br><span class="line">         return;</span><br><span class="line">       &#125;</span><br><span class="line">       hideTip();</span><br><span class="line">   &#125;,3000);</span><br><span class="line">&#125;)</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+<h4 id="上述方法实现总结"><a href="#上述方法实现总结" class="headerlink" title="上述方法实现总结"></a>上述方法实现总结</h4><ul>
+<li>确实能做到tip显示控制</li>
+<li>不过，存在严重缺陷，小伙伴你知道吗？</li>
+</ul>
+<h4 id="我们查看下delay源码"><a href="#我们查看下delay源码" class="headerlink" title="我们查看下delay源码"></a>我们查看下delay源码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Invokes `func` after `wait` milliseconds. Any additional arguments are</span><br><span class="line"> * provided to `func` when it&#x27;s invoked.</span><br><span class="line"> *</span><br><span class="line"> * @since 0.1.0</span><br><span class="line"> * @category Function</span><br><span class="line"> * @param &#123;Function&#125; func The function to delay.</span><br><span class="line"> * @param &#123;number&#125; wait The number of milliseconds to delay invocation.</span><br><span class="line"> * @param &#123;...*&#125; [args] The arguments to invoke `func` with.</span><br><span class="line"> * @returns &#123;number&#125; Returns the timer id.</span><br><span class="line"> * @example</span><br><span class="line"> *</span><br><span class="line"> * delay(text =&gt; console.log(text), 1000, &#x27;later&#x27;)</span><br><span class="line"> * // =&gt; Logs &#x27;later&#x27; after one second.</span><br><span class="line"> */</span><br><span class="line">function delay(func, wait, ...args) &#123;</span><br><span class="line">  if (typeof func !== &#x27;function&#x27;) &#123;</span><br><span class="line">    throw new TypeError(&#x27;Expected a function&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line">  return setTimeout(func, +wait || 0, ...args)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default delay</span><br></pre></td></tr></table></figure>
+<p>哦哦，原来，底层使用setTimeout!!!</p>
+<h4 id="上述方法的问题："><a href="#上述方法的问题：" class="headerlink" title="上述方法的问题："></a>上述方法的问题：</h4><pre><code>* 没调用一次delay,触发一次setTimeout
+* 大量的mouseout,那么久会产生很多setTimout
+* 过多的setTimout,会进入排队等待执行，
+* 当某次代码执行到hideTip()前，cancel= true,但是此时依旧会隐藏tip.
+* 没有及时清空timer,虽然只会执行一次
+</code></pre>
+<h4 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 全局变量控制</span><br><span class="line"> cancelDealHandler()&#123;</span><br><span class="line">     if(something)&#123; //取消</span><br><span class="line">         clearTimeout(delayTimer);</span><br><span class="line">     &#125;else &#123;</span><br><span class="line">         hideTip();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">line.on(&#x27;mouseover&#x27;,() =&gt; &#123;</span><br><span class="line">     //触发tooltip显示</span><br><span class="line">     clearTimeout(delayTimer);</span><br><span class="line">     showTip();</span><br><span class="line"> &#125;).on(&#x27;mouseout&#x27;,() =&gt; &#123; </span><br><span class="line">    clearTimeout(delayTimer);</span><br><span class="line">    delayTimer = _.delay(() =&gt; &#123;</span><br><span class="line">        hideTip();</span><br><span class="line">    &#125;,3000);</span><br><span class="line"> &#125;)</span><br><span class="line"> ;</span><br></pre></td></tr></table></figure>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#Lodash" >
+    <span class="tag-code">Lodash</span>
+  </a>
+
+  <a target="_blank" href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+  <a target="_blank" href="/tags#阅读笔记" >
+    <span class="tag-code">阅读笔记</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/01/18/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BA%91%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        <span class="nav-arrow">← </span>
+        
+          《微信小程序》-云开发学习笔记
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/01/20/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-isEmpty/">
+        
+          《Lodash源码阅读笔记》- isEmpty
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%9C%80%E6%B1%82%E8%83%8C%E6%99%AF"><span class="toc-nav-text">需求背景</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%94%A8delay%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">用delay实现</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8A%E8%BF%B0%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%80%BB%E7%BB%93"><span class="toc-nav-text">上述方法实现总结</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%88%91%E4%BB%AC%E6%9F%A5%E7%9C%8B%E4%B8%8Bdelay%E6%BA%90%E7%A0%81"><span class="toc-nav-text">我们查看下delay源码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8A%E8%BF%B0%E6%96%B9%E6%B3%95%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-nav-text">上述方法的问题：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%94%B9%E8%BF%9B"><span class="toc-nav-text">改进</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/01/19/front_skills/lodash/《Lodash源码阅读笔记》-delay/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

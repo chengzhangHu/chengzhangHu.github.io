@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular》- webworker 、service worker、 PWA 区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular》- webworker 、service worker、 PWA 区别</h2>
+  <p class="post-date">2020-09-27</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="webworker"><a href="#webworker" class="headerlink" title="webworker"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">webworker</a></h3><blockquote>
+<p>开启子线程运行cpu计算任务，减轻主线程计算任务，提升用户交互体验<br>webworker 需要考虑兼容性,SSR端不支持</p>
+</blockquote>
+<ul>
+<li><p>支持：</p>
+</li>
+<li><p>websocket</p>
+</li>
+<li><p>通过message，线程之间共享信息</p>
+</li>
+<li><p>不支持：</p>
+</li>
+<li><p>不支持dom操作，</p>
+</li>
+<li><p>部分windows方法不支持，</p>
+</li>
+<li><p>不支持内存变量共享，</p>
+</li>
+<li><p>ajax支持存在问题，待验证，axios如何？？</p>
+</li>
+</ul>
+<blockquote>
+<p>存在以下几种分类：</p>
+</blockquote>
+<ul>
+<li>专门完成计算型任务的 “Computed Worders” </li>
+<li>iframe等共享的 Shared workers</li>
+<li>提升网络用户体验的 Service workers</li>
+<li>支持度有限的 Chrome Workers</li>
+</ul>
+<h4 id="webworker-angular-创建"><a href="#webworker-angular-创建" class="headerlink" title="webworker angular 创建"></a>webworker angular 创建</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ng generate web-worker &lt;location&gt; </span><br><span class="line"></span><br><span class="line">#相对于src/app路径</span><br><span class="line">ng g webWorker hello/hello --force --snippet</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>相对于angular项目root路径，angular.json中配置。</p>
+</blockquote>
+  <img src="https://s1.ax1x.com/2020/09/28/0ArszR.png" width="500" height="400">
+  
+<blockquote>
+<p>另外也可以通过vscode插件创建</p>
+</blockquote>
+<blockquote>
+<p>文件命名路径层级使用&#x2F;表示</p>
+</blockquote>
+<p>  <img src="https://s1.ax1x.com/2020/09/28/0ArgL6.png"></p>
+<blockquote>
+<p>初次调用，会生成2个文件</p>
+</blockquote>
+<ul>
+<li>tsconfig.worker.json</li>
+<li>xx.worker.ts文件</li>
+<li>更新angular.json文件</li>
+</ul>
+<blockquote>
+<p>再次调用，</p>
+</blockquote>
+<ul>
+<li>会更新对应组件</li>
+<li>更新angular.json</li>
+</ul>
+<blockquote>
+<p>angular小知识点 - 组件前缀控制<br>  <img src="https://s1.ax1x.com/2020/09/28/0ArXTS.md.png"></p>
+</blockquote>
+<h4 id="webworker-code编写"><a href="#webworker-code编写" class="headerlink" title="webworker code编写"></a>webworker code编写</h4><blockquote>
+<p>webworker<br> <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/// &lt;reference lib=&quot;webworker&quot; /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">&#123; data &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;get data ...&quot;</span>,data);</span><br><span class="line">  <span class="keyword">const</span> response = <span class="string">`Hi <span class="subst">$&#123;data&#125;</span>,good morning,`</span>;</span><br><span class="line">  <span class="title function_">postMessage</span>(response);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>主线程code<br> <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Worker</span> !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">   <span class="comment">// Create a new</span></span><br><span class="line">   <span class="keyword">const</span> worker = <span class="keyword">new</span> <span class="title class_">Worker</span>(<span class="string">&#x27;./hello.worker&#x27;</span>, &#123; <span class="attr">type</span>: <span class="string">&#x27;module&#x27;</span> &#125;);</span><br><span class="line">   worker.<span class="property">onmessage</span> = <span class="function">(<span class="params">&#123; data &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">     <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`click hello and get response message: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">   &#125;;</span><br><span class="line">   worker.<span class="title function_">postMessage</span>(<span class="string">&#x27;xiaoming&#x27;</span>);</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;worker not support ...&quot;</span>);</span><br><span class="line">   <span class="comment">// Web Workers are not supported in this environment.</span></span><br><span class="line">   <span class="comment">// You should add a fallback so that your program still executes correctly.</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>效果<br> <img src="https://s1.ax1x.com/2020/09/28/0AsulR.gif"></p>
+</blockquote>
+<h3 id="servicework"><a href="#servicework" class="headerlink" title="servicework"></a><a target="_blank" rel="noopener" href="https://angular.io/guide/service-worker-intro">servicework</a></h3><blockquote>
+<p>是开启pwa关键一步,是运行在浏览器、web app与network之间的的代理服务，web app不直连网络，减少依赖<br>主要用于管理应用的缓存，是一种特殊的web worker</p>
+</blockquote>
+<ul>
+<li>是脚本，可编码，不需要服务端header 参与缓存管理</li>
+<li>不仅仅支持http请求，也支持js，css资源缓存</li>
+<li>主要用于拦截请求，改变响应内容，资源只有修改了，才会重新请求</li>
+</ul>
+<h4 id="angular-service-worker"><a href="#angular-service-worker" class="headerlink" title="angular service worker "></a><a target="_blank" rel="noopener" href="https://angular.io/guide/service-worker-intro">angular service worker </a></h4><blockquote>
+<p>manifest文件， 从服务端获取，由cli配置文件 ngsw-config.json 文件生成</p>
+</blockquote>
+<ul>
+<li>定义了缓存哪些文件，以及缓存文件内容的hash值</li>
+<li>推荐使用最新版angular，angular-cli</li>
+<li>本地不要求后端服务http，其他要求基于https协议</li>
+<li>可以检查内容更新、进行更新推送通知，如果浏览器端不支持，则新特性不会发生。  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可以使用此方法，检测，避免不支持，不停的抛出错误</span></span><br><span class="line"><span class="keyword">if</span>(<span class="title class_">SwUpdate</span>.<span class="title function_">isEnabled</span>())&#123;</span><br><span class="line">  <span class="title class_">SwUpdate</span>.<span class="title function_">checkForUpdate</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>没有使用service-worker,刷新界面，会出现页面不可用<br> <img src="https://s1.ax1x.com/2020/10/18/0O5ynI.png"></li>
+</ul>
+<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><ul>
+<li><p>添加angular service-worker支持</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng add @angular/pwa --project angular-demo</span><br></pre></td></tr></table></figure>
+<p> <img src="https://s1.ax1x.com/2020/10/18/0O57Bq.png"></p>
+</li>
+<li><p>构建应用 –prod，为了资源压缩</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod </span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/10/18/0O5jCF.md.png"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/http-server">http-server</a>支持service-worker加载静态资源</p>
+<blockquote>
+<p>需要留意是否全局安装，</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i http-server  --global</span><br><span class="line"></span><br><span class="line">http-server -p 8080 -c-1 dist/angular-demo</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/10/18/0OIQVP.png"></p>
+</li>
+<li><p>刷新界面，查看效果<br><img src="https://s1.ax1x.com/2020/10/18/0OI158.png"></p>
+</li>
+</ul>
+<h3 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.smashingmagazine.com/2018/09/pwa-angular-6/">Progressive Web App </a><br>表现类似于本地app，但是通过该网络url调用，那么版本更新就快了</p>
+</blockquote>
+<ul>
+<li>Progressive<br>Work for every user, regardless of browser choice, because they are built with progressive enhancement as a core tenet.</li>
+<li>Responsive<br>Fit any form factor, desktop, mobile, tablet, or whatever is next.</li>
+<li>Connectivity independent<br>Enhanced with service workers to work offline or on low-quality networks.</li>
+<li>App-like<br>Use the app-shell model to provide app-style navigation and interactions.</li>
+<li>Fresh<br>Always up-to-date thanks to the service worker update process.</li>
+<li>Safe<br>Served via HTTPS to prevent snooping and ensure content has not been tampered with.</li>
+<li>Discoverable<br>Are identifiable as “applications” thanks to W3C manifests and service worker registration scope allowing search engines to find them.</li>
+<li>Re-engageable<br>Make re-engagement easy through features like push notifications.</li>
+<li>Installable<br>Allow users to “keep” apps they find most useful on their home screen without the hassle of an app store.</li>
+<li>Linkable<br>Easily share via URL and not require complex installation.</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#webWorker" >
+    <span class="tag-code">webWorker</span>
+  </a>
+
+  <a target="_blank" href="/tags#webservice" >
+    <span class="tag-code">webservice</span>
+  </a>
+
+  <a target="_blank" href="/tags#PWA" >
+    <span class="tag-code">PWA</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/25/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%20rpm%20yum%E7%AE%A1%E7%90%86/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell rpm yum管理
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/09/28/do_at_workspace/%E3%80%8A%E6%8A%80%E6%9C%AF%E7%B4%A0%E5%85%BB%E3%80%8B-%20%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99/">
+        
+          《技术素养》- 编程原则
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#webworker"><span class="toc-nav-text">webworker</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#webworker-angular-%E5%88%9B%E5%BB%BA"><span class="toc-nav-text">webworker angular 创建</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#webworker-code%E7%BC%96%E5%86%99"><span class="toc-nav-text">webworker code编写</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#servicework"><span class="toc-nav-text">servicework</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#angular-service-worker"><span class="toc-nav-text">angular service worker </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">如何使用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#PWA"><span class="toc-nav-text">PWA</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/26/front_skills/angular/《Angular》- webwork servicework PWA 区别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

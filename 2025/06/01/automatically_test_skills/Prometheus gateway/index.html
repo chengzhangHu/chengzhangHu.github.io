@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Prometheus gateway | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Prometheus gateway</h2>
+  <p class="post-date">2025-06-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="📌-回顾一下流程"><a href="#📌-回顾一下流程" class="headerlink" title="📌 回顾一下流程"></a>📌 回顾一下流程</h2><p>E2E 测试 (Cypress &#x2F; Playwright)<br>       ↓<br>自定义脚本 pushMetric() 推送指标<br>       ↓<br>Prometheus PushGateway (暂存指标)<br>       ↓<br>Prometheus 定时抓取 PushGateway 的数据<br>       ↓<br>Prometheus 存储数据（时间序列数据库）<br>       ↓<br>Grafana 展示 Prometheus 中的数据</p>
+<h2 id="PushGateway-的作用和数据存储原理"><a href="#PushGateway-的作用和数据存储原理" class="headerlink" title="PushGateway 的作用和数据存储原理"></a>PushGateway 的作用和数据存储原理</h2><p>🔄 PushGateway 的定位<br>PushGateway 是 中转站，用于 主动推送（push） 的监控数据。</p>
+<p>它 不会持久化数据 —— 所有数据都是驻留在内存中。</p>
+<p>Prometheus 会定期来拉取（scrape）这些驻留的数据。</p>
+<p>🧯 数据生命周期<br>数据存在于 PushGateway 的内存里，直到：</p>
+<p>被 Prometheus 抓取到。</p>
+<p>被新的指标（用相同 job+instance 标签）覆盖。</p>
+<p>被手动或程序调用 DELETE API 清理。</p>
+<p>🗃️ Prometheus 的数据存储位置</p>
+<p>Prometheus 是一个 时间序列数据库，</p>
+<p>当它从 PushGateway 抓取到数据后，会将其存入本地存储（磁盘）。</p>
+<p>默认路径：&#x2F;prometheus（在容器中）</p>
+<p>如果你挂载 volume，如：<br>prometheus:<br>  volumes:<br>    - .&#x2F;prometheus-data:&#x2F;prometheus</p>
+<p>那数据会保存在宿主机的 .&#x2F;prometheus-data 目录中。</p>
+<p>📥 PushGateway 的抓取方式<br>Prometheus 配置中：</p>
+<p>scrape_configs:</p>
+<ul>
+<li>job_name: ‘pushgateway’<br>static_configs:<ul>
+<li>targets: [‘pushgateway:9091’]</li>
+</ul>
+</li>
+</ul>
+<p>表示 Prometheus 会 定时拉取 PushGateway 上的 &#x2F;metrics 页面。</p>
+<h2 id="举例：推送数据之后发生了什么"><a href="#举例：推送数据之后发生了什么" class="headerlink" title="举例：推送数据之后发生了什么"></a>举例：推送数据之后发生了什么</h2><p>你运行测试并执行：</p>
+<p>pushMetric({ job: ‘e2e_test’, value: 1 });</p>
+<p>PushGateway 在 &#x2F;metrics 暂存如下内容：</p>
+<h3 id="HELP-e2e-test-success-…"><a href="#HELP-e2e-test-success-…" class="headerlink" title="HELP e2e_test_success …"></a>HELP e2e_test_success …</h3><h3 id="TYPE-e2e-test-success-gauge"><a href="#TYPE-e2e-test-success-gauge" class="headerlink" title="TYPE e2e_test_success gauge"></a>TYPE e2e_test_success gauge</h3><p>e2e_test_success{job&#x3D;”e2e_test”} 1</p>
+<p>Prometheus 每 5s 来抓取一次：</p>
+<p>GET <a target="_blank" rel="noopener" href="http://pushgateway:9091/metrics">http://pushgateway:9091/metrics</a></p>
+<p>Prometheus 存入自己的本地数据库（时间戳+值）。<br>Grafana 读取 Prometheus 的时间序列数据库来画图。</p>
+<p>❗️注意事项</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>持久化</td>
+<td>PushGateway 不会持久化数据（重启就没了）。Prometheus 会保存。</td>
+</tr>
+<tr>
+<td>标签覆盖</td>
+<td>再次推送同一 job+instance 会覆盖旧值</td>
+</tr>
+<tr>
+<td>推送时机</td>
+<td>推送完必须在 Prometheus 抓取前不要清理，否则 Prometheus 抓不到</td>
+</tr>
+<tr>
+<td>清理</td>
+<td>推送完成后可以用 HTTP DELETE 请求清理 job（可选）</td>
+</tr>
+</tbody></table>
+<p>✅ 推荐实践<br>把 PushGateway 和 Prometheus 放在一个局域网 Docker 网络中。<br>每次测试完成后再推送指标，不用持续推。<br>使用 job&#x3D;test_job 和 instance&#x3D;test_suite_name 区分不同来源。<br>保证 Prometheus 的 scrape_interval 足够频繁（默认 15s，可设为 5s）。</p>
+<hr>
+<h3 id="✅-数据流全链路复盘"><a href="#✅-数据流全链路复盘" class="headerlink" title="✅ 数据流全链路复盘"></a>✅ 数据流全链路复盘</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">E2E 测试 (Cypress / Playwright)</span><br><span class="line">       ↓</span><br><span class="line">自定义脚本 pushMetric()</span><br><span class="line">       ↓</span><br><span class="line">PushGateway（内存暂存）</span><br><span class="line">       ↓</span><br><span class="line">Prometheus（周期抓取）</span><br><span class="line">       ↓</span><br><span class="line">Prometheus 本地 TSDB（时间序列数据库）</span><br><span class="line">       ↓</span><br><span class="line">Grafana 展示指标</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="💡-重点澄清与易混概念解析"><a href="#💡-重点澄清与易混概念解析" class="headerlink" title="💡 重点澄清与易混概念解析"></a>💡 重点澄清与易混概念解析</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PushGateway</strong></td>
+<td>仅在内存中暂存指标，无持久化；供 Prometheus 抓取；重启即清。</td>
+</tr>
+<tr>
+<td><strong>Prometheus</strong></td>
+<td>周期性抓取（pull model）；抓取后存储到本地 TSDB。</td>
+</tr>
+<tr>
+<td><strong>抓取 vs 推送</strong></td>
+<td>PushGateway 由客户端主动推送数据，Prometheus 负责拉取（scrape）。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🚨-注意事项补充"><a href="#🚨-注意事项补充" class="headerlink" title="🚨 注意事项补充"></a>🚨 注意事项补充</h3><table>
+<thead>
+<tr>
+<th>风险点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>❌ <strong>抓取前清理指标</strong></td>
+<td>会导致 Prometheus 抓不到数据。务必保证抓取后再清理。</td>
+</tr>
+<tr>
+<td>❌ <strong>多次推送覆盖数据</strong></td>
+<td>同一个 <code>job + instance</code> 会被覆盖，非叠加。</td>
+</tr>
+<tr>
+<td>❌ <strong>PushGateway 重启</strong></td>
+<td>数据全失，除非 Prometheus 已抓取保存。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🔧-推荐实践补充建议"><a href="#🔧-推荐实践补充建议" class="headerlink" title="🔧 推荐实践补充建议"></a>🔧 推荐实践补充建议</h3><ul>
+<li><p>设置 Prometheus 的 <code>scrape_interval</code> 为 5s（适配瞬时 E2E 测试）。</p>
+</li>
+<li><p>使用明确的标签组合区分测试来源：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">pushMetric</span>(&#123;</span><br><span class="line">  <span class="attr">job</span>: <span class="string">&#x27;e2e_test&#x27;</span>,</span><br><span class="line">  <span class="attr">instance</span>: <span class="string">&#x27;cypress_suite_1&#x27;</span>,</span><br><span class="line">  <span class="attr">labels</span>: &#123;</span><br><span class="line">    <span class="attr">env</span>: <span class="string">&#x27;staging&#x27;</span>,</span><br><span class="line">    <span class="attr">branch</span>: <span class="string">&#x27;feature-x&#x27;</span>,</span><br><span class="line">    <span class="attr">build_id</span>: <span class="string">&#x27;build-789&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">value</span>: <span class="number">1</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>定义一个专用清理脚本（可选）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X DELETE http://pushgateway:9091/metrics/job/e2e_test/instance/cypress_suite_1</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="✅-完整的-Demo-示例，包括："><a href="#✅-完整的-Demo-示例，包括：" class="headerlink" title="✅ 完整的 Demo 示例，包括："></a>✅ 完整的 Demo 示例，包括：</h3><ul>
+<li>一个最小可运行的 Prometheus + PushGateway Docker Compose 配置</li>
+<li><code>pushMetric()</code> 的 Node.js 脚本（或支持 TypeScript）</li>
+<li>Prometheus 的 <code>prometheus.yml</code> 配置</li>
+<li>Grafana 面板 JSON（展示 <code>e2e_test_success</code> 相关数据）</li>
+</ul>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#Prometheus" >
+    <span class="tag-code">Prometheus</span>
+  </a>
+
+  <a target="_blank" href="/tags#gateway" >
+    <span class="tag-code">gateway</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/30/front_package_build_skills/vite/vite%E4%B8%BA%E4%BD%95html%E5%85%A5%E5%8F%A3/">
+        <span class="nav-arrow">← </span>
+        
+          Vite 的入口是 HTML
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/06/02/bigdata_for_analyze/ai%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%89%8D%E7%AB%AF/">
+        
+          AI大模型的前端架构
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E5%9B%9E%E9%A1%BE%E4%B8%80%E4%B8%8B%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">📌 回顾一下流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#PushGateway-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86"><span class="toc-nav-text">PushGateway 的作用和数据存储原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9A%E6%8E%A8%E9%80%81%E6%95%B0%E6%8D%AE%E4%B9%8B%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-nav-text">举例：推送数据之后发生了什么</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HELP-e2e-test-success-%E2%80%A6"><span class="toc-nav-text">HELP e2e_test_success …</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TYPE-e2e-test-success-gauge"><span class="toc-nav-text">TYPE e2e_test_success gauge</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%85%A8%E9%93%BE%E8%B7%AF%E5%A4%8D%E7%9B%98"><span class="toc-nav-text">✅ 数据流全链路复盘</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E9%87%8D%E7%82%B9%E6%BE%84%E6%B8%85%E4%B8%8E%E6%98%93%E6%B7%B7%E6%A6%82%E5%BF%B5%E8%A7%A3%E6%9E%90"><span class="toc-nav-text">💡 重点澄清与易混概念解析</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%9A%A8-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%E8%A1%A5%E5%85%85"><span class="toc-nav-text">🚨 注意事项补充</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E6%8E%A8%E8%8D%90%E5%AE%9E%E8%B7%B5%E8%A1%A5%E5%85%85%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">🔧 推荐实践补充建议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%AE%8C%E6%95%B4%E7%9A%84-Demo-%E7%A4%BA%E4%BE%8B%EF%BC%8C%E5%8C%85%E6%8B%AC%EF%BC%9A"><span class="toc-nav-text">✅ 完整的 Demo 示例，包括：</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/06/01/automatically_test_skills/Prometheus gateway/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

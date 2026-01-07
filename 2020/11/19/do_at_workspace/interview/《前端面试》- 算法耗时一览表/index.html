@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《前端面试》- 算法耗时一览表 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《前端面试》- 算法耗时一览表</h2>
+  <p class="post-date">2020-11-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="排序算法时间复杂度"><a href="#排序算法时间复杂度" class="headerlink" title="排序算法时间复杂度"></a>排序算法时间复杂度</h3><img src="https://s3.jpg.cm/2020/11/19/rL0Rp.png" alt="Screen Shot 2020 11 19 at 08.53.22" border="0">
+<img src="https://s3.jpg.cm/2020/11/19/rL216.png" alt="Screen Shot 2020 11 19 at 08.53.41" border="0">
+
+<h3 id="算法提升"><a href="#算法提升" class="headerlink" title="算法提升"></a>算法提升</h3><blockquote>
+<p>唯有多练习</p>
+</blockquote>
+<h3 id="常见站点"><a href="#常见站点" class="headerlink" title="常见站点"></a>常见站点</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="http://uva.onlinejudge.org/">UVa Online Judge</a><br>  世界各大赛事的题目，包括由IBM赞助的ACM国际大学生程序竞赛</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.spoj.com/">Sphere Online Judge</a><br>  支持用更多语言解题（包括JavaScript）</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://coderbyte.com/">Coderbyte</a><br>  用JavaScript解答的题目（简单、中等难度和非常困难）</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://projecteuler.net/">Project Euler</a><br>  一系列数学&#x2F;计算机的编程题目。你所要做的就是输入那些题目的答案，不过我们可以用算法来找到正确的解答。</p>
+</blockquote>
+<blockquote>
+<p>[HackerRank](<a target="_blank" rel="noopener" href="https://www.hackerrank.com/">https://www.hackerrank.com</a><br>  包含16个类别的挑战, 支持JavaScript和其他语言。</p>
+</blockquote>
+<blockquote>
+<p>[CodeChef](<a target="_blank" rel="noopener" href="http://www.codechef.com/">http://www.codechef.com/</a><br>  举办在线比赛</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.topcoder.com/">Top Coder</a><br>  举办算法联赛，这些联赛通常由NASA、Google、Yahoo! 、Amazon和Facebook这样的公司赞助。参加其中一些赛事，你可以获得到赞助公司工作的机会，而参与另一些赛事会赢得奖金。这个网站也提供很棒的解题和算法教程。</p>
+</blockquote>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p> <a target="_blank" rel="noopener" href="https://www.bigocheatsheet.com/">复杂度</a></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#前端" >
+    <span class="tag-code">前端</span>
+  </a>
+
+  <a target="_blank" href="/tags#面试" >
+    <span class="tag-code">面试</span>
+  </a>
+
+  <a target="_blank" href="/tags#算法" >
+    <span class="tag-code">算法</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/11/12/front_skills/js/%E3%80%8AJs%E3%80%8B-%20js%20%E8%BF%99%E4%BA%9B%E4%B8%8D%E5%BE%97%E4%B8%8D%E4%BA%86%E8%A7%A3%E7%9A%84%E6%8A%80%E5%B7%A7%EF%BC%8C%E4%BD%A0%E4%BD%BF%E7%94%A8%E8%BF%87%E5%90%97/">
+        <span class="nav-arrow">← </span>
+        
+          《Js》-  js这些不得不了解的技巧，你使用过吗
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/11/24/front_skills/js/%E3%80%8AJs%E3%80%8B-%20js%20%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87/">
+        
+          《Js》- js 性能提升
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-nav-text">排序算法时间复杂度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%AE%97%E6%B3%95%E6%8F%90%E5%8D%87"><span class="toc-nav-text">算法提升</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E7%AB%99%E7%82%B9"><span class="toc-nav-text">常见站点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/11/19/do_at_workspace/interview/《前端面试》- 算法耗时一览表/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

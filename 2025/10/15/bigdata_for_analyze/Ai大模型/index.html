@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Ai大模型 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Ai大模型</h2>
+  <p class="post-date">2025-10-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="🧭-一、ResNet-是“深度可训练性”的转折点"><a href="#🧭-一、ResNet-是“深度可训练性”的转折点" class="headerlink" title="🧭 一、ResNet 是“深度可训练性”的转折点"></a>🧭 一、ResNet 是“深度可训练性”的转折点</h1><p>在 ResNet（2015）之前，深度网络最大的问题是：</p>
+<blockquote>
+<p><strong>越深越难训练。</strong></p>
+</blockquote>
+<p>而 ResNet 首次证明：</p>
+<blockquote>
+<p>“只要设计得当，网络可以无限加深而仍能有效学习。”</p>
+</blockquote>
+<p>这不是一个小改进，而是：</p>
+<h3 id="🔹-深度学习从“经验时代”进入“可扩展时代”。"><a href="#🔹-深度学习从“经验时代”进入“可扩展时代”。" class="headerlink" title="🔹 深度学习从“经验时代”进入“可扩展时代”。"></a>🔹 <strong>深度学习从“经验时代”进入“可扩展时代”。</strong></h3><p>换句话说，ResNet 解决了“深度的痛点”，<br>为后来的 <strong>大规模参数化模型（大模型）</strong> 奠定了基础。</p>
+<hr>
+<h1 id="⚙️-二、核心思想的传承关系：ResNet-→-Transformer-→-GPT"><a href="#⚙️-二、核心思想的传承关系：ResNet-→-Transformer-→-GPT" class="headerlink" title="⚙️ 二、核心思想的传承关系：ResNet → Transformer → GPT"></a>⚙️ 二、核心思想的传承关系：ResNet → Transformer → GPT</h1><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>关键年份</th>
+<th>结构核心</th>
+<th>与 ResNet 的关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ResNet (2015)</strong></td>
+<td>CNN</td>
+<td>残差连接（Residual Connection）</td>
+<td>首创“恒等路径”思想</td>
+</tr>
+<tr>
+<td><strong>Transformer (2017)</strong></td>
+<td>Attention</td>
+<td>每层都加残差 + LayerNorm</td>
+<td>完全继承残差思想</td>
+</tr>
+<tr>
+<td><strong>BERT &#x2F; GPT 系列 (2018–2024)</strong></td>
+<td>Transformer 堆叠</td>
+<td>96层、128层甚至更深</td>
+<td>残差连接保证训练稳定</td>
+</tr>
+<tr>
+<td><strong>Diffusion &#x2F; Stable Diffusion (2021+)</strong></td>
+<td>UNet 架构</td>
+<td>大量残差模块</td>
+<td>以ResNet block为基础</td>
+</tr>
+<tr>
+<td><strong>视觉语言模型（CLIP, SAM）</strong></td>
+<td>Vision Transformer</td>
+<td>残差 + 自注意力</td>
+<td>ResNet思想融合到视觉Transformer</td>
+</tr>
+</tbody></table>
+<p>📘 换句话说：</p>
+<blockquote>
+<p><strong>现代 AI 大模型的每一层，都在某种形式上“是一个 ResNet Block”。</strong></p>
+</blockquote>
+<hr>
+<h1 id="💡-三、思想层面的影响：从“学习残差”到“层层校正”"><a href="#💡-三、思想层面的影响：从“学习残差”到“层层校正”" class="headerlink" title="💡 三、思想层面的影响：从“学习残差”到“层层校正”"></a>💡 三、思想层面的影响：从“学习残差”到“层层校正”</h1><p>ResNet 的革命不只是“加一条跳线”，<br>而是提出了<strong>“层间校正思想（Layer-wise Refinement）”</strong>：</p>
+<blockquote>
+<p>不让每层重造世界，而是让每层对上层结果做微调。</p>
+</blockquote>
+<p>这种思想直接影响了大模型的设计哲学：</p>
+<table>
+<thead>
+<tr>
+<th>思想层面</th>
+<th>ResNet</th>
+<th>Transformer &#x2F; GPT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>学习目标</strong></td>
+<td>F(x) &#x3D; H(x) - x（残差）</td>
+<td>新表示 &#x3D; 旧表示 + 注意力更新</td>
+</tr>
+<tr>
+<td><strong>梯度流动</strong></td>
+<td>恒等路径保持梯度稳定</td>
+<td>残差路径 + LayerNorm 保持稳定训练</td>
+</tr>
+<tr>
+<td><strong>层间关系</strong></td>
+<td>每层都是“校正器”</td>
+<td>每层都是“信息融合器”</td>
+</tr>
+<tr>
+<td><strong>深度可扩展性</strong></td>
+<td>可堆叠至152层</td>
+<td>可堆叠至数百层、千亿参数</td>
+</tr>
+</tbody></table>
+<p>这就是为什么：</p>
+<blockquote>
+<p>Transformer 的每一层都形如：<br><strong><code>x = x + f(x)</code></strong><br>这本质上就是 <strong>ResNet 结构的泛化版本</strong>。</p>
+</blockquote>
+<hr>
+<h1 id="🧬-四、ResNet-与“大模型可扩展性”的关系"><a href="#🧬-四、ResNet-与“大模型可扩展性”的关系" class="headerlink" title="🧬 四、ResNet 与“大模型可扩展性”的关系"></a>🧬 四、ResNet 与“大模型可扩展性”的关系</h1><p>大模型（如 GPT-4、Gemini、Claude、LLaMA 等）的成功，本质靠三个支柱：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>技术核心</th>
+<th>与 ResNet 的关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>算力</strong></td>
+<td>GPU&#x2F;TPU 并行</td>
+<td>没有ResNet时代的稳定训练算法，就无法利用大算力</td>
+</tr>
+<tr>
+<td><strong>数据</strong></td>
+<td>互联网级语料</td>
+<td>网络必须够深、够稳，才能学复杂语义</td>
+</tr>
+<tr>
+<td><strong>架构</strong></td>
+<td>Transformer 堆叠</td>
+<td>残差连接使超深网络成为可能</td>
+</tr>
+</tbody></table>
+<p>ResNet 解决的是「<strong>深度网络的可优化性问题</strong>」，<br>而大模型解决的是「<strong>规模化的可泛化问题</strong>」。<br>两者在逻辑上是连续演化的。</p>
+<hr>
+<h1 id="🔗-五、现代架构中直接继承-ResNet-的部分"><a href="#🔗-五、现代架构中直接继承-ResNet-的部分" class="headerlink" title="🔗 五、现代架构中直接继承 ResNet 的部分"></a>🔗 五、现代架构中直接继承 ResNet 的部分</h1><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>来自 ResNet 的概念</th>
+<th>现代实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>残差连接 (Residual Connection)</strong></td>
+<td>恒等映射保证梯度稳定</td>
+<td>GPT、BERT、ViT</td>
+</tr>
+<tr>
+<td><strong>跳跃连接 (Skip Connection)</strong></td>
+<td>多层信息融合</td>
+<td>UNet、Diffusion Model</td>
+</tr>
+<tr>
+<td><strong>层间校正机制 (Add + Norm)</strong></td>
+<td>层与层之间的“差分学习”</td>
+<td>Transformer Encoder&#x2F;Decoder</td>
+</tr>
+<tr>
+<td><strong>可堆叠深层结构</strong></td>
+<td>训练超深网络可行</td>
+<td>所有大模型 backbone</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🧠-六、从-ResNet-到-GPT-的“技术演化链”"><a href="#🧠-六、从-ResNet-到-GPT-的“技术演化链”" class="headerlink" title="🧠 六、从 ResNet 到 GPT 的“技术演化链”"></a>🧠 六、从 ResNet 到 GPT 的“技术演化链”</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">LeNet → AlexNet → VGG → ResNet</span><br><span class="line">           │</span><br><span class="line">           ▼</span><br><span class="line">     ResNet 残差思想</span><br><span class="line">           │</span><br><span class="line">           ▼</span><br><span class="line">     Transformer (2017)</span><br><span class="line">           │</span><br><span class="line">           ▼</span><br><span class="line">     BERT / GPT (2018+)</span><br><span class="line">           │</span><br><span class="line">           ▼</span><br><span class="line">     多模态大模型 (CLIP / SAM / Sora)</span><br></pre></td></tr></table></figure>
+
+<p><strong>一句话总结：</strong></p>
+<blockquote>
+<p>如果没有 ResNet 的“残差连接”思想，就不会有今天可堆叠百层、千亿参数的大模型。</p>
+</blockquote>
+<hr>
+<h1 id="🔮-七、总结一句话"><a href="#🔮-七、总结一句话" class="headerlink" title="🔮 七、总结一句话"></a>🔮 七、总结一句话</h1><blockquote>
+<p><strong>ResNet 是深度学习走向大模型时代的“桥梁”。</strong><br>它解决了「网络能否学得深」的问题，<br>Transformer 与 GPT 解决了「学得广与通」的问题。</p>
+</blockquote>
+<p>📌 所以：</p>
+<blockquote>
+<p>GPT 是“注意力机制 + 残差思想”的自然结果。<br>没有 ResNet，就没有稳定可训练的 Transformer。</p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/14/bigdata_for_analyze/Resnet/">
+        <span class="nav-arrow">← </span>
+        
+          Resnet
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/10/23/ai_tools/mcp%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E5%AE%89%E5%85%A8%E7%96%91%E9%97%AE/">
+        
+          mcp调用过程和安全疑问
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81ResNet-%E6%98%AF%E2%80%9C%E6%B7%B1%E5%BA%A6%E5%8F%AF%E8%AE%AD%E7%BB%83%E6%80%A7%E2%80%9D%E7%9A%84%E8%BD%AC%E6%8A%98%E7%82%B9"><span class="toc-nav-text">🧭 一、ResNet 是“深度可训练性”的转折点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E%E2%80%9C%E7%BB%8F%E9%AA%8C%E6%97%B6%E4%BB%A3%E2%80%9D%E8%BF%9B%E5%85%A5%E2%80%9C%E5%8F%AF%E6%89%A9%E5%B1%95%E6%97%B6%E4%BB%A3%E2%80%9D%E3%80%82"><span class="toc-nav-text">🔹 深度学习从“经验时代”进入“可扩展时代”。</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%E7%9A%84%E4%BC%A0%E6%89%BF%E5%85%B3%E7%B3%BB%EF%BC%9AResNet-%E2%86%92-Transformer-%E2%86%92-GPT"><span class="toc-nav-text">⚙️ 二、核心思想的传承关系：ResNet → Transformer → GPT</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%B8%89%E3%80%81%E6%80%9D%E6%83%B3%E5%B1%82%E9%9D%A2%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%9A%E4%BB%8E%E2%80%9C%E5%AD%A6%E4%B9%A0%E6%AE%8B%E5%B7%AE%E2%80%9D%E5%88%B0%E2%80%9C%E5%B1%82%E5%B1%82%E6%A0%A1%E6%AD%A3%E2%80%9D"><span class="toc-nav-text">💡 三、思想层面的影响：从“学习残差”到“层层校正”</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%AC-%E5%9B%9B%E3%80%81ResNet-%E4%B8%8E%E2%80%9C%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7%E2%80%9D%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">🧬 四、ResNet 与“大模型可扩展性”的关系</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%97-%E4%BA%94%E3%80%81%E7%8E%B0%E4%BB%A3%E6%9E%B6%E6%9E%84%E4%B8%AD%E7%9B%B4%E6%8E%A5%E7%BB%A7%E6%89%BF-ResNet-%E7%9A%84%E9%83%A8%E5%88%86"><span class="toc-nav-text">🔗 五、现代架构中直接继承 ResNet 的部分</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E5%85%AD%E3%80%81%E4%BB%8E-ResNet-%E5%88%B0-GPT-%E7%9A%84%E2%80%9C%E6%8A%80%E6%9C%AF%E6%BC%94%E5%8C%96%E9%93%BE%E2%80%9D"><span class="toc-nav-text">🧠 六、从 ResNet 到 GPT 的“技术演化链”</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%AE-%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">🔮 七、总结一句话</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/15/bigdata_for_analyze/Ai大模型/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      多机独立Docker Compose到K8s集群动态调度 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>多机独立Docker Compose到K8s集群动态调度</h2>
+  <p class="post-date">2025-04-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>以下是实现从多机独立Docker Compose到K8s集群动态调度的Cypress自动化测试的完整方案：</p>
+<hr>
+<h3 id="架构转型路线图"><a href="#架构转型路线图" class="headerlink" title="架构转型路线图"></a><strong>架构转型路线图</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[分散式] --&gt;|解耦| B[集中式]</span><br><span class="line">    B --&gt;|扩展| C[动态调度]</span><br><span class="line">    </span><br><span class="line">    subgraph 初始状态</span><br><span class="line">    A1[主机1: docker-compose]</span><br><span class="line">    A2[主机2: docker-compose]</span><br><span class="line">    A3[...]</span><br><span class="line">    end</span><br><span class="line">    </span><br><span class="line">    subgraph 目标架构</span><br><span class="line">    B1[K8s Master]</span><br><span class="line">    B2[Worker Node Pool]</span><br><span class="line">    B3[分布式存储]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="具体实施步骤"><a href="#具体实施步骤" class="headerlink" title="具体实施步骤"></a><strong>具体实施步骤</strong></h3><h4 id="1-容器化改造（基础层）"><a href="#1-容器化改造（基础层）" class="headerlink" title="1. 容器化改造（基础层）"></a><strong>1. 容器化改造（基础层）</strong></h4><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 改造后的Cypress Dockerfile</span><br><span class="line">FROM cypress/included:12.0.0</span><br><span class="line"><span class="addition">+ ARG TEST_ENV</span></span><br><span class="line"><span class="addition">+ ENV CYPRESS_ENV=$&#123;TEST_ENV&#125;</span></span><br><span class="line"><span class="addition">+ COPY --from=opencv-python /usr/local/lib/python3.9/site-packages/cv2 /usr/local/lib/python3.9/site-packages/cv2</span></span><br><span class="line">VOLUME /e2e</span><br><span class="line">WORKDIR /e2e</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-K8s集群部署（控制层）"><a href="#2-K8s集群部署（控制层）" class="headerlink" title="2. K8s集群部署（控制层）"></a><strong>2. K8s集群部署（控制层）</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用k3sup快速搭建集群（5节点示例）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..5&#125;; <span class="keyword">do</span></span><br><span class="line">  k3sup <span class="built_in">join</span> --ip 192.168.1.<span class="variable">$i</span> \</span><br><span class="line">    --server-ip 192.168.1.1 \</span><br><span class="line">    --user ubuntu</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-动态调度系统（核心逻辑）"><a href="#3-动态调度系统（核心逻辑）" class="headerlink" title="3. 动态调度系统（核心逻辑）"></a><strong>3. 动态调度系统（核心逻辑）</strong></h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cypress-dispatcher.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">cypress-&#123;&#123;.TestID&#125;&#125;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ttlSecondsAfterFinished:</span> <span class="number">3600</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">runner</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">your-registry/cypress-ai:latest</span></span><br><span class="line">        <span class="attr">envFrom:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">configMapRef:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">test-env-&#123;&#123;.EnvType&#125;&#125;</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">testcases</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/e2e</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">testcases</span></span><br><span class="line">        <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">          <span class="attr">claimName:</span> <span class="string">cypress-pvc</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-测试任务编排（调度层）"><a href="#4-测试任务编排（调度层）" class="headerlink" title="4. 测试任务编排（调度层）"></a><strong>4. 测试任务编排（调度层）</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># task_scheduler.py</span></span><br><span class="line"><span class="keyword">from</span> kubernetes <span class="keyword">import</span> client, config</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dispatch_test</span>(<span class="params">env: <span class="built_in">str</span>, test_case: <span class="built_in">str</span></span>):</span><br><span class="line">    config.load_kube_config()</span><br><span class="line">    api = client.BatchV1Api()</span><br><span class="line">    </span><br><span class="line">    body = client.V1Job(</span><br><span class="line">        metadata=client.V1ObjectMeta(</span><br><span class="line">            generate_name=<span class="string">&quot;cypress-&quot;</span>),</span><br><span class="line">        spec=client.V1JobSpec(</span><br><span class="line">            template=client.V1PodTemplateSpec(</span><br><span class="line">                spec=client.V1PodSpec(</span><br><span class="line">                    containers=[</span><br><span class="line">                        client.V1Container(</span><br><span class="line">                            name=<span class="string">&quot;cypress&quot;</span>,</span><br><span class="line">                            image=<span class="string">&quot;your-registry/cypress-ai&quot;</span>,</span><br><span class="line">                            env=[&#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;TEST_CASE&quot;</span>, <span class="string">&quot;value&quot;</span>: test_case&#125;]</span><br><span class="line">                        )]</span><br><span class="line">                )))</span><br><span class="line">    )</span><br><span class="line">    api.create_namespaced_job(namespace=<span class="string">&quot;test&quot;</span>, body=body)</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-资源监控与回收"><a href="#5-资源监控与回收" class="headerlink" title="5. 资源监控与回收"></a><strong>5. 资源监控与回收</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动清理完成的任务</span></span><br><span class="line">kubectl get <span class="built_in">jobs</span> --field-selector=status.successful=1 -o name | xargs kubectl delete</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="关键优化点"><a href="#关键优化点" class="headerlink" title="关键优化点"></a><strong>关键优化点</strong></h3><h4 id="1-测试资源动态分配"><a href="#1-测试资源动态分配" class="headerlink" title="1. 测试资源动态分配"></a><strong>1. 测试资源动态分配</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">    A[测试队列] --&gt; B&#123;资源检查&#125;</span><br><span class="line">    B --&gt;|CPU充足| C[立即执行]</span><br><span class="line">    B --&gt;|资源不足| D[加入Pending队列]</span><br><span class="line">    C --&gt; E[NodeSelector定向调度]</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-跨节点存储方案"><a href="#2-跨节点存储方案" class="headerlink" title="2. 跨节点存储方案"></a><strong>2. 跨节点存储方案</strong></h4><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> <span class="strong">**MinIO对象存储**</span>：</span><br><span class="line">   <span class="code">```bash</span></span><br><span class="line"><span class="code">   helm install minio minio/minio \</span></span><br><span class="line"><span class="code">     --set persistence.size=100Gi \</span></span><br><span class="line"><span class="code">     --set mode=distributed</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>测试结果收集</strong>：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cypress/plugins/index.js</span></span><br><span class="line"><span class="attr">afterRun</span>: <span class="keyword">async</span> (results) =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> s3.<span class="title function_">putObject</span>(&#123;</span><br><span class="line">    <span class="title class_">Bucket</span>: <span class="string">&#x27;cypress-results&#x27;</span>,</span><br><span class="line">    <span class="title class_">Key</span>: <span class="string">`<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>.json`</span>,</span><br><span class="line">    <span class="title class_">Body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(results)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### **3. 智能调度策略**</span><br><span class="line">```yaml</span><br><span class="line"># Pod亲和性配置示例</span><br><span class="line">affinity:</span><br><span class="line">  podAntiAffinity:</span><br><span class="line">    requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">    - labelSelector:</span><br><span class="line">        matchExpressions:</span><br><span class="line">        - key: app</span><br><span class="line">          operator: In</span><br><span class="line">          values: [&quot;cypress&quot;]</span><br><span class="line">      topologyKey: &quot;kubernetes.io/hostname&quot;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="性能对比指标"><a href="#性能对比指标" class="headerlink" title="性能对比指标"></a><strong>性能对比指标</strong></h3><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>Docker Compose方案</th>
+<th>K8s动态调度方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>测试任务启动时间</td>
+<td>15-30s&#x2F;节点</td>
+<td>3-8s&#x2F;Pod</td>
+</tr>
+<tr>
+<td>资源利用率</td>
+<td>30%-45%</td>
+<td>65%-80%</td>
+</tr>
+<tr>
+<td>最大并发测试数</td>
+<td>5（固定节点数）</td>
+<td>50+（自动扩展）</td>
+</tr>
+<tr>
+<td>失败任务自动恢复</td>
+<td>需手动干预</td>
+<td>内置重试机制</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="迁移实施-checklist"><a href="#迁移实施-checklist" class="headerlink" title="迁移实施 checklist"></a><strong>迁移实施 checklist</strong></h3><ol>
+<li><input disabled="" type="checkbox"> 所有测试容器镜像推送到私有Registry</li>
+<li><input disabled="" type="checkbox"> 持久化存储方案部署完成（MinIO&#x2F;NFS）</li>
+<li><input disabled="" type="checkbox"> K8s节点打标区分性能等级（如：gpu&#x3D;true）</li>
+<li><input disabled="" type="checkbox"> 编写Helm Chart或Kustomize模板</li>
+<li><input disabled="" type="checkbox"> CI&#x2F;CD流水线适配K8s调度API</li>
+<li><input disabled="" type="checkbox"> 监控告警系统集成（Prometheus+Alertmanager）</li>
+</ol>
+<hr>
+<h3 id="常见问题解决方案"><a href="#常见问题解决方案" class="headerlink" title="常见问题解决方案"></a><strong>常见问题解决方案</strong></h3><p><strong>Q: 如何保持测试环境一致性？</strong></p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ 方案：</span></span><br><span class="line">  - 使用K8s ConfigMap统一管理环境变量</span><br><span class="line">  - 通过PodPreset注入公共配置</span><br><span class="line">  ```yaml</span><br><span class="line">  apiVersion: settings.k8s.io/v1alpha1</span><br><span class="line">  kind: PodPreset</span><br><span class="line">  metadata:</span><br><span class="line">    name: cypress-env</span><br><span class="line">  spec:</span><br><span class="line">    env:</span><br><span class="line">    - name: CYPRESS_BASE_URL</span><br><span class="line">      value: &quot;https://test.example.com&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**Q: 测试任务如何优先调度到空闲节点？**</span><br><span class="line">```bash</span><br><span class="line"># 给空闲节点添加标签</span><br><span class="line">kubectl label node &lt;node-name&gt; workload=idle</span><br><span class="line"></span><br><span class="line"># 在Job中配置节点选择</span><br><span class="line">nodeSelector:</span><br><span class="line">  workload: idle</span><br></pre></td></tr></table></figure>
+
+<p>通过以上方案，您可以将分散的测试能力转化为弹性可扩展的云原生测试平台，实现资源利用率提升和运维成本降低的双重收益。建议先在一个节点上进行试点迁移，验证稳定后再全量切换。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#容器化" >
+    <span class="tag-code">容器化</span>
+  </a>
+
+  <a target="_blank" href="/tags#动态调度" >
+    <span class="tag-code">动态调度</span>
+  </a>
+
+  <a target="_blank" href="/tags#多机" >
+    <span class="tag-code">多机</span>
+  </a>
+
+  <a target="_blank" href="/tags#Cypress" >
+    <span class="tag-code">Cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#K8s" >
+    <span class="tag-code">K8s</span>
+  </a>
+
+  <a target="_blank" href="/tags#Docker Compose" >
+    <span class="tag-code">Docker Compose</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2024/10/19/performace_detect_skills/wasm/wasm%20-%20%E4%BB%8Ego%E5%BC%80%E5%A7%8B%E8%BF%98%E6%98%AF%E4%BB%8Erust%E5%BC%80%E5%A7%8B/">
+        <span class="nav-arrow">← </span>
+        
+          wasm - 从go开始还是从rust开始
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/04/02/do_at_workspace/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E7%9A%84%E8%BF%81%E7%A7%BB%E5%8A%9F%E8%83%BD%E4%BB%A3%E7%A0%81%E5%88%B0%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F/">
+        
+          如何快速的迁移功能代码到其他系统
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9E%B6%E6%9E%84%E8%BD%AC%E5%9E%8B%E8%B7%AF%E7%BA%BF%E5%9B%BE"><span class="toc-nav-text">架构转型路线图</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E6%96%BD%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">具体实施步骤</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%AE%B9%E5%99%A8%E5%8C%96%E6%94%B9%E9%80%A0%EF%BC%88%E5%9F%BA%E7%A1%80%E5%B1%82%EF%BC%89"><span class="toc-nav-text">1. 容器化改造（基础层）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-K8s%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%EF%BC%88%E6%8E%A7%E5%88%B6%E5%B1%82%EF%BC%89"><span class="toc-nav-text">2. K8s集群部署（控制层）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%8A%A8%E6%80%81%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%EF%BC%88%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%EF%BC%89"><span class="toc-nav-text">3. 动态调度系统（核心逻辑）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E6%B5%8B%E8%AF%95%E4%BB%BB%E5%8A%A1%E7%BC%96%E6%8E%92%EF%BC%88%E8%B0%83%E5%BA%A6%E5%B1%82%EF%BC%89"><span class="toc-nav-text">4. 测试任务编排（调度层）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-%E8%B5%84%E6%BA%90%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%9B%9E%E6%94%B6"><span class="toc-nav-text">5. 资源监控与回收</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B3%E9%94%AE%E4%BC%98%E5%8C%96%E7%82%B9"><span class="toc-nav-text">关键优化点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E6%B5%8B%E8%AF%95%E8%B5%84%E6%BA%90%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D"><span class="toc-nav-text">1. 测试资源动态分配</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E8%B7%A8%E8%8A%82%E7%82%B9%E5%AD%98%E5%82%A8%E6%96%B9%E6%A1%88"><span class="toc-nav-text">2. 跨节点存储方案</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94%E6%8C%87%E6%A0%87"><span class="toc-nav-text">性能对比指标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BF%81%E7%A7%BB%E5%AE%9E%E6%96%BD-checklist"><span class="toc-nav-text">迁移实施 checklist</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-nav-text">常见问题解决方案</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/04/01/devops_skills/docker-compose迁移到k8s集群/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

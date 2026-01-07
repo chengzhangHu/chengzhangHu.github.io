@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      AlmaLinux  fapolicy | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>AlmaLinux  fapolicy</h2>
+  <p class="post-date">2025-06-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="已经将-host-dir-加入了-etc-fapolicyd-rule-d-下"><a href="#已经将-host-dir-加入了-etc-fapolicyd-rule-d-下" class="headerlink" title="已经将 &#x2F;host&#x2F;dir 加入了 &#x2F;etc&#x2F;fapolicyd&#x2F;rule.d&#x2F; 下"></a>已经将 &#x2F;host&#x2F;dir 加入了 &#x2F;etc&#x2F;fapolicyd&#x2F;rule.d&#x2F; 下</h2><p>这说明你已经尝试通过 fapolicyd 的规则允许容器挂载目录被访问。但仍然遇到：</p>
+<p>runc create failed: waiting for init preliminary setup: read init-p: connection reset by peer</p>
+<p>这强烈表明 fapolicyd 仍在拦截或干扰容器启动，可能是：</p>
+<p>🔍 根因可能有：<br>✅ 1. 规则文件存在，但没有生效<br>fapolicyd 的规则文件修改后，需要重建数据库并重启服务：</p>
+<p>sudo fagenrules<br>sudo systemctl restart fapolicyd</p>
+<p>否则更改不会生效。</p>
+<p>✅ 2. 规则不正确或太保守<br>你是否加的是白名单规则？例如：</p>
+<p>allow perm&#x3D;execute : dir&#x3D;&#x2F;host&#x2F;dir</p>
+<p>若写法不对，或权限不足，fapolicyd 依然会拒绝。</p>
+<p>✅ 3. 容器执行文件路径未包含在白名单中<br>容器运行时，如 Docker&#x2F;Podman，会从 &#x2F;usr&#x2F;bin&#x2F;runc、&#x2F;usr&#x2F;bin&#x2F;containerd-shim、或者 container 镜像中的 &#x2F;bin&#x2F;sh 启动进程。这些执行路径也需被允许。</p>
+<p>✅ 解决建议<br>✅ 方法一：确认规则是否生效<br>执行以下命令以检查哪些操作被阻止：</p>
+<p>sudo journalctl -t fapolicyd</p>
+<p>你可以看到被拒绝的路径，例如：</p>
+<p>fapolicyd: access denied: &#x2F;host&#x2F;dir&#x2F;somebin</p>
+<p>这会帮你确认还缺少哪些规则。</p>
+<p>✅ 方法二：临时禁用 fapolicyd 验证问题是否确实来自它<br>sudo systemctl stop fapolicyd</p>
+<p>然后重新运行你的容器命令，例如：</p>
+<p>docker run -v &#x2F;host&#x2F;dir:&#x2F;container&#x2F;dir your-image</p>
+<p>如果成功启动，说明确实是 fapolicyd 在阻止。</p>
+<p>✅ 方法三：加宽规则允许容器使用<br>可以尝试添加更宽泛的规则，如：</p>
+<p>allow perm&#x3D;any all : dir&#x3D;&#x2F;host&#x2F;dir</p>
+<p>然后重建规则并重启服务：</p>
+<p>sudo fagenrules<br>sudo systemctl restart fapolicyd</p>
+<p>✅ 方法四（开发或非生产环境）：<br>如果你只是本地测试容器，建议暂时关闭 fapolicyd：</p>
+<p>sudo systemctl disable –now fapolicyd</p>
+<h2 id="systemctl-stop-fapolicyd-是-临时关闭服务，它的行为如下："><a href="#systemctl-stop-fapolicyd-是-临时关闭服务，它的行为如下：" class="headerlink" title="systemctl stop fapolicyd 是 临时关闭服务，它的行为如下："></a>systemctl stop fapolicyd 是 临时关闭服务，它的行为如下：</h2><p>✅ 不会自动恢复运行<br>一旦你执行了：</p>
+<p>systemctl stop fapolicyd</p>
+<p>fapolicyd 服务会一直保持关闭状态，直到你手动启动它。</p>
+<p>❗除非发生以下情况之一，它才会“自动恢复”：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>是否会导致 fapolicyd 重新启动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>你手动运行 systemctl start fapolicyd</td>
+<td>✅ 是</td>
+</tr>
+<tr>
+<td>服务器重启（且 fapolicyd 设置为开机自启）</td>
+<td>✅ 是</td>
+</tr>
+<tr>
+<td>有人或自动脚本运行 systemctl restart</td>
+<td>✅ 是</td>
+</tr>
+<tr>
+<td>只是停止服务，没有重启系统</td>
+<td>❌ 否，服务不会自动恢复</td>
+</tr>
+</tbody></table>
+<p>你可以检查是否设为开机启动：</p>
+<p>systemctl is-enabled fapolicyd</p>
+<p>如果返回：</p>
+<p>enabled：说明重启系统后它会恢复运行<br>disabled：重启系统后它仍然不会启动</p>
+<p>✅ 如果你想让它彻底不再自动运行：<br>sudo systemctl disable fapolicyd</p>
+<p>这样即使系统重启，它也不会恢复。</p>
+<p>✅ 如果你只是临时调试，建议做完后恢复：<br>sudo systemctl start fapolicyd</p>
+<p>🧠 补充建议<br>正在排查容器启动失败的问题，临时关闭 fapolicyd 是一种好方法。<br>但建议最终还是加规则解决根本问题，而不是依赖关闭服务。</p>
+<h2 id="sudo-fapolicyd-–debug"><a href="#sudo-fapolicyd-–debug" class="headerlink" title="sudo fapolicyd –debug"></a>sudo fapolicyd –debug</h2><p>确实可能会阻塞系统或导致 SSH 卡顿，原因如下：</p>
+<p>⚠️ 为什么 fapolicyd –debug 可能导致系统卡顿甚至 SSH 登录失败？<br>✅ 原因一：debug 模式会劫持系统调用<br>fapolicyd –debug 模式会：</p>
+<p>拦截并打印系统中所有的文件执行相关事件<br>输出非常密集，尤其在高频操作系统中（容器、cron、sshd）<br>如果你在 –debug 模式下启动了容器或系统活跃进程，fapolicyd 会疯狂打印，严重拖慢系统，甚至导致：</p>
+<p>进程调度异常<br>SSH 登录卡死<br>CPU 飙高<br>系统响应变慢</p>
+<p>✅ 如何恢复系统<br>方法一：远程连接失败？尝试本地控制台登录<br>如果你有 IPMI、iDRAC、BMC 或 KVM 接口，优先通过控制台连接后执行：</p>
+<p>sudo killall fapolicyd<br>sudo systemctl restart fapolicyd</p>
+<p>方法二：尝试已有会话恢复<br>如果你还有一个已经登录的 ssh 会话或 tmux&#x2F;screen 没死，尝试：</p>
+<p>ps aux | grep fapolicyd<br>kill -9 <pid></p>
+<p>方法三：强制重启服务器（最后手段）<br>如果你无法通过任何方式登录，可能需要通过云后台或物理按钮执行：</p>
+<p>硬重启（reboot &#x2F; power cycle）</p>
+<p>⚠️ 重启后，fapolicyd 会再次启动（如果是 enabled 状态），所以建议马上：</p>
+<p>sudo systemctl disable fapolicyd</p>
+<p>✅ 正确使用 fapolicyd 的调试方式（不影响系统）<br>下次你可以改用更安全的方式调试：</p>
+<p>sudo fapolicyd –debug &gt; &#x2F;tmp&#x2F;fapolicyd.log 2&gt;&amp;1 &amp;</p>
+<p>这样它在后台运行，且日志被重定向，不会卡死终端。</p>
+<p>也可以临时调低日志量：</p>
+<p>sudo fapolicyd –debug –rules&#x3D;&#x2F;tmp&#x2F;minimal.rules</p>
+<p>用一个最小化规则集避免频繁触发。</p>
+<p>✅ 总结建议</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统卡死原因</td>
+<td>–debug 模式输出过多导致系统负荷异常</td>
+</tr>
+<tr>
+<td>恢复方法</td>
+<td>杀掉进程或重启系统</td>
+</tr>
+<tr>
+<td>避免卡顿</td>
+<td>后台运行并重定向日志</td>
+</tr>
+<tr>
+<td>容器调试</td>
+<td>建议用 auditd 或 strace 替代</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#AlmaLinux" >
+    <span class="tag-code">AlmaLinux</span>
+  </a>
+
+  <a target="_blank" href="/tags#fapolicy" >
+    <span class="tag-code">fapolicy</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/06/02/front_skills/angular/postmessage%E4%B8%8Engrx%E7%9A%84%E9%80%89%E6%8B%A9/">
+        <span class="nav-arrow">← </span>
+        
+          postMessage vs NgRx
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/06/04/front_skills/js/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%9A%E4%BF%A1/">
+        
+          前后端通信协议全景手册
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%B7%B2%E7%BB%8F%E5%B0%86-host-dir-%E5%8A%A0%E5%85%A5%E4%BA%86-etc-fapolicyd-rule-d-%E4%B8%8B"><span class="toc-nav-text">已经将 &#x2F;host&#x2F;dir 加入了 &#x2F;etc&#x2F;fapolicyd&#x2F;rule.d&#x2F; 下</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#systemctl-stop-fapolicyd-%E6%98%AF-%E4%B8%B4%E6%97%B6%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1%EF%BC%8C%E5%AE%83%E7%9A%84%E8%A1%8C%E4%B8%BA%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-nav-text">systemctl stop fapolicyd 是 临时关闭服务，它的行为如下：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#sudo-fapolicyd-%E2%80%93debug"><span class="toc-nav-text">sudo fapolicyd –debug</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/06/03/devops_skills/linux/amllinux fapolicy/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      mcp安全从本源解决的工程问题 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>mcp安全从本源解决的工程问题</h2>
+  <p class="post-date">2025-10-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="核心思路（一句话）"><a href="#核心思路（一句话）" class="headerlink" title="核心思路（一句话）"></a>核心思路（一句话）</h1><blockquote>
+<p>把信任问题<strong>从模型端</strong>入手，是与外部签名&#x2F;哈希链并行的另一条关键路径。下面把可行的技术路线、实现细节、优缺点和落地顺序都列清楚，给你一套可操作的「模型可可信性增强」蓝图。</p>
+</blockquote>
+<p>除了用外部 <strong>证明 &#x2F; 哈希链</strong> 做不可篡改记录外，<strong>让模型自身产生更可靠、可解释、可验证的声明</strong>（包括意图、执行计划、置信度与自证）可以显著减少对外部阻塞验证的依赖，从而提升整体速度与用户信任。</p>
+<hr>
+<h1 id="主要技术方向（10-节点，按优先级与可落地性排序）"><a href="#主要技术方向（10-节点，按优先级与可落地性排序）" class="headerlink" title="主要技术方向（10 节点，按优先级与可落地性排序）"></a>主要技术方向（10 节点，按优先级与可落地性排序）</h1><ol>
+<li><p><strong>显式计划生成 + 结构化行动草案（Plan-as-data）</strong></p>
+<ul>
+<li>要求模型在每次调用前输出结构化的“行动草案”（operation schema + params + rationale + expected outcome）。</li>
+<li>草案是可机器解析的，便于本地 L1 校验与快速比对（避免只靠自然语言解释）。</li>
+<li>成果：减少语义不一致导致的阻塞。</li>
+</ul>
+</li>
+<li><p><strong>模型自证（Attestation）与签名声明</strong></p>
+<ul>
+<li>模型在生成行动草案后，输出一个由模型内部签名私钥（可硬件隔离或 KMS 管理）签名的“声明摘要”（digest + nonce + timestamp）。</li>
+<li>这样外部仅需验证签名与摘要一致性，而不每次重新做完整语义检查。</li>
+<li>成果：把部分验证变为轻量签名验证。</li>
+</ul>
+</li>
+<li><p><strong>置信度与不确定性量化（Calibrated Confidence）</strong></p>
+<ul>
+<li>训练&#x2F;微调模型输出校准过的置信度（概率或置信区间），并在低置信情形触发额外审查或降权执行。</li>
+<li>通过温度调节、贝叶斯方法或后处理校准（Platt scaling 等）。</li>
+<li>成果：允许系统据置信度决定是否本地快速放行或转入 L2 审核。</li>
+</ul>
+</li>
+<li><p><strong>内置 verifier（双模型体系）</strong></p>
+<ul>
+<li>用一个轻量室内“verifier 模型”在本地快速审查主模型的草案（semantic consistency, parameter bounds）。</li>
+<li>verifier 专门微调用于合规&#x2F;安全判断，推理快，延迟低。</li>
+<li>成果：把大量验证移到本地、低延迟的模型级别完成。</li>
+</ul>
+</li>
+<li><p><strong>链式思考 + 可检查的中间步骤（Transparent CoT）</strong></p>
+<ul>
+<li>强制模型输出中间推理步骤（但用结构化、有限深度的中间表述），并使 verifier 对这些中间步骤做可验证性检查。</li>
+<li>避免长自由文本 chain-of-thought，改为可执行的 mini-DSL（domain-specific language）片段。</li>
+<li>成果：提升可解释性并便于自动比对。</li>
+</ul>
+</li>
+<li><p><strong>工具-意图对齐层（Tool Manifest Awareness）</strong></p>
+<ul>
+<li>将工具 schema&#x2F;约束以机器可读形式注入模型（或作为检索片段），并训练模型在生成草案时遵守这些约束。</li>
+<li>结合 RLHF 让模型在遵守 schema 时获得正向反馈。</li>
+<li>成果：减少越权、不合规的请求频率。</li>
+</ul>
+</li>
+<li><p><strong>拒绝&#x2F;回退策略与安全策略合约</strong></p>
+<ul>
+<li>促使模型在无法充分证明安全合规时主动拒绝或建议更安全的替代操作（abstain + suggest）。</li>
+<li>训练目标里加入“正确拒绝”奖励，降低错误放行率。</li>
+<li>成果：把部分人类确认工作转为模型自律执行。</li>
+</ul>
+</li>
+<li><p><strong>模型内小型审计日志（Lightweight Provenance）</strong></p>
+<ul>
+<li>模型在会话内维护可序列化的操作日志（每步的草案摘要、签名、置信度、verifier 结论），并周期性将摘要写入外部哈希链&#x2F;日志。</li>
+<li>成果：把完整哈希写入批量化，减少同步阻塞。</li>
+</ul>
+</li>
+<li><p><strong>对抗训练与红队强化</strong></p>
+<ul>
+<li>用 prompt-injection &#x2F; concept-swapping 的攻击样例去训练模型，提高其对“偷换概念”式诱导的免疫性。</li>
+<li>成果：从根本上降低模型被诱导输出误导性草案的概率。</li>
+</ul>
+</li>
+<li><p><strong>可解释性工具与概念层可视化</strong></p>
+<ul>
+<li>集成激活映射、概念激活向量（CAV）、注意力可视化，使人类审查时更快判断模型理由的合理性。</li>
+<li>成果：当必须人工审核时显著降低人工审查时间。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="折中、限制与风险"><a href="#折中、限制与风险" class="headerlink" title="折中、限制与风险"></a>折中、限制与风险</h1><ul>
+<li><strong>训练成本</strong>：校准置信度、verifier 和对抗训练需要数据与计算资源。</li>
+<li><strong>残留错误</strong>：模型永远不能达到 100% 无误，仍需外部审计&#x2F;回滚机制。</li>
+<li><strong>签名私钥管理</strong>：若模型端保存签名私钥，需严格保护（建议结合 HSM&#x2F;KMS）。</li>
+<li><strong>复杂性增加</strong>：双模型与签名链会使部署更复杂，但可分阶段引入。</li>
+<li><strong>对抗性风险</strong>：攻击者可能针对 verifier 或置信度进行攻击，需红队持续验证。</li>
+</ul>
+<hr>
+<h1 id="推荐落地路线（短中长期里程碑）"><a href="#推荐落地路线（短中长期里程碑）" class="headerlink" title="推荐落地路线（短中长期里程碑）"></a>推荐落地路线（短中长期里程碑）</h1><p><strong>短期（1–3 个月）</strong></p>
+<ol>
+<li>强制输出结构化行动草案（schema-as-output）。</li>
+<li>本地实现 L1 验证 + 缓存 schema。</li>
+<li>部署轻量 verifier（规则+小模型）做快速本地校验。</li>
+</ol>
+<p><strong>中期（3–9 个月）</strong><br>4. 加入模型自证签名机制（结合 KMS&#x2F;HSM）。<br>5. 置信度校准与拒绝策略训练（RLHF + 校准数据）。<br>6. 打造内部审计日志并周期性写入 Merkle 摘要（异步）。</p>
+<p><strong>长期（9–18 个月）</strong><br>7. 对抗训练 &amp; 红队常态化。<br>8. 深度可解释性模块与自动回滚机制。<br>9. 在多主体&#x2F;多租户场景下引入跨域轻量共识（若需要，才用区块链式存证）。</p>
+<hr>
+<h1 id="一个可执行的请求-规范样板（示例）"><a href="#一个可执行的请求-规范样板（示例）" class="headerlink" title="一个可执行的请求 &#x2F; 规范样板（示例）"></a>一个可执行的请求 &#x2F; 规范样板（示例）</h1><p>当模型要调用工具时，要求它输出如下 JSON（示例）：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;plan&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;operation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;delete_files&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/tmp/logs&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;older_than&quot;</span><span class="punctuation">:</span> <span class="string">&quot;7d&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;rationale&quot;</span><span class="punctuation">:</span> <span class="string">&quot;clear temp logs to free disk space&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;expected_effect&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;deleted_estimate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;200 files&gt;&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;meta&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;nonce&quot;</span><span class="punctuation">:</span> <span class="string">&quot;random-uuid&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;timestamp&quot;</span><span class="punctuation">:</span> <span class="number">1731130893</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;model_confidence&quot;</span><span class="punctuation">:</span> <span class="number">0.87</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;attestation&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;plan_digest&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sha256:abcd...&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;signature&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ed25519:...&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>本地 verifier 校验 <code>plan</code> vs tool schema；</li>
+<li>若通过且 confidence &gt; 阈值，直接执行（快速路径）；</li>
+<li>同时把 <code>plan_digest</code> 缓存并异步写入 Merkle 摘要。</li>
+</ul>
+<hr>
+<h1 id="最后建议（工程与策略层）"><a href="#最后建议（工程与策略层）" class="headerlink" title="最后建议（工程与策略层）"></a>最后建议（工程与策略层）</h1><ol>
+<li><strong>混合防线</strong>：不要把全部信任寄托在单一方向。把模型改进（内部可信）与外部哈希&#x2F;签名链结合起来，效果最好。</li>
+<li><strong>渐进部署</strong>：先短期实现结构化草案 + 本地 verifier，再逐步加入签名与置信度校准。</li>
+<li><strong>量化评估</strong>：为每一步定义 KPI（误放行率、误拒绝率、平均延迟、人工审查时间）并持续监控。</li>
+<li><strong>安全运维</strong>：对签名密钥、verifier 模型、审计日志实施严格运维策略与红队测试。</li>
+</ol>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/24/ai_tools/mcp%20schema%E4%B8%AD%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
+        <span class="nav-arrow">← </span>
+        
+          mcp schema中性能问题
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/10/26/ai_tools/mcp%E5%92%8Cagent%E5%8C%BA%E5%88%AB/">
+        
+          mcp和agent区别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E8%B7%AF%EF%BC%88%E4%B8%80%E5%8F%A5%E8%AF%9D%EF%BC%89"><span class="toc-nav-text">核心思路（一句话）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%BB%E8%A6%81%E6%8A%80%E6%9C%AF%E6%96%B9%E5%90%91%EF%BC%8810-%E8%8A%82%E7%82%B9%EF%BC%8C%E6%8C%89%E4%BC%98%E5%85%88%E7%BA%A7%E4%B8%8E%E5%8F%AF%E8%90%BD%E5%9C%B0%E6%80%A7%E6%8E%92%E5%BA%8F%EF%BC%89"><span class="toc-nav-text">主要技术方向（10 节点，按优先级与可落地性排序）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8A%98%E4%B8%AD%E3%80%81%E9%99%90%E5%88%B6%E4%B8%8E%E9%A3%8E%E9%99%A9"><span class="toc-nav-text">折中、限制与风险</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8E%A8%E8%8D%90%E8%90%BD%E5%9C%B0%E8%B7%AF%E7%BA%BF%EF%BC%88%E7%9F%AD%E4%B8%AD%E9%95%BF%E6%9C%9F%E9%87%8C%E7%A8%8B%E7%A2%91%EF%BC%89"><span class="toc-nav-text">推荐落地路线（短中长期里程碑）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%80%E4%B8%AA%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9A%84%E8%AF%B7%E6%B1%82-%E8%A7%84%E8%8C%83%E6%A0%B7%E6%9D%BF%EF%BC%88%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="toc-nav-text">一个可执行的请求 &#x2F; 规范样板（示例）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%9C%80%E5%90%8E%E5%BB%BA%E8%AE%AE%EF%BC%88%E5%B7%A5%E7%A8%8B%E4%B8%8E%E7%AD%96%E7%95%A5%E5%B1%82%EF%BC%89"><span class="toc-nav-text">最后建议（工程与策略层）</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/25/ai_tools/mcp安全从本源解决的工程问题/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

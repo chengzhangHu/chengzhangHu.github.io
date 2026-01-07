@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      iframe嵌入问题 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>iframe嵌入问题</h2>
+  <p class="post-date">2025-05-13</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="一、基本语法"><a href="#一、基本语法" class="headerlink" title="一、基本语法"></a>一、基本语法</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;https://example.com&quot;</span> <span class="attr">width</span>=<span class="string">&quot;600&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用属性："><a href="#常用属性：" class="headerlink" title="常用属性："></a>常用属性：</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src</code></td>
+<td>要加载的网页地址（URL）</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>框架宽度（像素或百分比）</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>框架高度</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>给iframe命名，可用于通过链接或脚本引用</td>
+</tr>
+<tr>
+<td><code>allow</code></td>
+<td>控制哪些特性可以使用（如摄像头、全屏）</td>
+</tr>
+<tr>
+<td><code>sandbox</code></td>
+<td>启用额外的安全限制</td>
+</tr>
+<tr>
+<td><code>frameborder</code>（已废弃）</td>
+<td>控制是否显示边框</td>
+</tr>
+<tr>
+<td><code>loading</code></td>
+<td>懒加载（<code>lazy</code> 或 <code>eager</code>）</td>
+</tr>
+<tr>
+<td><code>referrerpolicy</code></td>
+<td>控制引用信息的发送策略</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、常见用途"><a href="#二、常见用途" class="headerlink" title="二、常见用途"></a>二、常见用途</h2><ol>
+<li><p><strong>嵌入第三方内容</strong><br>如YouTube视频、Google Maps、Twitter帖子等。</p>
+</li>
+<li><p><strong>跨域加载资源</strong><br>加载其他域的页面，尤其用于广告或微前端架构。</p>
+</li>
+<li><p><strong>沙箱隔离</strong><br>使用 <code>sandbox</code> 属性可以限制 iframe 中内容的行为，增强安全性。</p>
+</li>
+</ol>
+<hr>
+<h2 id="三、sandbox-属性详解"><a href="#三、sandbox-属性详解" class="headerlink" title="三、sandbox 属性详解"></a>三、<code>sandbox</code> 属性详解</h2><p><code>sandbox</code> 属性可以开启一个“安全沙箱”环境，防止iframe中的内容执行一些潜在危险的操作。</p>
+<p>常见值：</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>allow-scripts</code></td>
+<td>允许脚本运行（但不能创建弹窗）</td>
+</tr>
+<tr>
+<td><code>allow-forms</code></td>
+<td>允许表单提交</td>
+</tr>
+<tr>
+<td><code>allow-same-origin</code></td>
+<td>允许iframe内容与主页面同源（用于访问 cookies、localStorage 等）</td>
+</tr>
+<tr>
+<td><code>allow-popups</code></td>
+<td>允许弹出窗口</td>
+</tr>
+<tr>
+<td><code>allow-modals</code></td>
+<td>允许模态对话框</td>
+</tr>
+<tr>
+<td><code>allow-downloads</code></td>
+<td>允许下载</td>
+</tr>
+</tbody></table>
+<p>⚠️ 默认情况下，启用 <code>sandbox</code> 会阻止几乎所有功能，只有指定的功能才会被放开。</p>
+<hr>
+<h2 id="四、安全性注意"><a href="#四、安全性注意" class="headerlink" title="四、安全性注意"></a>四、安全性注意</h2><ol>
+<li><p><strong>跨域限制</strong></p>
+<ul>
+<li>同源策略限制 JavaScript 访问 iframe 中的内容，除非两个页面同源。</li>
+<li>可以用 <code>postMessage()</code> 实现跨域通信。</li>
+</ul>
+</li>
+<li><p><strong>防点击劫持（Clickjacking）</strong></p>
+<ul>
+<li>网站可以使用 HTTP 头部 <code>X-Frame-Options: DENY</code> 或 <code>Content-Security-Policy: frame-ancestors</code> 来防止被 iframe 嵌入。</li>
+</ul>
+</li>
+<li><p><strong>不要轻信 iframe 加载的内容</strong></p>
+<ul>
+<li>第三方 iframe 可能包含恶意脚本或尝试进行权限提升。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="五、iframe-与现代前端的结合"><a href="#五、iframe-与现代前端的结合" class="headerlink" title="五、iframe 与现代前端的结合"></a>五、iframe 与现代前端的结合</h2><ol>
+<li><p><strong>微前端架构</strong></p>
+<ul>
+<li>使用 iframe 将多个独立的应用程序集成在一个壳应用中。</li>
+</ul>
+</li>
+<li><p><strong>懒加载与性能优化</strong></p>
+<ul>
+<li>使用 <code>loading=&quot;lazy&quot;</code> 让 iframe 在进入视口时才加载，提升性能。</li>
+</ul>
+</li>
+<li><p><strong>通信机制：<code>window.postMessage()</code></strong><br>用于 iframe 与父页面之间的安全通信：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父页面发送消息</span></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;https://example.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// iframe 接收消息</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (event.<span class="property">origin</span> === <span class="string">&#x27;https://parent.com&#x27;</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到消息:&#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="六、iframe-的替代方案"><a href="#六、iframe-的替代方案" class="headerlink" title="六、iframe 的替代方案"></a>六、iframe 的替代方案</h2><p>在某些场景下，iframe 被认为是不优雅或性能差的解决方案，替代方案包括：</p>
+<ul>
+<li>使用 Web Components + Shadow DOM</li>
+<li>Ajax&#x2F;Fetch + 动态内容加载</li>
+<li>SPA（单页面应用）路由切换</li>
+<li>微前端框架（如 Qiankun、Single-SPA）</li>
+</ul>
+<p>在实现跨域嵌入时，使用 <code>&lt;iframe&gt;</code> 是一种常见的解决方案，尤其是当你需要嵌入第三方内容或者外部网站时。然而，跨域嵌入也会遇到一些限制，尤其是在与 <code>iframe</code> 内容的交互和控制方面。具体而言，浏览器的同源政策（Same-Origin Policy）会限制你在一个域下操作或访问来自其他域的 <code>iframe</code> 内容，除非跨域资源支持特定的跨域通信协议。</p>
+<p>为了克服这些限制，除了使用 <code>&lt;iframe&gt;</code> 之外，还有一些替代方案，你可以根据实际需求来选择合适的方案。</p>
+<h3 id="1-跨域通信：postMessage"><a href="#1-跨域通信：postMessage" class="headerlink" title="1. 跨域通信：postMessage"></a>1. <strong>跨域通信：<code>postMessage</code></strong></h3><p>如果你控制嵌入的 <code>iframe</code> 页面和父页面，那么可以通过 <code>postMessage</code> 实现跨域通信。这种方式可以让父页面和嵌入的 <code>iframe</code> 页面进行消息传递，而无需违反浏览器的同源政策。</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><p>父页面向 <code>iframe</code> 页面发送消息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> iframe = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myIframe&#x27;</span>);</span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="title function_">postMessage</span>(<span class="string">&#x27;Hello iframe&#x27;</span>, <span class="string">&#x27;https://example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>iframe</code> 页面接收并处理消息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> !== <span class="string">&#x27;https://yourdomain.com&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>; <span class="comment">// 验证消息来源</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Received message:&#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这种方法适用于父页面与 <code>iframe</code> 页面之间需要相互交换数据的场景。</p>
+<hr>
+<h3 id="2-CORS（跨域资源共享）"><a href="#2-CORS（跨域资源共享）" class="headerlink" title="2. CORS（跨域资源共享）"></a>2. <strong>CORS（跨域资源共享）</strong></h3><p>CORS 是一种允许浏览器向不同源的服务器发出请求并获取响应的机制。通过设置合适的服务器头（<code>Access-Control-Allow-Origin</code>），服务器可以允许特定的源访问它的资源。虽然 CORS 主要用于 AJAX 请求，但它也有助于控制跨域访问权限。</p>
+<p>如果你的 <code>iframe</code> 页面能够访问并处理 CORS 请求，那么可以通过 Ajax 来加载数据，而不依赖于传统的 <code>iframe</code>。例如，通过请求 API 获取数据，并动态加载页面内容。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;https://example.com/api/data&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">&#x27;Bearer token&#x27;</span> <span class="comment">// 如果需要认证</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(data));</span><br></pre></td></tr></table></figure>
+
+<p>CORS 适用于从服务器端控制跨域请求的场景，尤其是当你希望通过 API 与远程资源交互时。</p>
+<hr>
+<h3 id="3-JSONP（JSON-with-Padding）"><a href="#3-JSONP（JSON-with-Padding）" class="headerlink" title="3. JSONP（JSON with Padding）"></a>3. <strong>JSONP（JSON with Padding）</strong></h3><p>JSONP 是一种绕过同源策略限制的技术，通常用于跨域获取数据。它通过在 <code>&lt;script&gt;</code> 标签中嵌入远程 URL 来加载数据，从而绕过浏览器的同源策略。</p>
+<p>JSONP 主要用于跨域的数据请求，而不适用于嵌入整个页面或互动内容。由于其安全性问题，JSONP 已逐渐被其他技术（如 CORS）所取代，但它仍然可以在一些特定场景下使用。</p>
+<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://example.com/data?callback=handleResponse&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">function</span> <span class="title function_">handleResponse</span>(<span class="params">data</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Received data:&#x27;</span>, data);</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>JSONP 适用于只需要获取数据并不需要复杂交互的场景，且要求目标服务器支持 JSONP。</p>
+<hr>
+<h3 id="4-Web-Components-和-Shadow-DOM"><a href="#4-Web-Components-和-Shadow-DOM" class="headerlink" title="4. Web Components 和 Shadow DOM"></a>4. <strong>Web Components 和 Shadow DOM</strong></h3><p>如果你需要将第三方内容嵌入到网页中，但又不想使用传统的 <code>&lt;iframe&gt;</code>，可以考虑使用 <strong>Web Components</strong> 和 <strong>Shadow DOM</strong>。Web Components 是一种用于封装和隔离 HTML 元素及其行为的标准，Shadow DOM 可以帮助你将嵌套的元素和样式封装在一个“影子”树中，避免样式和事件的污染。</p>
+<h4 id="示例：-2"><a href="#示例：-2" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">my-widget</span>&gt;</span><span class="tag">&lt;/<span class="name">my-widget</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">class</span> <span class="title class_">MyWidget</span> <span class="keyword">extends</span> <span class="title class_ inherited__">HTMLElement</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">super</span>();</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> shadow = <span class="variable language_">this</span>.<span class="title function_">attachShadow</span>(&#123; <span class="attr">mode</span>: <span class="string">&#x27;open&#x27;</span> &#125;);</span></span><br><span class="line"><span class="language-javascript">      shadow.<span class="property">innerHTML</span> = <span class="string">`&lt;iframe src=&quot;https://example.com&quot;&gt;&lt;/iframe&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">  customElements.<span class="title function_">define</span>(<span class="string">&#x27;my-widget&#x27;</span>, <span class="title class_">MyWidget</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Web Components 和 Shadow DOM 适用于希望通过封装来避免样式和脚本冲突的场景，尤其是在复杂的应用中，能够提供更好的代码组织和重用。</p>
+<hr>
+<h3 id="5-Server-Side-Embedding-代理方式"><a href="#5-Server-Side-Embedding-代理方式" class="headerlink" title="5. Server-Side Embedding (代理方式)"></a>5. <strong>Server-Side Embedding (代理方式)</strong></h3><p>另一种方法是使用 <strong>服务器端代理</strong>，即在你的服务器上中转数据或内容。服务器从第三方网站获取数据或页面，然后将其嵌入到你的网页中。这种方式可以有效绕过浏览器的跨域限制，因为跨域问题仅限于浏览器端，服务器端没有同源策略的限制。</p>
+<h4 id="示例：-3"><a href="#示例：-3" class="headerlink" title="示例："></a>示例：</h4><ul>
+<li>你可以在服务器上使用像 <code>Node.js</code>、<code>PHP</code>、<code>Python</code> 等技术来发起 HTTP 请求，从第三方网站获取数据或页面。</li>
+<li>然后，将该内容通过你的服务器传递给前端，前端无需使用 <code>&lt;iframe&gt;</code>，而是直接显示或渲染从服务器获取的数据。</li>
+</ul>
+<p>这种方法适用于需要嵌入外部资源，但不希望受限于浏览器的跨域策略，同时你控制服务器端代码的场景。</p>
+<hr>
+<h3 id="6-Proxy-Iframe（代理-iframe）"><a href="#6-Proxy-Iframe（代理-iframe）" class="headerlink" title="6. Proxy Iframe（代理 iframe）"></a>6. <strong>Proxy Iframe（代理 <code>iframe</code>）</strong></h3><p>如果你不能修改第三方页面的内容，但又需要跨域嵌入，你可以创建一个代理 <code>iframe</code>。这种方法涉及通过你自己的服务器创建一个 <code>iframe</code> 页面，页面本身可以从第三方获取内容。</p>
+<h4 id="示例：-4"><a href="#示例：-4" class="headerlink" title="示例："></a>示例：</h4><ul>
+<li>你将第三方页面请求通过服务器代理，服务器再将其发送到客户端。</li>
+<li>前端 <code>iframe</code> 引用的是你的服务器，而不是直接引用第三方页面。</li>
+</ul>
+<p>这种方法避免了直接跨域访问第三方内容，但可能涉及额外的工作和服务器负担。</p>
+<hr>
+<h3 id="7-Server-Side-Rendering-SSR"><a href="#7-Server-Side-Rendering-SSR" class="headerlink" title="7. Server-Side Rendering (SSR)"></a>7. <strong>Server-Side Rendering (SSR)</strong></h3><p>在一些复杂的应用中，可以考虑 <strong>服务器端渲染（SSR）</strong> 的方式，通过服务器生成 HTML 内容，然后将其直接发送到浏览器，而不通过 <code>iframe</code>。</p>
+<p>例如，如果你需要集成外部内容，可以通过服务器从第三方网站抓取并生成静态页面内容，然后在浏览器中直接渲染。这种方式可以避免跨域问题，但需要更多的服务器端处理和缓存。</p>
+<hr>
+<h3 id="8-Content-Embedding-via-API"><a href="#8-Content-Embedding-via-API" class="headerlink" title="8. Content Embedding via API"></a>8. <strong>Content Embedding via API</strong></h3><p>如果第三方提供了 <strong>API 接口</strong>，而你只需要嵌入其中的部分数据或功能，可以直接使用 API 获取数据并动态渲染到你的页面中，而不是通过 <code>iframe</code> 嵌入完整页面。</p>
+<p>例如，第三方提供了一个社交媒体的 API，你可以直接使用该 API 获取用户的数据并在页面上展示，而无需嵌入整个网站或应用。</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>除了传统的 <code>&lt;iframe&gt;</code> 嵌入方法外，还有多种替代方案来实现跨域嵌入，每种方案都有不同的适用场景：</p>
+<ol>
+<li>**<code>postMessage</code>**：适用于父页面与 <code>iframe</code> 页面之间的跨域通信。</li>
+<li><strong>CORS</strong>：适用于 API 请求，允许跨域访问资源。</li>
+<li><strong>JSONP</strong>：适用于简单的跨域数据获取，已逐渐被 CORS 替代。</li>
+<li><strong>Web Components 和 Shadow DOM</strong>：适用于需要封装和隔离的内容嵌入。</li>
+<li><strong>Server-Side Embedding</strong>：适用于通过服务器中转跨域内容。</li>
+<li><strong>Proxy Iframe</strong>：通过服务器代理解决跨域问题。</li>
+<li><strong>Server-Side Rendering</strong>：通过服务器渲染并直接传递内容。</li>
+<li><strong>Content Embedding via API</strong>：通过 API 动态嵌入外部内容。</li>
+</ol>
+<p>选择哪种方法取决于你的具体需求，控制的权限，跨域安全策略，和所嵌入的内容的特性。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#iframe" >
+    <span class="tag-code">iframe</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/04/front_skills/css3/css%20rule%20tree/">
+        <span class="nav-arrow">← </span>
+        
+          css Rule tree
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/14/front_skills/js/web%20components/">
+        
+          Web Components 和 Shadow DOM
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-nav-text">一、基本语法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7%EF%BC%9A"><span class="toc-nav-text">常用属性：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E8%A7%81%E7%94%A8%E9%80%94"><span class="toc-nav-text">二、常见用途</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81sandbox-%E5%B1%9E%E6%80%A7%E8%AF%A6%E8%A7%A3"><span class="toc-nav-text">三、sandbox 属性详解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E5%AE%89%E5%85%A8%E6%80%A7%E6%B3%A8%E6%84%8F"><span class="toc-nav-text">四、安全性注意</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81iframe-%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E7%9A%84%E7%BB%93%E5%90%88"><span class="toc-nav-text">五、iframe 与现代前端的结合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81iframe-%E7%9A%84%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="toc-nav-text">六、iframe 的替代方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E8%B7%A8%E5%9F%9F%E9%80%9A%E4%BF%A1%EF%BC%9ApostMessage"><span class="toc-nav-text">1. 跨域通信：postMessage</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-CORS%EF%BC%88%E8%B7%A8%E5%9F%9F%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB%EF%BC%89"><span class="toc-nav-text">2. CORS（跨域资源共享）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-JSONP%EF%BC%88JSON-with-Padding%EF%BC%89"><span class="toc-nav-text">3. JSONP（JSON with Padding）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A-1"><span class="toc-nav-text">示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-Web-Components-%E5%92%8C-Shadow-DOM"><span class="toc-nav-text">4. Web Components 和 Shadow DOM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A-2"><span class="toc-nav-text">示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-Server-Side-Embedding-%E4%BB%A3%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">5. Server-Side Embedding (代理方式)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A-3"><span class="toc-nav-text">示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-Proxy-Iframe%EF%BC%88%E4%BB%A3%E7%90%86-iframe%EF%BC%89"><span class="toc-nav-text">6. Proxy Iframe（代理 iframe）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A-4"><span class="toc-nav-text">示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-Server-Side-Rendering-SSR"><span class="toc-nav-text">7. Server-Side Rendering (SSR)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8-Content-Embedding-via-API"><span class="toc-nav-text">8. Content Embedding via API</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/13/front_skills/js/iframe 嵌入问题/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/23/app_develop_skills/app%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E6%AF%94%E8%BE%83/">app开发框架比较</a>
+      </h2>
+      <p class="article-date">July 23, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+一、主流跨平台框架对比
+
+
+框架
+开发语言
+渲染方式
+性能特点
+生态成熟度
+代表应用
+
+
+
+Flutter
+Dart
+自绘引擎 (Skia)
+⭐⭐⭐⭐⭐ (原生级)
+⭐⭐⭐⭐
+Google Ads、阿里闲鱼
+
+
+React Native
+JavaScript
+原生组件封装
+⭐⭐⭐ (接近原 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/23/app_develop_skills/app%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E6%AF%94%E8%BE%83/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/23/app_develop_skills/flutter%20tab%20update/">Flutter Windows tab 自动更新</a>
+      </h2>
+      <p class="article-date">July 23, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Flutter 的 Tab 是完全可以通过配置动态更新的。可以做到：
+
+✅ Tab 的数量从 3 → 4 → 5 动态变化（甚至运行时改变）
+✅ 每个 Tab 的标题、图标、URL 都由配置文件（如 JSON）控制
+✅ 配置可以从本地或远程加载，实现远程动态更新界面结构
+
+
+✅ 实现原理概述 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/23/app_develop_skills/flutter%20tab%20update/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">Flutter Windows 开发环境搭建指南</a>
+      </h2>
+      <p class="article-date">July 22, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Windows 下快速搭建 Flutter + VS Code 的开发环境，并顺利发布 Android App，给你一份一步步的高效流程，帮你省时省力：
+
+Windows 下快速搭建 Flutter + VS Code 开发环境并发布 Android App
+一、环境准备和安装1. 安装 F ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/06/backend_skills/go/go%20vs%20java/">Go 与 java</a>
+      </h2>
+      <p class="article-date">July 6, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#java" >
+    <span class="tag-code">java</span>
+  </a>
+
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#jvm" >
+    <span class="tag-code">jvm</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Go 语言确实提供了屏蔽底层系统差异的能力，但与 Java JVM 的机制截然不同。它采用的是 原生编译 + 标准库抽象 的方式，而不是依赖一个虚拟机。
+Go（Golang）没有像 Java 那样的 JVM（Java Virtual Machine）机制，但它通过 自己的运行时系统（runt ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/06/backend_skills/go/go%20vs%20java/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">Angular rxjs 性能问题</a>
+      </h2>
+      <p class="article-date">July 5, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#Service Worker" >
+    <span class="tag-code">Service Worker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          分析 Angular + RxJS 性能问题，最有效的方法是结合：
+
+浏览器工具（如 Chrome DevTools）
+Angular 自带调试工具（如 Angular DevTools）
+RxJS 专项技巧（如追踪流、订阅分析、内存泄漏检查）
+
+
+🔍 一、常见 RxJS 性能问题类型
+
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">js v8内存空间</a>
+      </h2>
+      <p class="article-date">July 3, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#内存空间" >
+    <span class="tag-code">内存空间</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          v8内存空间在 JavaScript 的 V8 引擎中（如 Chrome、Node.js 所使用的引擎），内存空间管理是高性能运行的关键之一。 V8 将内存划分为多个不同的空间（space），每个空间用于不同类型的数据存储和垃圾回收策略。
+
+V8 的主要内存空间结构V8 将内存分为两个大类： ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/6/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/8/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

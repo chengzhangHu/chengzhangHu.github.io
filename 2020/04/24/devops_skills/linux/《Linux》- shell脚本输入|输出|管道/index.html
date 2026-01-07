@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- shell脚本输入|输出|管道 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- shell脚本输入|输出|管道</h2>
+  <p class="post-date">2020-04-24</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="shell-编写"><a href="#shell-编写" class="headerlink" title="shell 编写"></a>shell 编写</h3><h4 id="shell-开头"><a href="#shell-开头" class="headerlink" title="shell 开头"></a>shell 开头</h4><ul>
+<li>以sh后缀</li>
+<li>开头#注释，表明采用何种解释器 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash </span></span><br></pre></td></tr></table></figure></li>
+<li>添加作者等说明 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">#/bin/bash</span></span><br><span class="line">&lt;&lt;<span class="string">ABC</span></span><br><span class="line"><span class="string">    author:cheonghu</span></span><br><span class="line"><span class="string">    date:2020-04-24</span></span><br><span class="line"><span class="string">    desc:shell demo</span></span><br><span class="line"><span class="string">ABC</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll </span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 88 Apr 24 22:15 demo.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其中可以看到，demo.sh没有可执行权限;但是 bash demo.sh可以运行 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./demo.sh</span><br><span class="line">-bash: ./demo.sh: Permission denied</span><br><span class="line"></span><br><span class="line">$ bash ./demo.sh</span><br><span class="line">shell demo</span><br></pre></td></tr></table></figure></li>
+<li>也可以通过chmod 修改权限 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 755 ./demo.sh </span><br><span class="line"># or</span><br><span class="line">$ chmod u+x ./demo.sh  # 给当前拥有者添加可执行权限</span><br><span class="line">$ ll </span><br><span class="line">-rwxr--r-- 1 root root 88 Apr 24 22:15 demo.sh</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="shell-输出-echo"><a href="#shell-输出-echo" class="headerlink" title="shell 输出 - echo"></a>shell 输出 - echo</h4><ul>
+<li>输出特殊字符 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ echo -e &quot;hello\tworld&quot;</span><br><span class="line">$ echo -e &quot;hello\nworld&quot;</span><br><span class="line">$ echo -e &quot;hello\fworld&quot;</span><br></pre></td></tr></table></figure></li>
+<li>输出待颜色字符串 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># \e[35m开启，\e[0m关闭 </span><br><span class="line">$ echo -e &quot;\e[35mok\e[0m&quot;</span><br><span class="line">$ echo -e &quot;\e[32mOK\e[0m&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="shell-输出-printf"><a href="#shell-输出-printf" class="headerlink" title="shell 输出 - printf"></a>shell 输出 - printf</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ printf &quot;%5d&quot; 12 # 十进制右对齐输出，但是默认不换行</span><br><span class="line">$ printf &quot;%-5d&quot; 12 # 十进制左对齐输出</span><br></pre></td></tr></table></figure>
+
+<h4 id="shell-输入-read"><a href="#shell-输入-read" class="headerlink" title="shell 输入 - read"></a>shell 输入 - read</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ read name  #把输入的值，赋值给name</span><br><span class="line">$ echo $name </span><br><span class="line"></span><br><span class="line">$ read name age address # 读入3组</span><br><span class="line">$ echo $name $age $address</span><br><span class="line"></span><br><span class="line">$ read -p &quot;请输入用户名&quot; user</span><br><span class="line">$ echo $user</span><br><span class="line"></span><br><span class="line">$ read -t -10 -p &quot;请输入用户名&quot; user # 3s后自动退出等待输入状态</span><br><span class="line">$ echo $user</span><br><span class="line"></span><br><span class="line">$ read -s -p &quot;请输入密码&quot; pass # 不显示方式输入密码</span><br></pre></td></tr></table></figure>
+
+<h4 id="shell-管道"><a href="#shell-管道" class="headerlink" title="shell - 管道 |"></a>shell - 管道 |</h4><ul>
+<li>who查看最近登录用户</li>
+<li>wc 统计输入数据的行数-l,单词数 -w, 字节-c,字符-m  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ who | wc -l</span><br></pre></td></tr></table></figure></li>
+<li>ss 可查看系统服务监听的端口，grep 具备过滤功能 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ss -nutlp | grep sshd</span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/04/24/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20%20angular%20ui-grid%E5%8D%87%E7%BA%A7%E6%96%B9%E6%A1%88/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》- angular8 ui-grid升级方案
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/04/24/devops_skills/deploy/%E3%80%8A%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E3%80%8B-%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E4%B9%8B%E9%9D%99%E6%80%81%E7%AB%99%E7%82%B9%E6%89%98%E7%AE%A1/">
+        
+          《自动部署》- 自动部署之静态站点托管
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shell-%E7%BC%96%E5%86%99"><span class="toc-nav-text">shell 编写</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E5%BC%80%E5%A4%B4"><span class="toc-nav-text">shell 开头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-nav-text">文件权限</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E8%BE%93%E5%87%BA-echo"><span class="toc-nav-text">shell 输出 - echo</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E8%BE%93%E5%87%BA-printf"><span class="toc-nav-text">shell 输出 - printf</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E8%BE%93%E5%85%A5-read"><span class="toc-nav-text">shell 输入 - read</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E7%AE%A1%E9%81%93"><span class="toc-nav-text">shell - 管道 |</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/04/24/devops_skills/linux/《Linux》- shell脚本输入|输出|管道/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

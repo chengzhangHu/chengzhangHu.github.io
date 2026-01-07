@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      mcp和agent区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>mcp和agent区别</h2>
+  <p class="post-date">2025-10-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="MCP-与-Agent-的区别"><a href="#MCP-与-Agent-的区别" class="headerlink" title="MCP 与 Agent 的区别"></a>MCP 与 Agent 的区别</h1><blockquote>
+<p><strong>MCP（Model Context Protocol）</strong> 和 <strong>Agent（智能体）</strong> 在 AI 系统中常常被同时提及，但其实它们属于<strong>不同层次的概念</strong>，作用、边界与关注点各不相同。将从<strong>核心定义</strong>、<strong>工作方式</strong>、<strong>示例对比</strong>、<strong>协作关系</strong>、<strong>安全性</strong>等多个维度，对它们进行详细的对比与分析。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-一、核心定义对比"><a href="#🧩-一、核心定义对比" class="headerlink" title="🧩 一、核心定义对比"></a>🧩 一、核心定义对比</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>MCP（Model Context Protocol）</th>
+<th>Agent（智能体）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>本质</strong></td>
+<td>一种 <strong>通信协议</strong>，用于让大模型与外部工具、安全系统、数据源进行安全、有结构的交互。</td>
+<td>一种 <strong>运行实体&#x2F;行为体</strong>，基于大模型、工具和策略，主动执行任务或决策。</td>
+</tr>
+<tr>
+<td><strong>定位</strong></td>
+<td>“语言模型与外部世界的中介协议层”。</td>
+<td>“使用模型+工具执行目标任务的执行层”。</td>
+</tr>
+<tr>
+<td><strong>类似类比</strong></td>
+<td>类似 GraphQL 或 gRPC，但针对 AI 模型的上下文和动作调用优化。</td>
+<td>类似一个自动化脚本或机器人，能思考、规划、执行。</td>
+</tr>
+<tr>
+<td><strong>设计目标</strong></td>
+<td>安全、标准化、可审计的调用和上下文传输。</td>
+<td>自主性、智能化、任务完成能力。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-二、工作方式上的区别"><a href="#⚙️-二、工作方式上的区别" class="headerlink" title="⚙️ 二、工作方式上的区别"></a>⚙️ 二、工作方式上的区别</h2><h3 id="🧠-MCP（Model-Context-Protocol）"><a href="#🧠-MCP（Model-Context-Protocol）" class="headerlink" title="🧠 MCP（Model Context Protocol）"></a>🧠 MCP（Model Context Protocol）</h3><ul>
+<li><p>提供一个<strong>标准格式</strong>，使大模型可以通过它调用：</p>
+<ul>
+<li>插件（tools）</li>
+<li>数据服务（database, API）</li>
+<li>操作系统功能（文件系统、命令行等）</li>
+</ul>
+</li>
+<li><p>通过上下文控制（context management）来确保：</p>
+<ul>
+<li>模型知道自己正在访问的内容；</li>
+<li>每次调用都有 trace、schema、安全边界；</li>
+<li>外部系统可以验证模型发出的请求是否合法。</li>
+</ul>
+</li>
+</ul>
+<p>👉 <strong>它本身不“执行任务”</strong>，只是定义“模型与系统之间怎么说话”。</p>
+<hr>
+<h3 id="🤖-Agent"><a href="#🤖-Agent" class="headerlink" title="🤖 Agent"></a>🤖 Agent</h3><ul>
+<li><p>是基于模型、工具、策略的<strong>执行体</strong>：</p>
+<ul>
+<li>有目标、有记忆、有计划；</li>
+<li>可以调用 MCP 定义的工具；</li>
+<li>可以判断是否继续执行、回退、或终止；</li>
+</ul>
+</li>
+<li><p>通常包含：</p>
+<ul>
+<li><strong>Planner（计划）</strong>：思考步骤；</li>
+<li><strong>Executor（执行）</strong>：调用外部资源；</li>
+<li><strong>Memory（记忆）</strong>：保持上下文；</li>
+<li><strong>Reasoner（推理器）</strong>：根据反馈调整行为。</li>
+</ul>
+</li>
+</ul>
+<p>👉 它才是真正“干活”的那部分。<br>MCP 是它的“通道”，让它能安全、规范地调用外部系统。</p>
+<hr>
+<h2 id="🔐-三、示例对比"><a href="#🔐-三、示例对比" class="headerlink" title="🔐 三、示例对比"></a>🔐 三、示例对比</h2><h3 id="✅-有-MCP-的调用过程"><a href="#✅-有-MCP-的调用过程" class="headerlink" title="✅ 有 MCP 的调用过程"></a>✅ 有 MCP 的调用过程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Agent 想读取数据库 → </span><br><span class="line">MCP 提供 schema (GET /database/query)</span><br><span class="line">→ Agent 发送 query 请求（符合 schema）</span><br><span class="line">→ MCP 验证安全策略 + 签名</span><br><span class="line">→ 返回 JSON 结果（带上下文 trace）</span><br></pre></td></tr></table></figure>
+
+<h3 id="🚫-没-MCP-的情况"><a href="#🚫-没-MCP-的情况" class="headerlink" title="🚫 没 MCP 的情况"></a>🚫 没 MCP 的情况</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Agent 直接调用外部 API，</span><br><span class="line">模型生成了 SQL，</span><br><span class="line">但 SQL 注入或拼接不安全，</span><br><span class="line">结果不可验证，风险高。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧱-四、协作关系（理想架构）"><a href="#🧱-四、协作关系（理想架构）" class="headerlink" title="🧱 四、协作关系（理想架构）"></a>🧱 四、协作关系（理想架构）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[User]</span><br><span class="line">   ↓</span><br><span class="line">[Agent Layer] —— 调度、规划、意图分析</span><br><span class="line">   ↓</span><br><span class="line">[MCP Protocol Layer] —— 规范、安全、上下文、签名</span><br><span class="line">   ↓</span><br><span class="line">[External Tools / APIs / OS / Databases]</span><br></pre></td></tr></table></figure>
+
+<p>👉 可以理解为：</p>
+<ul>
+<li>MCP 是 <strong>操作系统级的调用协议层</strong>；</li>
+<li>Agent 是 <strong>运行在这个系统之上的用户态程序</strong>；</li>
+<li>模型（LLM）是 <strong>Agent 的“思维引擎”</strong>。</li>
+</ul>
+<hr>
+<h2 id="🛡️-五、在可信性与安全性方面的差异"><a href="#🛡️-五、在可信性与安全性方面的差异" class="headerlink" title="🛡️ 五、在可信性与安全性方面的差异"></a>🛡️ 五、在可信性与安全性方面的差异</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>MCP</th>
+<th>Agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>安全控制点</strong></td>
+<td>调用前后可插入验证、签名、schema、审计</td>
+<td>任务规划层，安全性依赖策略与模型稳定性</td>
+</tr>
+<tr>
+<td><strong>防篡改能力</strong></td>
+<td>高，可引入哈希链、签名机制</td>
+<td>低，可能受 prompt 攻击或策略注入影响</td>
+</tr>
+<tr>
+<td><strong>可解释性</strong></td>
+<td>高（有完整调用日志）</td>
+<td>弱（内部推理过程难解释）</td>
+</tr>
+</tbody></table>
+<hr>
+<p>✅ <strong>总结一句话</strong>：</p>
+<blockquote>
+<p><strong>MCP 是“通信与控制协议”</strong>，保障安全与一致性；<br><strong>Agent 是“执行与推理系统”</strong>，负责目标实现。<br>两者结合，才能形成一个既<strong>可控</strong>又<strong>智能</strong>的 AI 生态。</p>
+</blockquote>
+<h1 id="核心思路是：把-安全控制从-MCP-协议层转移到-Agent-层"><a href="#核心思路是：把-安全控制从-MCP-协议层转移到-Agent-层" class="headerlink" title="核心思路是：把 安全控制从 MCP 协议层转移到 Agent 层"></a>核心思路是：把 <strong>安全控制从 MCP 协议层转移到 Agent 层</strong></h1><p>即让 Agent 自己执行 schema 验证、权限校验、风险评估等，而不是每次都依赖 MCP Server 来验证。下面详细分析利弊、可行方式和实现思路。</p>
+<hr>
+<h2 id="🧩-一、架构变化"><a href="#🧩-一、架构变化" class="headerlink" title="🧩 一、架构变化"></a>🧩 一、架构变化</h2><h3 id="传统-MCP-安全设计"><a href="#传统-MCP-安全设计" class="headerlink" title="传统 MCP 安全设计"></a>传统 MCP 安全设计</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Agent / LLM] → [MCP Protocol] → [Server / Tool]</span><br><span class="line">   |                  ^</span><br><span class="line">   |----- schema, 权限验证, 风险控制 ----|</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>MCP 负责验证每一步请求是否安全、合法。</li>
+<li>Agent 发出的请求经过 MCP 才能执行。</li>
+<li>优点：中心化安全，易审计。</li>
+<li>缺点：每次调用都有验证延迟，尤其高频操作时性能瓶颈明显。</li>
+</ul>
+<hr>
+<h3 id="安全控制下移到-Agent"><a href="#安全控制下移到-Agent" class="headerlink" title="安全控制下移到 Agent"></a>安全控制下移到 Agent</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[Agent / LLM w/ verifier] → [MCP Protocol / Server] → [Tool]</span><br><span class="line">   |-- schema验证、权限检查、风险评估 --&gt;|</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Agent 自己内置安全检查逻辑：</p>
+<ul>
+<li>Schema 校验</li>
+<li>权限范围检查</li>
+<li>风险等级判定</li>
+</ul>
+</li>
+<li><p>MCP Protocol 只负责<strong>通信和工具调用</strong>，无需重复验证。</p>
+</li>
+<li><p>MCP Server 只做轻量确认或异步审计。</p>
+</li>
+</ul>
+<hr>
+<h2 id="🧠-二、可行实现方式"><a href="#🧠-二、可行实现方式" class="headerlink" title="🧠 二、可行实现方式"></a>🧠 二、可行实现方式</h2><h3 id="1️⃣-Agent-内置-schema-验证器"><a href="#1️⃣-Agent-内置-schema-验证器" class="headerlink" title="1️⃣ Agent 内置 schema 验证器"></a>1️⃣ Agent 内置 schema 验证器</h3><ul>
+<li>Agent 在生成请求前，通过本地 JSON Schema &#x2F; DSL 校验参数是否合法。</li>
+<li>可以缓存 schema，快速验证，无需每次网络往返。</li>
+</ul>
+<h3 id="2️⃣-权限与安全策略本地化"><a href="#2️⃣-权限与安全策略本地化" class="headerlink" title="2️⃣ 权限与安全策略本地化"></a>2️⃣ 权限与安全策略本地化</h3><ul>
+<li>Agent 内部维护用户权限、沙箱、风险等级。</li>
+<li>调用前直接判定是否允许执行。</li>
+<li>高风险操作可以仍然弹出人工确认（可选）。</li>
+</ul>
+<h3 id="3️⃣-风险评估与置信度"><a href="#3️⃣-风险评估与置信度" class="headerlink" title="3️⃣ 风险评估与置信度"></a>3️⃣ 风险评估与置信度</h3><ul>
+<li>Agent 根据自身置信度或上下文信息判断是否需要外部审计或阻止执行。</li>
+<li>可以训练或微调模型，让其“自觉遵守规则”。</li>
+</ul>
+<h3 id="4️⃣-异步审计"><a href="#4️⃣-异步审计" class="headerlink" title="4️⃣ 异步审计"></a>4️⃣ 异步审计</h3><ul>
+<li>虽然 Agent 自己执行安全检查，但仍可将每步操作摘要异步发送 MCP Server 做审计&#x2F;存证。</li>
+<li>保证<strong>安全可追溯性</strong>，同时降低调用延迟。</li>
+</ul>
+<hr>
+<h2 id="⚖️-三、优缺点分析"><a href="#⚖️-三、优缺点分析" class="headerlink" title="⚖️ 三、优缺点分析"></a>⚖️ 三、优缺点分析</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>安全在 MCP</th>
+<th>安全在 Agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>延迟</td>
+<td>较高，每步调用都需验证</td>
+<td>低，本地验证即可</td>
+</tr>
+<tr>
+<td>可控性</td>
+<td>高，中心化管理</td>
+<td>中等，依赖 Agent 实现正确性</td>
+</tr>
+<tr>
+<td>可扩展性</td>
+<td>中等，每新增 Agent 需 Server 配置</td>
+<td>高，每个 Agent 自带安全策略即可并行</td>
+</tr>
+<tr>
+<td>审计性</td>
+<td>高，可直接记录每步操作</td>
+<td>中等，可异步或批量上报</td>
+</tr>
+<tr>
+<td>风险</td>
+<td>Server 可阻止任何违规</td>
+<td>Agent 可被 prompt 攻击或 bug 绕过</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🛠️-四、落地策略（推荐混合方案）"><a href="#🛠️-四、落地策略（推荐混合方案）" class="headerlink" title="🛠️ 四、落地策略（推荐混合方案）"></a>🛠️ 四、落地策略（推荐混合方案）</h2><ol>
+<li><strong>低风险操作</strong> → Agent 本地验证，快速执行。</li>
+<li><strong>中风险操作</strong> → Agent 本地验证 + MCP Server 异步审计。</li>
+<li><strong>高风险操作</strong> → Agent 本地验证 + 人工确认 + MCP Server 记录日志。</li>
+</ol>
+<blockquote>
+<p>这样既能降低延迟，又保持安全可控性。</p>
+</blockquote>
+<hr>
+<h2 id="🔄-五、可选增强策略"><a href="#🔄-五、可选增强策略" class="headerlink" title="🔄 五、可选增强策略"></a>🔄 五、可选增强策略</h2><ul>
+<li><strong>模型自证（Attestation）</strong>：Agent 自己生成调用 hash &#x2F; 签名，外部可快速验证完整性。</li>
+<li><strong>双模型 verifier</strong>：Agent 内部运行轻量安全 verifier，检查 LLM 输出与 schema&#x2F;策略是否一致。</li>
+<li><strong>缓存策略</strong>：Agent 对常用 schema、权限验证结果进行缓存，提高高频操作速度。</li>
+</ul>
+<hr>
+<p>✅ <strong>总结</strong></p>
+<ul>
+<li><strong>可行性</strong>：完全可行，把安全逻辑下移到 Agent 层可显著降低 MCP 调用延迟。</li>
+<li><strong>前提条件</strong>：Agent 必须足够可靠（防止模型被 prompt 攻击或出现逻辑缺陷），且仍需异步审计保证可追溯性。</li>
+<li><strong>理想方案</strong>：<strong>混合安全</strong>：Agent 本地快速验证 + MCP Server 异步审计&#x2F;存证，关键高危操作仍需人工确认。</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#api" >
+    <span class="tag-code">api</span>
+  </a>
+
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#copilot" >
+    <span class="tag-code">copilot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/25/ai_tools/mcp%E5%AE%89%E5%85%A8%E4%BB%8E%E6%9C%AC%E6%BA%90%E8%A7%A3%E5%86%B3%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98/">
+        <span class="nav-arrow">← </span>
+        
+          mcp安全从本源解决的工程问题
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/11/01/ai_tools/ai-agent-vs-vscode-vs-mcp-vs-langchain%E5%8C%BA%E5%88%AB/">
+        
+          ai-agent-vs-vscode-vs-mcp-vs-langchain区别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MCP-%E4%B8%8E-Agent-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">MCP 与 Agent 的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E5%AE%9A%E4%B9%89%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">🧩 一、核心定义对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">⚙️ 二、工作方式上的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%A0-MCP%EF%BC%88Model-Context-Protocol%EF%BC%89"><span class="toc-nav-text">🧠 MCP（Model Context Protocol）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A4%96-Agent"><span class="toc-nav-text">🤖 Agent</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%90-%E4%B8%89%E3%80%81%E7%A4%BA%E4%BE%8B%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">🔐 三、示例对比</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%9C%89-MCP-%E7%9A%84%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">✅ 有 MCP 的调用过程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%9A%AB-%E6%B2%A1-MCP-%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-nav-text">🚫 没 MCP 的情况</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E5%9B%9B%E3%80%81%E5%8D%8F%E4%BD%9C%E5%85%B3%E7%B3%BB%EF%BC%88%E7%90%86%E6%83%B3%E6%9E%B6%E6%9E%84%EF%BC%89"><span class="toc-nav-text">🧱 四、协作关系（理想架构）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A1%EF%B8%8F-%E4%BA%94%E3%80%81%E5%9C%A8%E5%8F%AF%E4%BF%A1%E6%80%A7%E4%B8%8E%E5%AE%89%E5%85%A8%E6%80%A7%E6%96%B9%E9%9D%A2%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="toc-nav-text">🛡️ 五、在可信性与安全性方面的差异</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E8%B7%AF%E6%98%AF%EF%BC%9A%E6%8A%8A-%E5%AE%89%E5%85%A8%E6%8E%A7%E5%88%B6%E4%BB%8E-MCP-%E5%8D%8F%E8%AE%AE%E5%B1%82%E8%BD%AC%E7%A7%BB%E5%88%B0-Agent-%E5%B1%82"><span class="toc-nav-text">核心思路是：把 安全控制从 MCP 协议层转移到 Agent 层</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E3%80%81%E6%9E%B6%E6%9E%84%E5%8F%98%E5%8C%96"><span class="toc-nav-text">🧩 一、架构变化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BC%A0%E7%BB%9F-MCP-%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">传统 MCP 安全设计</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%89%E5%85%A8%E6%8E%A7%E5%88%B6%E4%B8%8B%E7%A7%BB%E5%88%B0-Agent"><span class="toc-nav-text">安全控制下移到 Agent</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%8C%E3%80%81%E5%8F%AF%E8%A1%8C%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">🧠 二、可行实现方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-Agent-%E5%86%85%E7%BD%AE-schema-%E9%AA%8C%E8%AF%81%E5%99%A8"><span class="toc-nav-text">1️⃣ Agent 内置 schema 验证器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-%E6%9D%83%E9%99%90%E4%B8%8E%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E6%9C%AC%E5%9C%B0%E5%8C%96"><span class="toc-nav-text">2️⃣ 权限与安全策略本地化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-%E9%A3%8E%E9%99%A9%E8%AF%84%E4%BC%B0%E4%B8%8E%E7%BD%AE%E4%BF%A1%E5%BA%A6"><span class="toc-nav-text">3️⃣ 风险评估与置信度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4%EF%B8%8F%E2%83%A3-%E5%BC%82%E6%AD%A5%E5%AE%A1%E8%AE%A1"><span class="toc-nav-text">4️⃣ 异步审计</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%96%EF%B8%8F-%E4%B8%89%E3%80%81%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-nav-text">⚖️ 三、优缺点分析</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A0%EF%B8%8F-%E5%9B%9B%E3%80%81%E8%90%BD%E5%9C%B0%E7%AD%96%E7%95%A5%EF%BC%88%E6%8E%A8%E8%8D%90%E6%B7%B7%E5%90%88%E6%96%B9%E6%A1%88%EF%BC%89"><span class="toc-nav-text">🛠️ 四、落地策略（推荐混合方案）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%84-%E4%BA%94%E3%80%81%E5%8F%AF%E9%80%89%E5%A2%9E%E5%BC%BA%E7%AD%96%E7%95%A5"><span class="toc-nav-text">🔄 五、可选增强策略</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/26/ai_tools/mcp和agent区别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

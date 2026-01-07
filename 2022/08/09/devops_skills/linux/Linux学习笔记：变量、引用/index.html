@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      linux 学习笔记一 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>linux 学习笔记一</h2>
+  <p class="post-date">2022-08-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p> Linux命令，前端是反复的学习，通过不停的使用，才能掌握的。</p>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><h3 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h3><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>标识0个或者多个字符</td>
+</tr>
+<tr>
+<td>?</td>
+<td>标识可有可无</td>
+</tr>
+<tr>
+<td>+</td>
+<td>1个或者多个</td>
+</tr>
+<tr>
+<td>^</td>
+<td>表示以什么开头</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>表示以什么结尾</td>
+</tr>
+<tr>
+<td>\</td>
+<td>用来转义特殊字符</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>用来做精确匹配</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>选项中的</td>
+</tr>
+<tr>
+<td>（）</td>
+<td>类似[],表示一组可选范围，常与|或联用</td>
+</tr>
+</tbody></table>
+<h3 id="grep-全局搜索正则表达式并打印"><a href="#grep-全局搜索正则表达式并打印" class="headerlink" title="grep(全局搜索正则表达式并打印)"></a>grep(全局搜索正则表达式并打印)</h3><blockquote>
+<p>global search by regular express and print out the line </p>
+</blockquote>
+<p> <strong>注意点，搜索的内容中如果有空格，需要使用””括起来</strong></p>
+<p> 命令格式：<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep [选项][模式][文件数组]</span><br></pre></td></tr></table></figure></p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">one=1</span><br><span class="line">two = &quot;hello $one&quot;</span><br><span class="line">echo $one</span><br><span class="line"></span><br><span class="line">#已经赋值的，重设</span><br><span class="line">one+1</span><br></pre></td></tr></table></figure>
+<h4 id="特殊赋值"><a href="#特殊赋值" class="headerlink" title="特殊赋值"></a>特殊赋值</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#变量定义，均无效 </span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ color=black</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo &quot;this color is $&#123;color:=red&#125;&quot;</span><br><span class="line">this color is black</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo &quot;this color is $&#123;color:-red&#125;&quot;</span><br><span class="line">this color is black</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#变量未定义</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo &quot;this is undefined $&#123;val:=123&#125;&quot;</span><br><span class="line">this is undefined 123</span><br><span class="line">#:=会对变量进行赋值；:-不会进行赋值操作，也就是说不会污染</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo $val </span><br><span class="line">123</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo &quot;this is undefined $&#123;val:-123&#125;&quot;</span><br><span class="line">this is undefined 123</span><br><span class="line">cheohu@CHEOHU-C1MPM:~$ echo $val</span><br></pre></td></tr></table></figure>
+<p> <strong>“:?”和“?”可用于测试变量是否被赋值，若变量未赋值，Shell提示错误信息</strong></p>
+<blockquote>
+<p>:&#x3D;”和“:-”都不对colour进行重新赋值。注意，使用以上两种符号时，都需要用花括号将赋值式子括起来，否则，Shell将colour:&#x3D;blue整个字符串当做变量名进行处理。</p>
+</blockquote>
+<h4 id="变量清空"><a href="#变量清空" class="headerlink" title="变量清空"></a>变量清空</h4><blockquote>
+<p>unset one </p>
+</blockquote>
+<h4 id="readonly"><a href="#readonly" class="headerlink" title="readonly"></a>readonly</h4><blockquote>
+<p>declare命令与typeset命令一样，用于定义和限制变量的属性，declare -r可将变量设置为只读，等价于readonly命令</p>
+</blockquote>
+<ul>
+<li>可以使用readonly关键字，设置只读</li>
+<li>如果要查看系统中所有的只读变量，只需执行readonly命令即可</li>
+<li>用readonly设置变量为只读只是其中的一种方法，我们还可以利用declare和typeset命令实现同样的功能</li>
+</ul>
+<h3 id="无类型"><a href="#无类型" class="headerlink" title="无类型"></a>无类型</h3><blockquote>
+<p>Shell脚本变量却是无类型的，这与awk变量是一样的。bash Shell不支持浮点型，只支持整型和字符型，默认情况下，Shell脚本变量是字符型的，同时，字符型的变量还具有一个整型值，为0，尽管如此，bash Shell并不要求在定义一个变量时声明其类型。但是，Shell会根据上下文判断出数值型的变量，并进行变量的算术运算和比较等数值操作。判断标准是变量中是否只包含数字，<strong>如果变量只包含数字</strong>，则Shell认定该变量是数值型的，反之，Shell认定该变量是字符串</p>
+</blockquote>
+<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=2009</span><br><span class="line">#let命令用于在变量上执行算术运算</span><br><span class="line">let &quot;a+=1&quot;</span><br><span class="line">echo $a</span><br></pre></td></tr></table></figure>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b=xx09</span><br><span class="line"># 强制转换为整型</span><br><span class="line">declare -i b </span><br></pre></td></tr></table></figure>
+
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><blockquote>
+<p>在给环境变量赋值后，用export命令声明一下，就说明此变量为环境变量，环境变量的名称一般由大写字母组成.如果要列出系统中所有的环境变量，可使用env命令</p>
+</blockquote>
+<h4 id="PATH"><a href="#PATH" class="headerlink" title="PATH"></a>PATH</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;dir&quot;:$PATH</span><br><span class="line">命令中的new directory就是新加上去的目录，后面用冒号加$PATH，表示new directory加上旧的PATH变量值，得到新的PATH变量值。</span><br></pre></td></tr></table></figure>
+
+<h4 id="USER-UID"><a href="#USER-UID" class="headerlink" title="USER ,UID"></a>USER ,UID</h4><blockquote>
+<p>USER表示已登录用户的名字，UID则表示已登录用户的ID。PPID是创建当前进程的进程号，即当前进程的父进程号</p>
+</blockquote>
+<h4 id="PS1-PS2"><a href="#PS1-PS2" class="headerlink" title="PS1,PS2"></a>PS1,PS2</h4><blockquote>
+<p>PS1和PS2称为提示符变量，用于设置提示符格式，比如，例6-17中的Shell提示符指的是[root @jselab ～]#这段文字，中括号里包含了当前用户名、主机名和当前目录等信息，这些信息并非固定不变，它可以通过PS1和PS2的设置而改变。</p>
+</blockquote>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><blockquote>
+<p>系统管理员通常不会利用export逐个设置环境变量，而是将export命令放置在特殊的配置文件之中，Shell能够在特定时刻执行这些配置文件，从而自动完成环境变量的配置工作。本节介绍.bash_profile、.bashrc和.bash_logout三个配置文件，这三个文件存在于用户根目录，即$HOME目录，Linux中以“.”开头的文件为隐藏文件</p>
+</blockquote>
+<ul>
+<li>$HOME&#x2F;.bash_profile是最重要的配置文件，当某Linux用户登录时，Shell会自动执行.bash_profile文件，如果.bash_profile文件不存在，则自动执行系统默认的配置文件&#x2F;etc&#x2F;profile</li>
+<li>即句点符号“.”和source命令是等价的，source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录</li>
+<li>.bash_logout文件在用户注销时执行，用户可以在该文件中写入清除某些环境变量或记录登录时间等命令，.bash_logout文件也可以不存在，此时，用户注销时将不再执行任何额外的命令。</li>
+<li>打印其进程号，$$表示执行该脚本的进程号</li>
+</ul>
+<h4 id="位置参数"><a href="#位置参数" class="headerlink" title="位置参数"></a>位置参数</h4><blockquote>
+<p>位置参数（positional parameters）是一种特殊的Shell变量，用于从命令行向Shell脚本传递参数，$1表示第1个参数、$2表示第2个参数等，$0为脚本的名字，从${10}开始，参数号需要用花括号括起来，如${10}、${11}、${100}、…。$*和$@一样，表示从$1开始的全部参数</p>
+</blockquote>
+<p><strong>特殊位置参数</strong></p>
+<ul>
+<li>$#   - 传递到脚本参数个数</li>
+<li>$*,$@  - 传递到脚本所有参数</li>
+<li>$$  - 进程号</li>
+<li>$?  - 是否执行有误， 0 无误； 非0，有误</li>
+</ul>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><blockquote>
+<p>引用是屏蔽特殊字符的特殊意义，而将其解释为字面意义。</p>
+</blockquote>
+<ul>
+<li><p>“” , 除了&#96;&#96;,\ , $ 其余字符都可以操作</p>
+<blockquote>
+<p>双引号引用除美圆符号$, 反引号（’）和反斜线（\）之外的所有字符，即$、（’）和（\）在双引号中仍被解释为特殊意义.在双引号中保持$符号的特殊意义可以引用变量，如”$variable”表示以变量值替换变量名。 可以防止字符串分割、保留变量中的空格这一特性.</p>
+</blockquote>
+</li>
+<li><p>‘’ 都可以</p>
+<blockquote>
+<p>单引号不再具备引用变量的功能。因此，我们通常将单引号的引用方式称为全引用，将双引号的引用方式称为部分引用, 除了自身外，其余都解释为字面意义。</p>
+</blockquote>
+</li>
+<li><p>&#96;&#96; , shell执行命令</p>
+</li>
+<li><p>\ 转义字符</p>
+</li>
+</ul>
+<h3 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h3><blockquote>
+<p>命令替换，一种是使用反引号，另一种是利用$()</p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#linux" >
+    <span class="tag-code">linux</span>
+  </a>
+
+  <a target="_blank" href="/tags#引用" >
+    <span class="tag-code">引用</span>
+  </a>
+
+  <a target="_blank" href="/tags#变量" >
+    <span class="tag-code">变量</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/08/09/data_base_skills/mysql/mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80/">
+        <span class="nav-arrow">← </span>
+        
+          mysql学习笔记一
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/08/09/python_skills/python%E5%AD%A6%E4%B9%A0%E5%A2%9E%E5%BC%BA%E7%AC%94%E8%AE%B0/">
+        
+          python学习增强笔记
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AF%BC%E8%AF%AD"><span class="toc-nav-text">导语</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-nav-text">内容</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%AD%A3%E5%88%99"><span class="toc-nav-text">正则</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#grep-%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%B9%B6%E6%89%93%E5%8D%B0"><span class="toc-nav-text">grep(全局搜索正则表达式并打印)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-nav-text">变量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC"><span class="toc-nav-text">变量赋值</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%89%B9%E6%AE%8A%E8%B5%8B%E5%80%BC"><span class="toc-nav-text">特殊赋值</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F%E6%B8%85%E7%A9%BA"><span class="toc-nav-text">变量清空</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#readonly"><span class="toc-nav-text">readonly</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%97%A0%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">无类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%90%E7%AE%97"><span class="toc-nav-text">运算</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link"><span class="toc-nav-text"></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-nav-text">环境变量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PATH"><span class="toc-nav-text">PATH</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#USER-UID"><span class="toc-nav-text">USER ,UID</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PS1-PS2"><span class="toc-nav-text">PS1,PS2</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-nav-text">配置文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-nav-text">位置参数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-nav-text">引用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%91%BD%E4%BB%A4%E6%9B%BF%E6%8D%A2"><span class="toc-nav-text">命令替换</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/08/09/devops_skills/linux/Linux学习笔记：变量、引用/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

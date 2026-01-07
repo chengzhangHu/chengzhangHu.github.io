@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ansible学习笔记一 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ansible学习笔记一</h2>
+  <p class="post-date">2022-10-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="学习笔记"><a href="#学习笔记" class="headerlink" title="学习笔记"></a>学习笔记</h2><h3 id="何为ansible"><a href="#何为ansible" class="headerlink" title="何为ansible"></a>何为ansible</h3><blockquote>
+<p>ansible 基于ssh协议，进行服务器管理的</p>
+</blockquote>
+<h4 id="ansible架构"><a href="#ansible架构" class="headerlink" title="ansible架构"></a>ansible架构</h4><p><img src="https://thumbnail0.baidupcs.com/thumbnail/16fd53d9fgebf8da928a8b1359055778?fid=4187117130-250528-251908943264949&time=1665705600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-MWobFzaCaxpw07PYgEzfIEzO9zw=&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=8947298835928430522&dp-callid=0&file_type=0&size=c710_u400&quality=100&vuk=-&ft=video" alt="ansible架构图"><br>链接:<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ZJwx4e-NxveCqmEcwnEJMA">https://pan.baidu.com/s/1ZJwx4e-NxveCqmEcwnEJMA</a><br>密码:l2f3</p>
+<h4 id="ansible-工作原理"><a href="#ansible-工作原理" class="headerlink" title="ansible 工作原理"></a>ansible 工作原理</h4><p><img src="https://thumbnail0.baidupcs.com/thumbnail/54d48caf1m1ea95b001730f219882aea?fid=4187117130-250528-918939076845783&time=1665705600&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-Rj+bCvbPq9PEgBX2N7/37/hdwpQ=&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=8947369956470090636&dp-callid=0&file_type=0&size=c710_u400&quality=100&vuk=-&ft=video"><br>链接:<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1309JEwSJdPyBLTQnzfN6ow">https://pan.baidu.com/s/1309JEwSJdPyBLTQnzfN6ow</a>  密码:25op</p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><blockquote>
+<p>执行ansible的主机一般称为主控端，中控，master或堡垒机。<br>主控端Python版本需要2.6或以上。<br>被控端Python版本小于2.4需要安装python-simple json。<br>被控端如开启SELinux需要安装 libselinux -python。<br>windows不能做为主控端。</p>
+</blockquote>
+<h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><h4 id="管理节点"><a href="#管理节点" class="headerlink" title="管理节点"></a>管理节点</h4><blockquote>
+<p>管理远程机子的节点</p>
+</blockquote>
+<h4 id="主机目录"><a href="#主机目录" class="headerlink" title="主机目录"></a>主机目录</h4><blockquote>
+<p>远程机子列表，可以分类标识</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[web]</span><br><span class="line">foo.example.com</span><br><span class="line">bar.example.com</span><br><span class="line"></span><br><span class="line">[db]</span><br><span class="line">one.example.com</span><br><span class="line">two.example.com</span><br></pre></td></tr></table></figure>
+<h4 id="远程机子"><a href="#远程机子" class="headerlink" title="远程机子"></a>远程机子</h4><blockquote>
+<p>需要操作的</p>
+</blockquote>
+<h4 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h4><blockquote>
+<p>把命令文件yml化，减少错误</p>
+</blockquote>
+<h3 id="如何管理机子"><a href="#如何管理机子" class="headerlink" title="如何管理机子"></a>如何管理机子</h3><h4 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h4><blockquote>
+<p>-m 指定模块或者说使用什么命令 ； -a指定模块执行，需要的参数</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> // 在web机组上，使用yum执行httpd包安装</span><br><span class="line">ansible web -m yum -a &quot;name=httpd state=present&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="playbook方式"><a href="#playbook方式" class="headerlink" title="playbook方式"></a>playbook方式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook xxx.yml</span><br></pre></td></tr></table></figure>
+<h3 id="playbook-模块"><a href="#playbook-模块" class="headerlink" title="playbook 模块"></a>playbook 模块</h3><blockquote>
+<p>ansible-doc [module]  or refer to the <a target="_blank" rel="noopener" href="https://docs.ansible.com/">official documentation</a>. 常用模块如下：</p>
+</blockquote>
+<h4 id="调试、测试类"><a href="#调试、测试类" class="headerlink" title="调试、测试类"></a>调试、测试类</h4><ul>
+<li>ping： ping远程机子，ssh ok &amp;&amp; python版本2.4+ ok，返回pong</li>
+<li>debug : 简单打印一些消息, 类似linux echo</li>
+</ul>
+<h4 id="文件类模块"><a href="#文件类模块" class="headerlink" title="文件类模块"></a>文件类模块</h4><ul>
+<li>copy - 从本地复制到远程节点</li>
+<li>template  - 从本地复制到远程节点，并进行变量替换</li>
+<li>file  - 设置文件属性</li>
+</ul>
+<h4 id="Linux上的常用操作"><a href="#Linux上的常用操作" class="headerlink" title="Linux上的常用操作"></a>Linux上的常用操作</h4><ul>
+<li>user - 管理用户账号</li>
+<li>yum - 包管理</li>
+<li>service - 管理服务</li>
+<li>firewalld - 管理防火墙中的服务和端口</li>
+</ul>
+<h4 id="执行shell命令"><a href="#执行shell命令" class="headerlink" title="执行shell命令"></a>执行shell命令</h4><ul>
+<li>shell - 在节点上执行shell命令, 支持$HOME ,&lt;,&gt; |, &amp; </li>
+<li>command - 在远程节点上执行shell， 不支持$HOME这些</li>
+</ul>
+<h3 id="ansible怎么安装"><a href="#ansible怎么安装" class="headerlink" title="ansible怎么安装"></a>ansible怎么安装</h3><h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sudo yum install epel-release </span><br><span class="line"># sudo yum install ansible -y </span><br></pre></td></tr></table></figure>
+<h3 id="ansible配置项怎么看"><a href="#ansible配置项怎么看" class="headerlink" title="ansible配置项怎么看"></a>ansible配置项怎么看</h3><blockquote>
+<p>具体的可以在安装好ansible, &#x2F;etc&#x2F;ansible&#x2F;ansible.cfg文件中查看， 常见的配置如下：</p>
+</blockquote>
+<ul>
+<li>inventory 主机目录文件</li>
+<li>library extra模块放置路径</li>
+<li>remote_temp 远程主机临时文件位置</li>
+<li>local_temp  管理节点上临时文件位置</li>
+<li>accelerate_port 配置连接端口</li>
+<li>accelerate_timeout 超时时间</li>
+<li>accelerate_connect_timeout 连接超时时间</li>
+</ul>
+<h2 id="推荐学习"><a href="#推荐学习" class="headerlink" title="推荐学习"></a>推荐学习</h2><p> <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible-core/devel/getting_started/index.html">#get-started</a></p>
+<p> <a target="_blank" rel="noopener" href="https://www.redhat.com/zh/topics/automation/learning-ansible-tutorial">#red-hat-ansible</a></p>
+<p> <a target="_blank" rel="noopener" href="https://opensource.com/article/19/9/must-know-ansible-modules">#ansible-module</a>
+ </p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ansible" >
+    <span class="tag-code">ansible</span>
+  </a>
+
+  <a target="_blank" href="/tags#配置管理" >
+    <span class="tag-code">配置管理</span>
+  </a>
+
+  <a target="_blank" href="/tags#滚动更新" >
+    <span class="tag-code">滚动更新</span>
+  </a>
+
+  <a target="_blank" href="/tags#devops" >
+    <span class="tag-code">devops</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/09/12/dev_tool_skills/powershell/powershell%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+        <span class="nav-arrow">← </span>
+        
+          powershell数据类型
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2023/08/20/front_skills/3d/web%203d%20%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/">
+        
+          web 3D开发技术了解
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">学习笔记</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BD%95%E4%B8%BAansible"><span class="toc-nav-text">何为ansible</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ansible%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">ansible架构</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ansible-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-nav-text">ansible 工作原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">注意事项</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">核心概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%AE%A1%E7%90%86%E8%8A%82%E7%82%B9"><span class="toc-nav-text">管理节点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95"><span class="toc-nav-text">主机目录</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%9C%BA%E5%AD%90"><span class="toc-nav-text">远程机子</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Playbook"><span class="toc-nav-text">Playbook</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E7%AE%A1%E7%90%86%E6%9C%BA%E5%AD%90"><span class="toc-nav-text">如何管理机子</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">命令行方式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#playbook%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">playbook方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#playbook-%E6%A8%A1%E5%9D%97"><span class="toc-nav-text">playbook 模块</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%B0%83%E8%AF%95%E3%80%81%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-nav-text">调试、测试类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E6%A8%A1%E5%9D%97"><span class="toc-nav-text">文件类模块</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux%E4%B8%8A%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">Linux上的常用操作</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%89%A7%E8%A1%8Cshell%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">执行shell命令</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ansible%E6%80%8E%E4%B9%88%E5%AE%89%E8%A3%85"><span class="toc-nav-text">ansible怎么安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux"><span class="toc-nav-text">Linux</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ansible%E9%85%8D%E7%BD%AE%E9%A1%B9%E6%80%8E%E4%B9%88%E7%9C%8B"><span class="toc-nav-text">ansible配置项怎么看</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%8E%A8%E8%8D%90%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">推荐学习</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/10/14/devops_skills/deploy/ansible学习笔记一/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

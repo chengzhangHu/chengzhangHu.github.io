@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      webgl vs webgpu | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>webgl vs webgpu</h2>
+  <p class="post-date">2025-05-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>前端在什么时候该用 WebGPU？</strong></p>
+<hr>
+<h2 id="🔍-一、WebGPU-vs-WebGL-全面对比"><a href="#🔍-一、WebGPU-vs-WebGL-全面对比" class="headerlink" title="🔍 一、WebGPU vs WebGL 全面对比"></a>🔍 一、WebGPU vs WebGL 全面对比</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>WebGL</th>
+<th>WebGPU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>发布时间</td>
+<td>2011（WebGL 1）</td>
+<td>2023（正式在 Chrome 启用）</td>
+</tr>
+<tr>
+<td>基于底层</td>
+<td>OpenGL ES</td>
+<td>Vulkan &#x2F; Metal &#x2F; D3D12</td>
+</tr>
+<tr>
+<td>GPU 渲染支持</td>
+<td>✅ 是（图形渲染）</td>
+<td>✅ 是（图形 + 通用计算）</td>
+</tr>
+<tr>
+<td>计算着色器（GPGPU）</td>
+<td>❌ 不支持</td>
+<td>✅ 支持 compute shader</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>中（CPU→GPU 数据瓶颈）</td>
+<td>高（更少 CPU→GPU 往返）</td>
+</tr>
+<tr>
+<td>API 粒度</td>
+<td>较高层，较易用</td>
+<td>低层、灵活但复杂</td>
+</tr>
+<tr>
+<td>学习曲线</td>
+<td>适中</td>
+<td>陡峭（接近原生 GPU 编程）</td>
+</tr>
+<tr>
+<td>浏览器支持</td>
+<td>✅ 全面支持</td>
+<td>🟡 Chrome、Edge 稳定支持，Safari&#x2F;Firefox 实验性支持</td>
+</tr>
+<tr>
+<td>应用生态</td>
+<td>成熟（Three.js、Babylon.js）</td>
+<td>新兴，生态尚在建立</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-二、前端什么时候用-WebGPU？"><a href="#🧠-二、前端什么时候用-WebGPU？" class="headerlink" title="🧠 二、前端什么时候用 WebGPU？"></a>🧠 二、前端什么时候用 WebGPU？</h2><h3 id="✅-适合使用-WebGPU-的前端场景"><a href="#✅-适合使用-WebGPU-的前端场景" class="headerlink" title="✅ 适合使用 WebGPU 的前端场景"></a>✅ <strong>适合使用 WebGPU 的前端场景</strong></h3><ol>
+<li><p><strong>高性能数据可视化</strong></p>
+<ul>
+<li>如：百万级点云渲染、大规模地理数据、时间序列热力图</li>
+<li>优势：GPU 并行处理 + 自定义计算管线（如聚合、排序）</li>
+</ul>
+</li>
+<li><p><strong>3D 引擎 &#x2F; 游戏引擎开发</strong></p>
+<ul>
+<li>WebGPU 提供更底层的图形控制，适合开发游戏&#x2F;模拟引擎</li>
+</ul>
+</li>
+<li><p><strong>AI 推理 &#x2F; 机器学习前端计算</strong></p>
+<ul>
+<li>TensorFlow.js、ONNX.js 已开始探索用 WebGPU 加速模型推理</li>
+</ul>
+</li>
+<li><p><strong>数字孪生、仿真系统</strong></p>
+<ul>
+<li>如工业 3D 监控、建筑 BIM 场景等，图形密集场景</li>
+</ul>
+</li>
+<li><p><strong>自定义图形管线 &#x2F; 渲染引擎</strong></p>
+<ul>
+<li>开发自己的可视化&#x2F;地图库，或超越 Three.js 的功能时使用</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="❌-不推荐使用-WebGPU-的前端场景"><a href="#❌-不推荐使用-WebGPU-的前端场景" class="headerlink" title="❌ 不推荐使用 WebGPU 的前端场景"></a>❌ <strong>不推荐使用 WebGPU 的前端场景</strong></h3><table>
+<thead>
+<tr>
+<th>情况</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通网站图表（柱状图、折线图）</td>
+<td>Canvas &#x2F; SVG 足够，WebGPU 复杂过度</td>
+</tr>
+<tr>
+<td>已有成熟 3D 可视化框架可满足</td>
+<td>WebGL 性能已足够，不必迁移</td>
+</tr>
+<tr>
+<td>要兼容所有浏览器（含 Safari、旧设备）</td>
+<td>WebGPU 尚未全面兼容</td>
+</tr>
+<tr>
+<td>团队缺乏图形编程经验</td>
+<td>学习成本极高，调试难</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-三、推荐迁移路径（渐进式使用-WebGPU）"><a href="#🧩-三、推荐迁移路径（渐进式使用-WebGPU）" class="headerlink" title="🧩 三、推荐迁移路径（渐进式使用 WebGPU）"></a>🧩 三、推荐迁移路径（渐进式使用 WebGPU）</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>技术建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🔹 初级阶段</td>
+<td>使用 Three.js &#x2F; Babylon.js（WebGL）</td>
+</tr>
+<tr>
+<td>🔸 中级阶段</td>
+<td>使用 Three.js 的 WebGPU 渲染器尝试（实验）</td>
+</tr>
+<tr>
+<td>🔶 高级阶段</td>
+<td>直接用 WebGPU API &#x2F; wgpu &#x2F; Dawn 编写自定义渲染</td>
+</tr>
+<tr>
+<td>🔺 尖端探索</td>
+<td>WebGPU + WASM + Rust 做跨端 GPU 渲染引擎</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✳️-工具-框架推荐（WebGPU）"><a href="#✳️-工具-框架推荐（WebGPU）" class="headerlink" title="✳️ 工具 &#x2F; 框架推荐（WebGPU）"></a>✳️ 工具 &#x2F; 框架推荐（WebGPU）</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>用途</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>wgpu</strong></td>
+<td>Rust WebGPU 引擎</td>
+<td>可编译为 WASM 使用，性能强劲</td>
+</tr>
+<tr>
+<td><strong>Dawn</strong></td>
+<td>Chrome 用的 WebGPU 实现</td>
+<td>Google 主导</td>
+</tr>
+<tr>
+<td><strong>Three.js (WebGPURenderer)</strong></td>
+<td>实验支持 WebGPU</td>
+<td>熟悉 Three 的可尝试</td>
+</tr>
+<tr>
+<td><strong>TensorFlow.js + WebGPU backend</strong></td>
+<td>浏览器 AI 推理</td>
+<td>已开始试验 WebGPU 计算</td>
+</tr>
+<tr>
+<td><strong>Babylon.js</strong></td>
+<td>支持 WebGPU 渲染后端</td>
+<td>对 WebGPU 适配中</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-总结一句话"><a href="#✅-总结一句话" class="headerlink" title="✅ 总结一句话"></a>✅ 总结一句话</h2><blockquote>
+<p><strong>WebGL 仍是当前前端主流图形引擎，但 WebGPU 是未来高性能前端图形和计算的标准平台。</strong></p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#webgpu" >
+    <span class="tag-code">webgpu</span>
+  </a>
+
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+  <a target="_blank" href="/tags#svg" >
+    <span class="tag-code">svg</span>
+  </a>
+
+  <a target="_blank" href="/tags#webgl" >
+    <span class="tag-code">webgl</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/19/front_skills/canvas/%E5%9C%B0%E5%9B%BEvue%20react%20angular%E6%94%AF%E6%8C%81/">
+        <span class="nav-arrow">← </span>
+        
+          地图vue react angular支持
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/20/backend_skills/tomcat/tomcat%20webapps/">
+        
+          tomcat webapps 和 target
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E4%B8%80%E3%80%81WebGPU-vs-WebGL-%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">🔍 一、WebGPU vs WebGL 全面对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%8C%E3%80%81%E5%89%8D%E7%AB%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-WebGPU%EF%BC%9F"><span class="toc-nav-text">🧠 二、前端什么时候用 WebGPU？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E9%80%82%E5%90%88%E4%BD%BF%E7%94%A8-WebGPU-%E7%9A%84%E5%89%8D%E7%AB%AF%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">✅ 适合使用 WebGPU 的前端场景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%8C-%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8-WebGPU-%E7%9A%84%E5%89%8D%E7%AB%AF%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">❌ 不推荐使用 WebGPU 的前端场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%89%E3%80%81%E6%8E%A8%E8%8D%90%E8%BF%81%E7%A7%BB%E8%B7%AF%E5%BE%84%EF%BC%88%E6%B8%90%E8%BF%9B%E5%BC%8F%E4%BD%BF%E7%94%A8-WebGPU%EF%BC%89"><span class="toc-nav-text">🧩 三、推荐迁移路径（渐进式使用 WebGPU）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%B3%EF%B8%8F-%E5%B7%A5%E5%85%B7-%E6%A1%86%E6%9E%B6%E6%8E%A8%E8%8D%90%EF%BC%88WebGPU%EF%BC%89"><span class="toc-nav-text">✳️ 工具 &#x2F; 框架推荐（WebGPU）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">✅ 总结一句话</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/19/front_skills/canvas/webgl vs webgpu/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

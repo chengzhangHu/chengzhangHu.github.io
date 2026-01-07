@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Web Components 和 Shadow DOM | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Web Components 和 Shadow DOM</h2>
+  <p class="post-date">2025-05-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Web Components 和 Shadow DOM **并不使用 <code>&lt;iframe&gt;</code>**，尽管它们在某些方面（如封装性）看起来类似。让我们详细区分一下它们：</p>
+<hr>
+<h3 id="✅-Web-Components-和-Shadow-DOM-的本质"><a href="#✅-Web-Components-和-Shadow-DOM-的本质" class="headerlink" title="✅ Web Components 和 Shadow DOM 的本质"></a>✅ <strong>Web Components 和 Shadow DOM 的本质</strong></h3><ul>
+<li><p><strong>Web Components</strong> 是一组前端 API，包括：</p>
+<ul>
+<li><code>Custom Elements</code>（自定义元素）</li>
+<li><code>Shadow DOM</code>（影子 DOM）</li>
+<li><code>HTML Templates</code>（模板）</li>
+</ul>
+</li>
+<li><p><strong>Shadow DOM</strong> 提供了 <strong>封装样式和结构</strong> 的能力，使组件内部的 DOM 和样式不会影响外部，也不被外部影响。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>关键点：Shadow DOM 是运行在主文档上下文中的 DOM 树，并非独立的文档环境。</strong></p>
+</blockquote>
+<hr>
+<h3 id="❌-iframe-的作用和区别"><a href="#❌-iframe-的作用和区别" class="headerlink" title="❌ iframe 的作用和区别"></a>❌ <strong>iframe 的作用和区别</strong></h3><ul>
+<li><code>&lt;iframe&gt;</code> 会嵌入一个完全独立的 <strong>浏览器上下文</strong>（包括 JS 执行环境、CSS、全局变量等）。</li>
+<li>它和主页面之间的隔离程度远高于 Shadow DOM，属于“进程级别”的隔离（安全沙箱）。</li>
+<li>适用于嵌入第三方页面、广告、或完全隔离的内容。</li>
+</ul>
+<hr>
+<h3 id="🔍-对比总结表"><a href="#🔍-对比总结表" class="headerlink" title="🔍 对比总结表"></a>🔍 对比总结表</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Shadow DOM</th>
+<th><code>&lt;iframe&gt;</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否隔离样式</td>
+<td>✅ 是（封装）</td>
+<td>✅ 是（完全隔离）</td>
+</tr>
+<tr>
+<td>是否隔离 JS 作用域</td>
+<td>❌ 否（共享全局作用域）</td>
+<td>✅ 是（独立 JS 环境）</td>
+</tr>
+<tr>
+<td>是否是独立文档</td>
+<td>❌ 否</td>
+<td>✅ 是（有自己的 <code>document</code>）</td>
+</tr>
+<tr>
+<td>加载性能影响</td>
+<td>✅ 轻量</td>
+<td>❌ 较重，尤其是多个 iframe</td>
+</tr>
+<tr>
+<td>常用于</td>
+<td>UI 组件封装、Design Systems</td>
+<td>广告、嵌入外部内容、跨域内容展示</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="✅-举个例子：Shadow-DOM"><a href="#✅-举个例子：Shadow-DOM" class="headerlink" title="✅ 举个例子：Shadow DOM"></a>✅ 举个例子：Shadow DOM</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">my-component</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">HTMLElement</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">super</span>();</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> shadow = <span class="variable language_">this</span>.<span class="title function_">attachShadow</span>(&#123; <span class="attr">mode</span>: <span class="string">&#x27;open&#x27;</span> &#125;);</span></span><br><span class="line"><span class="language-javascript">      shadow.<span class="property">innerHTML</span> = <span class="string">`&lt;style&gt;p &#123; color: red; &#125;&lt;/style&gt;&lt;p&gt;Hello!&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">  customElements.<span class="title function_">define</span>(<span class="string">&#x27;my-component&#x27;</span>, <span class="title class_">MyComponent</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这个组件中的 <code>&lt;p&gt;</code> 标签样式不会影响页面其他内容，也不会被外部样式污染 —— 但它<strong>仍运行在主页面的上下文中</strong>，不是通过 iframe 实现的。</p>
+<hr>
+<h3 id="🧠-总结一句话："><a href="#🧠-总结一句话：" class="headerlink" title="🧠 总结一句话："></a>🧠 总结一句话：</h3><p><strong>Shadow DOM 是“样式和 DOM 封装”，而 iframe 是“运行环境级别的隔离”。两者不是一回事，Shadow DOM 不使用 iframe。</strong></p>
+<h2 id="✅-一、目标：将组件资源拆分为多个文件"><a href="#✅-一、目标：将组件资源拆分为多个文件" class="headerlink" title="✅ 一、目标：将组件资源拆分为多个文件"></a>✅ 一、目标：将组件资源拆分为多个文件</h2><p>比如：</p>
+<ul>
+<li><code>my-component.js</code>：定义组件逻辑</li>
+<li><code>my-component.html</code>：定义模板结构</li>
+<li><code>my-component.css</code>：定义样式</li>
+</ul>
+<hr>
+<h2 id="✅-二、实现方式：使用-JavaScript-动态加载外部资源"><a href="#✅-二、实现方式：使用-JavaScript-动态加载外部资源" class="headerlink" title="✅ 二、实现方式：使用 JavaScript 动态加载外部资源"></a>✅ 二、实现方式：使用 JavaScript 动态加载外部资源</h2><h3 id="📄-my-component-html"><a href="#📄-my-component-html" class="headerlink" title="📄 my-component.html"></a>📄 <code>my-component.html</code></h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;greeting&quot;</span>&gt;</span>Hello from Shadow DOM!<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="📄-my-component-css"><a href="#📄-my-component-css" class="headerlink" title="📄 my-component.css"></a>📄 <code>my-component.css</code></h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.greeting</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: blue;</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="📄-my-component-js"><a href="#📄-my-component-js" class="headerlink" title="📄 my-component.js"></a>📄 <code>my-component.js</code></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">HTMLElement</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">attachShadow</span>(&#123; <span class="attr">mode</span>: <span class="string">&#x27;open&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">connectedCallback</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> [htmlText, cssText] = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">      <span class="title function_">fetch</span>(<span class="string">&#x27;my-component.html&#x27;</span>).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">text</span>()),</span><br><span class="line">      <span class="title function_">fetch</span>(<span class="string">&#x27;my-component.css&#x27;</span>).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">text</span>())</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> template = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;template&#x27;</span>);</span><br><span class="line">    template.<span class="property">innerHTML</span> = <span class="string">`</span></span><br><span class="line"><span class="string">      &lt;style&gt;<span class="subst">$&#123;cssText&#125;</span>&lt;/style&gt;</span></span><br><span class="line"><span class="string">      <span class="subst">$&#123;htmlText&#125;</span></span></span><br><span class="line"><span class="string">    `</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">shadowRoot</span>.<span class="title function_">appendChild</span>(template.<span class="property">content</span>.<span class="title function_">cloneNode</span>(<span class="literal">true</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">customElements.<span class="title function_">define</span>(<span class="string">&#x27;my-component&#x27;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="📄-使用："><a href="#📄-使用：" class="headerlink" title="📄 使用："></a>📄 使用：</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;my-component.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">my-component</span>&gt;</span><span class="tag">&lt;/<span class="name">my-component</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-三、好处"><a href="#✅-三、好处" class="headerlink" title="✅ 三、好处"></a>✅ 三、好处</h2><ul>
+<li><strong>结构清晰</strong>：HTML、CSS、JS 分离，便于维护</li>
+<li><strong>可重用性高</strong>：可作为独立模块复用</li>
+<li><strong>保持封装性</strong>：依旧使用 Shadow DOM，样式不会外泄</li>
+</ul>
+<hr>
+<h2 id="⚠️-注意事项"><a href="#⚠️-注意事项" class="headerlink" title="⚠️ 注意事项"></a>⚠️ 注意事项</h2><ol>
+<li><strong>跨域问题</strong>：资源必须允许浏览器访问（同源或正确 CORS 设置）。</li>
+<li><strong>性能</strong>：每次创建组件都可能触发 fetch，可使用缓存或优化加载逻辑。</li>
+<li><strong>资源依赖</strong>：需要确保 CSS 和 HTML 文件在 JS 加载之前可访问。</li>
+</ol>
+<hr>
+<p><code>this.attachShadow(&#123; mode: &#39;open&#39; &#125;)</code>、<code>Promise.all()</code> 是<strong>原生 Web 技术</strong>的一部分，<br>而 Vue、React、Angular 这类框架有自己独特的抽象和机制。</p>
+<hr>
+<h2 id="🔍-一句话总结："><a href="#🔍-一句话总结：" class="headerlink" title="🔍 一句话总结："></a>🔍 一句话总结：</h2><blockquote>
+<p><strong>原生 Web Components</strong> 用浏览器原生 API（如 Shadow DOM、Custom Elements）来封装组件；<br><strong>Vue、React、Angular</strong> 则用自己设计的“组件系统”来实现相似目的，但不依赖 Shadow DOM（默认情况下）。</p>
+</blockquote>
+<hr>
+<h2 id="✅-对比核心区别"><a href="#✅-对比核心区别" class="headerlink" title="✅ 对比核心区别"></a>✅ 对比核心区别</h2><table>
+<thead>
+<tr>
+<th>特性&#x2F;行为</th>
+<th>原生 Web Components</th>
+<th>Vue &#x2F; React &#x2F; Angular</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>组件机制</strong></td>
+<td>使用 <code>class</code> + <code>customElements</code></td>
+<td>使用框架语法（如 Vue SFC、JSX、TSX）</td>
+</tr>
+<tr>
+<td><strong>封装 DOM（结构）</strong></td>
+<td>使用 <code>Shadow DOM</code></td>
+<td>使用虚拟 DOM（VNode），默认非封装</td>
+</tr>
+<tr>
+<td><strong>封装样式（CSS 隔离）</strong></td>
+<td>自动隔离 via Shadow DOM</td>
+<td>使用 CSS Modules、Scoped CSS、JSS</td>
+</tr>
+<tr>
+<td><strong><code>attachShadow(&#123;mode&#125;)</code></strong></td>
+<td>显式调用以开启封装</td>
+<td>没有这个 API，框架自动管理</td>
+</tr>
+<tr>
+<td><strong>异步加载（如 <code>Promise.all</code>）</strong></td>
+<td>使用浏览器 API</td>
+<td>通常用 <code>async/await</code> 或框架方式（hooks、lifecycle）</td>
+</tr>
+<tr>
+<td><strong>运行时依赖</strong></td>
+<td>无（原生浏览器支持）</td>
+<td>依赖框架运行时（Vue、React 等）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧪-举个例子比较一下："><a href="#🧪-举个例子比较一下：" class="headerlink" title="🧪 举个例子比较一下："></a>🧪 举个例子比较一下：</h2><h3 id="🌐-原生-Web-Component"><a href="#🌐-原生-Web-Component" class="headerlink" title="🌐 原生 Web Component"></a>🌐 原生 Web Component</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">HTMLElement</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">attachShadow</span>(&#123; <span class="attr">mode</span>: <span class="string">&#x27;open&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">connectedCallback</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">shadowRoot</span>.<span class="property">innerHTML</span> = <span class="string">`&lt;p&gt;Hello&lt;/p&gt;`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">customElements.<span class="title function_">define</span>(<span class="string">&#x27;my-component&#x27;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="⚛️-React-组件（等价实现）"><a href="#⚛️-React-组件（等价实现）" class="headerlink" title="⚛️ React 组件（等价实现）"></a>⚛️ React 组件（等价实现）</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">MyComponent</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>React 不使用 Shadow DOM，而是通过虚拟 DOM 管理结构，靠 JS 隔离样式或使用模块化 CSS。</p>
+</blockquote>
+<hr>
+<h2 id="🤔-那为什么框架不用-Shadow-DOM-呢？"><a href="#🤔-那为什么框架不用-Shadow-DOM-呢？" class="headerlink" title="🤔 那为什么框架不用 Shadow DOM 呢？"></a>🤔 那为什么框架不用 Shadow DOM 呢？</h2><h3 id="✅-优点（不用的原因）："><a href="#✅-优点（不用的原因）：" class="headerlink" title="✅ 优点（不用的原因）："></a>✅ 优点（不用的原因）：</h3><ol>
+<li><strong>性能问题</strong>：Shadow DOM 创建成本较高，虚拟 DOM 更易批量优化。</li>
+<li><strong>工具生态好</strong>：框架有更强的开发体验（如 HMR、TypeScript 支持）。</li>
+<li><strong>灵活性高</strong>：组件样式、结构更可控，不依赖浏览器底层 API。</li>
+<li><strong>跨平台渲染支持更好</strong>（如 SSR、React Native）。</li>
+</ol>
+<h3 id="❗但：框架也可以使用-Shadow-DOM"><a href="#❗但：框架也可以使用-Shadow-DOM" class="headerlink" title="❗但：框架也可以使用 Shadow DOM"></a>❗但：框架也<strong>可以使用</strong> Shadow DOM</h3><ul>
+<li>Vue 和 Angular 可以启用 <code>shadow DOM</code> 模式（<code>shadow: true</code>）。</li>
+<li>React 可以封装原生 Web Components 并渲染到 Shadow Root。<br>但这通常只在特定场景下使用，如构建设计系统、嵌入外部平台等。</li>
+</ul>
+<hr>
+<h2 id="✅-总结"><a href="#✅-总结" class="headerlink" title="✅ 总结"></a>✅ 总结</h2><table>
+<thead>
+<tr>
+<th>对比点</th>
+<th>原生 Web Components</th>
+<th>Vue&#x2F;React&#x2F;Angular</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否使用 Shadow DOM</td>
+<td>✅ 默认使用</td>
+<td>❌ 默认不使用（可选启用）</td>
+</tr>
+<tr>
+<td>是否使用 Promise.all</td>
+<td>✅ 直接用原生 API</td>
+<td>✅ 也用，但通常包在生命周期钩子中</td>
+</tr>
+<tr>
+<td>封装性</td>
+<td>✅ 强，原生封装</td>
+<td>❌ 默认弱，用工具实现封装</td>
+</tr>
+<tr>
+<td>上手难度</td>
+<td>🚧 较高，需手写底层逻辑</td>
+<td>✅ 更高层抽象，开发体验好</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#iframe" >
+    <span class="tag-code">iframe</span>
+  </a>
+
+  <a target="_blank" href="/tags#Web Components" >
+    <span class="tag-code">Web Components</span>
+  </a>
+
+  <a target="_blank" href="/tags#Shadow DOM" >
+    <span class="tag-code">Shadow DOM</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/13/front_skills/js/iframe%20%E5%B5%8C%E5%85%A5%E9%97%AE%E9%A2%98/">
+        <span class="nav-arrow">← </span>
+        
+          iframe嵌入问题
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/15/front_package_build_skills/vite/webpack%20vue%E8%BF%81%E7%A7%BB%E5%88%B0vite/">
+        
+          webpack vue迁移到vite
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-Web-Components-%E5%92%8C-Shadow-DOM-%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-nav-text">✅ Web Components 和 Shadow DOM 的本质</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%8C-iframe-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">❌ iframe 的作用和区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93%E8%A1%A8"><span class="toc-nav-text">🔍 对比总结表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90%EF%BC%9AShadow-DOM"><span class="toc-nav-text">✅ 举个例子：Shadow DOM</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D%EF%BC%9A"><span class="toc-nav-text">🧠 总结一句话：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E7%9B%AE%E6%A0%87%EF%BC%9A%E5%B0%86%E7%BB%84%E4%BB%B6%E8%B5%84%E6%BA%90%E6%8B%86%E5%88%86%E4%B8%BA%E5%A4%9A%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="toc-nav-text">✅ 一、目标：将组件资源拆分为多个文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BA%8C%E3%80%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%9A%E4%BD%BF%E7%94%A8-JavaScript-%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="toc-nav-text">✅ 二、实现方式：使用 JavaScript 动态加载外部资源</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%84-my-component-html"><span class="toc-nav-text">📄 my-component.html</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%84-my-component-css"><span class="toc-nav-text">📄 my-component.css</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%84-my-component-js"><span class="toc-nav-text">📄 my-component.js</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%84-%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-nav-text">📄 使用：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81%E5%A5%BD%E5%A4%84"><span class="toc-nav-text">✅ 三、好处</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">⚠️ 注意事项</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-nav-text">🔍 一句话总结：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%AF%B9%E6%AF%94%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">✅ 对比核心区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90%E6%AF%94%E8%BE%83%E4%B8%80%E4%B8%8B%EF%BC%9A"><span class="toc-nav-text">🧪 举个例子比较一下：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%8C%90-%E5%8E%9F%E7%94%9F-Web-Component"><span class="toc-nav-text">🌐 原生 Web Component</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9A%9B%EF%B8%8F-React-%E7%BB%84%E4%BB%B6%EF%BC%88%E7%AD%89%E4%BB%B7%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-nav-text">⚛️ React 组件（等价实现）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A4%94-%E9%82%A3%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A1%86%E6%9E%B6%E4%B8%8D%E7%94%A8-Shadow-DOM-%E5%91%A2%EF%BC%9F"><span class="toc-nav-text">🤔 那为什么框架不用 Shadow DOM 呢？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BC%98%E7%82%B9%EF%BC%88%E4%B8%8D%E7%94%A8%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">✅ 优点（不用的原因）：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%97%E4%BD%86%EF%BC%9A%E6%A1%86%E6%9E%B6%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8-Shadow-DOM"><span class="toc-nav-text">❗但：框架也可以使用 Shadow DOM</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">✅ 总结</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/14/front_skills/js/web components/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

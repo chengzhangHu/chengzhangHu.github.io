@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2026/01/07/ai_tools/jenkins-mcp-agent-integrate/">jenkins mcp agent integrate</a>
+      </h2>
+      <p class="article-date">January 7, 2026</p>
+      
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+可以，而且必须用「本地 MCP + 本地 Agent + 内网事件」模式任何“上传代码给 Agent &#x2F; LLM”的方案都是错的
+
+现在这一步，只需要做到：
+1234567Jenkins  ↓（事件 + 本地路径）MCP（只读本地代码/数据）  ↓（Facts JSON）Agen ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2026/01/07/ai_tools/jenkins-mcp-agent-integrate/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2026/01/05/ai_tools/ai-agent-vscode-llm-%E5%AE%9E%E7%8E%B0/">ai agent vscode llm 实现</a>
+      </h2>
+      <p class="article-date">January 5, 2026</p>
+      
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一句话总览（先给全景图）
+AI Agent + VS Code + LLM 集成 &#x3D;1️⃣ VS Code 扩展（人机交互）2️⃣ Agent Runtime（决策与工具调用）3️⃣ LLM API（推理大脑）4️⃣ Tools（文件系统 &#x2F; Git &#x2F; She ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2026/01/05/ai_tools/ai-agent-vscode-llm-%E5%AE%9E%E7%8E%B0/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/12/31/ai_tools/%E6%99%BA%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E9%A2%84%E6%B5%8B/">智能分析与预测</a>
+      </h2>
+      <p class="article-date">December 31, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          明白，你希望在 DevOps成熟度管理 + 复合质量度量体系基础上，下一步引入 AI能力，让质量控制和改进变得更智能、可预测、可自动化。可以把 AI 的集成分几个方向来落地：
+
+1️⃣ 智能分析与预测A. 质量趋势预测
+利用历史质量指标（SonarQube、测试覆盖率、Bug 趋势、技术债务 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/12/31/ai_tools/%E6%99%BA%E8%83%BD%E5%88%86%E6%9E%90%E4%B8%8E%E9%A2%84%E6%B5%8B/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/12/30/do_at_workspace/%E4%B8%93%E4%B8%9A%E5%8C%96%E8%81%9A%E7%84%A6/">2025 学习聚焦</a>
+      </h2>
+      <p class="article-date">December 30, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Ai" >
+    <span class="tag-code">Ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#k8s" >
+    <span class="tag-code">k8s</span>
+  </a>
+
+  <a target="_blank" href="/tags#自动化" >
+    <span class="tag-code">自动化</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一、筑基：云原生与智能测试核心能力1️⃣ 云原生与Kubernetes深度掌控
+K8s核心原理  
+精通Pod&#x2F;Deployment&#x2F;Service&#x2F;Ingress对象  
+深入理解Operator模式（开发CRD管理测试集群）  
+网络策略（Calico&#x ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/12/30/do_at_workspace/%E4%B8%93%E4%B8%9A%E5%8C%96%E8%81%9A%E7%84%A6/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/12/22/ai_tools/ai-agent,mcp,llm/">ai agent,mcp,llm，智能体区别</a>
+      </h2>
+      <p class="article-date">December 22, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          一句话总览（先立住框架）
+LLM 是大脑，Agent 是会行动的“人”，智能体是中文总称，MCP 是给 Agent 用的“标准接口&#x2F;工具协议”。
+
+如果画成一层一层的结构，大概是这样：
+123456应用 / 系统└── 智能体（Agent）    ├── 推理能力：LLM    ├ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/12/22/ai_tools/ai-agent,mcp,llm/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/12/10/do_at_workspace/2025%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE/">2025年前端趋势学习建议</a>
+      </h2>
+      <p class="article-date">December 10, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#2025年前端趋势" >
+    <span class="tag-code">2025年前端趋势</span>
+  </a>
+
+  <a target="_blank" href="/tags#前端学习" >
+    <span class="tag-code">前端学习</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          2025年前端趋势学习建议核心发展方向1. 现代化JavaScript&#x2F;TypeScript
+ES2023+新特性：深入理解最新ECMAScript提案
+**TypeScript 5.0+**：类型系统高级用法和性能优化
+WebAssembly：高性能前端应用的开发
+
+2. 主流框 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/12/10/do_at_workspace/2025%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a class="unvisible" href="/"><span class="page-arrow">←</span> 上一页</a>
+  
+  
+    <a href="/post/2/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

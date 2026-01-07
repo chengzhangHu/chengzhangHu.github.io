@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      面向容器设计编程 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>面向容器设计编程</h2>
+  <p class="post-date">2025-08-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1-核心理念"><a href="#1-核心理念" class="headerlink" title="1. 核心理念"></a>1. 核心理念</h2><p>容器不是简单的“打包可运行环境”，而是一个 <strong>架构边界单位</strong>。面向容器的设计，就是把应用拆分为独立的、可部署的、隔离的运行单元，并让容器本身成为交付、运行、扩展的核心最小单元。<br>一句话：<strong>先想容器边界，再想代码结构</strong>。</p>
+<hr>
+<h2 id="2-设计流程"><a href="#2-设计流程" class="headerlink" title="2. 设计流程"></a>2. 设计流程</h2><h3 id="1-确定容器粒度"><a href="#1-确定容器粒度" class="headerlink" title="(1) 确定容器粒度"></a><strong>(1) 确定容器粒度</strong></h3><ul>
+<li><strong>微服务化</strong>：每个业务能力一个容器（订单、支付、库存）</li>
+<li><strong>功能模块化</strong>：可共用的功能（缓存、消息队列、API 网关）单独容器化</li>
+<li>经验法则：容器越小，灵活性越高，但部署和运维复杂度也高</li>
+</ul>
+<hr>
+<h3 id="2-接口优先设计"><a href="#2-接口优先设计" class="headerlink" title="(2) 接口优先设计"></a><strong>(2) 接口优先设计</strong></h3><ul>
+<li>容器间通信使用标准接口（HTTP&#x2F;gRPC&#x2F;消息队列）</li>
+<li>明确输入&#x2F;输出协议，减少跨容器强依赖</li>
+<li>接口与实现解耦，保证容器内部技术栈可自由更换</li>
+</ul>
+<hr>
+<h3 id="3-环境与依赖内置化"><a href="#3-环境与依赖内置化" class="headerlink" title="(3) 环境与依赖内置化"></a><strong>(3) 环境与依赖内置化</strong></h3><ul>
+<li>应用运行所需依赖全部打包进容器镜像</li>
+<li>配置外置（ConfigMap、Secrets），避免在镜像中写死</li>
+<li>保证容器可在任何节点“一键运行”，不依赖宿主机环境</li>
+</ul>
+<hr>
+<h3 id="4-状态管理"><a href="#4-状态管理" class="headerlink" title="(4) 状态管理"></a><strong>(4) 状态管理</strong></h3><ul>
+<li><strong>无状态优先</strong>：容器重启不影响业务</li>
+<li>有状态服务（数据库、文件存储）拆出去，用持久卷（PV）或云存储</li>
+</ul>
+<hr>
+<h3 id="5-生命周期管理"><a href="#5-生命周期管理" class="headerlink" title="(5) 生命周期管理"></a><strong>(5) 生命周期管理</strong></h3><ul>
+<li>容器启动、健康检查、退出信号处理（SIGTERM）</li>
+<li>版本化镜像（不可变镜像策略）</li>
+<li>灰度发布与回滚（通过镜像 tag + orchestration 工具）</li>
+</ul>
+<hr>
+<h2 id="3-面向容器的架构特征"><a href="#3-面向容器的架构特征" class="headerlink" title="3. 面向容器的架构特征"></a>3. 面向容器的架构特征</h2><table>
+<thead>
+<tr>
+<th>特征</th>
+<th>说明</th>
+<th>好处</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>轻量隔离</strong></td>
+<td>各容器进程、依赖隔离</td>
+<td>避免冲突，易迁移</td>
+</tr>
+<tr>
+<td><strong>可移植性</strong></td>
+<td>镜像可运行在不同平台</td>
+<td>从开发到生产一致</td>
+</tr>
+<tr>
+<td><strong>可伸缩性</strong></td>
+<td>按容器水平扩展</td>
+<td>高并发应对灵活</td>
+</tr>
+<tr>
+<td><strong>可观测性</strong></td>
+<td>每个容器独立监控</td>
+<td>问题定位精准</td>
+</tr>
+<tr>
+<td><strong>自动化</strong></td>
+<td>构建、测试、部署流水线化</td>
+<td>降低运维成本</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-设计时的陷阱"><a href="#4-设计时的陷阱" class="headerlink" title="4. 设计时的陷阱"></a>4. 设计时的陷阱</h2><ul>
+<li>容器粒度过细 → 接口调用过多，性能下降</li>
+<li>将数据库直接放在短生命周期容器中 → 数据丢失</li>
+<li>容器镜像过大 → 启动和更新慢</li>
+<li>忽略网络延迟和跨容器带宽消耗</li>
+</ul>
+<hr>
+<h2 id="5-一个简单的例子"><a href="#5-一个简单的例子" class="headerlink" title="5. 一个简单的例子"></a>5. 一个简单的例子</h2><p>比如一个电商系统：</p>
+<ul>
+<li><code>api-gateway</code> 容器（Nginx + Lua 或 Kong）</li>
+<li><code>user-service</code> 容器（Go + MySQL）</li>
+<li><code>order-service</code> 容器（Java + Kafka）</li>
+<li><code>payment-service</code> 容器（Node.js + 支付SDK）</li>
+<li>公用 <code>redis</code> 容器（缓存）</li>
+<li>公用 <code>mq</code> 容器（RabbitMQ 或 Kafka）</li>
+</ul>
+<p>所有容器的运行、扩容、监控都交给 Kubernetes 或 Docker Compose 进行编排。</p>
+<h1 id="ConfigMap-vs-docker-compose-environment-区别"><a href="#ConfigMap-vs-docker-compose-environment-区别" class="headerlink" title="ConfigMap vs docker-compose environment 区别"></a>ConfigMap vs <code>docker-compose</code> environment 区别</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. <strong>定义</strong></h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>ConfigMap</th>
+<th><code>docker-compose</code> environment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>归属平台</strong></td>
+<td>Kubernetes</td>
+<td>Docker &#x2F; Docker Compose</td>
+</tr>
+<tr>
+<td><strong>本质</strong></td>
+<td>Kubernetes 的一种资源对象，用来存储<strong>非机密</strong>的配置信息（key-value）</td>
+<td>在 Compose 文件（<code>docker-compose.yml</code>）中，为容器运行时注入环境变量的方式</td>
+</tr>
+<tr>
+<td><strong>作用范围</strong></td>
+<td>K8s 集群层面，多个 Pod&#x2F;容器可共享</td>
+<td>当前 Compose 项目或单个容器</td>
+</tr>
+<tr>
+<td><strong>存储位置</strong></td>
+<td>存在 etcd（K8s 控制面）</td>
+<td>写在 Compose 文件里或外部 <code>.env</code> 文件</td>
+</tr>
+<tr>
+<td><strong>用途</strong></td>
+<td>统一、集中管理配置，容器可挂载或注入</td>
+<td>在启动容器时设置环境变量</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-使用方式"><a href="#2-使用方式" class="headerlink" title="2. 使用方式"></a>2. <strong>使用方式</strong></h2><h3 id="ConfigMap（K8s）"><a href="#ConfigMap（K8s）" class="headerlink" title="ConfigMap（K8s）"></a><strong>ConfigMap（K8s）</strong></h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 ConfigMap</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-config</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">APP_MODE:</span> <span class="string">production</span></span><br><span class="line">  <span class="attr">APP_PORT:</span> <span class="string">&quot;8080&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>引用方式：</p>
+<ul>
+<li>作为<strong>环境变量</strong>：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">envFrom:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">configMapRef:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">my-config</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>挂载成文件：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config-vol</span></span><br><span class="line">  <span class="attr">mountPath:</span> <span class="string">/app/config</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config-vol</span></span><br><span class="line">  <span class="attr">configMap:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">my-config</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="docker-compose-environment"><a href="#docker-compose-environment" class="headerlink" title="docker-compose environment"></a><strong>docker-compose environment</strong></h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">APP_MODE=production</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">APP_PORT=8080</span></span><br></pre></td></tr></table></figure>
+
+<p>或者使用外部 <code>.env</code> 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># .env</span><br><span class="line">APP_MODE=production</span><br><span class="line">APP_PORT=8080</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>docker-compose.yml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">APP_MODE=$&#123;APP_MODE&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">APP_PORT=$&#123;APP_PORT&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-关键区别"><a href="#3-关键区别" class="headerlink" title="3. 关键区别"></a>3. <strong>关键区别</strong></h2><table>
+<thead>
+<tr>
+<th>对比点</th>
+<th>ConfigMap</th>
+<th>docker-compose environment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>平台</strong></td>
+<td>运行在 Kubernetes</td>
+<td>运行在 Docker &#x2F; Compose</td>
+</tr>
+<tr>
+<td><strong>管理方式</strong></td>
+<td>集群 API 统一管理，可独立于镜像和 Pod 生命周期</td>
+<td>由 <code>docker-compose.yml</code> 直接定义，和容器生命周期绑定</td>
+</tr>
+<tr>
+<td><strong>更新方式</strong></td>
+<td>更新 ConfigMap → 重启 Pod（或触发滚动更新）</td>
+<td>改 <code>docker-compose.yml</code> 或 <code>.env</code> → 重新 <code>docker-compose up -d</code></td>
+</tr>
+<tr>
+<td><strong>适合场景</strong></td>
+<td>多容器&#x2F;多服务共享配置，动态调整</td>
+<td>单项目或单容器快速设置环境变量</td>
+</tr>
+<tr>
+<td><strong>存储安全</strong></td>
+<td>仅适合非敏感数据（敏感数据用 Secret）</td>
+<td>同样不适合存敏感数据（最好用 Docker Secret）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-一句总结"><a href="#4-一句总结" class="headerlink" title="4. 一句总结"></a>4. <strong>一句总结</strong></h2><ul>
+<li><strong>ConfigMap</strong> &#x3D; <strong>K8s 的“集群级配置中心”</strong>（适合动态、集中管理配置）</li>
+<li><strong>docker-compose environment</strong> &#x3D; <strong>本地&#x2F;单机容器的环境变量注入</strong>（适合小规模部署或开发环境）</li>
+</ul>
+<h1 id="容器中的敏感数据"><a href="#容器中的敏感数据" class="headerlink" title="容器中的敏感数据"></a>容器中的敏感数据</h1><p>在Kubernetes中，敏感数据不应该存储在ConfigMap中，因为ConfigMap并不提供加密或保护数据的功能。对于敏感数据，Kubernetes提供了Secret对象来专门处理这类信息。Secret可以用来存储如密码、OAuth令牌和SSH密钥等敏感信息，并且可以在创建时选择是否启用加密。Secret可以通过类似ConfigMap的方式注入到容器中，作为环境变量或挂载为文件。</p>
+<p>以下是在Kubernetes中使用Secret的一些基本操作：</p>
+<ol>
+<li><p>创建Secret：<br>可以通过命令行或者YAML文件创建Secret。例如，从文件创建一个包含用户名和密码的Secret：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic mysecret --from-file=username=./username.txt --from-file=password=./password.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Pod中使用Secret：</p>
+<ul>
+<li>作为环境变量：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">SECRET_USERNAME</span></span><br><span class="line">  <span class="attr">valueFrom:</span></span><br><span class="line">    <span class="attr">secretKeyRef:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">mysecret</span></span><br><span class="line">      <span class="attr">key:</span> <span class="string">username</span></span><br></pre></td></tr></table></figure></li>
+<li>作为挂载的卷：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumeMounts:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">secret-volume</span></span><br><span class="line">  <span class="attr">mountPath:</span> <span class="string">/etc/secret</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">secret-volume</span></span><br><span class="line">  <span class="attr">secret:</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">mysecret</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<p>在Docker Compose中，没有直接等同于Kubernetes Secret的对象，但你可以通过环境变量或者挂载文件的方式来安全地传递敏感信息。</p>
+<ol>
+<li><p>使用环境变量：<br>你可以在<code>docker-compose.yml</code>文件中定义环境变量，并在运行<code>docker-compose up</code>之前通过<code>.env</code>文件或者命令行参数来设置这些值。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">myservice:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myimage</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SECRET_KEY=$&#123;SECRET_KEY&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>挂载敏感文件：<br>你可以将包含敏感信息的文件挂载到容器中。确保这些文件在主机系统上有适当的权限设置，并且不与版本控制系统共享（例如通过<code>.gitignore</code>）。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">myservice:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myimage</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./secrets:/run/secrets</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Docker Secrets（仅适用于Swarm模式）：<br>如果你在使用Docker Swarm模式，可以利用Docker Secrets功能来管理敏感数据，这提供了更高级的安全措施，比如自动加密。</p>
+</li>
+</ol>
+<p>无论是在Kubernetes还是Docker Compose中，处理敏感数据时都应该采取适当的安全措施，比如限制访问权限、使用加密以及避免将敏感信息硬编码到配置文件中。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#前端" >
+    <span class="tag-code">前端</span>
+  </a>
+
+  <a target="_blank" href="/tags#web" >
+    <span class="tag-code">web</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/25/app_develop_skills/flutter%20java%20vs%20code%E9%85%8D%E7%BD%AE/">
+        <span class="nav-arrow">← </span>
+        
+          Flutter vscode java配置
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/08/10/ai_tools/cusor%20vs%20copilot%E5%8C%BA%E5%88%AB/">
+        
+          Cursor vs Copilot区别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5"><span class="toc-nav-text">1. 核心理念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">2. 设计流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E7%A1%AE%E5%AE%9A%E5%AE%B9%E5%99%A8%E7%B2%92%E5%BA%A6"><span class="toc-nav-text">(1) 确定容器粒度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E6%8E%A5%E5%8F%A3%E4%BC%98%E5%85%88%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">(2) 接口优先设计</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E7%8E%AF%E5%A2%83%E4%B8%8E%E4%BE%9D%E8%B5%96%E5%86%85%E7%BD%AE%E5%8C%96"><span class="toc-nav-text">(3) 环境与依赖内置化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="toc-nav-text">(4) 状态管理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%AE%A1%E7%90%86"><span class="toc-nav-text">(5) 生命周期管理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-%E9%9D%A2%E5%90%91%E5%AE%B9%E5%99%A8%E7%9A%84%E6%9E%B6%E6%9E%84%E7%89%B9%E5%BE%81"><span class="toc-nav-text">3. 面向容器的架构特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-%E8%AE%BE%E8%AE%A1%E6%97%B6%E7%9A%84%E9%99%B7%E9%98%B1"><span class="toc-nav-text">4. 设计时的陷阱</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-nav-text">5. 一个简单的例子</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#ConfigMap-vs-docker-compose-environment-%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">ConfigMap vs docker-compose environment 区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="toc-nav-text">1. 定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">2. 使用方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ConfigMap%EF%BC%88K8s%EF%BC%89"><span class="toc-nav-text">ConfigMap（K8s）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#docker-compose-environment"><span class="toc-nav-text">docker-compose environment</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-%E5%85%B3%E9%94%AE%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">3. 关键区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-%E4%B8%80%E5%8F%A5%E6%80%BB%E7%BB%93"><span class="toc-nav-text">4. 一句总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE"><span class="toc-nav-text">容器中的敏感数据</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/08/05/devops_skills/docker/面向容器设计/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

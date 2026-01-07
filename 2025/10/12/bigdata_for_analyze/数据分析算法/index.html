@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      数据分析算法 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>数据分析算法</h2>
+  <p class="post-date">2025-10-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>算法分成五大类，从基础到AI级别，覆盖从<strong>描述性分析 → 预测性分析 → 生成性分析</strong>的全流程。</p>
+<hr>
+<h2 id="🧭-一、总体分类总览"><a href="#🧭-一、总体分类总览" class="headerlink" title="🧭 一、总体分类总览"></a>🧭 一、总体分类总览</h2><table>
+<thead>
+<tr>
+<th>算法类型</th>
+<th>主要目的</th>
+<th>场景举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 描述统计类</td>
+<td>总结数据特征、发现规律</td>
+<td>报表分析、KPI监控</td>
+</tr>
+<tr>
+<td>② 诊断分析类</td>
+<td>找出变化原因与关系</td>
+<td>异常检测、因果分析</td>
+</tr>
+<tr>
+<td>③ 预测建模类</td>
+<td>预测未来趋势或结果</td>
+<td>销售预测、流失预测</td>
+</tr>
+<tr>
+<td>④ 聚类与分群类</td>
+<td>按特征对数据自动分组</td>
+<td>用户分群、图像压缩</td>
+</tr>
+<tr>
+<td>⑤ 生成与推荐类（AI）</td>
+<td>自动生成结果或策略</td>
+<td>推荐系统、生成报告、LLM分析</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="📊-二、描述性与统计分析类算法"><a href="#📊-二、描述性与统计分析类算法" class="headerlink" title="📊 二、描述性与统计分析类算法"></a>📊 二、描述性与统计分析类算法</h2><table>
+<thead>
+<tr>
+<th>算法 &#x2F; 方法</th>
+<th>作用</th>
+<th>应用场景</th>
+<th>工具&#x2F;实现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>均值 &#x2F; 方差 &#x2F; 中位数</td>
+<td>描述集中趋势</td>
+<td>销售额、温度平均值</td>
+<td>Excel, Pandas</td>
+</tr>
+<tr>
+<td>相关分析（Correlation）</td>
+<td>衡量两个变量关系强度</td>
+<td>广告投放与销售关系</td>
+<td>Pandas <code>.corr()</code>, SciPy</td>
+</tr>
+<tr>
+<td>主成分分析（PCA）</td>
+<td>降维，提取主要特征</td>
+<td>多维指标压缩、特征提取</td>
+<td>sklearn.decomposition</td>
+</tr>
+<tr>
+<td>偏度 &#x2F; 峰度</td>
+<td>检测分布形态</td>
+<td>数据是否偏态分布</td>
+<td>Pandas, NumPy</td>
+</tr>
+<tr>
+<td>时间序列趋势分析</td>
+<td>观察时间变化规律</td>
+<td>KPI监控、销售季节性</td>
+<td>statsmodels, Prophet</td>
+</tr>
+</tbody></table>
+<p>📘 示例：</p>
+<blockquote>
+<p>用 PCA 分析 50 个财务指标，提炼出 3 个主成分来解释企业健康度。</p>
+</blockquote>
+<hr>
+<h2 id="🔍-三、诊断分析类算法（Why层面）"><a href="#🔍-三、诊断分析类算法（Why层面）" class="headerlink" title="🔍 三、诊断分析类算法（Why层面）"></a>🔍 三、诊断分析类算法（Why层面）</h2><table>
+<thead>
+<tr>
+<th>算法 &#x2F; 方法</th>
+<th>作用</th>
+<th>场景</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>假设检验 (t-test, ANOVA)</td>
+<td>判断差异是否显著</td>
+<td>AB测试、活动效果对比</td>
+<td>SciPy, R</td>
+</tr>
+<tr>
+<td>卡方检验 (Chi-square)</td>
+<td>检查分类变量关联性</td>
+<td>用户性别与购买偏好</td>
+<td>SciPy</td>
+</tr>
+<tr>
+<td>回归诊断 (VIF, Cook’s Distance)</td>
+<td>检测共线性与异常值</td>
+<td>模型优化</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>决策树可解释性分析</td>
+<td>查看重要影响因素</td>
+<td>销售下滑原因分析</td>
+<td>sklearn.tree</td>
+</tr>
+<tr>
+<td>异常检测 (Isolation Forest, DBSCAN)</td>
+<td>自动识别异常样本</td>
+<td>欺诈检测、系统监控</td>
+<td>sklearn, PyOD</td>
+</tr>
+</tbody></table>
+<p>📘 示例：</p>
+<blockquote>
+<p>用 t-test 检验活动 A 和 B 的转化率差异是否显著。</p>
+</blockquote>
+<hr>
+<h2 id="📈-四、预测建模类算法（Predictive-Analytics）"><a href="#📈-四、预测建模类算法（Predictive-Analytics）" class="headerlink" title="📈 四、预测建模类算法（Predictive Analytics）"></a>📈 四、预测建模类算法（Predictive Analytics）</h2><table>
+<thead>
+<tr>
+<th>算法</th>
+<th>类型</th>
+<th>应用场景</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>线性回归 (Linear Regression)</td>
+<td>连续预测</td>
+<td>销售额、房价预测</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>逻辑回归 (Logistic Regression)</td>
+<td>二分类预测</td>
+<td>用户流失&#x2F;转化预测</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>决策树 (Decision Tree)</td>
+<td>分类与回归</td>
+<td>客户信用评分、风险评估</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>随机森林 (Random Forest)</td>
+<td>集成学习</td>
+<td>特征复杂场景预测</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>XGBoost &#x2F; LightGBM</td>
+<td>高性能模型</td>
+<td>大数据、竞赛预测</td>
+<td>XGBoost, LightGBM</td>
+</tr>
+<tr>
+<td>时间序列 (ARIMA, Prophet, LSTM)</td>
+<td>序列趋势预测</td>
+<td>销售趋势、流量预测</td>
+<td>statsmodels, fbprophet, TensorFlow</td>
+</tr>
+<tr>
+<td>贝叶斯分析 (Bayesian Inference)</td>
+<td>概率预测</td>
+<td>医疗诊断、风险概率估计</td>
+<td>PyMC3, Stan</td>
+</tr>
+</tbody></table>
+<p>📘 示例：</p>
+<blockquote>
+<p>用 XGBoost 预测“下月客户流失概率”，并用 SHAP 可解释性图分析关键因素。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-五、聚类与分群分析类算法（Exploratory-Analytics）"><a href="#🧩-五、聚类与分群分析类算法（Exploratory-Analytics）" class="headerlink" title="🧩 五、聚类与分群分析类算法（Exploratory Analytics）"></a>🧩 五、聚类与分群分析类算法（Exploratory Analytics）</h2><table>
+<thead>
+<tr>
+<th>算法</th>
+<th>类型</th>
+<th>场景</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>K-Means</td>
+<td>基于距离的聚类</td>
+<td>用户分群、图像压缩</td>
+<td>sklearn.cluster</td>
+</tr>
+<tr>
+<td>DBSCAN</td>
+<td>密度聚类</td>
+<td>异常检测、地理位置聚合</td>
+<td>sklearn</td>
+</tr>
+<tr>
+<td>层次聚类 (Hierarchical)</td>
+<td>层级关系分析</td>
+<td>客户画像、基因分类</td>
+<td>scipy.cluster</td>
+</tr>
+<tr>
+<td>GMM（高斯混合模型）</td>
+<td>软聚类</td>
+<td>市场细分</td>
+<td>sklearn.mixture</td>
+</tr>
+<tr>
+<td>SOM（自组织映射）</td>
+<td>非线性聚类</td>
+<td>特征降维、可视化</td>
+<td>minisom</td>
+</tr>
+</tbody></table>
+<p>📘 示例：</p>
+<blockquote>
+<p>用 K-Means 把用户分为「高价值」「中活跃」「潜在流失」三类。</p>
+</blockquote>
+<hr>
+<h2 id="🤖-六、生成性与推荐类算法（AI-Prescriptive-Analytics）"><a href="#🤖-六、生成性与推荐类算法（AI-Prescriptive-Analytics）" class="headerlink" title="🤖 六、生成性与推荐类算法（AI&#x2F;Prescriptive Analytics）"></a>🤖 六、生成性与推荐类算法（AI&#x2F;Prescriptive Analytics）</h2><table>
+<thead>
+<tr>
+<th>算法</th>
+<th>类型</th>
+<th>场景</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>协同过滤 (Collaborative Filtering)</td>
+<td>个性化推荐</td>
+<td>电商、视频推荐</td>
+<td>Surprise, implicit</td>
+</tr>
+<tr>
+<td>矩阵分解 (SVD, NMF)</td>
+<td>隐因子建模</td>
+<td>推荐系统</td>
+<td>sklearn.decomposition</td>
+</tr>
+<tr>
+<td>强化学习 (Reinforcement Learning)</td>
+<td>策略最优决策</td>
+<td>定价、广告投放优化</td>
+<td>Stable-Baselines3</td>
+</tr>
+<tr>
+<td>LLM + 数据分析</td>
+<td>智能报告、解释模型</td>
+<td>ChatGPT、LangChain + Pandas Agent</td>
+<td>OpenAI API</td>
+</tr>
+<tr>
+<td>GAN &#x2F; Diffusion &#x2F; Transformer</td>
+<td>生成数据、图像、文本</td>
+<td>模拟场景、生成性分析</td>
+<td>PyTorch, HuggingFace</td>
+</tr>
+</tbody></table>
+<p>📘 示例：</p>
+<blockquote>
+<p>用 GPT + 数据源生成自动化分析报告：<br>“上周销售额下降主要由于东南区域新品点击率降低。”</p>
+</blockquote>
+<hr>
+<h2 id="🧮-七、算法选择思维导图"><a href="#🧮-七、算法选择思维导图" class="headerlink" title="🧮 七、算法选择思维导图"></a>🧮 七、算法选择思维导图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">📘 目标明确 → 选算法类别：</span><br><span class="line">│</span><br><span class="line">├─ 了解数据特征 → 描述统计 / 可视化</span><br><span class="line">├─ 想解释“为什么” → 诊断分析</span><br><span class="line">├─ 想预测“接下来” → 回归 / 分类 / 时间序列</span><br><span class="line">├─ 想探索“用户分群” → 聚类 / 降维</span><br><span class="line">├─ 想生成“推荐或策略” → 生成式 / 推荐算法 / 强化学习</span><br><span class="line">└─ 想让AI解释数据 → LLM智能分析</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-八、应用举例汇总"><a href="#🧠-八、应用举例汇总" class="headerlink" title="🧠 八、应用举例汇总"></a>🧠 八、应用举例汇总</h2><table>
+<thead>
+<tr>
+<th>业务场景</th>
+<th>典型算法</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电商销售预测</td>
+<td>时间序列 + XGBoost</td>
+<td>销售趋势与风险预警</td>
+</tr>
+<tr>
+<td>用户画像</td>
+<td>K-Means + PCA</td>
+<td>用户分群与营销定位</td>
+</tr>
+<tr>
+<td>客户流失分析</td>
+<td>逻辑回归 + 决策树</td>
+<td>流失率预测与关键因素</td>
+</tr>
+<tr>
+<td>欺诈检测</td>
+<td>Isolation Forest + DBSCAN</td>
+<td>异常交易识别</td>
+</tr>
+<tr>
+<td>营销推荐</td>
+<td>协同过滤 + 强化学习</td>
+<td>个性化推荐策略</td>
+</tr>
+<tr>
+<td>智能报告生成</td>
+<td>GPT + LLM Chain</td>
+<td>自动化分析与自然语言报告</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-九、进阶建议"><a href="#✅-九、进阶建议" class="headerlink" title="✅ 九、进阶建议"></a>✅ 九、进阶建议</h2><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>学习目标</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>入门</td>
+<td>描述性 + 回归 + 聚类</td>
+<td>Excel &#x2F; Pandas &#x2F; sklearn</td>
+</tr>
+<tr>
+<td>进阶</td>
+<td>集成学习 + 时间序列 + 推荐</td>
+<td>XGBoost &#x2F; Prophet &#x2F; Surprise</td>
+</tr>
+<tr>
+<td>高阶</td>
+<td>AutoML + LLM生成分析</td>
+<td>PyCaret &#x2F; MLflow &#x2F; LangChain</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/11/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+        <span class="nav-arrow">← </span>
+        
+          数据分析
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/10/13/bigdata_for_analyze/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
+        
+          特征工程
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81%E6%80%BB%E4%BD%93%E5%88%86%E7%B1%BB%E6%80%BB%E8%A7%88"><span class="toc-nav-text">🧭 一、总体分类总览</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%8A-%E4%BA%8C%E3%80%81%E6%8F%8F%E8%BF%B0%E6%80%A7%E4%B8%8E%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="toc-nav-text">📊 二、描述性与统计分析类算法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E4%B8%89%E3%80%81%E8%AF%8A%E6%96%AD%E5%88%86%E6%9E%90%E7%B1%BB%E7%AE%97%E6%B3%95%EF%BC%88Why%E5%B1%82%E9%9D%A2%EF%BC%89"><span class="toc-nav-text">🔍 三、诊断分析类算法（Why层面）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%88-%E5%9B%9B%E3%80%81%E9%A2%84%E6%B5%8B%E5%BB%BA%E6%A8%A1%E7%B1%BB%E7%AE%97%E6%B3%95%EF%BC%88Predictive-Analytics%EF%BC%89"><span class="toc-nav-text">📈 四、预测建模类算法（Predictive Analytics）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%BA%94%E3%80%81%E8%81%9A%E7%B1%BB%E4%B8%8E%E5%88%86%E7%BE%A4%E5%88%86%E6%9E%90%E7%B1%BB%E7%AE%97%E6%B3%95%EF%BC%88Exploratory-Analytics%EF%BC%89"><span class="toc-nav-text">🧩 五、聚类与分群分析类算法（Exploratory Analytics）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A4%96-%E5%85%AD%E3%80%81%E7%94%9F%E6%88%90%E6%80%A7%E4%B8%8E%E6%8E%A8%E8%8D%90%E7%B1%BB%E7%AE%97%E6%B3%95%EF%BC%88AI-Prescriptive-Analytics%EF%BC%89"><span class="toc-nav-text">🤖 六、生成性与推荐类算法（AI&#x2F;Prescriptive Analytics）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AE-%E4%B8%83%E3%80%81%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="toc-nav-text">🧮 七、算法选择思维导图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E5%85%AB%E3%80%81%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B%E6%B1%87%E6%80%BB"><span class="toc-nav-text">🧠 八、应用举例汇总</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B9%9D%E3%80%81%E8%BF%9B%E9%98%B6%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">✅ 九、进阶建议</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/12/bigdata_for_analyze/数据分析算法/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

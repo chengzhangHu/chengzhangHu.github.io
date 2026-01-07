@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ai agent,mcp,llm，智能体区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ai agent,mcp,llm，智能体区别</h2>
+  <p class="post-date">2025-12-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="一句话总览（先立住框架）"><a href="#一句话总览（先立住框架）" class="headerlink" title="一句话总览（先立住框架）"></a>一句话总览（先立住框架）</h2><blockquote>
+<p><strong>LLM 是大脑，Agent 是会行动的“人”，智能体是中文总称，MCP 是给 Agent 用的“标准接口&#x2F;工具协议”。</strong></p>
+</blockquote>
+<p>如果画成一层一层的结构，大概是这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">应用 / 系统</span><br><span class="line">└── 智能体（Agent）</span><br><span class="line">    ├── 推理能力：LLM</span><br><span class="line">    ├── 行为控制：Agent 框架</span><br><span class="line">    ├── 工具能力：MCP / API / Plugin</span><br><span class="line">    └── 记忆 / 计划 / 状态管理</span><br></pre></td></tr></table></figure>
+
+<p>下面我们一个一个拆。</p>
+<hr>
+<h2 id="一、LLM（大语言模型）——“会思考但不会自己动的脑”"><a href="#一、LLM（大语言模型）——“会思考但不会自己动的脑”" class="headerlink" title="一、LLM（大语言模型）——“会思考但不会自己动的脑”"></a>一、LLM（大语言模型）——<strong>“会思考但不会自己动的脑”</strong></h2><p><strong>LLM 是什么？</strong></p>
+<ul>
+<li>GPT、Claude、DeepSeek、Qwen 都是 LLM</li>
+<li>本质：<strong>概率语言模型 + 推理能力</strong></li>
+</ul>
+<p><strong>它能做什么？</strong></p>
+<ul>
+<li>理解文本</li>
+<li>生成文本</li>
+<li>推理、总结、规划（在“脑内”）</li>
+</ul>
+<p><strong>它不能做什么？</strong></p>
+<ul>
+<li>❌ 不能自己调用工具</li>
+<li>❌ 不能记住长期状态</li>
+<li>❌ 不能执行任务（发邮件、查数据库、跑程序）</li>
+</ul>
+<p>👉 <strong>LLM ≈ 大脑，但没有手脚</strong></p>
+<hr>
+<h2 id="二、Agent（智能体）——“带着大脑、会做事的执行者”"><a href="#二、Agent（智能体）——“带着大脑、会做事的执行者”" class="headerlink" title="二、Agent（智能体）——“带着大脑、会做事的执行者”"></a>二、Agent（智能体）——<strong>“带着大脑、会做事的执行者”</strong></h2><p><strong>Agent 是什么？</strong></p>
+<blockquote>
+<p>一个“用 LLM 做决策 + 能执行动作的程序实体”</p>
+</blockquote>
+<p>典型 Agent 会有：</p>
+<ul>
+<li>🧠 <strong>决策核心</strong>：LLM</li>
+<li>📋 <strong>任务目标</strong></li>
+<li>🔁 <strong>循环机制</strong>（思考 → 行动 → 观察 → 再思考）</li>
+<li>🧰 <strong>工具调用能力</strong></li>
+<li>💾 <strong>短期 &#x2F; 长期记忆</strong></li>
+<li>⏱️ <strong>状态管理</strong></li>
+</ul>
+<p><strong>举个例子：</strong></p>
+<blockquote>
+<p>“帮我做一份市场调研 PPT”</p>
+</blockquote>
+<ul>
+<li><p>LLM：负责“怎么做”</p>
+</li>
+<li><p>Agent：</p>
+<ul>
+<li>拆任务</li>
+<li>搜资料</li>
+<li>调用搜索工具</li>
+<li>写大纲</li>
+<li>生成 PPT</li>
+</ul>
+</li>
+</ul>
+<p>👉 <strong>Agent &#x3D; LLM + 行动能力 + 任务闭环</strong></p>
+<hr>
+<h2 id="三、智能体-——Agent-的中文总称（偏概念层）"><a href="#三、智能体-——Agent-的中文总称（偏概念层）" class="headerlink" title="三、智能体 ——Agent 的中文总称（偏概念层）"></a>三、智能体 ——<strong>Agent 的中文总称（偏概念层）</strong></h2><p><strong>“智能体” ≈ “Agent”</strong></p>
+<p>但有细微语感差别：</p>
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>更偏向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>智能体</td>
+<td>概念 &#x2F; 学术 &#x2F; 产品层</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>工程 &#x2F; 系统 &#x2F; 实现层</td>
+</tr>
+</tbody></table>
+<p>在这些场景你会看到“智能体”：</p>
+<ul>
+<li>多智能体系统</li>
+<li>AI 智能体平台</li>
+<li>行业报告 &#x2F; 方案书</li>
+</ul>
+<p>本质上：<strong>说的是同一类东西</strong></p>
+<hr>
+<h2 id="四、MCP（Model-Context-Protocol）——Agent-的“统一工具接口”"><a href="#四、MCP（Model-Context-Protocol）——Agent-的“统一工具接口”" class="headerlink" title="四、MCP（Model Context Protocol）——Agent 的“统一工具接口”"></a>四、MCP（Model Context Protocol）——<strong>Agent 的“统一工具接口”</strong></h2><p>这是最容易混的地方。</p>
+<h3 id="MCP-不是模型，也不是-Agent"><a href="#MCP-不是模型，也不是-Agent" class="headerlink" title="MCP 不是模型，也不是 Agent"></a>MCP 不是模型，也不是 Agent</h3><p><strong>MCP 是什么？</strong></p>
+<blockquote>
+<p>一种 <strong>让 LLM &#x2F; Agent 安全、标准化调用外部工具和数据的协议</strong></p>
+</blockquote>
+<p>你可以理解为：</p>
+<blockquote>
+<p><strong>“AI 版 USB &#x2F; HTTP 标准”</strong></p>
+</blockquote>
+<h3 id="MCP-解决什么问题？"><a href="#MCP-解决什么问题？" class="headerlink" title="MCP 解决什么问题？"></a>MCP 解决什么问题？</h3><p>以前：</p>
+<ul>
+<li>每个 Agent</li>
+<li>每个工具</li>
+<li>每套私有接口</li>
+<li>全是胶水代码 🤯</li>
+</ul>
+<p>MCP：</p>
+<ul>
+<li>统一方式暴露工具</li>
+<li>标准上下文描述</li>
+<li>LLM 可理解、可发现、可组合</li>
+</ul>
+<h3 id="MCP-在结构中的位置"><a href="#MCP-在结构中的位置" class="headerlink" title="MCP 在结构中的位置"></a>MCP 在结构中的位置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Agent</span><br><span class="line"> ├── LLM（负责想）</span><br><span class="line"> ├── MCP Client（负责用）</span><br><span class="line"> └── MCP Server（工具 / 数据 / 服务）</span><br></pre></td></tr></table></figure>
+
+<h3 id="一个直观类比"><a href="#一个直观类比" class="headerlink" title="一个直观类比"></a>一个直观类比</h3><table>
+<thead>
+<tr>
+<th>人类世界</th>
+<th>AI 世界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>人</td>
+<td>Agent</td>
+</tr>
+<tr>
+<td>大脑</td>
+<td>LLM</td>
+</tr>
+<tr>
+<td>APP &#x2F; 软件</td>
+<td>工具</td>
+</tr>
+<tr>
+<td>操作系统 API</td>
+<td>MCP</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、把四个放在一起的完整关系"><a href="#五、把四个放在一起的完整关系" class="headerlink" title="五、把四个放在一起的完整关系"></a>五、把四个放在一起的完整关系</h2><p>我用一句<strong>工程视角的定义</strong>总结：</p>
+<blockquote>
+<p><strong>LLM 提供“智能”，Agent 提供“行动”，MCP 提供“连接现实的标准接口”，智能体是这一整套系统的总称。</strong></p>
+</blockquote>
+<p>或者更直白一点：</p>
+<ul>
+<li>❌ 只有 LLM → 会聊天但不干活</li>
+<li>✅ LLM + Agent → 能完成任务</li>
+<li>🚀 Agent + MCP → 能稳定、规模化地干活</li>
+</ul>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/12/10/do_at_workspace/2025%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE/">
+        <span class="nav-arrow">← </span>
+        
+          2025年前端趋势学习建议
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/12/30/do_at_workspace/%E4%B8%93%E4%B8%9A%E5%8C%96%E8%81%9A%E7%84%A6/">
+        
+          2025 学习聚焦
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E8%A7%88%EF%BC%88%E5%85%88%E7%AB%8B%E4%BD%8F%E6%A1%86%E6%9E%B6%EF%BC%89"><span class="toc-nav-text">一句话总览（先立住框架）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81LLM%EF%BC%88%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%89%E2%80%94%E2%80%94%E2%80%9C%E4%BC%9A%E6%80%9D%E8%80%83%E4%BD%86%E4%B8%8D%E4%BC%9A%E8%87%AA%E5%B7%B1%E5%8A%A8%E7%9A%84%E8%84%91%E2%80%9D"><span class="toc-nav-text">一、LLM（大语言模型）——“会思考但不会自己动的脑”</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81Agent%EF%BC%88%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89%E2%80%94%E2%80%94%E2%80%9C%E5%B8%A6%E7%9D%80%E5%A4%A7%E8%84%91%E3%80%81%E4%BC%9A%E5%81%9A%E4%BA%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E8%80%85%E2%80%9D"><span class="toc-nav-text">二、Agent（智能体）——“带着大脑、会做事的执行者”</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E6%99%BA%E8%83%BD%E4%BD%93-%E2%80%94%E2%80%94Agent-%E7%9A%84%E4%B8%AD%E6%96%87%E6%80%BB%E7%A7%B0%EF%BC%88%E5%81%8F%E6%A6%82%E5%BF%B5%E5%B1%82%EF%BC%89"><span class="toc-nav-text">三、智能体 ——Agent 的中文总称（偏概念层）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81MCP%EF%BC%88Model-Context-Protocol%EF%BC%89%E2%80%94%E2%80%94Agent-%E7%9A%84%E2%80%9C%E7%BB%9F%E4%B8%80%E5%B7%A5%E5%85%B7%E6%8E%A5%E5%8F%A3%E2%80%9D"><span class="toc-nav-text">四、MCP（Model Context Protocol）——Agent 的“统一工具接口”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MCP-%E4%B8%8D%E6%98%AF%E6%A8%A1%E5%9E%8B%EF%BC%8C%E4%B9%9F%E4%B8%8D%E6%98%AF-Agent"><span class="toc-nav-text">MCP 不是模型，也不是 Agent</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MCP-%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-nav-text">MCP 解决什么问题？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MCP-%E5%9C%A8%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-nav-text">MCP 在结构中的位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E4%B8%AA%E7%9B%B4%E8%A7%82%E7%B1%BB%E6%AF%94"><span class="toc-nav-text">一个直观类比</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%E6%8A%8A%E5%9B%9B%E4%B8%AA%E6%94%BE%E5%9C%A8%E4%B8%80%E8%B5%B7%E7%9A%84%E5%AE%8C%E6%95%B4%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">五、把四个放在一起的完整关系</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/12/22/ai_tools/ai-agent,mcp,llm/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

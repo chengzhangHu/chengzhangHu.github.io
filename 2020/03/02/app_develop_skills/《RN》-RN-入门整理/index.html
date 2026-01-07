@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《RN》- RN 入门整理 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《RN》- RN 入门整理</h2>
+  <p class="post-date">2020-03-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="node"><a href="#node" class="headerlink" title="node"></a>node</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//其版本是否在 v10 以上</span><br><span class="line">brew install node</span><br><span class="line"></span><br><span class="line"># 使用nrm工具切换淘宝源</span><br><span class="line">npx nrm use taobao</span><br><span class="line"></span><br><span class="line"># 如果之后需要切换回官方源可使用 </span><br><span class="line">npx nrm use npm</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//Facebook 提供的替代 npm 的工具，可以加速 node 模块的下载</span><br><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+
+<h4 id="watchman"><a href="#watchman" class="headerlink" title="watchman"></a>watchman</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//Facebook 提供的监视文件系统变更的工具。安装此工具可以提高开发时的性能</span><br><span class="line">brew install watchman </span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装过程出现的异常<br><img src="https://s2.ax1x.com/2020/03/02/32zIHA.png" width="450" height="300"></img></li>
+<li>解决方法<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R $(whoami) /usr/local/share/man/man5 /usr/local/share/man/man7</span><br><span class="line"></span><br><span class="line">chmod u+w /usr/local/share/man/man5 /usr/local/share/man/man7</span><br></pre></td></tr></table></figure>
+<img src="https://s2.ax1x.com/2020/03/02/3RSpEn.png" width="450" height="300"></img></li>
+<li>安装路径提示<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">==&gt; readline</span><br><span class="line">readline is keg-only, which means it was not symlinked into /usr/local,</span><br><span class="line">because macOS provides the BSD libedit library, which shadows libreadline.</span><br><span class="line">In order to prevent conflicts when programs look for libreadline we are</span><br><span class="line">defaulting this GNU Readline installation to keg-only.</span><br><span class="line"></span><br><span class="line">For compilers to find readline you may need to set:</span><br><span class="line">export LDFLAGS=&quot;-L/usr/local/opt/readline/lib&quot;</span><br><span class="line">export CPPFLAGS=&quot;-I/usr/local/opt/readline/include&quot;</span><br><span class="line"></span><br><span class="line">==&gt; sqlite</span><br><span class="line">sqlite is keg-only, which means it was not symlinked into /usr/local,</span><br><span class="line">because macOS provides an older sqlite3.</span><br><span class="line"></span><br><span class="line">If you need to have sqlite first in your PATH run:</span><br><span class="line">echo &#x27;export PATH=&quot;/usr/local/opt/sqlite/bin:$PATH&quot;&#x27; &gt;&gt; ~/.bash_profile</span><br><span class="line"></span><br><span class="line">For compilers to find sqlite you may need to set:</span><br><span class="line">export LDFLAGS=&quot;-L/usr/local/opt/sqlite/lib&quot;</span><br><span class="line">export CPPFLAGS=&quot;-I/usr/local/opt/sqlite/include&quot;</span><br><span class="line"></span><br><span class="line">==&gt; python</span><br><span class="line">Python has been installed as</span><br><span class="line">/usr/local/bin/python3</span><br><span class="line"></span><br><span class="line">Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to</span><br><span class="line">`python3`, `python3-config`, `pip3` etc., respectively, have been installed into</span><br><span class="line">/usr/local/opt/python/libexec/bin</span><br><span class="line"></span><br><span class="line">You can install Python packages with</span><br><span class="line">pip3 install &lt;package&gt;</span><br><span class="line">They will install into the site-package directory</span><br><span class="line">/usr/local/lib/python3.7/site-packages</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h4>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// version 10+</span><br><span class="line">brew cask install xcode  //同时安装 Xcode IDE、Xcode 的命令行工具和 iOS 模拟器。</span><br></pre></td></tr></table></figure>
+<pre><code>* 如果你之前全局安装过旧的react-native-cli命令行工具，请卸载掉它以避免一些冲突。npx命令来使用即可。
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g react-native-cli</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><pre><code>* 一：0.45 及以上版本需要依赖 boost 等几个很难下载成功的第三方库编译。这里有中文网提供的国内下载链接(http://bbs.reactnative.cn/topic/4301/)。
+
+* 二：0.60 及以上版本依赖CocoaPods安装。CocoaPods的仓库在国内也很难访问。如果在CocoaPods的安装步骤卡很久，可以试一下这个国内镜像(https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/
+
+* 三：请不要单独使用常见的关键字作为项目名（如class, native, new, package等等）。请不要使用与核心模块同名的项目名（如react, react-native等）。请不要在目录、文件名中使用中文、空格等特殊符号。
+</code></pre>
+<h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello-World"></a>Hello-World</h3><h4 id="工程初始化"><a href="#工程初始化" class="headerlink" title="工程初始化"></a>工程初始化</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx react-native init AwesomeProject </span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>提示：你可以使用–version参数（注意是两个杠）创建指定版本的项目。例如npx react-native init MyApp –version 0.44.3。注意版本号必须精确到两个小数点。<br> <img src="https://s2.ax1x.com/2020/03/02/3R9XjO.md.png" width="450" height="300"></img></p>
+</li>
+<li><p>安装CocoaPods失败<br> <img src="https://s2.ax1x.com/2020/03/02/3Riets.png"> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//对于旧版的 CocoaPods 可以使用如下方法使用 tuna 的镜像：</span><br><span class="line"></span><br><span class="line">$ pod repo remove master</span><br><span class="line">$ pod repo add master https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git</span><br><span class="line">$ pod repo update</span><br><span class="line">//新版的 CocoaPods 不允许用pod repo add直接添加master库了，但是依然可以：</span><br><span class="line"></span><br><span class="line">$ cd ~/.cocoapods/repos </span><br><span class="line">$ pod repo remove master</span><br><span class="line">$ git clone https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git master</span><br><span class="line">//最后进入自己的工程，在自己工程的podFile第一行加上：</span><br><span class="line"></span><br><span class="line">source &#x27;https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git&#x27;</span><br></pre></td></tr></table></figure></li>
+<li><p>xcode问题 – 不是根本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ xcrun -k --sdk iphoneos --show-sdk-path</span><br><span class="line">xcrun: error: SDK &quot;iphoneos&quot; cannot be located</span><br><span class="line">xcrun: error: SDK &quot;iphoneos&quot; cannot be located</span><br><span class="line">xcrun: error: unable to lookup item &#x27;Path&#x27; in SDK &#x27;iphoneos&#x27;</span><br><span class="line"></span><br><span class="line">$ xcode-select --print-path</span><br><span class="line">/Library/Developer/CommandLineTools</span><br><span class="line"> </span><br><span class="line">$ xcode-select --switch /Library/Developer/CommandLineTools</span><br><span class="line">xcode-select: error: --switch must be run as root (e.g. `sudo xcode-select --switch &lt;xcode_folder_path&gt;`).</span><br><span class="line"></span><br><span class="line">$ sudo xcode-select --switch /Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure></li>
+<li><p>最终问题在于xcode location ci 配置<br><img src="https://s2.ax1x.com/2020/03/02/3WLtpD.png" width="450" height="300"></img></p>
+</li>
+</ul>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd AwesomeProject</span><br><span class="line">yarn ios</span><br><span class="line"># 或者</span><br><span class="line">yarn react-native run-ios</span><br></pre></td></tr></table></figure>
+<p>  <img src="https://s2.ax1x.com/2020/03/02/3WL9yj.md.png" width="450" height="300"></img></p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><h4 id="RN"><a href="#RN" class="headerlink" title="RN"></a><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/getting-started.html">RN</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+  <a target="_blank" href="/tags#RN" >
+    <span class="tag-code">RN</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/03/01/front_skills/minapp/%E3%80%8A%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%A4%9A%E7%AB%AF%E6%9E%84%E5%BB%BATaro%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">
+        <span class="nav-arrow">← </span>
+        
+          《小程序》-多端构建Taro概念整理
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E5%AE%89%E8%A3%85/">
+        
+          《Docker》- linux下docker安装
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-nav-text">环境搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#node"><span class="toc-nav-text">node</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn"><span class="toc-nav-text">yarn</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#watchman"><span class="toc-nav-text">watchman</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Xcode"><span class="toc-nav-text">Xcode</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">注意事项</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Hello-World"><span class="toc-nav-text">Hello-World</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B7%A5%E7%A8%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-nav-text">工程初始化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-nav-text">运行</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-nav-text">参考文献</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#RN"><span class="toc-nav-text">RN</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/03/02/app_develop_skills/《RN》-RN-入门整理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

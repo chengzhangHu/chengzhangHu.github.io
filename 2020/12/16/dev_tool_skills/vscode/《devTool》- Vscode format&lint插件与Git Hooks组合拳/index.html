@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《devTool》- code format&amp;lint插件与Git Hooks组合拳 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《devTool》- code format&lint插件与Git Hooks组合拳</h2>
+  <p class="post-date">2020-12-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="vscode-Prettier-vs-Linter"><a href="#vscode-Prettier-vs-Linter" class="headerlink" title="vscode Prettier vs Linter"></a>vscode Prettier vs Linter</h3><h4 id="Prettier"><a href="#Prettier" class="headerlink" title="Prettier"></a><a target="_blank" rel="noopener" href="https://prettier.io/docs/en/index.html">Prettier</a></h4><blockquote>
+<p>code格式化插件，支持以下语言：</p>
+</blockquote>
+<ul>
+<li>JavaScript (including experimental features)</li>
+<li>JSX</li>
+<li>Angular</li>
+<li>Vue</li>
+<li>Flow</li>
+<li>TypeScript</li>
+<li>CSS, Less, and SCSS</li>
+<li>HTML</li>
+<li>JSON</li>
+<li>GraphQL</li>
+<li>Markdown, including GFM and MDX</li>
+<li>YAML</li>
+</ul>
+<h4 id="Linter"><a href="#Linter" class="headerlink" title="Linter"></a>Linter</h4><blockquote>
+<p>检查code是否符合规范、是否存在潜在的bug</p>
+</blockquote>
+<blockquote>
+<p>两者如何选择呢？引用官网的一段话：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Prettier for formatting and linters for catching bugs!</span><br></pre></td></tr></table></figure>
+
+<h3 id="Git-Hooks"><a href="#Git-Hooks" class="headerlink" title="Git Hooks"></a><a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">Git Hooks</a></h3><blockquote>
+<p>用于在Git特定的动作发生时，触发特定的脚本,譬如shell脚本、python脚本、Ruby脚本等。只管添加即可，不用管调用问题。</p>
+</blockquote>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><blockquote>
+<p>hooks分客户端和服务端两大类。<br>client：</p>
+</blockquote>
+<ul>
+<li>git hooks code存放在.git&#x2F;hooks文件夹中</li>
+<li>其中存放的都是一些示例脚本,以sample后缀。删除后缀后，即可激活。<br>server端，可以利用发送一些通知、构建等</li>
+</ul>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><blockquote>
+<p>client</p>
+</blockquote>
+<ul>
+<li><p>提交工作流 Hooks</p>
+</li>
+<li><p>pre-commit - 提交文件到暂存区触发，可用于code lint校验等</p>
+</li>
+<li><p>prepare-commit-msg - pre-commit之后，产生一些默认提交信息</p>
+</li>
+<li><p>commit-msg - 提交注释信息时候，可以用正则检测是否符合特定模板要求，譬如以feat|test等开头</p>
+</li>
+<li><p>post-commit - 提交完毕，可用于通知</p>
+</li>
+<li><p>邮件工作流 Hooks</p>
+<ul>
+<li>applypatch-msg - 检查提交信息是否符合格式，或者用于脚本修正格式错误</li>
+<li>pre-applypatch -  用于检测暂存区是否还有遗漏</li>
+<li>post-applypatch - 可用于通知</li>
+</ul>
+</li>
+<li><p>其他 Hooks</p>
+</li>
+<li><p>pre-rebase - 运行于变基之前</p>
+</li>
+<li><p>post-rewrite - 重写命令调用后</p>
+</li>
+<li><p>post-checkout - checkout发生后触发</p>
+</li>
+<li><p>post-merge - merge后</p>
+</li>
+<li><p>pre-push - push之前触发</p>
+</li>
+</ul>
+<blockquote>
+<p>server</p>
+</blockquote>
+<ul>
+<li>pre-receive - 最新调用，同时向多个分支推送，仅触发一次</li>
+<li>update - 同时向多个分支推送，每个分支触发一次，</li>
+<li>post-receive - 可用于通知</li>
+</ul>
+<h3 id="如何组合"><a href="#如何组合" class="headerlink" title="如何组合"></a>如何组合</h3><h4 id="pre-commit"><a href="#pre-commit" class="headerlink" title="pre-commit"></a>pre-commit</h4><ul>
+<li><p>把lint、prettier命令，写入到shell脚本</p>
+</li>
+<li><p>然后对应的脚本放入.git&#x2F;hooks下</p>
+</li>
+</ul>
+<h4 id="post-receive"><a href="#post-receive" class="headerlink" title="post-receive"></a>post-receive</h4><blockquote>
+<p>用于触发自动构建</p>
+</blockquote>
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><h4 id="vscode打开git工程，可是-git目录不展示，如何fix"><a href="#vscode打开git工程，可是-git目录不展示，如何fix" class="headerlink" title="vscode打开git工程，可是.git目录不展示，如何fix ?"></a>vscode打开git工程，可是.git目录不展示，如何fix ?</h4><blockquote>
+<p>vscode 默认通过正则不展示.git, .svn等文件夹，可通过修改正则展示</p>
+</blockquote>
+<p> <img src="https://i.imgur.com/OmSilgf.png"></p>
+<h3 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h3><blockquote>
+<p>但是hooks不会跟随项目fork走，</p>
+</blockquote>
+<h4 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h4><blockquote>
+<p>本文主要介绍方案二，原理大致相同</p>
+</blockquote>
+<ul>
+<li>方案一： 另外新建项目.hooksDir用于管理,建立软连接  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &lt;repo&gt;/.git/hooks</span><br><span class="line">ln -s ../../.githooks ./ </span><br></pre></td></tr></table></figure></li>
+<li>方案二： 使用npm包git-hooks-plus</li>
+<li>方案三： 使用已有方案<a target="_blank" rel="noopener" href="https://github.com/typicode/husky">husky</a></li>
+<li>方案四： 使用<a target="_blank" rel="noopener" href="https://github.com/xsbailong/imlint">imlint</a></li>
+</ul>
+<h3 id="解决方案实践"><a href="#解决方案实践" class="headerlink" title="解决方案实践"></a>解决方案实践</h3><h4 id="git-hooks-plus"><a href="#git-hooks-plus" class="headerlink" title="git-hooks-plus"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/git-hooks-plus">git-hooks-plus</a></h4><blockquote>
+<p>npm包安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install git-hooks-plus --save-dev</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>code添加</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p .githooks/pre-commit</span><br><span class="line">echo -e &#x27;#!/usr/bin/env node&#x27; &quot;\nconsole.log(&#x27;hi!&#x27;);&quot; &gt; .githooks/pre-commit/hello.js</span><br><span class="line">chmod +x .githooks/pre-commit/hello.js  # This may not working in Windows, but don&#x27;t worry, hello.js will be executed</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>shell脚本 添加</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">echo &#x27;hello world run by pre-commit sh&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行效果</p>
+</blockquote>
+<p><img src="https://i.imgur.com/IliFjq0.png"></p>
+<blockquote>
+<p>如何实现的呢？</p>
+</blockquote>
+<ul>
+<li>修改.git&#x2F;hooks文件夹，重新创建一份</li>
+<li>git commit事件触发前，调用.git&#x2F;hooks下pre-commit </li>
+<li>调用对应的git-hooks-plus js run 方法<br> <img src="https://i.imgur.com/ljw8dv6.png"></li>
+<li>git-hooks-plus 会依据hookName, 查找对应pre-commit目录中的可执行的js or sh文件，然后执行<br> <img src="https://i.imgur.com/uEapAVF.png"></li>
+<li>执行，使用了node 异步子进程spawn方法<br> <img src="https://i.imgur.com/SUGinou.png"><blockquote>
+<p>options.stdio 选项用于配置在父进程和子进程之间建立的管道。 默认情况下，子进程的 stdin、 stdout 和 stderr 会被重定向到 ChildProcess 对象上相应的 subprocess.stdin、subprocess.stdout 和 subprocess.stderr 流。 这相当于将 options.stdio 设置为 [‘pipe’, ‘pipe’, ‘pipe’]。<br> 为方便起见， options.stdio 可以是以下字符串之一：<br>‘pipe’ - 相当于 [‘pipe’, ‘pipe’, ‘pipe’]（默认值）。<br>‘ignore’ - 相当于 [‘ignore’, ‘ignore’, ‘ignore’]。<br>‘inherit’ - 相当于 [‘inherit’, ‘inherit’, ‘inherit’] 或 [0, 1, 2]。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="child-process"><a href="#child-process" class="headerlink" title="child_process"></a><a target="_blank" rel="noopener" href="http://nodejs.cn/api/child_process.html#child_process_options_stdio">child_process</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#vscode" >
+    <span class="tag-code">vscode</span>
+  </a>
+
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+  <a target="_blank" href="/tags#format" >
+    <span class="tag-code">format</span>
+  </a>
+
+  <a target="_blank" href="/tags#lint" >
+    <span class="tag-code">lint</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/12/09/performace_detect_skills/concepts/%E3%80%8APerformance%E3%80%8B-%20%20web-worker%20%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3/">
+        <span class="nav-arrow">← </span>
+        
+          《Performance》-  web-worker 深入了解
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/12/16/dev_tool_skills/npm/%E3%80%8Anpm%E3%80%8B-%20npm%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/">
+        
+          《npm》- npm常用命令详解
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#vscode-Prettier-vs-Linter"><span class="toc-nav-text">vscode Prettier vs Linter</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Prettier"><span class="toc-nav-text">Prettier</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linter"><span class="toc-nav-text">Linter</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Git-Hooks"><span class="toc-nav-text">Git Hooks</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-nav-text">分类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E7%BB%84%E5%90%88"><span class="toc-nav-text">如何组合</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#pre-commit"><span class="toc-nav-text">pre-commit</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#post-receive"><span class="toc-nav-text">post-receive</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-nav-text">小技巧</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#vscode%E6%89%93%E5%BC%80git%E5%B7%A5%E7%A8%8B%EF%BC%8C%E5%8F%AF%E6%98%AF-git%E7%9B%AE%E5%BD%95%E4%B8%8D%E5%B1%95%E7%A4%BA%EF%BC%8C%E5%A6%82%E4%BD%95fix"><span class="toc-nav-text">vscode打开git工程，可是.git目录不展示，如何fix ?</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-nav-text">存在问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">如何解决</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%AE%9E%E8%B7%B5"><span class="toc-nav-text">解决方案实践</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#git-hooks-plus"><span class="toc-nav-text">git-hooks-plus</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#child-process"><span class="toc-nav-text">child_process</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/12/16/dev_tool_skills/vscode/《devTool》- Vscode format&amp;lint插件与Git Hooks组合拳/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

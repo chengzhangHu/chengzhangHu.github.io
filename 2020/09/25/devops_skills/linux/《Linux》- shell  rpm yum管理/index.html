@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- shell rpm yum管理 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- shell rpm yum管理</h2>
+  <p class="post-date">2020-09-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="linux-yum"><a href="#linux-yum" class="headerlink" title="linux yum"></a>linux yum</h3><blockquote>
+<p>yum两种安装方式：</p>
+</blockquote>
+<ul>
+<li>联网</li>
+<li>本地光盘，不推荐</li>
+</ul>
+<h4 id="验证是否已安装"><a href="#验证是否已安装" class="headerlink" title="验证是否已安装"></a>验证是否已安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#如果没有，则需要手动安装</span><br><span class="line">rpm -qa | grep yum</span><br></pre></td></tr></table></figure>
+
+<h4 id="源配置文件"><a href="#源配置文件" class="headerlink" title="源配置文件"></a>源配置文件</h4><blockquote>
+<p>yum源配置文件保存在&#x2F;etc&#x2F;yum.repos.d&#x2F;,文件的扩展名一定是“*.repo”, 默认CentOS-Base.repo生效<br><img src="https://s1.ax1x.com/2020/09/26/0CxiGR.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[base]</span><br><span class="line">name=CentOS-$releasever</span><br><span class="line">enabled=1</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.cloud.aliyuncs.com/centos/$releasever/os/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.cloud.aliyuncs.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[updates]</span><br><span class="line">name=CentOS-$releasever</span><br><span class="line">enabled=1</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.cloud.aliyuncs.com/centos/$releasever/updates/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.cloud.aliyuncs.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br><span class="line">[extras]</span><br><span class="line">name=CentOS-$releasever</span><br><span class="line">enabled=1</span><br><span class="line">failovermethod=priority</span><br><span class="line">baseurl=http://mirrors.cloud.aliyuncs.com/centos/$releasever/extras/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.cloud.aliyuncs.com/centos/RPM-GPG-KEY-CentOS-7</span><br><span class="line">~                                                                                                            </span><br></pre></td></tr></table></figure>
+<p>[base]：容器名称，一定要放在[]中。</p>
+<ul>
+<li>name：容器说明，可以自己随便写。</li>
+<li>mirrorlist：镜像站点，这个可以注释掉。</li>
+<li>baseurl：我们的yum源服务器的地址。默认是CentOS官方的yum源服务器，是可以使用的。如果你觉得慢，则可以改成你喜欢的yum源地址。</li>
+<li>enabled：此容器是否生效，如果不写或写成enable&#x3D;1则表示此容器生效，写成enable&#x3D;0则表示此容器不生效。</li>
+<li>gpgcheck：如果为1则表示RPM的数字证书生效；如果为0则表示RPM的数字证书不生效。</li>
+<li>gpgkey：数字证书的公钥文件保存位置。不用修改。</li>
+</ul>
+<h3 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h3><h4 id="查看所有"><a href="#查看所有" class="headerlink" title="查看所有"></a>查看所有</h4><blockquote>
+<p>查询yum源服务器上所有可安装的软件包列表<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list </span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="查看是否存在包"><a href="#查看是否存在包" class="headerlink" title="查看是否存在包"></a>查看是否存在包</h4><blockquote>
+<p>查询yum源服务器中是否包含某个软件包</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list samba</span><br></pre></td></tr></table></figure>
+<h4 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum search samba </span><br></pre></td></tr></table></figure>
+
+<h4 id="查看包信息"><a href="#查看包信息" class="headerlink" title="查看包信息"></a>查看包信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum info samba </span><br></pre></td></tr></table></figure>
+
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><blockquote>
+<p>手工使用RPM包安装太麻烦了，所以使用yum安装。yum安装可以自动解决依赖性，而且安装速度也比源码包快得多</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd </span><br></pre></td></tr></table></figure>
+
+<h4 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y update 包名</span><br></pre></td></tr></table></figure>
+
+<h4 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove 包名</span><br></pre></td></tr></table></figure>
+
+<h3 id="yum-软件组"><a href="#yum-软件组" class="headerlink" title="yum 软件组"></a>yum 软件组</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#查看可以安装列表</span><br><span class="line">yum grouplist</span><br><span class="line">yum groupinfo 包名</span><br><span class="line">yum groupinstall 包名</span><br><span class="line">yum groupremove 包名</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="脚本安装"><a href="#脚本安装" class="headerlink" title="脚本安装"></a>脚本安装</h3><blockquote>
+<p>安装一个叫作Webmin的工具软件，Webmin是一个基于Web的系统管理界面</p>
+</blockquote>
+<h3 id="安装包选择"><a href="#安装包选择" class="headerlink" title="安装包选择"></a>安装包选择</h3><blockquote>
+<p>如果是Linux的底层模块和自带软件，则推荐使用RPM包安装，比如gcc、图形界面、开发库等。另外，不需要手工定制功能的软件，都推荐使用RPM包安装，毕竟安装简单。</p>
+</blockquote>
+<blockquote>
+<p>如果是在服务器上应用的服务程序，则推荐使用源码包安装，比如apache、DNS、Mail等服务程序。这样它们更适合你的服务器系统，性能更加优化，功能完全由你自由定义。</p>
+</blockquote>
+<blockquote>
+<p>如果要安装RPM包程序，那么既可以手工使用RPM包安装，也可以使用yum安装。但是如果要卸载程序，则最好不要使用yum卸载，因为容易在卸载某个软件依赖包的时候，把Linux系统依赖包也卸载掉，从而导致系统崩溃。</p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/24/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%20RPM%E5%8C%85%E7%AE%A1%E7%90%86/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell RPM包管理
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/09/26/front_skills/angular/%E3%80%8AAngular%E3%80%8B-%20webwork%20servicework%20PWA%20%E5%8C%BA%E5%88%AB/">
+        
+          《angular》- webworker 、service worker、 PWA 区别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#linux-yum"><span class="toc-nav-text">linux yum</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-nav-text">验证是否已安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BA%90%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-nav-text">源配置文件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#yum%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">yum命令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89"><span class="toc-nav-text">查看所有</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E5%8C%85"><span class="toc-nav-text">查看是否存在包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="toc-nav-text">模糊查询</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8C%85%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">查看包信息</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%87%E7%BA%A7"><span class="toc-nav-text">升级</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="toc-nav-text">卸载</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#yum-%E8%BD%AF%E4%BB%B6%E7%BB%84"><span class="toc-nav-text">yum 软件组</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%84%9A%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-nav-text">脚本安装</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E9%80%89%E6%8B%A9"><span class="toc-nav-text">安装包选择</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/25/devops_skills/linux/《Linux》- shell  rpm yum管理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

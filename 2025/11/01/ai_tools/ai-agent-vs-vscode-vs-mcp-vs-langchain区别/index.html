@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ai-agent-vs-vscode-vs-mcp-vs-langchain区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ai-agent-vs-vscode-vs-mcp-vs-langchain区别</h2>
+  <p class="post-date">2025-11-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><hr>
+<h1 id="LangChain、Agent、MCP-的关系一次性讲透。"><a href="#LangChain、Agent、MCP-的关系一次性讲透。" class="headerlink" title="LangChain、Agent、MCP 的关系一次性讲透。"></a><strong>LangChain、Agent、MCP</strong> 的关系一次性讲透。</h1><hr>
+<h1 id="✅-一句话总结三者关系"><a href="#✅-一句话总结三者关系" class="headerlink" title="✅ 一句话总结三者关系"></a>✅ <strong>一句话总结三者关系</strong></h1><ul>
+<li><strong>LangChain</strong>：一个 <em>框架生态</em> —— 用来构建 AI 应用（LLM、工具调用、workflow）。</li>
+<li><strong>Agent</strong>：一种 <em>运行模式&#x2F;架构模式</em> —— 让 LLM 根据目标自主选择步骤和工具。</li>
+<li><strong>MCP（Model Context Protocol）</strong>：一种 <em>标准&#x2F;协议</em> —— 让 Agent 能稳定、安全地使用真实系统中的工具与数据。</li>
+</ul>
+<p>三者是 <strong>层级 + 职责不同</strong> 的关系。</p>
+<hr>
+<h1 id="🧩-三个层的关系图（最重要）"><a href="#🧩-三个层的关系图（最重要）" class="headerlink" title="🧩 三个层的关系图（最重要）"></a>🧩 <strong>三个层的关系图（最重要）</strong></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌────────────────────────────────────────────┐</span><br><span class="line">│                AI 应用层（App）           │</span><br><span class="line">│    （你用来构建系统：LangChain 可在此）    │</span><br><span class="line">└────────────────────────────────────────────┘</span><br><span class="line">               │ 使用框架构建</span><br><span class="line">               ▼</span><br><span class="line">┌────────────────────────────────────────────┐</span><br><span class="line">│             Agent 层（智能体逻辑）          │</span><br><span class="line">│   LLM 选择策略、规划步骤、调用工具          │</span><br><span class="line">└────────────────────────────────────────────┘</span><br><span class="line">               │ 通过标准接口调用外部资源</span><br><span class="line">               ▼</span><br><span class="line">┌────────────────────────────────────────────┐</span><br><span class="line">│       MCP：Model Context Protocol          │</span><br><span class="line">│   工具 / 数据 / 服务 的通信规范与封装        │</span><br><span class="line">└────────────────────────────────────────────┘</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">       外部系统、数据库、API、代码执行</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="🌟-类比理解（三者是什么）"><a href="#🌟-类比理解（三者是什么）" class="headerlink" title="🌟 类比理解（三者是什么）"></a>🌟 <strong>类比理解（三者是什么）</strong></h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类比</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LangChain</strong></td>
+<td>Node.js &#x2F; Spring Boot</td>
+<td>用来写 AI 应用的框架</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>一个自动化“机器人调度系统”</td>
+<td>负责让 LLM 决定用什么工具、怎样执行</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>USB 协议 &#x2F; HTTP API 标准</td>
+<td>定义“工具接口规范”，保证与外部系统连接稳定</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🧠-三者职责差异（重点）"><a href="#🧠-三者职责差异（重点）" class="headerlink" title="🧠 三者职责差异（重点）"></a>🧠 <strong>三者职责差异（重点）</strong></h1><h2 id="1️⃣-LangChain：应用级框架"><a href="#1️⃣-LangChain：应用级框架" class="headerlink" title="1️⃣ LangChain：应用级框架"></a>1️⃣ <strong>LangChain：应用级框架</strong></h2><ul>
+<li>有 Chains、Agents、Tools、Memory</li>
+<li>提供“封装好的工具”和 Pipeline</li>
+<li>可以管理 Agent，但 <em>本身不是 Agent</em></li>
+</ul>
+<p>👉 在 LangChain 中，你可以跑：</p>
+<ul>
+<li>工具增强 LLM</li>
+<li>多轮推理</li>
+<li>复杂 workflow</li>
+</ul>
+<hr>
+<h2 id="2️⃣-Agent：让-LLM-自主决策"><a href="#2️⃣-Agent：让-LLM-自主决策" class="headerlink" title="2️⃣ Agent：让 LLM 自主决策"></a>2️⃣ <strong>Agent：让 LLM 自主决策</strong></h2><p>一个 Agent 会做三件事：</p>
+<ol>
+<li><strong>理解任务 -&gt; 规划步骤</strong></li>
+<li><strong>选择要调用的工具（Tool selection）</strong></li>
+<li><strong>根据返回结果调整策略</strong></li>
+</ol>
+<p>Agent 是一种“智能体运行模式”，任何框架都可以实现 Agent，比如：</p>
+<ul>
+<li>LangChain Agent</li>
+<li>LlamaIndex Agent</li>
+<li>OpenAI GPT-5 Agent（Functions&#x2F;Tools）</li>
+<li>Claude MCP Agent</li>
+</ul>
+<p>👉 <strong>Agent 是概念，不是框架。</strong></p>
+<hr>
+<h2 id="3️⃣-MCP：让-Agent-真正可用工具"><a href="#3️⃣-MCP：让-Agent-真正可用工具" class="headerlink" title="3️⃣ MCP：让 Agent 真正可用工具"></a>3️⃣ <strong>MCP：让 Agent 真正可用工具</strong></h2><p>MCP 做的事情非常底层，但关键：</p>
+<ul>
+<li>规范化工具调用（类似 OpenAI Functions 但扩展性更强）</li>
+<li>工具注册、权限、安全沙箱</li>
+<li>Agent 通过 MCP 执行外部操作（读文件、执行命令、访问 DB）</li>
+</ul>
+<p>MCP 不关系 LLM 的推理逻辑，只负责：</p>
+<ul>
+<li><strong>连接 LLM↔工具</strong></li>
+<li><strong>保证安全</strong></li>
+<li><strong>保持稳定通信</strong></li>
+</ul>
+<hr>
+<h1 id="🔗-三者如何配合？（最贴近你的使用场景）"><a href="#🔗-三者如何配合？（最贴近你的使用场景）" class="headerlink" title="🔗 三者如何配合？（最贴近你的使用场景）"></a>🔗 <strong>三者如何配合？（最贴近你的使用场景）</strong></h1><h2 id="▶-方案-1：LangChain-驱动-Agent，MCP-提供工具"><a href="#▶-方案-1：LangChain-驱动-Agent，MCP-提供工具" class="headerlink" title="▶ 方案 1：LangChain 驱动 Agent，MCP 提供工具"></a>▶ <strong>方案 1：LangChain 驱动 Agent，MCP 提供工具</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LangChain Agent -&gt; 调用 MCP 工具 -&gt; 实际执行外部系统操作</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>用 LangChain 的高级能力（chains、memory）</li>
+<li>用 MCP 的标准化工具</li>
+</ul>
+<hr>
+<h2 id="▶-方案-2：完全-MCP-Agent（OpenAI-Claude）-业务层不用-LangChain"><a href="#▶-方案-2：完全-MCP-Agent（OpenAI-Claude）-业务层不用-LangChain" class="headerlink" title="▶ 方案 2：完全 MCP Agent（OpenAI&#x2F;Claude）+ 业务层不用 LangChain"></a>▶ <strong>方案 2：完全 MCP Agent（OpenAI&#x2F;Claude）+ 业务层不用 LangChain</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MCP Agent（OpenAI） -&gt; MCP tools -&gt; 系统</span><br></pre></td></tr></table></figure>
+
+<p>适合想要更轻量、系统内嵌 Agent 的场景。</p>
+<hr>
+<h2 id="▶-方案-3：LangChain-作为“外层-orchestrator”，调度-MCP-Agent"><a href="#▶-方案-3：LangChain-作为“外层-orchestrator”，调度-MCP-Agent" class="headerlink" title="▶ 方案 3：LangChain 作为“外层 orchestrator”，调度 MCP Agent"></a>▶ <strong>方案 3：LangChain 作为“外层 orchestrator”，调度 MCP Agent</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LangChain Chain / Workflow</span><br><span class="line">   ├─ 调用 MCP Agent</span><br><span class="line">   ├─ 集成传统 API</span><br><span class="line">   └─ 组装更复杂流程</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="🧩-最终关系总结（最简表）"><a href="#🧩-最终关系总结（最简表）" class="headerlink" title="🧩 最终关系总结（最简表）"></a>🧩 <strong>最终关系总结（最简表）</strong></h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>本质</th>
+<th>是否包含 Agent</th>
+<th>是否提供工具</th>
+<th>是否定义协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LangChain</strong></td>
+<td>框架</td>
+<td>是（可实现）</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>运行模式</td>
+<td>—</td>
+<td>依赖工具</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>通信协议</td>
+<td>否（LLM 外部）</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🎯-你可以怎么选择？"><a href="#🎯-你可以怎么选择？" class="headerlink" title="🎯 你可以怎么选择？"></a>🎯 你可以怎么选择？</h1><p>如果你是：</p>
+<h3 id="做企业级-AI-DevOps-质检系统-→-推荐"><a href="#做企业级-AI-DevOps-质检系统-→-推荐" class="headerlink" title="做企业级 AI DevOps&#x2F;质检系统 → 推荐"></a><strong>做企业级 AI DevOps&#x2F;质检系统 → 推荐</strong></h3><p>✔ LangChain（workflow）<br>✔ MCP（统一工具层）<br>✔ Agent 仅做推理执行</p>
+<h3 id="做-VSCode-插件-本地自动化-→-推荐"><a href="#做-VSCode-插件-本地自动化-→-推荐" class="headerlink" title="做 VSCode 插件 &#x2F; 本地自动化 → 推荐"></a><strong>做 VSCode 插件 &#x2F; 本地自动化 → 推荐</strong></h3><p>✔ MCP + OpenAI Agent<br>✖ 不需要 LangChain</p>
+<h3 id="做微服务级自动化-→-推荐"><a href="#做微服务级自动化-→-推荐" class="headerlink" title="做微服务级自动化 → 推荐"></a><strong>做微服务级自动化 → 推荐</strong></h3><p>✔ MCP<br>✔ OpenAI Agent<br>→ LangChain 作为 orchestrator 可有可无</p>
+<h1 id="VSCode-携带的模型（Copilot-Agent-VSCode-本地模型）-如何与-LangChain、Agent、MCP-组合工作"><a href="#VSCode-携带的模型（Copilot-Agent-VSCode-本地模型）-如何与-LangChain、Agent、MCP-组合工作" class="headerlink" title="VSCode 携带的模型（Copilot Agent &#x2F; VSCode 本地模型） 如何与 LangChain、Agent、MCP 组合工作"></a><strong>VSCode 携带的模型（Copilot Agent &#x2F; VSCode 本地模型）</strong> 如何与 <strong>LangChain、Agent、MCP</strong> 组合工作</h1><blockquote>
+<p>目前 <em>AI 开发自动化</em> 场景里最重要的一环。<br><strong>VSCode 自带的模型（Copilot Agent 或本地模型）会充当“Agent 的大脑”，<br>MCP 提供工具接口，<br>VSCode 作为宿主环境，<br>LangChain 是可选的工作流 orchestrator 层。</strong></p>
+</blockquote>
+<p>换句话说：</p>
+<ul>
+<li><strong>VSCode</strong> &#x3D; 外部世界</li>
+<li><strong>Agent（Copilot Agent）</strong> &#x3D; 控制者</li>
+<li><strong>MCP</strong> &#x3D; Agent 访问 VSCode 功能的协议层</li>
+<li><strong>LangChain</strong> &#x3D; 如果你想扩展复杂业务逻辑可加入</li>
+</ul>
+<hr>
+<h1 id="🧩-整体工作流图（最关键）"><a href="#🧩-整体工作流图（最关键）" class="headerlink" title="🧩 整体工作流图（最关键）"></a>🧩 整体工作流图（最关键）</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────┐</span><br><span class="line">│      VSCode（宿主环境）        │</span><br><span class="line">│  ├─ 本地模型 / Copilot Agent   │</span><br><span class="line">│  ├─ VSCode 自带 MCP Server     │</span><br><span class="line">│  └─ 插件/文件系统/Git 访问      │</span><br><span class="line">└──────────────────────────────┘</span><br><span class="line">                     ▲</span><br><span class="line">                     │ 通过 MCP（Model Context Protocol）</span><br><span class="line">                     ▼</span><br><span class="line">┌──────────────────────────────┐</span><br><span class="line">│         Agent（大脑）         │</span><br><span class="line">│  ├─ 推理、规划、工具选择       │</span><br><span class="line">│  ├─ 决定何时读文件/写代码       │</span><br><span class="line">│  └─ 调用 MCP 工具              │</span><br><span class="line">└──────────────────────────────┘</span><br><span class="line">                     ▲</span><br><span class="line">                     │（可选）</span><br><span class="line">                     ▼</span><br><span class="line">┌──────────────────────────────┐</span><br><span class="line">│     LangChain（业务逻辑层）   │</span><br><span class="line">│  ├─ Chains、Workflows         │</span><br><span class="line">│  └─ 多模型/多工具 orchestration│</span><br><span class="line">└──────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="🎯-VSCode-携带的模型，到底是什么？"><a href="#🎯-VSCode-携带的模型，到底是什么？" class="headerlink" title="🎯 VSCode 携带的模型，到底是什么？"></a>🎯 <strong>VSCode 携带的模型，到底是什么？</strong></h1><p>VSCode 已经内置两种能力：</p>
+<h3 id="①-Copilot-Agent（核心）"><a href="#①-Copilot-Agent（核心）" class="headerlink" title="① Copilot Agent（核心）"></a>① <strong>Copilot Agent（核心）</strong></h3><ul>
+<li>这是一个强大的 <strong>Agent runtime</strong></li>
+<li>默认使用 OpenAI &#x2F; Anthropic 模型</li>
+<li>但 VSCode 可以注册 <strong>本地模型</strong> (LLama 3.2, Phi-3, Gemma2)</li>
+</ul>
+<h3 id="②-VSCode-MCP-Server"><a href="#②-VSCode-MCP-Server" class="headerlink" title="② VSCode MCP Server"></a>② <strong>VSCode MCP Server</strong></h3><p>提供一组内置 MCP 工具：</p>
+<ul>
+<li>文件系统（read&#x2F;write）</li>
+<li>运行命令（terminal 工具）</li>
+<li>Git 操作</li>
+<li>搜索&#x2F;定位代码</li>
+<li>打开&#x2F;编辑文件</li>
+<li>VSCode 插件 API 调用</li>
+</ul>
+<p>👉 <strong>Agent 通过 MCP 工具直接操纵 VSCode</strong><br>（不是 prompt hack，是真正的工具级操作）</p>
+<hr>
+<h1 id="🧠-那-VSCode-的模型如何与你说的三者结合？"><a href="#🧠-那-VSCode-的模型如何与你说的三者结合？" class="headerlink" title="🧠 那 VSCode 的模型如何与你说的三者结合？"></a>🧠 那 VSCode 的模型如何与你说的三者结合？</h1><h2 id="🔸-1-VSCode-模型作为-“Agent-的大脑”"><a href="#🔸-1-VSCode-模型作为-“Agent-的大脑”" class="headerlink" title="🔸 1. VSCode 模型作为 “Agent 的大脑”"></a>🔸 <strong>1. VSCode 模型作为 “Agent 的大脑”</strong></h2><p>例子：</p>
+<p>你在 VSCode 输入：</p>
+<blockquote>
+<p>“帮我重构所有 Cypress 测试，把公共步骤抽取到 fixture，并生成新的 e2e 目录结构。”</p>
+</blockquote>
+<p>流程是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用户指令</span><br><span class="line">   ↓</span><br><span class="line">VSCode 内置模型（Agent）</span><br><span class="line">   ↓</span><br><span class="line">分析任务 → 规划步骤 → 选择 MCP 工具</span><br><span class="line">   ↓</span><br><span class="line">通过 MCP 执行操作（真实改代码）</span><br></pre></td></tr></table></figure>
+
+<p>这时用到：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VSCode 模型</td>
+<td>理解任务，规划行动</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>决策与工具调度</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>执行真实操作（读写文件）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔸-2-LangChain-带来的扩展能力"><a href="#🔸-2-LangChain-带来的扩展能力" class="headerlink" title="🔸 2. LangChain 带来的扩展能力"></a>🔸 <strong>2. LangChain 带来的扩展能力</strong></h2><p>如果你的需求仅限 VSCode 内部 → <strong>不需要 LangChain</strong></p>
+<p>但你是 DevOps&#x2F;质检方向，很多任务是跨系统的：</p>
+<ul>
+<li>调 Cypress container</li>
+<li>调 Docker</li>
+<li>调 CI&#x2F;CD Pipeline</li>
+<li>调 GitLab API</li>
+<li>调 Webhook</li>
+<li>调日志&#x2F;监控（Prometheus&#x2F;Grafana）</li>
+</ul>
+<p>这时你需要 LangChain 做 orchestrator：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LangChain Workflow</span><br><span class="line">   ↓ 调 VSCode Agent（MCP）</span><br><span class="line">   ↓ 调 Docker/Cypress/Machine MCP 服务</span><br><span class="line">   ↓ 调外部 API（GitLab, Prometheus）</span><br></pre></td></tr></table></figure>
+
+<p>LangChain &#x3D; 扩展能力<br>VSCode Agent &#x3D; 专注开发环境内动作<br>MCP &#x3D; 工具层统一协议</p>
+<hr>
+<h1 id="🔥-最终体系的工作方式（完整版本）"><a href="#🔥-最终体系的工作方式（完整版本）" class="headerlink" title="🔥 最终体系的工作方式（完整版本）"></a>🔥 <strong>最终体系的工作方式（完整版本）</strong></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">                 ┌──────────────────────┐</span><br><span class="line">                 │    LangChain Workflow │</span><br><span class="line">                 │ （跨系统 orchestration）│</span><br><span class="line">                 └──────────────┬──────────┘</span><br><span class="line">                                │</span><br><span class="line">                                ▼</span><br><span class="line">                ┌────────────────────────────────┐</span><br><span class="line">                │    Agent（OpenAI/VSCode 本地模型） │</span><br><span class="line">                │  - 规划动作                     │</span><br><span class="line">                │  - 工具选择                     │</span><br><span class="line">                └──────────────┬─────────────────┘</span><br><span class="line">                                │ MCP 调用</span><br><span class="line">                                ▼</span><br><span class="line">┌──────────────────────────────────────────────────────────────────┐</span><br><span class="line">│                            MCP 工具层                             │</span><br><span class="line">│ VSCode MCP | Docker MCP | Cypress MCP | GitLab MCP | File MCP    │</span><br><span class="line">└──────────────────────────────┬────────────────────────────────────┘</span><br><span class="line">                                │</span><br><span class="line">                                ▼</span><br><span class="line">                   不同外部系统 / 容器 / 代码 / 运行环境</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="💡-举例：你最关心的场景"><a href="#💡-举例：你最关心的场景" class="headerlink" title="💡 举例：你最关心的场景"></a>💡 举例：你最关心的场景</h1><p>（VSCode + Cypress Docker + MCP 智能体）</p>
+<p>你输入：</p>
+<blockquote>
+<p>“找出最近 10 次 E2E 失败中，登录流程失败的公共模式，并自动修复代码。”</p>
+</blockquote>
+<p>系统工作方式：</p>
+<ol>
+<li>VSCode 模型（Agent）理解任务</li>
+<li>调用 Docker&#x2F;Cypress MCP 服务读取日志</li>
+<li>Agent 分析日志推理问题点</li>
+<li>调用 VSCode MCP 写入代码</li>
+<li>触发“重新跑 Cypress pipeline”</li>
+<li>分析新日志</li>
+<li>输出结果或循环优化</li>
+</ol>
+<p>👉 <strong>这是完整的 AI 自主 QA DevOps 流程</strong><br>你正在构建的是未来企业内部最先进的自动 QA 系统。</p>
+<hr>
+<h1 id="🧩-最后的总结（最清晰版）"><a href="#🧩-最后的总结（最清晰版）" class="headerlink" title="🧩 最后的总结（最清晰版）"></a>🧩 最后的总结（最清晰版）</h1><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>VSCode</th>
+<th>Agent</th>
+<th>MCP</th>
+<th>LangChain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>位置</td>
+<td>本地IDE</td>
+<td>推理大脑</td>
+<td>工具协议</td>
+<td>编排层</td>
+</tr>
+<tr>
+<td>是否必须</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>可选（跨系统时必需）</td>
+</tr>
+<tr>
+<td>主要作用</td>
+<td>提供环境&#x2F;插件</td>
+<td>规划与决策</td>
+<td>执行工具操作</td>
+<td>多系统 orchestration</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#Cursor" >
+    <span class="tag-code">Cursor</span>
+  </a>
+
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#agent" >
+    <span class="tag-code">agent</span>
+  </a>
+
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#langchain" >
+    <span class="tag-code">langchain</span>
+  </a>
+
+  <a target="_blank" href="/tags#vscode" >
+    <span class="tag-code">vscode</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/26/ai_tools/mcp%E5%92%8Cagent%E5%8C%BA%E5%88%AB/">
+        <span class="nav-arrow">← </span>
+        
+          mcp和agent区别
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/11/03/ai_tools/vscode+agent%20monitor/">
+        
+          vscode+agent monitor
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#LangChain%E3%80%81Agent%E3%80%81MCP-%E7%9A%84%E5%85%B3%E7%B3%BB%E4%B8%80%E6%AC%A1%E6%80%A7%E8%AE%B2%E9%80%8F%E3%80%82"><span class="toc-nav-text">LangChain、Agent、MCP 的关系一次性讲透。</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93%E4%B8%89%E8%80%85%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">✅ 一句话总结三者关系</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%89%E4%B8%AA%E5%B1%82%E7%9A%84%E5%85%B3%E7%B3%BB%E5%9B%BE%EF%BC%88%E6%9C%80%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-nav-text">🧩 三个层的关系图（最重要）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%8C%9F-%E7%B1%BB%E6%AF%94%E7%90%86%E8%A7%A3%EF%BC%88%E4%B8%89%E8%80%85%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%89"><span class="toc-nav-text">🌟 类比理解（三者是什么）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%89%E8%80%85%E8%81%8C%E8%B4%A3%E5%B7%AE%E5%BC%82%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-nav-text">🧠 三者职责差异（重点）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-LangChain%EF%BC%9A%E5%BA%94%E7%94%A8%E7%BA%A7%E6%A1%86%E6%9E%B6"><span class="toc-nav-text">1️⃣ LangChain：应用级框架</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-Agent%EF%BC%9A%E8%AE%A9-LLM-%E8%87%AA%E4%B8%BB%E5%86%B3%E7%AD%96"><span class="toc-nav-text">2️⃣ Agent：让 LLM 自主决策</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-MCP%EF%BC%9A%E8%AE%A9-Agent-%E7%9C%9F%E6%AD%A3%E5%8F%AF%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">3️⃣ MCP：让 Agent 真正可用工具</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%97-%E4%B8%89%E8%80%85%E5%A6%82%E4%BD%95%E9%85%8D%E5%90%88%EF%BC%9F%EF%BC%88%E6%9C%80%E8%B4%B4%E8%BF%91%E4%BD%A0%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-nav-text">🔗 三者如何配合？（最贴近你的使用场景）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%96%B6-%E6%96%B9%E6%A1%88-1%EF%BC%9ALangChain-%E9%A9%B1%E5%8A%A8-Agent%EF%BC%8CMCP-%E6%8F%90%E4%BE%9B%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">▶ 方案 1：LangChain 驱动 Agent，MCP 提供工具</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%96%B6-%E6%96%B9%E6%A1%88-2%EF%BC%9A%E5%AE%8C%E5%85%A8-MCP-Agent%EF%BC%88OpenAI-Claude%EF%BC%89-%E4%B8%9A%E5%8A%A1%E5%B1%82%E4%B8%8D%E7%94%A8-LangChain"><span class="toc-nav-text">▶ 方案 2：完全 MCP Agent（OpenAI&#x2F;Claude）+ 业务层不用 LangChain</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%96%B6-%E6%96%B9%E6%A1%88-3%EF%BC%9ALangChain-%E4%BD%9C%E4%B8%BA%E2%80%9C%E5%A4%96%E5%B1%82-orchestrator%E2%80%9D%EF%BC%8C%E8%B0%83%E5%BA%A6-MCP-Agent"><span class="toc-nav-text">▶ 方案 3：LangChain 作为“外层 orchestrator”，调度 MCP Agent</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E6%9C%80%E7%BB%88%E5%85%B3%E7%B3%BB%E6%80%BB%E7%BB%93%EF%BC%88%E6%9C%80%E7%AE%80%E8%A1%A8%EF%BC%89"><span class="toc-nav-text">🧩 最终关系总结（最简表）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E4%BD%A0%E5%8F%AF%E4%BB%A5%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9%EF%BC%9F"><span class="toc-nav-text">🎯 你可以怎么选择？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%81%9A%E4%BC%81%E4%B8%9A%E7%BA%A7-AI-DevOps-%E8%B4%A8%E6%A3%80%E7%B3%BB%E7%BB%9F-%E2%86%92-%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">做企业级 AI DevOps&#x2F;质检系统 → 推荐</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%81%9A-VSCode-%E6%8F%92%E4%BB%B6-%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E5%8C%96-%E2%86%92-%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">做 VSCode 插件 &#x2F; 本地自动化 → 推荐</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%81%9A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BA%A7%E8%87%AA%E5%8A%A8%E5%8C%96-%E2%86%92-%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">做微服务级自动化 → 推荐</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#VSCode-%E6%90%BA%E5%B8%A6%E7%9A%84%E6%A8%A1%E5%9E%8B%EF%BC%88Copilot-Agent-VSCode-%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B%EF%BC%89-%E5%A6%82%E4%BD%95%E4%B8%8E-LangChain%E3%80%81Agent%E3%80%81MCP-%E7%BB%84%E5%90%88%E5%B7%A5%E4%BD%9C"><span class="toc-nav-text">VSCode 携带的模型（Copilot Agent &#x2F; VSCode 本地模型） 如何与 LangChain、Agent、MCP 组合工作</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E6%95%B4%E4%BD%93%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%9B%BE%EF%BC%88%E6%9C%80%E5%85%B3%E9%94%AE%EF%BC%89"><span class="toc-nav-text">🧩 整体工作流图（最关键）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%8E%AF-VSCode-%E6%90%BA%E5%B8%A6%E7%9A%84%E6%A8%A1%E5%9E%8B%EF%BC%8C%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-nav-text">🎯 VSCode 携带的模型，到底是什么？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A0-Copilot-Agent%EF%BC%88%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="toc-nav-text">① Copilot Agent（核心）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%91%A1-VSCode-MCP-Server"><span class="toc-nav-text">② VSCode MCP Server</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E9%82%A3-VSCode-%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%A6%82%E4%BD%95%E4%B8%8E%E4%BD%A0%E8%AF%B4%E7%9A%84%E4%B8%89%E8%80%85%E7%BB%93%E5%90%88%EF%BC%9F"><span class="toc-nav-text">🧠 那 VSCode 的模型如何与你说的三者结合？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%B8-1-VSCode-%E6%A8%A1%E5%9E%8B%E4%BD%9C%E4%B8%BA-%E2%80%9CAgent-%E7%9A%84%E5%A4%A7%E8%84%91%E2%80%9D"><span class="toc-nav-text">🔸 1. VSCode 模型作为 “Agent 的大脑”</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%B8-2-LangChain-%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%89%A9%E5%B1%95%E8%83%BD%E5%8A%9B"><span class="toc-nav-text">🔸 2. LangChain 带来的扩展能力</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%A5-%E6%9C%80%E7%BB%88%E4%BD%93%E7%B3%BB%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%EF%BC%88%E5%AE%8C%E6%95%B4%E7%89%88%E6%9C%AC%EF%BC%89"><span class="toc-nav-text">🔥 最终体系的工作方式（完整版本）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%B8%BE%E4%BE%8B%EF%BC%9A%E4%BD%A0%E6%9C%80%E5%85%B3%E5%BF%83%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">💡 举例：你最关心的场景</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E6%9C%80%E5%90%8E%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%9C%80%E6%B8%85%E6%99%B0%E7%89%88%EF%BC%89"><span class="toc-nav-text">🧩 最后的总结（最清晰版）</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/11/01/ai_tools/ai-agent-vs-vscode-vs-mcp-vs-langchain区别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

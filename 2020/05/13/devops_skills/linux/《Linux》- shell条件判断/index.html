@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- shell条件判断 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- shell条件判断</h2>
+  <p class="post-date">2020-05-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="shell-文件权限"><a href="#shell-文件权限" class="headerlink" title="shell 文件权限"></a>shell 文件权限</h3><h4 id="shell-开头"><a href="#shell-开头" class="headerlink" title="shell 开头"></a>shell 开头</h4><ul>
+<li>以sh后缀</li>
+<li>开头#注释，表明采用何种解释器 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash </span></span><br></pre></td></tr></table></figure></li>
+<li>添加作者等说明 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">#/bin/bash</span></span><br><span class="line">&lt;&lt;<span class="string">ABC</span></span><br><span class="line"><span class="string">    author:cheonghu</span></span><br><span class="line"><span class="string">    date:2020-05-06</span></span><br><span class="line"><span class="string">    desc:shell demo</span></span><br><span class="line"><span class="string">ABC</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll </span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 88 Apr 24 22:15 demo.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其中可以看到，demo.sh没有可执行权限;但是 bash demo.sh可以运行 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./demo.sh</span><br><span class="line">-bash: ./demo.sh: Permission denied</span><br><span class="line"></span><br><span class="line">$ bash ./demo.sh</span><br><span class="line">shell demo</span><br></pre></td></tr></table></figure></li>
+<li>也可以通过chmod 修改权限 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 755 ./demo.sh </span><br><span class="line"># or</span><br><span class="line">$ chmod u+x ./demo.sh  # 给当前拥有者添加可执行权限</span><br><span class="line">$ ll </span><br><span class="line">-rwxr--r-- 1 root root 88 Apr 24 22:15 demo.sh</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h3><h4 id="字符串非空"><a href="#字符串非空" class="headerlink" title="字符串非空"></a>字符串非空</h4><ul>
+<li>n 测试是否为非空，需要””避免异常错误<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ [ -n &quot;$TEST&quot; ] &amp;&amp; echo Y || echo F</span><br><span class="line">Y</span><br></pre></td></tr></table></figure></li>
+<li>z 测试是否为空 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ [-z $TEST] &amp;&amp; echo Y</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ [ $USER == root ]</span><br><span class="line"># or </span><br><span class="line">$ test $USER == root </span><br></pre></td></tr></table></figure>
+
+<h4 id="整数比较"><a href="#整数比较" class="headerlink" title="整数比较"></a>整数比较</h4><ul>
+<li><p>-gt</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ [ 1 -gt 2 ]; echo $?</span><br><span class="line">1</span><br><span class="line"># $? 查看上一条命令结束码;0 正确 非0，false</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-eq </p>
+</li>
+<li><p>-ne</p>
+</li>
+<li><p>-lt</p>
+</li>
+<li><p>-le</p>
+</li>
+<li><p>-ge (大于或等于)</p>
+</li>
+</ul>
+<h4 id="文件属性判断"><a href="#文件属性判断" class="headerlink" title="文件属性判断"></a>文件属性判断</h4><ul>
+<li><p>-e 文件或者目录是否存在</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ [ -e get.sh ] &amp;&amp; echo &quot;存在&quot; || echo &quot;不存在&quot;</span><br><span class="line">存在</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-d 判断存在且为目录</p>
+</li>
+<li><p>-f</p>
+</li>
+<li><p>-L 软连接 （类似快捷键，跨分区，但是删除不可用；硬链接，相反；）</p>
+</li>
+<li><p>-p 管道 </p>
+</li>
+<li><p>-r 读权限</p>
+</li>
+<li><p>-w 写权限</p>
+</li>
+<li><p>-x 执行权限;root 也必须有x，才能执行</p>
+</li>
+<li><p>-s 非空</p>
+</li>
+</ul>
+<h4 id="与"><a href="#与" class="headerlink" title="[] 与 [[]]"></a>[] 与 [[]]</h4><ul>
+<li><p>通用</p>
+<ul>
+<li>数值大小比较<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ [ 5 -gt 8 ]</span><br><span class="line">$ [[ 5 -lt 8  ]]</span><br></pre></td></tr></table></figure></li>
+<li>字符串非空比较<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ [ -z &quot;&quot; ] &amp;&amp; echo y || echo n </span><br><span class="line">y</span><br><span class="line">$ [ -n &#x27;13&#x27; ] &amp;&amp; echo y || echo n </span><br><span class="line">y </span><br></pre></td></tr></table></figure></li>
+<li>文件属性<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ [ 9.txt -nt get.sh ] &amp;&amp; echo y || echo n</span><br><span class="line">$ [[ 9.txt -nt get.sh ]] &amp;&amp; echo y || echo n</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>不同</p>
+</li>
+<li><p>逻辑运算&amp;&amp; </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ [[ 5 == 9 &amp;&amp; 5 == 4 ]] &amp;&amp; echo y || echo n </span><br><span class="line">n</span><br><span class="line"></span><br><span class="line"># []使用&amp;&amp; </span><br><span class="line">$[ 5 == 9 &amp;&amp; 5 == 4 ] &amp;&amp; echo y || echo n</span><br><span class="line">-bash: [: missing `]&#x27;</span><br><span class="line"></span><br><span class="line">$[ 5 == 9 -a 5 == 4 ] &amp;&amp; echo y || echo n</span><br><span class="line">n </span><br></pre></td></tr></table></figure></li>
+<li><p>逻辑运算||</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$[[ 5 == 8 || 6 == 9 ]]</span><br><span class="line">$[ 5 == 8 -o 6 == 9 ]</span><br></pre></td></tr></table></figure></li>
+<li><p>符号使用&gt;,&lt;</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$[[ 5 &gt; 9 ]] - 排序比较</span><br><span class="line">$[ 5 &gt; 9 ] - 部分支持</span><br></pre></td></tr></table></figure></li>
+<li><p>正则使用</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 仅仅是字符比较</span><br><span class="line">$ test = &#x27;123&#x27;</span><br><span class="line">$ [ $test == 1* ] &amp;&amp; echo y || echo n </span><br><span class="line">n</span><br><span class="line"></span><br><span class="line"># 正则比较</span><br><span class="line">$ [[ $test == 1* ]] &amp;&amp; echo y || echo n </span><br><span class="line">y</span><br><span class="line"></span><br><span class="line"># a是否为数字</span><br><span class="line">$ a=2 </span><br><span class="line">$[[ $a == [0-9] ]]&amp;&amp; echo y || echo n </span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
+<li><p>&#x3D;~ </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> #  正则匹配，是否包含0-9</span><br><span class="line">$b=&#x27;a23&#x27;</span><br><span class="line">$[[ $b =~ [0-9] ]]&amp;&amp; echo y || echo n </span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/05/11/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E6%96%87%E6%9C%AC/">
+        <span class="nav-arrow">← </span>
+        
+          《canvas》- canvas doc 学习笔记之文本
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/05/28/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97/">
+        
+          《angular8》- angular8 日常开发避坑指南
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shell-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-nav-text">shell 文件权限</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shell-%E5%BC%80%E5%A4%B4"><span class="toc-nav-text">shell 开头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-nav-text">文件权限</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-nav-text">条件判断</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%9D%9E%E7%A9%BA"><span class="toc-nav-text">字符串非空</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83"><span class="toc-nav-text">字符串比较</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%95%B4%E6%95%B0%E6%AF%94%E8%BE%83"><span class="toc-nav-text">整数比较</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7%E5%88%A4%E6%96%AD"><span class="toc-nav-text">文件属性判断</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8E"><span class="toc-nav-text">[] 与 [[]]</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/05/13/devops_skills/linux/《Linux》- shell条件判断/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

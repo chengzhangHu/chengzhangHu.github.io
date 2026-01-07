@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      playwright vs cypress | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>playwright vs cypress</h2>
+  <p class="post-date">2025-05-30</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>Playwright</strong> 和 <strong>Cypress</strong> 的优缺点对比，以及适合的使用场景</p>
+<hr>
+<h2 id="🧩-一览对比"><a href="#🧩-一览对比" class="headerlink" title="🧩 一览对比"></a>🧩 一览对比</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th><strong>Playwright</strong></th>
+<th><strong>Cypress</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器支持</td>
+<td>Chromium, Firefox, WebKit（Safari 引擎）</td>
+<td>仅支持 Chromium 和部分 Firefox（Safari 不支持）</td>
+</tr>
+<tr>
+<td>多语言支持</td>
+<td>✅（JS&#x2F;TS、Python、Java、.NET）</td>
+<td>❌（仅支持 JS&#x2F;TS）</td>
+</tr>
+<tr>
+<td>并发测试</td>
+<td>✅ 原生支持，速度快</td>
+<td>⚠️ 社区插件支持，较为复杂</td>
+</tr>
+<tr>
+<td>网络拦截&#x2F;模拟请求</td>
+<td>✅ 非常强大且灵活</td>
+<td>✅ 也支持，但功能比 Playwright 弱一些</td>
+</tr>
+<tr>
+<td>CI&#x2F;CD 集成</td>
+<td>✅ 易于集成各种 CI 平台</td>
+<td>✅ 易于集成</td>
+</tr>
+<tr>
+<td>文档和社区</td>
+<td>📘 官方文档完善，社区逐渐壮大</td>
+<td>📘 文档丰富，社区活跃，生态成熟</td>
+</tr>
+<tr>
+<td>调试体验</td>
+<td>✅ DevTools 集成，调试体验好</td>
+<td>✅ 内置 GUI 调试器，适合前端开发者</td>
+</tr>
+<tr>
+<td>跨页面&#x2F;多标签页支持</td>
+<td>✅ 原生支持</td>
+<td>❌ 支持不佳</td>
+</tr>
+<tr>
+<td>原生 iframe 测试支持</td>
+<td>✅ 强大</td>
+<td>⚠️ 有限制</td>
+</tr>
+<tr>
+<td>测试速度</td>
+<td>✅ 快（并发 + 头less 高效）</td>
+<td>⚠️ 较慢（单线程 + 有限制）</td>
+</tr>
+<tr>
+<td>安装包体积</td>
+<td>⚠️ 稍大</td>
+<td>✅ 相对小巧</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-Playwright-的优点"><a href="#✅-Playwright-的优点" class="headerlink" title="✅ Playwright 的优点"></a>✅ Playwright 的优点</h2><ol>
+<li><strong>多浏览器支持好</strong>：唯一支持 WebKit（可测试 Safari）。</li>
+<li><strong>语言选择多</strong>：支持 Python、Java、.NET，适合多技术栈团队。</li>
+<li><strong>跨页面、iframe、popup 支持优秀</strong>。</li>
+<li><strong>强大的网络拦截和请求模拟能力</strong>。</li>
+<li><strong>测试速度快</strong>，原生并发运行。</li>
+<li><strong>Headless 模式稳定、适合 CI&#x2F;CD</strong>。</li>
+</ol>
+<h3 id="❌-缺点"><a href="#❌-缺点" class="headerlink" title="❌ 缺点"></a>❌ 缺点</h3><ul>
+<li>学习曲线略高，尤其对于非 Node.js 背景开发者。</li>
+<li>文档虽然完善但不如 Cypress 社区活跃。</li>
+<li>UI 调试工具不如 Cypress GUI 直观。</li>
+</ul>
+<hr>
+<h2 id="✅-Cypress-的优点"><a href="#✅-Cypress-的优点" class="headerlink" title="✅ Cypress 的优点"></a>✅ Cypress 的优点</h2><ol>
+<li><strong>学习曲线低</strong>，适合前端开发者快速上手。</li>
+<li><strong>内置 GUI 测试运行器</strong>，可视化调试非常友好。</li>
+<li><strong>断言和测试语法自然，集成 Mocha + Chai</strong>。</li>
+<li><strong>生态成熟，有丰富的插件和社区支持</strong>。</li>
+</ol>
+<h3 id="❌-缺点-1"><a href="#❌-缺点-1" class="headerlink" title="❌ 缺点"></a>❌ 缺点</h3><ul>
+<li>只支持 Chromium&#x2F;Firefox，不支持 Safari。</li>
+<li>不支持多标签页、复杂 iframe 测试。</li>
+<li>并发和大规模测试性能差，需要配置额外插件。</li>
+<li>网络请求拦截不如 Playwright 灵活。</li>
+</ul>
+<hr>
+<h2 id="📌-使用场景推荐"><a href="#📌-使用场景推荐" class="headerlink" title="📌 使用场景推荐"></a>📌 使用场景推荐</h2><table>
+<thead>
+<tr>
+<th>使用场景</th>
+<th>推荐工具</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需要测试 Safari、iOS 浏览器</td>
+<td>✅ Playwright</td>
+<td>Cypress 不支持 WebKit</td>
+</tr>
+<tr>
+<td>多语言团队（Python&#x2F;Java 等）</td>
+<td>✅ Playwright</td>
+<td>Cypress 仅支持 JS&#x2F;TS</td>
+</tr>
+<tr>
+<td>中大型项目、并发执行测试</td>
+<td>✅ Playwright</td>
+<td>性能更佳，支持并发</td>
+</tr>
+<tr>
+<td>需要强大的网络请求控制</td>
+<td>✅ Playwright</td>
+<td>拦截和模拟最强</td>
+</tr>
+<tr>
+<td>初学者、小型前端项目</td>
+<td>✅ Cypress</td>
+<td>上手简单，GUI 直观</td>
+</tr>
+<tr>
+<td>Vue&#x2F;React 项目 + 快速开发反馈</td>
+<td>✅ Cypress</td>
+<td>和前端框架结合紧密</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结建议"><a href="#总结建议" class="headerlink" title="总结建议"></a>总结建议</h2><ul>
+<li><strong>Playwright 更适合对浏览器兼容性、性能、复杂页面结构要求较高的项目。</strong></li>
+<li><strong>Cypress 更适合小团队、前端主导项目，尤其是快速迭代开发。</strong></li>
+</ul>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#playwright" >
+    <span class="tag-code">playwright</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/26/game/moon/%E6%B8%B8%E6%88%8F%E9%A1%B9%E7%9B%AE%E8%B0%83%E7%A0%94/">
+        <span class="nav-arrow">← </span>
+        
+          闯关类游戏适合度分析
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/30/front_package_build_skills/vite/vite%E4%B8%BA%E4%BD%95html%E5%85%A5%E5%8F%A3/">
+        
+          Vite 的入口是 HTML
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E8%A7%88%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">🧩 一览对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-Playwright-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-nav-text">✅ Playwright 的优点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%8C-%E7%BC%BA%E7%82%B9"><span class="toc-nav-text">❌ 缺点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-Cypress-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-nav-text">✅ Cypress 的优点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%8C-%E7%BC%BA%E7%82%B9-1"><span class="toc-nav-text">❌ 缺点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">📌 使用场景推荐</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">总结建议</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/29/automatically_test_skills/playwright vs cypress/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

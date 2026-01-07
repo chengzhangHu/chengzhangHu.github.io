@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Dart》- 入门整理 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Dart》- 入门整理</h2>
+  <p class="post-date">2020-03-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a><a target="_blank" rel="noopener" href="https://dart.dev/get-dart">安装</a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ brew tap dart-lang/dart</span><br><span class="line">$ brew install dart</span><br></pre></td></tr></table></figure>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart --version</span><br></pre></td></tr></table></figure>
+
+<h4 id="版本命名"><a href="#版本命名" class="headerlink" title="版本命名"></a>版本命名</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 升级</span><br><span class="line">$ brew upgrade dart</span><br><span class="line"></span><br><span class="line"># 版本切换</span><br><span class="line">$ brew switch dart 1.24.3</span><br><span class="line">$ brew switch dart 2.1.0</span><br><span class="line"></span><br><span class="line"># 查看版本</span><br><span class="line">$ brew info dart</span><br></pre></td></tr></table></figure>
+<h4 id="stagehand"><a href="#stagehand" class="headerlink" title="stagehand"></a>stagehand</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 自动创建dart工程</span><br><span class="line">$ pub global activate stagehand</span><br><span class="line">$ export PATH=&quot;$PATH&quot;:&quot;$HOME/.pub-cache/bin&quot; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 会在当前目录，快速生成代码</span><br><span class="line">$ cd dart-demo </span><br><span class="line">$ stagehand </span><br><span class="line">Stagehand will generate the given application type into the current directory.</span><br><span class="line"></span><br><span class="line">usage: stagehand &lt;generator-name&gt;</span><br><span class="line">    --[no-]analytics    Opt out of anonymous usage and crash reporting.</span><br><span class="line">-h, --help              Help!</span><br><span class="line">    --version           Display the version for stagehand.</span><br><span class="line">    --author            The author name to use for file headers.</span><br><span class="line">                        (defaults to &quot;&lt;your name&gt;&quot;)</span><br><span class="line"></span><br><span class="line">console-full   - A command-line application sample.</span><br><span class="line">console-simple - A simple command-line application.</span><br><span class="line">package-simple - A starting point for Dart libraries or applications.</span><br><span class="line">server-shelf   - A web server built using the shelf package.</span><br><span class="line">web-angular    - A web app with material design components.</span><br><span class="line">web-simple     - A web app that uses only core Dart libraries.</span><br><span class="line">web-stagexl    - A starting point for 2D animation and games.</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/03/25/8xkLhd.png" width="300" height="400"></img></p>
+<h4 id="zip-sdk包"><a href="#zip-sdk包" class="headerlink" title="zip sdk包"></a>zip sdk包</h4><p><a target="_blank" rel="noopener" href="https://dart.dev/tools/sdk/archive">sdk下载</a></p>
+<h3 id="语法-–-学习时候，请类比js-or-ts"><a href="#语法-–-学习时候，请类比js-or-ts" class="headerlink" title="语法 – 学习时候，请类比js or ts"></a>语法 – 学习时候，请类比js or ts</h3><h4 id="coding注意事项"><a href="#coding注意事项" class="headerlink" title="coding注意事项"></a>coding注意事项</h4><ul>
+<li>main函数不可缺</li>
+<li>需要；结尾</li>
+</ul>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><ul>
+<li>7种内置类型：strings,booleans,maps,lists,numbers,runes(字符)，symbols（符号类型）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>dart</th>
+<th>js</th>
+<th>ts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>strings</td>
+<td>string</td>
+<td>string</td>
+</tr>
+<tr>
+<td>booleans</td>
+<td>boolean</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>maps</td>
+<td>map or set</td>
+<td>map or set</td>
+</tr>
+<tr>
+<td>lists</td>
+<td>array or []</td>
+<td>array or []</td>
+</tr>
+<tr>
+<td>symbols</td>
+<td>symbol</td>
+<td>symbol</td>
+</tr>
+<tr>
+<td>runes</td>
+<td>string</td>
+<td>string</td>
+</tr>
+<tr>
+<td>numbers</td>
+<td>Number</td>
+<td>number</td>
+</tr>
+<tr>
+<td>无对象</td>
+<td>object</td>
+<td>object</td>
+</tr>
+<tr>
+<td>自定义</td>
+<td>function</td>
+<td>function</td>
+</tr>
+<tr>
+<td>无</td>
+<td>无</td>
+<td>void</td>
+</tr>
+<tr>
+<td>null</td>
+<td>null</td>
+<td>null</td>
+</tr>
+<tr>
+<td>无</td>
+<td>undefined</td>
+<td>undefined</td>
+</tr>
+<tr>
+<td>&#x3D;&gt;</td>
+<td>&#x3D;&gt;</td>
+<td>&#x3D;&gt; 支持箭头函数</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>var 变量自动推断，支持显示声明7种类型。</p>
+</li>
+<li><p>var 变量，不赋值，则为null。<strong>非js种的undefined</strong></p>
+</li>
+<li><p>numbers分，int,double类型。</p>
+</li>
+<li><p>变量可以直接操作方法。类似js。</p>
+  <img src="https://s1.ax1x.com/2020/03/25/8xZF4e.png" width="200" height="300" />
+</li>
+<li><p>参数、返回值是定义不同于ts</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//dart ,类似java\c</span><br><span class="line"> int fibonacci(int n) &#123;</span><br><span class="line">     if (n == 0 || n == 1) return n;</span><br><span class="line">     return fibonacci(n - 1) + fibonacci(n - 2);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> //ts </span><br><span class="line"> function getLength(something: string | number): number &#123;</span><br><span class="line">     return something.length;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>引用包，只能使用import。js| ts，可以使用module.exports| require.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Importing core libraries</span><br><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">// Importing libraries from external packages</span><br><span class="line">import &#x27;package:test/test.dart&#x27;;</span><br><span class="line"></span><br><span class="line">// Importing files</span><br><span class="line">import &#x27;path/to/my_other_file.dart&#x27;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="number"><a href="#number" class="headerlink" title="number"></a>number</h4><ul>
+<li><p>int </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var num = 1;</span><br><span class="line">print(num.runtimeType);</span><br><span class="line">print(num.isEven);</span><br><span class="line">print(num.bitLength);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>strings</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 类似python ，原始字符串</span><br><span class="line">var ss = r&#x27;hello \n world&#x27;;</span><br><span class="line">print(ss);</span><br><span class="line">print(ss * 2); //copy </span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+  <a target="_blank" href="/tags#dart" >
+    <span class="tag-code">dart</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/03/19/front_skills/node/%E3%80%8ANode%E3%80%8B-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97RabbitMQ%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/">
+        <span class="nav-arrow">← </span>
+        
+          《Node》- 消息队列RabbitMQ实战笔记
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/03/30/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%BC%82%E6%AD%A5Rxjs%E4%BD%BF%E7%94%A8/">
+        
+          《微信小程序》- 谈一谈异步Rxjs使用
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="toc-nav-text">环境安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%89%88%E6%9C%AC%E5%91%BD%E5%90%8D"><span class="toc-nav-text">版本命名</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#stagehand"><span class="toc-nav-text">stagehand</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#zip-sdk%E5%8C%85"><span class="toc-nav-text">zip sdk包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%AF%AD%E6%B3%95-%E2%80%93-%E5%AD%A6%E4%B9%A0%E6%97%B6%E5%80%99%EF%BC%8C%E8%AF%B7%E7%B1%BB%E6%AF%94js-or-ts"><span class="toc-nav-text">语法 – 学习时候，请类比js or ts</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#coding%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">coding注意事项</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#number"><span class="toc-nav-text">number</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/03/25/app_develop_skills/《Dart》- 入门整理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

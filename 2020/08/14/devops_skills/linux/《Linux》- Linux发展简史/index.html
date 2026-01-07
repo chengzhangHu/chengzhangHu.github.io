@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- Linux发展简史 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- Linux发展简史</h2>
+  <p class="post-date">2020-08-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="Linux分类"><a href="#Linux分类" class="headerlink" title="Linux分类"></a>Linux分类</h3><h4 id="Linux版本关系"><a href="#Linux版本关系" class="headerlink" title="Linux版本关系"></a>Linux版本关系</h4><p><img src="https://s1.ax1x.com/2020/08/15/dizOpt.png"></p>
+<h4 id="包管理方式"><a href="#包管理方式" class="headerlink" title="包管理方式"></a>包管理方式</h4><p><img src="https://s1.ax1x.com/2020/08/15/dFS191.jpg"></p>
+<h3 id="Linux简介"><a href="#Linux简介" class="headerlink" title="Linux简介"></a>Linux简介</h3><h4 id="名字的由来"><a href="#名字的由来" class="headerlink" title="名字的由来"></a>名字的由来</h4><blockquote>
+<p>Linus Torvalds本要把他的发时叫做Freax——“fread”，“free”和“x”（暗指Unix）的合成词。在开发系统的前半年里，他把文件以文件名“Freax”存储。Torvalds考虑过Linux这个名字，但是因为觉得它过于自我本位而放弃了使用它[6]。</p>
+</blockquote>
+<blockquote>
+<p>为便于开发，在1991年9月，他把那些文件上传到了赫尔辛基工业大学（HUT）的FTP服务器（ftp.funet.fi)。Torvalds在HUT负责管理那个服务器的同事Ari Lemmke，觉得“Freax”这个名字不是很好，就在不咨询Torvalds的情况下，把项目的名字改成了“Linux”[6]。但是之后，Torvalds也同意“Linux”这个名字了：“经过多次讨论，他承认Linux这个名字更好。在0.01版本Linux的源代码的makefile里仍然使用‘Freax’这个名字，在之后‘Linux’这个名字才被使用。所以，Linux这个名字并不是预先想好的，只是它被广泛接受了而已”</p>
+</blockquote>
+<h4 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h4><blockquote>
+<p>1983：Richard Stallman发起以创建一个自由的操作系统为目标的GNU计划。</p>
+</blockquote>
+<blockquote>
+<p>1989：Richard Stallman撰写第一版的GNU GPL。</p>
+</blockquote>
+<blockquote>
+<p>1991：Linux内核在8月25日由21岁的芬兰学生Linus Benedict Torvalds公开发布。</p>
+</blockquote>
+<blockquote>
+<p>1992：在GNU GPL下Linux内核被重新授权使用，产生第一个“Linux发行版本”。</p>
+</blockquote>
+<blockquote>
+<p>1993：超过100个开发者致力于Linux内核开发。在他们的努力下，内核逐渐适应GNU的环境，这个为Linux创造巨大的应用空间的广阔环境。Slackware首次发布。后来在同一年，Debian项目设立，现已成为最大的社区发布项目。</p>
+</blockquote>
+<blockquote>
+<p>1994: 3月, Torvalds认为内核的所有组件已经完全成熟，他放出了Linux的1.0版本。XFree86项目组提供了一个图形化用户界面（GUI）.同年Red Hat公司和SUSE发行他们各自的Linux 1.0分发版本。</p>
+</blockquote>
+<blockquote>
+<p>1995: Linux被移植到DEC Alpha和Sun公司的SPARC平台上，而在接下来的几年里它又被广泛地移植到更多的平台上。</p>
+</blockquote>
+<blockquote>
+<p>1996: Linux内核2.0版本发布。此时内核已经支持多处理器，因而成为各大公司的绝佳选择。</p>
+</blockquote>
+<blockquote>
+<p>1998：很多大公司，诸如IBM、Compaq ，Oracle表示支持Linux系统。另外，一部分程序员开始图形化用户界面KDE的开发。</p>
+</blockquote>
+<blockquote>
+<p>1999：一些程序员开始致力于开发图形化环境GNOME，它可以替代依靠Qt工具包才能工作的KDE。在这一年里IBM宣布一项支持Linux的浩大的工程。</p>
+</blockquote>
+<blockquote>
+<p>2004: XFree86小组分裂，同现有的X Windows标准组织 共同成立X.Org基金会，促使了X Window ServerLinux版本极其快速而迅猛的发展</p>
+</blockquote>
+<h4 id="Linux商标"><a href="#Linux商标" class="headerlink" title="Linux商标"></a>Linux商标</h4><blockquote>
+<p>在1994和1995年，有多个来自不同国家的人想把Linux注册为商标，从而一些Linux公司可以从中收取特许使用金。很多Linux的开发人员和用户都不同意此举。Torvalds在Linux国际的帮助下得到了Linux这个商标，然后他把这个商标转让给了Linux国际。对这个商标的保护后来就由一个专门的基金会——非营利性的Linux标识协会——来管理。2000年，Linus Torvalds指定了分配许可权的基本规则。这意味着任何要想以Linux的名义发布产品和服务的人，都要拥有许可证。而许可证要通过购买获得。</p>
+</blockquote>
+<h4 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h4><blockquote>
+<p>开源码发展实验室（Open Source Development Lab）创立于2000年。它是一个独立的非营利性组织。它的目标是优化Linux以应用于数据中心和运营商的领域。</p>
+</blockquote>
+<blockquote>
+<p>它是Linus Torvalds和Andrew Morton工作的赞助来源。2006年年中，Morton去了Google（Google也是使用Linux内核的）；Torvalds全职为OSDL开发Linux内核。非商业性运营机制的资金主要来源于Red Hat，Novell，三菱，英特尔, IBM ，戴尔和惠普等几家大公司。</p>
+</blockquote>
+<blockquote>
+<p>2007年1月22日，OSDL和自由标准组织合并为Linux基金会，把它们的工作焦点集中在改进GNU&#x2F;Linux以与Windows竞争</p>
+</blockquote>
+<h4 id="云计算时代"><a href="#云计算时代" class="headerlink" title="云计算时代"></a>云计算时代</h4><p> <img src="https://s1.ax1x.com/2020/08/15/dFpDIJ.png"><br> <img src="https://s1.ax1x.com/2020/08/15/dFpsi9.png"></p>
+<h3 id="软件许可协议简介"><a href="#软件许可协议简介" class="headerlink" title="软件许可协议简介"></a>软件许可协议简介</h3><p><img src="https://s1.ax1x.com/2020/08/15/di48Z8.png"></p>
+<h4 id="BSD开源协议"><a href="#BSD开源协议" class="headerlink" title="BSD开源协议"></a>BSD开源协议</h4><blockquote>
+<p>BSD开源协议是一个给于使用者很大自由的协议。基本上使用者可以”为所欲为”,可以自由的使用，修改源代码，也可以将修改后的代码作为开源或者专有软件再发布。</p>
+</blockquote>
+<ul>
+<li><p>但“为所欲为”的前提当你发布使用了BSD协议的代码，或则以BSD协议代码为基础做二次开发自己的产品时，需要满足三个条件：</p>
+<blockquote>
+<p>如果再发布的产品中包含源代码，则在源代码中必须带有原来代码中的BSD协议。<br>如果再发布的只是二进制类库&#x2F;软件，则需要在类库&#x2F;软件的文档和版权声明中包含原来代码中的BSD协议。<br>不可以用开源代码的作者&#x2F;机构名字和原来产品的名字做市场推广。</p>
+</blockquote>
+</li>
+<li><p>BSD 代码鼓励代码共享，但需要尊重代码作者的著作权。</p>
+</li>
+<li><p>BSD由于允许使用者修改和重新发布代码，也允许使用或在BSD代码上开发商业软件发布和销售，因此是对商业集成很友好的协议。</p>
+</li>
+<li><p>而很多的公司企业在选用开源产品的时候都首选BSD协议，因为可以完全控制这些第三方的代码，在必要的时候可以修改或者二次开发。</p>
+</li>
+</ul>
+<h4 id="Apache-Licence-2-0"><a href="#Apache-Licence-2-0" class="headerlink" title="Apache Licence 2.0"></a>Apache Licence 2.0</h4><blockquote>
+<p>Apache Licence是著名的非盈利开源组织Apache采用的协议。该协议和BSD类似，同样鼓励代码共享和尊重原作者的著作权，同样允许代码修改，再发布（作为开源或商业软件）。</p>
+</blockquote>
+<ul>
+<li><p>需要满足的条件也和BSD类似：</p>
+<blockquote>
+<p>需要给代码的用户一份Apache Licence<br>如果你修改了代码，需要再被修改的文件中说明。<br>在延伸的代码中（修改和有源代码衍生的代码中）需要带有原来代码中的协议，商标，专利声明和其他原来作者规定需要包含的说明。<br>如果再发布的产品中包含一个Notice文件，则在Notice文件中需要带有Apache Licence。你可以在Notice中增加自己的许可，但不可以表现为对Apache Licence构成更改。</p>
+</blockquote>
+</li>
+<li><p>Apache Licence也是对商业应用友好的许可。</p>
+</li>
+<li><p>使用者也可以在需要的时候修改代码来满足需要并作为开源或商业产品发布&#x2F;销售。</p>
+</li>
+</ul>
+<h4 id="GPL"><a href="#GPL" class="headerlink" title="GPL"></a>GPL</h4><blockquote>
+<p>我们很熟悉的Linux就是采用了GPL。</p>
+</blockquote>
+<blockquote>
+<p>GPL协议和BSD, Apache Licence等鼓励代码重用的许可很不一样。</p>
+</blockquote>
+<ul>
+<li>GPL的出发点是代码的开源&#x2F;免费使用和引用&#x2F;修改&#x2F;衍生代码的开源&#x2F;免费使用，但不允许修改后和衍生的代码做为闭源的商业软件发布和销售。</li>
+<li>这也就是为什么我们能用免费的各种linux，包括商业公司的linux和linux上各种各样的由个人，组织，以及商业软件公司开发的免费软件了。</li>
+</ul>
+<blockquote>
+<p>GPL协议的主要内容是只要在一个软件中使用(”使用”指类库引用，修改后的代码或者衍生代码)GPL 协议的产品，则该软件产品必须也采用GPL协议，既必须也是开源和免费。这就是所谓的”传染性”。GPL协议的产品作为一个单独的产品使用没有任何问题，还可以享受免费的优势。</p>
+</blockquote>
+<blockquote>
+<p>由于GPL严格要求使用了GPL类库的软件产品必须使用GPL协议，对于使用GPL协议的开源代码，商业软件或者对代码有保密要求的部门就不适合集成&#x2F;采用作为类库和二次开发的基础。<br>其它细节如再发布的时候需要伴随GPL协议等和BSD&#x2F;Apache等类似。</p>
+</blockquote>
+<h4 id="LGPL"><a href="#LGPL" class="headerlink" title="LGPL"></a>LGPL</h4><blockquote>
+<p>LGPL是GPL的一个为主要为类库使用设计的开源协议。和GPL要求任何使用&#x2F;修改&#x2F;衍生之GPL类库的的软件必须采用GPL协议不同。</p>
+</blockquote>
+<ul>
+<li>LGPL 允许商业软件通过类库引用(link)方式使用LGPL类库而不需要开源商业软件的代码。</li>
+<li>这使得采用LGPL协议的开源代码可以被商业软件作为类库引用并发布和销售。</li>
+</ul>
+<blockquote>
+<p>但是如果修改LGPL协议的代码或者衍生，则所有修改的代码，涉及修改部分的额外代码和衍生的代码都必须采用LGPL协议。因此LGPL协议的开源代码很适合作为第三方类库被商业软件引用，但不适合希望以LGPL协议代码为基础，通过修改和衍生的方式做二次开发的商业软件采用。<br>GPL&#x2F;LGPL都保障原作者的知识产权，避免有人利用开源代码复制并开发类似的产品</p>
+</blockquote>
+<h4 id="MIT"><a href="#MIT" class="headerlink" title="MIT"></a>MIT</h4><blockquote>
+<p>MIT是和BSD一样宽范的许可协议,作者只想保留版权,而无任何其他了限制.也就是说,你必须在你的发行版里包含原许可协议的声明,无论你是以二进制发布的还是以源代码发布的.</p>
+</blockquote>
+<h4 id="MPL"><a href="#MPL" class="headerlink" title="MPL"></a>MPL</h4><blockquote>
+<p>MPL是The Mozilla Public License的简写，是1998年初Netscape的 Mozilla小组为其开源软件项目设计的软件许可证。</p>
+</blockquote>
+<ul>
+<li>MPL许可证出现的最重要原因就是，Netscape公司认为GPL许可证没有很好地平衡开发者对源代码的需求和他们利用源代码获得的利益。</li>
+<li>同著名的GPL许可证和BSD许可证相比，MPL在许多权利与义务的约定方面与它们相同（因为都是符合OSIA 认定的开源软件许可证）。</li>
+</ul>
+<blockquote>
+<p>但是，相比而言MPL还有以下几个显著的不同之处:</p>
+</blockquote>
+<ul>
+<li>MPL虽然要求对于经MPL许可证发布的源代码的修改也要以MPL许可证的方式再许可出来，以保证其他人可以在MPL的条款下共享源代码。</li>
+<li>但是，在MPL 许可证中对“发布”的定义是“以源代码方式发布的文件”，这就意味着MPL允许一个企业在自己已有的源代码库上加一个接口，除了接口程序的源代码以MPL 许可证的形式对外许可外，</li>
+<li>源代码库中的源代码就可以不用MPL许可证的方式强制对外许可。这些，就为借鉴别人的源代码用做自己商业软件开发的行为留了一个豁口。</li>
+<li>MPL许可证第三条第7款中允许被许可人将经过MPL许可证获得的源代码同自己其他类型的代码混合得到自己的软件程序。</li>
+<li>对软件专利的态度，MPL许可证不像GPL许可证那样明确表示反对软件专利，但是却明确要求源代码的提供者不能提供已经受专利保护的源代码（除非他本人是专利权人，并书面向公众免费许可这些源代码），也不能在将这些源代码以开放源代码许可证形式许可后再去申请与这些源代码有关的专利。</li>
+</ul>
+<blockquote>
+<p>对源代码的定义</p>
+</blockquote>
+<ul>
+<li>MPL（1.1版本）许可证中，对源代码的定义是:“源代码指的是对作品进行修改最优先择取的形式，它包括:所有模块的所有源程序，加上有关的接口的定义，加上控制可执行作品的安装和编译的‘原本’（原文为‘Script’），或者不是与初始源代码显著不同的源代码就是被源代码贡献者选择的从公共领域可以得到的程序代码。”</li>
+<li>MPL许可证第3条有专门的一款是关于对源代码修改进行描述的规定，就是要求所有再发布者都得有一个专门的文件就对源代码程序修改的时间和修改的方式有描述。</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="Linux历史"><a href="#Linux历史" class="headerlink" title="Linux历史"></a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Linux%E5%8E%86%E5%8F%B2">Linux历史</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/08/14/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8B%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80/">
+        <span class="nav-arrow">← </span>
+        
+          《Css3》- CSS进阶之页面布局
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/15/front_package_build_skills/webpack/%E3%80%8Awebpack%E3%80%8B-%20webpack%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/">
+        
+          《webpack》-  webpack从入门到精通
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Linux%E5%88%86%E7%B1%BB"><span class="toc-nav-text">Linux分类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">Linux版本关系</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">包管理方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Linux%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">Linux简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%90%8D%E5%AD%97%E7%9A%84%E7%94%B1%E6%9D%A5"><span class="toc-nav-text">名字的由来</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-nav-text">历史</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux%E5%95%86%E6%A0%87"><span class="toc-nav-text">Linux商标</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%90%8E%E7%BB%AD"><span class="toc-nav-text">后续</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E6%97%B6%E4%BB%A3"><span class="toc-nav-text">云计算时代</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">软件许可协议简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#BSD%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">BSD开源协议</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Apache-Licence-2-0"><span class="toc-nav-text">Apache Licence 2.0</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#GPL"><span class="toc-nav-text">GPL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#LGPL"><span class="toc-nav-text">LGPL</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#MIT"><span class="toc-nav-text">MIT</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#MPL"><span class="toc-nav-text">MPL</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux%E5%8E%86%E5%8F%B2"><span class="toc-nav-text">Linux历史</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/14/devops_skills/linux/《Linux》- Linux发展简史/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

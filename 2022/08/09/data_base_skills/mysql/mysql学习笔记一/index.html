@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      mysql学习笔记一 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>mysql学习笔记一</h2>
+  <p class="post-date">2022-08-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><ul>
+<li>进程都有一个唯一的编号，称为<code>进程ID</code>，英文名叫<code>PID</code>，进程名称可以自定义</li>
+<li>PID, 是与OS进行分配，并保证唯一性。那么OS分配算法是怎样的呢？</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//TODO </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="常用的进程"><a href="#常用的进程" class="headerlink" title="常用的进程"></a>常用的进程</h3><ul>
+<li>mysqld  - 会直接启动一个服务器进程</li>
+<li>mysqld_safe - 提供一个针对mysqld进程的监控，把出错信息记录下来、重启进程, 同时也调用mysqld</li>
+<li>mysqld.server - 调用mysql_safe, 通过start\stop 参数，启停服务</li>
+<li>mysqld_multi - 可以启动多个服务器进程</li>
+</ul>
+<h3 id="把进程注册成随机启动"><a href="#把进程注册成随机启动" class="headerlink" title="把进程注册成随机启动"></a>把进程注册成随机启动</h3><h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><blockquote>
+<p>[mysqld绝对路径] –install [服务名称]</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net start mysql</span><br><span class="line">net stop mysql </span><br></pre></td></tr></table></figure>
+<h4 id="Linux-？？"><a href="#Linux-？？" class="headerlink" title="Linux ？？"></a>Linux ？？</h4><h4 id="Mac"><a href="#Mac" class="headerlink" title="Mac ??"></a>Mac ??</h4><h3 id="Client-有哪些"><a href="#Client-有哪些" class="headerlink" title="Client 有哪些"></a>Client 有哪些</h3><blockquote>
+<p><code>mysqladmin</code>、<code>mysqldump</code>、<code>mysqlcheck</code></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h主机名  -u用户名 -p密码</span><br></pre></td></tr></table></figure>
+<p>各个参数的意义如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-h</code></td>
+<td align="left">表示服务器进程所在计算机的域名或者IP地址，如果服务器进程就运行在本机的话，可以省略这个参数，或者填<code>localhost</code>或者<code>127.0.0.1</code>。也可以写作 <code>--host=主机名</code>的形式。</td>
+</tr>
+<tr>
+<td align="center"><code>-u</code></td>
+<td align="left">表示用户名。也可以写作 <code>--user=用户名</code>的形式。</td>
+</tr>
+<tr>
+<td align="center"><code>-p</code></td>
+<td align="left">表示密码。也可以写作 <code>--password=密码</code>的形式。</td>
+</tr>
+</tbody></table>
+<h3 id="进程和服务器进程的通信方式"><a href="#进程和服务器进程的通信方式" class="headerlink" title="进程和服务器进程的通信方式"></a>进程和服务器进程的通信方式</h3><h4 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP&#x2F;IP"></a>TCP&#x2F;IP</h4><h4 id="命名管道和共享内存"><a href="#命名管道和共享内存" class="headerlink" title="命名管道和共享内存"></a>命名管道和共享内存</h4><h4 id="Unix域套接字文件"><a href="#Unix域套接字文件" class="headerlink" title="Unix域套接字文件"></a>Unix域套接字文件</h4><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><blockquote>
+<p><code>INSERT</code>、 <code>UPDATE</code>、<code>DELETE</code>、<code>TRUNCATE TABLE</code>、<code>ALTER TABLE</code>、<code>DROP TABLE</code>或 <code>DROP DATABASE</code>语句，那使用该表的所有高速缓存查询都将变为无效并从高速缓存中删除！那么就存在了读写分离机制，加速读取缓存有效性。</p>
+</blockquote>
+<ul>
+<li>虽然查询缓存有时可以提升系统性能，但也不得不因维护这块缓存而造成一些开销，比如每次都要去查询缓存中检索，查询请求处理完需要更新查询缓存，维护该查询缓存对应的内存区域。从MySQL 5.7.20开始，不推荐使用查询缓存，并在MySQL 8.0中删除。</li>
+<li>缓存要合理利用。</li>
+</ul>
+<h3 id="mysql语句执行"><a href="#mysql语句执行" class="headerlink" title="mysql语句执行"></a>mysql语句执行</h3><h4 id="1-5-7-20之前版本先查缓存，"><a href="#1-5-7-20之前版本先查缓存，" class="headerlink" title="1.5.7.20之前版本先查缓存，"></a>1.5.7.20之前版本先查缓存，</h4><h4 id="2-没有命中，对查询语句进行优化，"><a href="#2-没有命中，对查询语句进行优化，" class="headerlink" title="2.没有命中，对查询语句进行优化，"></a>2.没有命中，对查询语句进行优化，</h4><h4 id="3-执行查询优化后的句子。"><a href="#3-执行查询优化后的句子。" class="headerlink" title="3.执行查询优化后的句子。"></a>3.执行查询优化后的句子。</h4><blockquote>
+<p><code>MySQL</code>服务器把数据的存储和提取操作都封装到了一个叫<code>存储引擎</code>的模块里。人们把<code>连接管理</code>、<code>查询缓存</code>、<code>语法解析</code>、<code>查询优化</code>这些并不涉及真实数据存储的功能划分为<code>MySQL server</code>的功能，把真实存取数据的功能划分为<code>存储引擎</code>的功能。各种不同的存储引擎向上边的<code>MySQL server</code>层提供统一的调用接口（也就是存储引擎API），包含了几十个底层函数，像”读取索引第一条内容”、”读取索引下一条内容”、”插入记录”等等。<br>所以在<code>MySQL server</code>完成了查询优化后，只需按照生成的执行计划调用底层存储引擎提供的API，获取到数据后返回给客户端就好了。</p>
+</blockquote>
+<h3 id="启动选项"><a href="#启动选项" class="headerlink" title="启动选项"></a>启动选项</h3><blockquote>
+<p>启动时候，设置的参数配置, 选项名、&#x3D;、选项值之间不可以有空白字符. 用短形式指定启动选项时，选项名和选项值之间可以没有间隙，或者用空白字符隔开。 只不过-p密码不能空白间隔。</p>
+</blockquote>
+<h4 id="network"><a href="#network" class="headerlink" title="network"></a>network</h4><blockquote>
+<p>禁止各客户端使用<code>TCP/IP</code>网络进行通信，可以在启动服务器程序的命令行里添加<code>skip-networking</code>启动选项 。 多个单词构成的，它们之间可以由短划线<code>-</code>连接起来，也可以使用下划线<code>_</code>连接起来，</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld --skip_networking</span><br><span class="line">mysqld --skip-networking</span><br></pre></td></tr></table></figure>
+
+<h4 id="default-storage-engine"><a href="#default-storage-engine" class="headerlink" title="default-storage-engine"></a>default-storage-engine</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --default-storage-engine=MyISAM</span><br></pre></td></tr></table></figure>
+
+<h4 id="搜索路径"><a href="#搜索路径" class="headerlink" title="搜索路径"></a>搜索路径</h4><blockquote>
+<p>mysql启动会按照默认的搜索顺序进行找配置项；也可以指定特定的配置文件进行搜索，没有则报错</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --defaults-file=/tmp/myconfig.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>搜索顺序进行覆盖</li>
+<li>同一个文件，在后面的覆盖签名的</li>
+<li>如果同一个启动选项既出现在命令行中，又出现在配置文件中，那么以命令行中的启动选项为准</li>
+</ul>
+<h4 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a>系统变量</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES [LIKE 匹配的模式];</span><br><span class="line">SHOW VARIABLES LIKE &#x27;default_storage_engine&#x27;;</span><br><span class="line">SHOW VARIABLES like &#x27;max_connections&#x27;;</span><br><span class="line">SHOW VARIABLES LIKE &#x27;default%&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="作用范围"><a href="#作用范围" class="headerlink" title="作用范围"></a>作用范围</h4><blockquote>
+<p>设计<code>MySQL</code>的大叔提出了系统变量的<code>作用范围</code>的概念，具体来说<code>作用范围</code>分为这两种：</p>
+</blockquote>
+<ul>
+<li><code>GLOBAL</code>：全局变量，影响服务器的整体操作。</li>
+<li><code>SESSION</code>：会话变量，影响某个客户端连接的操作。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">语句一：SET GLOBAL default_storage_engine = MyISAM;</span><br><span class="line">语句二：SET @@GLOBAL.default_storage_engine = MyISAM;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>如果只想对本客户端生效，也可以选择下边三条语句中的任意一条来进行设置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">语句一：SET SESSION default_storage_engine = MyISAM;</span><br><span class="line">语句二：SET @@SESSION.default_storage_engine = MyISAM;</span><br><span class="line">语句三：SET default_storage_engine = MyISAM;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHOW SESSION VARIABLES LIKE &#x27;default_storage_engine&#x27;;</span><br><span class="line">SHOW GLOBAL VARIABLES LIKE &#x27;default_storage_engine&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h4><blockquote>
+<p>由于<code>状态变量</code>是用来显示服务器程序运行状况的，所以它们的值只能由服务器程序自己来设置，我们程序员是不能设置的。与<code>系统变量</code>类似，<code>状态变量</code>也有<code>GLOBAL</code>和<code>SESSION</code>两个作用范围的，所以查看<code>状态变量</code>的语句可以这么写</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW STATUS LIKE &#x27;thread%&#x27;;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="存储引擎-InnoDB"><a href="#存储引擎-InnoDB" class="headerlink" title="存储引擎-InnoDB"></a>存储引擎-InnoDB</h2><blockquote>
+<p>默认以页(16k)为单位，进行磁盘和内存数据交换。<br>是以记录为单位来向表中插入数据的，这些记录在磁盘上的存放方式也被称为<code>行格式</code>或者<code>记录格式</code>。设计<code>InnoDB</code>存储引擎的大叔们到现在为止设计了4种不同类型的<code>行格式</code>，分别是<code>Compact</code>、<code>Redundant</code>、<code>Dynamic</code>和<code>Compressed</code>行格式</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称 </span><br><span class="line"></span><br><span class="line">ALTER TABLE 表名 ROW_FORMAT=行格式名称</span><br></pre></td></tr></table></figure></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#mysql" >
+    <span class="tag-code">mysql</span>
+  </a>
+
+  <a target="_blank" href="/tags#学习笔记" >
+    <span class="tag-code">学习笔记</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/08/04/devops_skills/deploy/%E5%9F%BA%E4%BA%8ENode%E7%9A%84Devops/">
+        <span class="nav-arrow">← </span>
+        
+          基于Node的Devops
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/08/09/devops_skills/linux/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8F%98%E9%87%8F%E3%80%81%E5%BC%95%E7%94%A8/">
+        
+          linux 学习笔记一
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AF%BC%E8%AF%AD"><span class="toc-nav-text">导语</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-nav-text">进程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E8%BF%9B%E7%A8%8B"><span class="toc-nav-text">常用的进程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8A%8A%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%86%8C%E6%88%90%E9%9A%8F%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">把进程注册成随机启动</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Windows"><span class="toc-nav-text">Windows</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux-%EF%BC%9F%EF%BC%9F"><span class="toc-nav-text">Linux ？？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Mac"><span class="toc-nav-text">Mac ??</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Client-%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-nav-text">Client 有哪些</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">进程和服务器进程的通信方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#TCP-IP"><span class="toc-nav-text">TCP&#x2F;IP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%91%BD%E5%90%8D%E7%AE%A1%E9%81%93%E5%92%8C%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-nav-text">命名管道和共享内存</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Unix%E5%9F%9F%E5%A5%97%E6%8E%A5%E5%AD%97%E6%96%87%E4%BB%B6"><span class="toc-nav-text">Unix域套接字文件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="toc-nav-text">读写分离</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mysql%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C"><span class="toc-nav-text">mysql语句执行</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-5-7-20%E4%B9%8B%E5%89%8D%E7%89%88%E6%9C%AC%E5%85%88%E6%9F%A5%E7%BC%93%E5%AD%98%EF%BC%8C"><span class="toc-nav-text">1.5.7.20之前版本先查缓存，</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E6%B2%A1%E6%9C%89%E5%91%BD%E4%B8%AD%EF%BC%8C%E5%AF%B9%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%E8%BF%9B%E8%A1%8C%E4%BC%98%E5%8C%96%EF%BC%8C"><span class="toc-nav-text">2.没有命中，对查询语句进行优化，</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E6%89%A7%E8%A1%8C%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E5%8F%A5%E5%AD%90%E3%80%82"><span class="toc-nav-text">3.执行查询优化后的句子。</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9"><span class="toc-nav-text">启动选项</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#network"><span class="toc-nav-text">network</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#default-storage-engine"><span class="toc-nav-text">default-storage-engine</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="toc-nav-text">搜索路径</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F"><span class="toc-nav-text">系统变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="toc-nav-text">作用范围</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-nav-text">状态变量</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E-InnoDB"><span class="toc-nav-text">存储引擎-InnoDB</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/08/09/data_base_skills/mysql/mysql学习笔记一/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

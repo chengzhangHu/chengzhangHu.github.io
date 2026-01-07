@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《rollup》- rollup实践总结 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《rollup》- rollup实践总结</h2>
+  <p class="post-date">2020-04-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="特色介绍"><a href="#特色介绍" class="headerlink" title="特色介绍"></a>特色介绍</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://rollupjs.org/guide/zh/">Rollup</a> 是一个 JavaScript 模块打包器，可以将小块代码编译成大块复杂的代码</li>
+<li>支持ES6</li>
+<li>支持Tree Shaking</li>
+<li>可打包js库，也可管理App code</li>
+<li>代码拆分和运行时态的动态导入，存在不足，推荐<a target="_blank" rel="noopener" href="https://webpack.js.org/">webpack</a></li>
+<li>通过<a target="_blank" rel="noopener" href="https://github.com/rollup/plugins">插件</a>CommonJS 和 node-resolve ，支持将Commonjs 转为 ES模块 </li>
+<li>支持Typescript</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="前提node已安装"><a href="#前提node已安装" class="headerlink" title="前提node已安装"></a>前提node已安装</h4><p> <a href="https://huchengzhang.com/2020/01/16/%E3%80%8ANode%E3%80%8B-node%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD/">node安装与卸载</a></p>
+<h4 id="rollup安装"><a href="#rollup安装" class="headerlink" title="rollup安装"></a>rollup安装</h4><ul>
+<li>全局安装 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --global rollup # npm i rollup -g</span><br></pre></td></tr></table></figure></li>
+<li>本地安装 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install rollup --save-dev # yarn -D add rollup</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># npx 在npm中携带的</span><br><span class="line">npx rollup -c</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 使用scripts配置</span><br><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">   &quot;build:dev&quot; :&quot; rollup -c&quot;</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="调用方式"><a href="#调用方式" class="headerlink" title="调用方式"></a>调用方式</h4><ul>
+<li>CI</li>
+<li>本节重点</li>
+<li>js api</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rollup/rollup-starter-lib">rollup-starter-lib</a></li>
+<li>App 集成</li>
+<li><a href="rollup-starter-app">rollup-starter-app</a></li>
+</ul>
+<h4 id="打包方式"><a href="#打包方式" class="headerlink" title="打包方式"></a>打包方式</h4><ul>
+<li>运行于浏览器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># compile to a &lt;script&gt; containing a self-executing function (&#x27;iife&#x27;)</span><br><span class="line">$ rollup main.js --file bundle.js --format iife</span><br></pre></td></tr></table></figure></li>
+<li>node上运行<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># compile to a CommonJS module (&#x27;cjs&#x27;)</span><br><span class="line">$ rollup main.js --file bundle.js --format cjs</span><br></pre></td></tr></table></figure></li>
+<li>都支持 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> # UMD format requires a bundle name</span><br><span class="line">$ rollup main.js --file bundle.js --format umd --name &quot;myBundle&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="CI"><a href="#CI" class="headerlink" title="CI"></a>CI</h3><h4 id="输出到文件bundle-js"><a href="#输出到文件bundle-js" class="headerlink" title="输出到文件bundle.js"></a>输出到文件bundle.js</h4><ul>
+<li><p>js 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> #main.j</span><br><span class="line">import foo from &#x27;./foo&#x27;</span><br><span class="line">export default function()&#123;</span><br><span class="line">    console.log(foo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># foo.js</span><br><span class="line">export default &#x27;hello rollup&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ci 打包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rollup main.js -o bundle.js -f cjs</span><br></pre></td></tr></table></figure>
+<p> <img src="https://s1.ax1x.com/2020/04/14/GxVtGq.md.png"></p>
+</li>
+</ul>
+<h4 id="添加配置文件控制打包"><a href="#添加配置文件控制打包" class="headerlink" title="添加配置文件控制打包"></a>添加配置文件控制打包</h4><ul>
+<li>rollup.config.js<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">  input: &#x27;main.js&#x27;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    file: &#x27;bundle.js&#x27;,</span><br><span class="line">    format: &#x27;cjs&#x27;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>打包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># --config 简写-c</span><br><span class="line">rollup -c</span><br><span class="line"></span><br><span class="line"># 指定不同配置</span><br><span class="line">rollup -c rollup.config.dev.js</span><br><span class="line">rollup -c rollup.config.prod.js</span><br><span class="line"></span><br><span class="line"># 覆盖配置</span><br><span class="line">rollup -c -o bundle-2.js -f iife</span><br></pre></td></tr></table></figure></li>
+<li>打包后bundle，是一个commonjs模块<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line"></span><br><span class="line">var foo = &#x27;hello rollup&#x27;;</span><br><span class="line"></span><br><span class="line">function main()&#123;</span><br><span class="line">    console.log(foo);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports = main;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="使用插件修改打包"><a href="#使用插件修改打包" class="headerlink" title="使用插件修改打包"></a>使用<a target="_blank" rel="noopener" href="https://rollupjs.org/guide/en/#plugins">插件</a>修改打包</h4><ul>
+<li><p>安装插件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install --save-dev rollup-plugin-json</span><br></pre></td></tr></table></figure></li>
+<li><p>引入插件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// rollup.config.js</span><br><span class="line">import json from &#x27;rollup-plugin-json&#x27;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">    input: &#x27;src/main.js&#x27;,</span><br><span class="line">    output: &#123;</span><br><span class="line">    file: &#x27;bundle.js&#x27;,</span><br><span class="line">    format: &#x27;cjs&#x27;</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [ json() ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>修改代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// src/main.js</span><br><span class="line">import &#123; version &#125; from &#x27;../package.json&#x27;;</span><br><span class="line">import foo from &#x27;./foo&#x27;</span><br><span class="line">export default function () &#123;</span><br><span class="line">    console.log(&#x27;version &#x27; + version);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x27;use strict&#x27;;</span><br><span class="line"></span><br><span class="line">var version = &quot;1.0.0&quot;;</span><br><span class="line"></span><br><span class="line">function main()&#123;</span><br><span class="line">    console.log(&#x27;version &#x27; + version);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports = main;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/04/15/J9PIJI.md.png"></p>
+</li>
+<li><p>通过两次运行结果，可发现，只有使用到的代码，被打包–Tree Shaking</p>
+</li>
+</ul>
+<h3 id="rollup-config-js配置"><a href="#rollup-config-js配置" class="headerlink" title="rollup.config.js配置"></a>rollup.config.js配置</h3><h4 id="配置项列表"><a href="#配置项列表" class="headerlink" title="配置项列表"></a>配置项列表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">// rollup.config.js</span><br><span class="line"></span><br><span class="line">export default &#123; // can be an array (for multiple inputs)</span><br><span class="line">  // core input options</span><br><span class="line">  external,</span><br><span class="line">  input, // required</span><br><span class="line">  plugins,</span><br><span class="line"></span><br><span class="line">  // advanced input options</span><br><span class="line">  cache,</span><br><span class="line">  inlineDynamicImports,</span><br><span class="line">  manualChunks,</span><br><span class="line">  onwarn,</span><br><span class="line">  preserveModules,</span><br><span class="line">  strictDeprecations,</span><br><span class="line"></span><br><span class="line">  // danger zone</span><br><span class="line">  acorn,</span><br><span class="line">  acornInjectPlugins,</span><br><span class="line">  context,</span><br><span class="line">  moduleContext,</span><br><span class="line">  preserveSymlinks,</span><br><span class="line">  shimMissingExports,</span><br><span class="line">  treeshake,</span><br><span class="line"></span><br><span class="line">  // experimental</span><br><span class="line">  experimentalCacheExpiry,</span><br><span class="line">  perf,</span><br><span class="line"></span><br><span class="line">  output: &#123; // required (can be an array, for multiple outputs)</span><br><span class="line">    // core output options</span><br><span class="line">    dir,</span><br><span class="line">    file,</span><br><span class="line">    format, // required</span><br><span class="line">    globals,</span><br><span class="line">    name,</span><br><span class="line">    plugins,</span><br><span class="line"></span><br><span class="line">    // advanced output options</span><br><span class="line">    assetFileNames,</span><br><span class="line">    banner,</span><br><span class="line">    chunkFileNames,</span><br><span class="line">    compact,</span><br><span class="line">    entryFileNames,</span><br><span class="line">    extend,</span><br><span class="line">    footer,</span><br><span class="line">    hoistTransitiveImports,</span><br><span class="line">    interop,</span><br><span class="line">    intro,</span><br><span class="line">    outro,</span><br><span class="line">    paths,</span><br><span class="line">    sourcemap,</span><br><span class="line">    sourcemapExcludeSources,</span><br><span class="line">    sourcemapFile,</span><br><span class="line">    sourcemapPathTransform,</span><br><span class="line"></span><br><span class="line">    // danger zone</span><br><span class="line">    amd,</span><br><span class="line">    esModule,</span><br><span class="line">    exports,</span><br><span class="line">    externalLiveBindings,</span><br><span class="line">    freeze,</span><br><span class="line">    indent,</span><br><span class="line">    namespaceToStringTag,</span><br><span class="line">    noConflict,</span><br><span class="line">    preferConst,</span><br><span class="line">    strict</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  watch: &#123;</span><br><span class="line">    chokidar,</span><br><span class="line">    clearScreen,</span><br><span class="line">    skipWrite,</span><br><span class="line">    exclude,</span><br><span class="line">    include</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="默认配置文件读取"><a href="#默认配置文件读取" class="headerlink" title="默认配置文件读取"></a>默认配置文件读取</h3><ul>
+<li><p>文件形式(如下顺序依次读取)</p>
+</li>
+<li><p>rollup.config.mjs – <strong>要求Node 13+</strong></p>
+</li>
+<li><p>rollup.config.cjs – commonjs ,module.exports形式的</p>
+</li>
+<li><p>rollup.config.js – 编译为commonjs</p>
+</li>
+<li><p>node_modules packages形式</p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rollup --config <span class="attr">node</span>:my-special-config</span><br></pre></td></tr></table></figure></li>
+<li><p>优先读取rollup-config-my-special-config</p>
+</li>
+<li><p>my-special-config</p>
+</li>
+</ul>
+<h3 id="rollup-命令行传参"><a href="#rollup-命令行传参" class="headerlink" title="rollup 命令行传参"></a>rollup 命令行传参</h3><h4 id="使用不同配置-rollup-–config-–configDebug"><a href="#使用不同配置-rollup-–config-–configDebug" class="headerlink" title="使用不同配置 - rollup –config –configDebug"></a>使用不同配置 - rollup –config –configDebug</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">import</span> defaultConfig <span class="keyword">from</span> <span class="string">&#x27;./rollup.default.config.js&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> debugConfig <span class="keyword">from</span> <span class="string">&#x27;./rollup.debug.config.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> commandLineArgs =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (commandLineArgs.<span class="property">configDebug</span> === <span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> debugConfig;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> defaultConfig;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="修改默认配置参数"><a href="#修改默认配置参数" class="headerlink" title="修改默认配置参数"></a>修改默认配置参数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// rollup.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> commandLineArgs =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> inputBase = commandLineArgs.<span class="property">input</span> || <span class="string">&#x27;main.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// this will make Rollup ignore the CLI argument</span></span><br><span class="line">  <span class="keyword">delete</span> commandLineArgs.<span class="property">input</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">input</span>: <span class="string">&#x27;src/entries/&#x27;</span> + inputBase,</span><br><span class="line">    <span class="attr">output</span>: &#123;...&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p> <a target="_blank" rel="noopener" href="https://rollupjs.org/guide/en/">rollupjs</a></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#rollup" >
+    <span class="tag-code">rollup</span>
+  </a>
+
+  <a target="_blank" href="/tags#工程化" >
+    <span class="tag-code">工程化</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/04/13/front_skills/node/%E3%80%8ANode%E3%80%8B-%20%E8%AF%9D%E8%AF%B4process.env%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+        <span class="nav-arrow">← </span>
+        
+          《Node》- 话说process.env的那些事儿.md
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/04/19/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%E5%AE%9A%E6%97%B6shell%E5%8F%91%E8%B5%B7http%E8%AF%B7%E6%B1%82/">
+        
+          《Linux》-定时shell发起http请求
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%89%B9%E8%89%B2%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">特色介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%89%8D%E6%8F%90node%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-nav-text">前提node已安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#rollup%E5%AE%89%E8%A3%85"><span class="toc-nav-text">rollup安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">调用方式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%89%93%E5%8C%85%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">打包方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#CI"><span class="toc-nav-text">CI</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BE%93%E5%87%BA%E5%88%B0%E6%96%87%E4%BB%B6bundle-js"><span class="toc-nav-text">输出到文件bundle.js</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B7%BB%E5%8A%A0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%8E%A7%E5%88%B6%E6%89%93%E5%8C%85"><span class="toc-nav-text">添加配置文件控制打包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E4%BF%AE%E6%94%B9%E6%89%93%E5%8C%85"><span class="toc-nav-text">使用插件修改打包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rollup-config-js%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">rollup.config.js配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E5%88%97%E8%A1%A8"><span class="toc-nav-text">配置项列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-nav-text">默认配置文件读取</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rollup-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BC%A0%E5%8F%82"><span class="toc-nav-text">rollup 命令行传参</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E9%85%8D%E7%BD%AE-rollup-%E2%80%93config-%E2%80%93configDebug"><span class="toc-nav-text">使用不同配置 - rollup –config –configDebug</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-nav-text">修改默认配置参数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/04/13/front_package_build_skills/rollup/《rollup》- rollup实践总结/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

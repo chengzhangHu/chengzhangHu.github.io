@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      webpack react迁移到vite | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>webpack react迁移到vite</h2>
+  <p class="post-date">2025-05-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>将 <strong>React 项目从 Webpack 迁移到 Vite</strong> 是一个非常实际的升级，能够大幅提升开发启动速度和热更新体验。下面是 <strong>从 Webpack 到 Vite 的完整迁移指南（React 版）</strong>，分为通用步骤 + React 特有部分：</p>
+<hr>
+<h2 id="✅-1-安装-Vite-和必要插件"><a href="#✅-1-安装-Vite-和必要插件" class="headerlink" title="✅ 1. 安装 Vite 和必要插件"></a>✅ 1. 安装 Vite 和必要插件</h2><p>卸载 Webpack 相关依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm remove webpack webpack-cli webpack-dev-server</span><br></pre></td></tr></table></figure>
+
+<p>安装 Vite 和 React 插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vite @vitejs/plugin-react --save-dev</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-2-创建-vite-config-js"><a href="#✅-2-创建-vite-config-js" class="headerlink" title="✅ 2. 创建 vite.config.js"></a>✅ 2. 创建 <code>vite.config.js</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">react</span>()],</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./src&#x27;</span>), <span class="comment">// Webpack 的别名替代</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">3000</span>,</span><br><span class="line">    <span class="attr">open</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">build</span>: &#123;</span><br><span class="line">    <span class="attr">outDir</span>: <span class="string">&#x27;dist&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-3-创建-修改-index-html"><a href="#✅-3-创建-修改-index-html" class="headerlink" title="✅ 3. 创建&#x2F;修改 index.html"></a>✅ 3. 创建&#x2F;修改 <code>index.html</code></h2><p>Vite 以 <code>index.html</code> 为入口，不使用 HtmlWebpackPlugin。你需要自己写：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>React + Vite<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.jsx&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-4-修改入口文件"><a href="#✅-4-修改入口文件" class="headerlink" title="✅ 4. 修改入口文件"></a>✅ 4. 修改入口文件</h2><p>Webpack 可能用 <code>index.js</code> 或 <code>App.js</code>，Vite 推荐用 <code>main.jsx</code>。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/main.jsx</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom/client&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.jsx&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>)).<span class="title function_">render</span>(</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-5-环境变量迁移"><a href="#✅-5-环境变量迁移" class="headerlink" title="✅ 5. 环境变量迁移"></a>✅ 5. 环境变量迁移</h2><p>Webpack 使用 <code>process.env.NODE_ENV</code>；<br>Vite 使用 <code>.env</code> 文件，并且变量必须以 <code>VITE_</code> 开头。</p>
+<h3 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># .env</span><br><span class="line">VITE_API_BASE=https://api.example.com</span><br></pre></td></tr></table></figure>
+
+<p>使用方式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> api = <span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">env</span>.<span class="property">VITE_API_BASE</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-6-CSS-SCSS-支持"><a href="#✅-6-CSS-SCSS-支持" class="headerlink" title="✅ 6. CSS &#x2F; SCSS 支持"></a>✅ 6. CSS &#x2F; SCSS 支持</h2><p>Vite 原生支持 CSS Modules 和 Sass。</p>
+<p>你可以在 React 组件中直接这样写：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> styles <span class="keyword">from</span> <span class="string">&#x27;./App.module.scss&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>配置全局 Sass 变量（可选）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="attr">css</span>: &#123;</span><br><span class="line">  <span class="attr">preprocessorOptions</span>: &#123;</span><br><span class="line">    <span class="attr">scss</span>: &#123;</span><br><span class="line">      <span class="attr">additionalData</span>: <span class="string">`@import &quot;@/styles/variables.scss&quot;;`</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-7-别名、资源引用等-Webpack-特性迁移"><a href="#✅-7-别名、资源引用等-Webpack-特性迁移" class="headerlink" title="✅ 7. 别名、资源引用等 Webpack 特性迁移"></a>✅ 7. 别名、资源引用等 Webpack 特性迁移</h2><table>
+<thead>
+<tr>
+<th>Webpack 功能</th>
+<th>Vite 替代方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>resolve.alias</code></td>
+<td><code>vite.config.js</code> 的 <code>resolve.alias</code></td>
+</tr>
+<tr>
+<td><code>HtmlWebpackPlugin</code></td>
+<td>直接编辑 <code>index.html</code></td>
+</tr>
+<tr>
+<td><code>DefinePlugin</code></td>
+<td><code>define</code> + <code>.env</code> + <code>import.meta.env</code></td>
+</tr>
+<tr>
+<td><code>file-loader</code>, <code>url-loader</code></td>
+<td>直接 <code>import img from &#39;./logo.png&#39;</code></td>
+</tr>
+<tr>
+<td>Babel</td>
+<td><code>@vitejs/plugin-react</code> 内置处理</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-8-修改-package-json-脚本"><a href="#✅-8-修改-package-json-脚本" class="headerlink" title="✅ 8. 修改 package.json 脚本"></a>✅ 8. 修改 <code>package.json</code> 脚本</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite build&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;serve&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite preview&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-9-热更新（HMR）"><a href="#✅-9-热更新（HMR）" class="headerlink" title="✅ 9. 热更新（HMR）"></a>✅ 9. 热更新（HMR）</h2><p>无需配置，Vite 默认支持 React Fast Refresh。</p>
+<hr>
+<h2 id="🔁-示例对比：Webpack-vs-Vite-结构对照"><a href="#🔁-示例对比：Webpack-vs-Vite-结构对照" class="headerlink" title="🔁 示例对比：Webpack vs Vite 结构对照"></a>🔁 示例对比：Webpack vs Vite 结构对照</h2><table>
+<thead>
+<tr>
+<th>Webpack 文件</th>
+<th>Vite 文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>webpack.config.js</code></td>
+<td><code>vite.config.js</code></td>
+</tr>
+<tr>
+<td><code>public/index.html</code> 模板</td>
+<td>根目录 <code>index.html</code></td>
+</tr>
+<tr>
+<td><code>src/index.js</code></td>
+<td><code>src/main.jsx</code></td>
+</tr>
+<tr>
+<td><code>process.env.API_URL</code></td>
+<td><code>import.meta.env.VITE_API_URL</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-Bonus-支持-TypeScript"><a href="#✅-Bonus-支持-TypeScript" class="headerlink" title="✅ Bonus: 支持 TypeScript?"></a>✅ Bonus: 支持 TypeScript?</h2><p>Vite 完美支持 TS：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install typescript @types/react @types/react-dom --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>改入口为 <code>main.tsx</code>，组件为 <code>.tsx</code> 即可。</p>
+<hr>
+<h1 id="Webpack-是-v4，且依赖老旧。"><a href="#Webpack-是-v4，且依赖老旧。" class="headerlink" title="Webpack 是 v4，且依赖老旧。**"></a>Webpack 是 v4，且依赖老旧。**</h1><p>这种情况迁移到 Vite <strong>确实更复杂，但也更有意义</strong> —— 因为：</p>
+<ul>
+<li>Webpack 4 不支持 ES modules 完整功能，构建较慢</li>
+<li>老插件体系（如 <code>extract-text-webpack-plugin</code>、旧版 Babel 配置等）不兼容现代生态</li>
+<li>Vite 使用原生 ESM + ESBuild，现代又轻快</li>
+</ul>
+<hr>
+<h2 id="✅-面对旧-Webpack-项目，迁移到-Vite-的关键思路"><a href="#✅-面对旧-Webpack-项目，迁移到-Vite-的关键思路" class="headerlink" title="✅ 面对旧 Webpack 项目，迁移到 Vite 的关键思路"></a>✅ 面对旧 Webpack 项目，迁移到 Vite 的关键思路</h2><h3 id="一、优先评估「旧依赖」是否阻碍迁移"><a href="#一、优先评估「旧依赖」是否阻碍迁移" class="headerlink" title="一、优先评估「旧依赖」是否阻碍迁移"></a>一、优先评估「旧依赖」是否阻碍迁移</h3><p>你需要清楚这几个点：</p>
+<table>
+<thead>
+<tr>
+<th>依赖类型</th>
+<th>能否直接替代？</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Babel 7.x 配置</td>
+<td>✅ 支持，Vite 用 ESBuild 替代大多数转换</td>
+<td></td>
+</tr>
+<tr>
+<td>SCSS &#x2F; Less Loader</td>
+<td>✅ Vite 原生支持</td>
+<td><code>sass</code>、<code>less</code> 要更新版本</td>
+</tr>
+<tr>
+<td><code>extract-text-webpack-plugin</code></td>
+<td>❌ 废弃了，用 CSS 自动提取</td>
+<td></td>
+</tr>
+<tr>
+<td><code>file-loader</code>, <code>url-loader</code></td>
+<td>❌ 废弃了，Vite 自动处理</td>
+<td></td>
+</tr>
+<tr>
+<td><code>webpack-dev-server</code></td>
+<td>✅ 替代为 Vite 内建服务器</td>
+<td></td>
+</tr>
+<tr>
+<td><code>DefinePlugin</code></td>
+<td>✅ 用 Vite <code>define</code> 或 <code>.env</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>HtmlWebpackPlugin</code></td>
+<td>✅ 直接使用 HTML 模板</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-遇到旧-Webpack-项目时，你可以这样迁移"><a href="#✅-遇到旧-Webpack-项目时，你可以这样迁移" class="headerlink" title="✅ 遇到旧 Webpack 项目时，你可以这样迁移"></a>✅ 遇到旧 Webpack 项目时，你可以这样迁移</h2><h3 id="✅-1-把-Webpack-配置文件对照转成-Vite-配置"><a href="#✅-1-把-Webpack-配置文件对照转成-Vite-配置" class="headerlink" title="✅ 1. 把 Webpack 配置文件对照转成 Vite 配置"></a>✅ 1. 把 Webpack 配置文件对照转成 Vite 配置</h3><p>贴一个旧 Webpack 示例（可能和你类似）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js (v4 项目)</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">HtmlWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">&#x27;webpack&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;src&#x27;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123; <span class="attr">test</span>: <span class="regexp">/\.jsx?$/</span>, <span class="attr">use</span>: <span class="string">&#x27;babel-loader&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">test</span>: <span class="regexp">/\.scss$/</span>, <span class="attr">use</span>: [<span class="string">&#x27;style-loader&#x27;</span>, <span class="string">&#x27;css-loader&#x27;</span>, <span class="string">&#x27;sass-loader&#x27;</span>] &#125;,</span><br><span class="line">      &#123; <span class="attr">test</span>: <span class="regexp">/\.(png|jpg|gif)$/</span>, <span class="attr">use</span>: <span class="string">&#x27;file-loader&#x27;</span> &#125;,</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HtmlWebpackPlugin</span>(&#123; <span class="attr">template</span>: <span class="string">&#x27;./public/index.html&#x27;</span> &#125;),</span><br><span class="line">    <span class="keyword">new</span> webpack.<span class="title class_">DefinePlugin</span>(&#123; <span class="string">&#x27;process.env.NODE_ENV&#x27;</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="string">&#x27;development&#x27;</span>) &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的 <strong>Vite 配置如下</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">react</span>()],</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;src&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">define</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;process.env.NODE_ENV&#x27;</span>: <span class="string">&#x27;&quot;development&quot;&#x27;</span> <span class="comment">// 或使用 import.meta.env</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">css</span>: &#123;</span><br><span class="line">    <span class="attr">preprocessorOptions</span>: &#123;</span><br><span class="line">      <span class="attr">scss</span>: &#123;</span><br><span class="line">        <span class="attr">additionalData</span>: <span class="string">`@import &quot;@/styles/variables.scss&quot;;`</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">build</span>: &#123;</span><br><span class="line">    <span class="attr">outDir</span>: <span class="string">&#x27;dist&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="✅-2-替换不兼容的插件-loader"><a href="#✅-2-替换不兼容的插件-loader" class="headerlink" title="✅ 2. 替换不兼容的插件 &#x2F; loader"></a>✅ 2. 替换不兼容的插件 &#x2F; loader</h3><table>
+<thead>
+<tr>
+<th>Webpack v4 使用</th>
+<th>Vite 替代</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>babel-loader</code></td>
+<td><code>@vitejs/plugin-react</code> 内置支持</td>
+</tr>
+<tr>
+<td><code>style-loader</code></td>
+<td>Vite 自动注入 CSS</td>
+</tr>
+<tr>
+<td><code>file-loader</code></td>
+<td>直接 <code>import image from &#39;./img.png&#39;</code></td>
+</tr>
+<tr>
+<td><code>HtmlWebpackPlugin</code></td>
+<td>手写 <code>index.html</code> 模板</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="✅-3-更新旧依赖（建议性操作）"><a href="#✅-3-更新旧依赖（建议性操作）" class="headerlink" title="✅ 3. 更新旧依赖（建议性操作）"></a>✅ 3. 更新旧依赖（建议性操作）</h3><p>你可以执行以下操作来清除潜在的 v4 依赖污染：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf node_modules package-lock.json</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>然后迁移这些依赖到 Vite 生态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vite @vitejs/plugin-react sass less --save-dev</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="❗-小心事项"><a href="#❗-小心事项" class="headerlink" title="❗ 小心事项"></a>❗ 小心事项</h2><h3 id="1-process-env、global、Buffer-这类-Node-API"><a href="#1-process-env、global、Buffer-这类-Node-API" class="headerlink" title="1. process.env、global、Buffer 这类 Node API"></a>1. <code>process.env</code>、<code>global</code>、<code>Buffer</code> 这类 Node API</h3><p>Vite 是纯浏览器运行，不再默认 polyfill 这些，需要：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vite-plugin-node-polyfills --save-dev</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Babel-配置（如-babelrc）"><a href="#2-Babel-配置（如-babelrc）" class="headerlink" title="2. Babel 配置（如 .babelrc）"></a>2. Babel 配置（如 .babelrc）</h3><p>Vite 使用 esbuild，速度更快，但如果你用了高级 Babel 插件（如装饰器、class properties），可以保留 <code>.babelrc</code> 并在 <code>vite.config.js</code> 中启用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">react</span>(&#123;</span><br><span class="line">  <span class="attr">babel</span>: &#123;</span><br><span class="line">    <span class="attr">presets</span>: [<span class="string">&#x27;@babel/preset-env&#x27;</span>],</span><br><span class="line">    <span class="attr">plugins</span>: [<span class="string">&#x27;@babel/plugin-proposal-class-properties&#x27;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-总结：Webpack-4-项目迁移-Vite-的路线图"><a href="#✅-总结：Webpack-4-项目迁移-Vite-的路线图" class="headerlink" title="✅ 总结：Webpack 4 项目迁移 Vite 的路线图"></a>✅ 总结：Webpack 4 项目迁移 Vite 的路线图</h2><ol>
+<li>移除旧 Webpack 和相关 loader</li>
+<li>安装 <code>vite</code> 和 <code>@vitejs/plugin-react</code></li>
+<li>替代旧配置：手写 <code>index.html</code>，用 alias、define、css 配置替代 Webpack 配置</li>
+<li>移除 Babel 配置（或保留兼容处理）</li>
+<li>手动检查 polyfill 需求（如 <code>process</code>、<code>Buffer</code>）</li>
+<li>重建 <code>package.json</code> 脚本</li>
+</ol>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#webpack" >
+    <span class="tag-code">webpack</span>
+  </a>
+
+  <a target="_blank" href="/tags#vite" >
+    <span class="tag-code">vite</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/15/front_package_build_skills/vite/webpack%20vue%E8%BF%81%E7%A7%BB%E5%88%B0vite/">
+        <span class="nav-arrow">← </span>
+        
+          webpack vue迁移到vite
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/18/front_skills/canvas/%E5%9C%B0%E5%9B%BEcanvas%20vs%20svg/">
+        
+          地图canvas和svg选择
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-1-%E5%AE%89%E8%A3%85-Vite-%E5%92%8C%E5%BF%85%E8%A6%81%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">✅ 1. 安装 Vite 和必要插件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-2-%E5%88%9B%E5%BB%BA-vite-config-js"><span class="toc-nav-text">✅ 2. 创建 vite.config.js</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-3-%E5%88%9B%E5%BB%BA-%E4%BF%AE%E6%94%B9-index-html"><span class="toc-nav-text">✅ 3. 创建&#x2F;修改 index.html</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-4-%E4%BF%AE%E6%94%B9%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6"><span class="toc-nav-text">✅ 4. 修改入口文件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-5-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E8%BF%81%E7%A7%BB"><span class="toc-nav-text">✅ 5. 环境变量迁移</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="toc-nav-text">例子：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-6-CSS-SCSS-%E6%94%AF%E6%8C%81"><span class="toc-nav-text">✅ 6. CSS &#x2F; SCSS 支持</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-7-%E5%88%AB%E5%90%8D%E3%80%81%E8%B5%84%E6%BA%90%E5%BC%95%E7%94%A8%E7%AD%89-Webpack-%E7%89%B9%E6%80%A7%E8%BF%81%E7%A7%BB"><span class="toc-nav-text">✅ 7. 别名、资源引用等 Webpack 特性迁移</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-8-%E4%BF%AE%E6%94%B9-package-json-%E8%84%9A%E6%9C%AC"><span class="toc-nav-text">✅ 8. 修改 package.json 脚本</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-9-%E7%83%AD%E6%9B%B4%E6%96%B0%EF%BC%88HMR%EF%BC%89"><span class="toc-nav-text">✅ 9. 热更新（HMR）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-%E7%A4%BA%E4%BE%8B%E5%AF%B9%E6%AF%94%EF%BC%9AWebpack-vs-Vite-%E7%BB%93%E6%9E%84%E5%AF%B9%E7%85%A7"><span class="toc-nav-text">🔁 示例对比：Webpack vs Vite 结构对照</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-Bonus-%E6%94%AF%E6%8C%81-TypeScript"><span class="toc-nav-text">✅ Bonus: 支持 TypeScript?</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Webpack-%E6%98%AF-v4%EF%BC%8C%E4%B8%94%E4%BE%9D%E8%B5%96%E8%80%81%E6%97%A7%E3%80%82"><span class="toc-nav-text">Webpack 是 v4，且依赖老旧。**</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E9%9D%A2%E5%AF%B9%E6%97%A7-Webpack-%E9%A1%B9%E7%9B%AE%EF%BC%8C%E8%BF%81%E7%A7%BB%E5%88%B0-Vite-%E7%9A%84%E5%85%B3%E9%94%AE%E6%80%9D%E8%B7%AF"><span class="toc-nav-text">✅ 面对旧 Webpack 项目，迁移到 Vite 的关键思路</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E4%BC%98%E5%85%88%E8%AF%84%E4%BC%B0%E3%80%8C%E6%97%A7%E4%BE%9D%E8%B5%96%E3%80%8D%E6%98%AF%E5%90%A6%E9%98%BB%E7%A2%8D%E8%BF%81%E7%A7%BB"><span class="toc-nav-text">一、优先评估「旧依赖」是否阻碍迁移</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E9%81%87%E5%88%B0%E6%97%A7-Webpack-%E9%A1%B9%E7%9B%AE%E6%97%B6%EF%BC%8C%E4%BD%A0%E5%8F%AF%E4%BB%A5%E8%BF%99%E6%A0%B7%E8%BF%81%E7%A7%BB"><span class="toc-nav-text">✅ 遇到旧 Webpack 项目时，你可以这样迁移</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-1-%E6%8A%8A-Webpack-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%AF%B9%E7%85%A7%E8%BD%AC%E6%88%90-Vite-%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">✅ 1. 把 Webpack 配置文件对照转成 Vite 配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-2-%E6%9B%BF%E6%8D%A2%E4%B8%8D%E5%85%BC%E5%AE%B9%E7%9A%84%E6%8F%92%E4%BB%B6-loader"><span class="toc-nav-text">✅ 2. 替换不兼容的插件 &#x2F; loader</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-3-%E6%9B%B4%E6%96%B0%E6%97%A7%E4%BE%9D%E8%B5%96%EF%BC%88%E5%BB%BA%E8%AE%AE%E6%80%A7%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-nav-text">✅ 3. 更新旧依赖（建议性操作）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9D%97-%E5%B0%8F%E5%BF%83%E4%BA%8B%E9%A1%B9"><span class="toc-nav-text">❗ 小心事项</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-process-env%E3%80%81global%E3%80%81Buffer-%E8%BF%99%E7%B1%BB-Node-API"><span class="toc-nav-text">1. process.env、global、Buffer 这类 Node API</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-Babel-%E9%85%8D%E7%BD%AE%EF%BC%88%E5%A6%82-babelrc%EF%BC%89"><span class="toc-nav-text">2. Babel 配置（如 .babelrc）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%EF%BC%9AWebpack-4-%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB-Vite-%E7%9A%84%E8%B7%AF%E7%BA%BF%E5%9B%BE"><span class="toc-nav-text">✅ 总结：Webpack 4 项目迁移 Vite 的路线图</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/15/front_package_build_skills/vite/webpack react迁移到vite/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

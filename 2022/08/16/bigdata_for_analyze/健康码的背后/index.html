@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      健康码的背后 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>健康码的背后</h2>
+  <p class="post-date">2022-08-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="导语："><a href="#导语：" class="headerlink" title="导语："></a>导语：</h2><p>  防疫的背后，需要科技+协同的力量，更需要高精的算法、软硬件算力系统支持。</p>
+<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>会根据数据的不同，将居民判定为五种状态，在健康码展示中分为红、橙、绿三种颜色，其中红色需要集中隔离观察，橙色需要居家隔离，定期做核酸检测自我观察，绿色则为无风险</p>
+<h2 id="内容介绍"><a href="#内容介绍" class="headerlink" title="内容介绍"></a>内容介绍</h2><ul>
+<li>健康码的后台服务器是永不停歇的大脑，不断计算着每个人的健康状态</li>
+<li>每个人的健康状态以字节的方式存储于健康码的服务器中，并随着防疫政策和疫情形式的改变不断刷新，当居民出示健康码时，只是从后台调取这个状态，并显示为不同颜色的二维码。</li>
+<li>为了保护隐私数据安全。“健康码的小程序一般依靠微信或支付宝等第三方平台，只显示二维码可以保证隐私数据掌握在政府手上，不易泄露”</li>
+</ul>
+<h2 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h2><blockquote>
+<p>健康状态经由哪些数据判定?</p>
+</blockquote>
+<ul>
+<li>第一是公安部门的户籍信息</li>
+<li>第二是自己申报的健康数据，比如体温及当前症状；</li>
+<li>第三是行程数据，既包括通信管理部门协调运营商提供的手机信令位置，也包括铁路和航空交通出行数据，以判断是否到达过风险地带；</li>
+<li>第四是由卫健疾控部门提供的就诊信息，及判断是否与确诊者有交集</li>
+</ul>
+<h2 id="计算精度改进"><a href="#计算精度改进" class="headerlink" title="计算精度改进"></a>计算精度改进</h2><ul>
+<li><p>过去，中高风险区域往往以城市为单位，通信管理局将有过这些风险区轨迹的人员悉数推送来，人数众多。</p>
+</li>
+<li><p>现在提出了“时空伴随”概念，风险范围进一步缩小。</p>
+</li>
+<li><p>“时空伴随”主要靠手机信令来定位。它的规则是，在方圆800米的范围内，与风险人员的手机信令共同停留大约10分钟时间，就会判定可能会有接触，会被标记为风险人员的时空伴随人员。时空伴随人员的计算不属于地方，由国家工信部信管局牵头，几大运营商根据基站和信号进行综合定位，这需要更多的算力。最终的目的是减少了防疫扩大化，将方圆几十甚至几百公里的封锁范围缩小至几百米。</p>
+</li>
+<li><p>尽管目前各地数据已共享至全国统一平台，但仍是以省为单位在服务器后台分析数据。在重点区域，则不断通过刷新，更新每个人的最新动向与健康状态。刷新频率和当地是否存在疫情传播风险有关。“就像我们刷网页，刷新是耗流量的，就得花钱，所以如果没有疫情刷新就慢，如果在重点区域就会不断刷新，监控人员流动可能带来的风险。</p>
+</li>
+</ul>
+<h2 id="为何要行程码"><a href="#为何要行程码" class="headerlink" title="为何要行程码"></a>为何要行程码</h2><ul>
+<li><p>除了要亮健康码，还需要亮出行程卡。行程卡是由工信部推出，基于运营商的基站数据，判断人14天内的行程，如果有城市存在中高风险区，城市名称上会用星号来标识。</p>
+</li>
+<li><p>主要是因为健康码没办法展示近十四天的行程信息。</p>
+</li>
+</ul>
+<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><ul>
+<li>国家设立了“全国一体化政务服务平台”，各省就将数据上传至国家的平台上，推送更新内容也是每日一次。</li>
+<li>为实现各地的健康码信息互通互认，国家还制定了统一的数据采集标准，其中既包括数据采集的类型和维度，也包括数据字段的标识，以便数据互通</li>
+</ul>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ul>
+<li>各地数据已经打通，但在核酸检测方面，仍不能做到异地同时查询。其中一个原因，与国家信息平台数据更新速率有关。这意味着，当你到达新的地方，此前的核酸检测报告有可能无法同步在当地健康码上，仍要按照当地政策重新检测</li>
+<li>国家要求不能以区县以上为单位赋码，要精准赋码，避免“一刀切”。如今，风险区的划分也越来越小，多以小区为主。</li>
+<li>只要维持核心的数据状态，持续将各方面数据打通，就能实时监控每个人的疫情状态，如果没有疫情，这些新的机制和经验，也可用在其他应急事件上，“比如抢险救灾，再比如追踪资产和逃犯”</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.chinanews.com.cn/sh/2022/01-26/9662114.shtml">健康码</a></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#疫情" >
+    <span class="tag-code">疫情</span>
+  </a>
+
+  <a target="_blank" href="/tags#健康码" >
+    <span class="tag-code">健康码</span>
+  </a>
+
+  <a target="_blank" href="/tags#信令" >
+    <span class="tag-code">信令</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/08/09/python_skills/python%E5%AD%A6%E4%B9%A0%E5%A2%9E%E5%BC%BA%E7%AC%94%E8%AE%B0/">
+        <span class="nav-arrow">← </span>
+        
+          python学习增强笔记
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/09/12/dev_tool_skills/powershell/powershell%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+        
+          powershell数据类型
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AF%BC%E8%AF%AD%EF%BC%9A"><span class="toc-nav-text">导语：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E9%A2%9C%E8%89%B2"><span class="toc-nav-text">颜色</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%86%85%E5%AE%B9%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">内容介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="toc-nav-text">计算过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%AE%A1%E7%AE%97%E7%B2%BE%E5%BA%A6%E6%94%B9%E8%BF%9B"><span class="toc-nav-text">计算精度改进</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%BA%E4%BD%95%E8%A6%81%E8%A1%8C%E7%A8%8B%E7%A0%81"><span class="toc-nav-text">为何要行程码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E5%85%B1%E4%BA%AB"><span class="toc-nav-text">数据共享</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-nav-text">存在问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/08/16/bigdata_for_analyze/健康码的背后/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

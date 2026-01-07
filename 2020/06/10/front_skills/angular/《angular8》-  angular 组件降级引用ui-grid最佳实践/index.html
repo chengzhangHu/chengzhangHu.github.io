@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular8》-  angular 组件升级引用ui-grid最佳实践 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular8》-  angular 组件升级引用ui-grid最佳实践</h2>
+  <p class="post-date">2020-06-10</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Angular web 项目少不了列表的存在。针对angularjs web项目，进行技术升级，需要耗费一番功夫，不是简单的从ng-if变为*ngIf就能完成的。这些Angular框架，都替我们考虑到了。本文重点主要介绍UpgradeComponent进行组件升级，包裹使用angularjs ui-grid，实现angular 列表ui 保持不变效果。替代方案ag-grid，请移步<a target="_blank" rel="noopener" href="https://juejin.im/post/5def66ae6fb9a0162b7f2f07">ag-grid具体参考</a>。<br>介于代码不方便copy，只能使用官网example进行实践过程介绍，下面我们进入主题：</p>
+<h4 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h4><ul>
+<li><p>本文实践依据angularjs component api，本文angularjs组件如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 不是所有的都可以进行升级的哦，</span><br><span class="line">export const heroGrid = &#123;</span><br><span class="line">bindings: &#123;</span><br><span class="line">  hero: &#x27;&lt;&#x27;,</span><br><span class="line">  deleted: &#x27;&amp;&#x27;</span><br><span class="line">&#125;,</span><br><span class="line">template: `</span><br><span class="line">  &lt;h2&gt;&#123;&#123;$ctrl.hero.name&#125;&#125; details!&lt;/h2&gt;</span><br><span class="line">  &lt;div&gt;&lt;label&gt;id: &lt;/label&gt;&#123;&#123;$ctrl.hero.id&#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;button ng-click=&quot;$ctrl.onDelete()&quot;&gt;Delete&lt;/button&gt;</span><br><span class="line">`,</span><br><span class="line">controller: function() &#123;</span><br><span class="line">  this.onDelete = () =&gt; &#123;</span><br><span class="line">    this.deleted(this.hero);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>不是所有的angularjs指令都可以升级，在angular组件中使用哦，具体请参考(<a target="_blank" rel="noopener" href="https://angular.io/guide/upgrade#using-component-directives">https://angular.io/guide/upgrade#using-component-directives</a>)</p>
+</li>
+<li><p>angularjs vs angular属性绑定<br><img src="https://s1.ax1x.com/2020/06/10/t78mSf.png"></p>
+</li>
+<li><p>angular指令的input、output与angularjs的输入、输出对应</p>
+</li>
+</ul>
+<h3 id="升级实践"><a href="#升级实践" class="headerlink" title="升级实践"></a>升级实践</h3><h4 id="定义angularjs组件"><a href="#定义angularjs组件" class="headerlink" title="定义angularjs组件"></a>定义angularjs组件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">export const heroGrid = &#123;</span><br><span class="line">  bindings: &#123;</span><br><span class="line">    gridOptions: &#x27;&lt;&#x27;,</span><br><span class="line">    deleted: &#x27;&amp;&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: `</span><br><span class="line">     &lt;div id=&quot;grid1&quot; ui-grid=&quot;gridOptions&quot; class=&quot;grid&quot;&gt;&lt;/div&gt;</span><br><span class="line">  `,</span><br><span class="line">  controller: function() &#123;</span><br><span class="line">    this.onDelete = () =&gt; &#123;</span><br><span class="line">      this.deleted(this.hero);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="定义angular8-directive"><a href="#定义angular8-directive" class="headerlink" title="定义angular8 directive"></a>定义angular8 directive</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive, ElementRef, Injector, Input, Output, EventEmitter &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; UpgradeComponent &#125; from &#x27;@angular/upgrade/static&#x27;;</span><br><span class="line">import &#123; Hero &#125; from &#x27;../hero&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;hero-grid&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class heroGridDirective extends UpgradeComponent &#123;</span><br><span class="line">  private subject:Subject = new Subject();</span><br><span class="line">  @Input() gridOptions: any;</span><br><span class="line"></span><br><span class="line">  @Input() </span><br><span class="line">  set gridData(data:Hero[])&#123;</span><br><span class="line">    if(!data)&#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    this.gridOptions.data = data;</span><br><span class="line">    this.subject.next();</span><br><span class="line">  &#125;;</span><br><span class="line">  </span><br><span class="line">  @Output() deleted: EventEmitter&lt;Hero&gt;;</span><br><span class="line"></span><br><span class="line">  constructor(elementRef: ElementRef, injector: Injector) &#123;</span><br><span class="line">    super(&#x27;heroGrid&#x27;, elementRef, injector);</span><br><span class="line">    const $scope =  injector.get(&#x27;scope&#x27;);</span><br><span class="line">    this.subject.subscribe(res =&gt; &#123;</span><br><span class="line">       //延迟更新当前scope</span><br><span class="line">       defer(() =&gt; &#123;</span><br><span class="line">         $scope.digest();</span><br><span class="line">       &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要扩展UpgradeComponent组件</li>
+<li>需要调用super方法，传递参数给angularjs组件</li>
+<li>上面例子，heroGrid，是angularjs中注册的组件的名称。</li>
+</ul>
+<h4 id="ngModule中声明"><a href="#ngModule中声明" class="headerlink" title="ngModule中声明"></a>ngModule中声明</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@NgModule(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    UpgradeModule</span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    heroGridDirective,</span><br><span class="line">/* . . . */</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123;</span><br><span class="line">  constructor(private upgrade: UpgradeModule) &#123; &#125;</span><br><span class="line">  ngDoBootstrap() &#123;</span><br><span class="line">    this.upgrade.bootstrap(document.body, [&#x27;heroApp&#x27;], &#123; strictDi: true &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="定义外层容器html，使用directive"><a href="#定义外层容器html，使用directive" class="headerlink" title="定义外层容器html，使用directive"></a>定义外层容器html，使用directive</h4><ul>
+<li>ContainerComponent 需要在appModule declaration中定义<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; Hero &#125; from &#x27;../hero&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-container&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;h1&gt;Tour of Heroes&lt;/h1&gt;</span><br><span class="line">    &lt;hero-grid [gridOptions]=&quot;gridOptions&quot; [gridData]=&quot;heroList&quot;</span><br><span class="line">                 (deleted)=&quot;heroDeleted($event)&quot;&gt;</span><br><span class="line">    &lt;/hero-grid&gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br><span class="line">export class ContainerComponent &#123;</span><br><span class="line">  heroList = [</span><br><span class="line">    new Hero(1, &#x27;Windstorm&#x27;),</span><br><span class="line">    new Hero(2, &#x27;Storm&#x27;),</span><br><span class="line">  ];</span><br><span class="line">  heroDeleted(hero: Hero) &#123;</span><br><span class="line">    hero.name = &#x27;Ex-&#x27; + hero.name;</span><br><span class="line">  &#125;,</span><br><span class="line">  gridOptions = &#123;</span><br><span class="line">    useExternalSorting: true,</span><br><span class="line">    data:this.heroList,</span><br><span class="line">    columnDefs: [</span><br><span class="line">      &#123; name: &#x27;name&#x27; &#125;,</span><br><span class="line">      &#123; name: &#x27;gender&#x27; &#125;,</span><br><span class="line">      &#123; name: &#x27;company&#x27;, enableSorting: false&#125;</span><br><span class="line">    ],</span><br><span class="line">    onRegisterApi: function( gridApi ) &#123;</span><br><span class="line">      $scope.gridApi = gridApi;</span><br><span class="line">      $scope.gridApi.core.on.sortChanged( $scope, $scope.sortChanged );</span><br><span class="line">      $scope.sortChanged($scope.gridApi.grid, [ $scope.gridOptions.columnDefs[1] ] );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h4><ul>
+<li>表格在没有数据的时候，需要展示表头，然后存在数据了，需要渲染出来？</li>
+<li>如果表格渲染出来后，如果存在，折叠展开，那么折叠的也要展示，怎么办？</li>
+<li>会不会存在，js 数据更新了，但是界面ui不刷新问题？</li>
+</ul>
+<h4 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h4><ul>
+<li>首先肯定需要传递gridOptions，不然表头无法渲染</li>
+<li>新数据过来了，需要再次渲染；基于angular []数据会动态更新，我们理论上更新gridOptions即可，介于已有代码，修改浮动大，我们引入gridData，监听数据变化，set方法每次操作，顺带修改optioins，然后通过subject,通知optons一变动，digest更新angularjs</li>
+<li>如果数据渲染，此时还需要变化怎么？  遇到的问题，就是digest没有收到数据更新，此时解决办法是使用loading，loading &#x3D; false,渲染数据，loading &#x3D; true,展示laoding，这样，数据会对应的更新。</li>
+</ul>
+<h4 id="更多推荐"><a href="#更多推荐" class="headerlink" title="更多推荐"></a>更多推荐</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5e15a0c46fb9a047f83eda08">angular7&#x2F;8 read local json的2种方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5ddcd2b56fb9a07ad9676ca2">入门指南-Angular8状态管理框架NgRx8</a></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://angular.io/guide/upgrade#using-angular-components-from-angularjs-code">angularjs ui-grid升级</a></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#ui-grid" >
+    <span class="tag-code">ui-grid</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/06/09/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%2020%E4%B8%AA%E4%BD%A0%E5%80%BC%E5%BE%97%E4%BA%86%E8%A7%A3%E7%9A%84Angular%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》- 20个你值得了解的Angular开源项目
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/12/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20Angular%20HttpClient%2030%E5%88%86%E9%92%9F%E8%BD%BB%E6%9D%BE%E4%B8%8A%E6%89%8B/">
+        
+          《angular8》- Angular HttpClient 30分钟轻松上手
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9"><span class="toc-nav-text">技术要点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8D%87%E7%BA%A7%E5%AE%9E%E8%B7%B5"><span class="toc-nav-text">升级实践</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%9A%E4%B9%89angularjs%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">定义angularjs组件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%9A%E4%B9%89angular8-directive"><span class="toc-nav-text">定义angular8 directive</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ngModule%E4%B8%AD%E5%A3%B0%E6%98%8E"><span class="toc-nav-text">ngModule中声明</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%9A%E4%B9%89%E5%A4%96%E5%B1%82%E5%AE%B9%E5%99%A8html%EF%BC%8C%E4%BD%BF%E7%94%A8directive"><span class="toc-nav-text">定义外层容器html，使用directive</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-nav-text">问题：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A7%A3%E7%AD%94"><span class="toc-nav-text">解答</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">更多推荐</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/10/front_skills/angular/《angular8》-  angular 组件降级引用ui-grid最佳实践/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

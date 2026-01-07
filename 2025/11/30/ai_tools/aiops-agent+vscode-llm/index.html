@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      aiops agent+vscode llm | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>aiops agent+vscode llm</h2>
+  <p class="post-date">2025-11-30</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>你抓住了<strong>真正的核心难点</strong>：</p>
+<blockquote>
+<p><strong>不是 Cypress、不是 Docker、不是 Prometheus，而是：<br>—— MCP Agent 如何接受事件、处理事件、调用工具、执行推理链。</strong></p>
+</blockquote>
+<p>下面我会从<strong>架构到流程、从模块拆解到代码框架、从推理链到并发队列</strong>，系统化给你一套真正可落地的 <strong>MCP Agent 设计指南（工程级）</strong>。</p>
+<hr>
+<h1 id="🧠-MCP-Agent-设计的最终目标"><a href="#🧠-MCP-Agent-设计的最终目标" class="headerlink" title="🧠 MCP Agent 设计的最终目标"></a>🧠 <strong>MCP Agent 设计的最终目标</strong></h1><p>MCP Agent 的目标是：</p>
+<ol>
+<li><strong>监听事件（Event Consumer）</strong></li>
+<li><strong>将事件输入 LLM（推理链）</strong></li>
+<li><strong>根据推理结果选择工具（Tool Routing）</strong></li>
+<li><strong>执行工具链（Tools Execution）</strong></li>
+<li><strong>生成结构化结果与后续事件（Self-Healing Loop）</strong></li>
+</ol>
+<p>换句话说：</p>
+<blockquote>
+<p><strong>事件 → 推理 → 工具调用 → 修复 → 新事件 → 监控&#x2F;结果回写</strong></p>
+</blockquote>
+<p>你的 MCP Agent 不是传统 agent，它是：</p>
+<p><strong>事件驱动 + 工具驱动 + 推理驱动 + 分布式</strong></p>
+<hr>
+<h1 id="🧱-第一部分：MCP-Agent-的整体架构"><a href="#🧱-第一部分：MCP-Agent-的整体架构" class="headerlink" title="🧱 第一部分：MCP Agent 的整体架构"></a>🧱 第一部分：MCP Agent 的整体架构</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────────────────┐</span><br><span class="line">│                MCP AGENT CORE               │</span><br><span class="line">├────────────────────────────┬─────────────────┤</span><br><span class="line">│     Event Intake Layer     │  Output Layer   │</span><br><span class="line">│  (NATS / Redis Streams)    │ (Event / Metrics│</span><br><span class="line">├────────────────────────────┴─────────────────┤</span><br><span class="line">│              Reasoning Engine               │</span><br><span class="line">│      (LLM Prompting + ReAct Loop)           │</span><br><span class="line">├──────────────────────────────────────────────┤</span><br><span class="line">│                 Tool Router                  │</span><br><span class="line">│        (Decides which tool to call)          │</span><br><span class="line">├──────────────────────────────────────────────┤</span><br><span class="line">│                  Tools                        │</span><br><span class="line">│   docker, logs, health, db, cypress_runner   │</span><br><span class="line">└──────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="🧩-第二部分：核心模块拆解"><a href="#🧩-第二部分：核心模块拆解" class="headerlink" title="🧩 第二部分：核心模块拆解"></a>🧩 第二部分：核心模块拆解</h1><p>你的 MCP Agent 必须包含 6 个关键模块：</p>
+<hr>
+<h2 id="1-Event-Intake-Layer（事件接收层）"><a href="#1-Event-Intake-Layer（事件接收层）" class="headerlink" title="1. Event Intake Layer（事件接收层）"></a><strong>1. Event Intake Layer（事件接收层）</strong></h2><p>从事件总线订阅：</p>
+<ul>
+<li><code>cypress.test.fail</code></li>
+<li><code>cypress.test.start</code></li>
+<li><code>service.health.down</code></li>
+<li><code>cpu.high</code></li>
+<li><code>selfheal.result</code></li>
+</ul>
+<p>推荐使用 NATS：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sub = nc.<span class="title function_">subscribe</span>(<span class="string">&quot;cypress.test.fail&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">await</span> (<span class="keyword">const</span> msg <span class="keyword">of</span> sub) &#123;</span><br><span class="line">  agent.<span class="title function_">enqueue</span>(msg.<span class="property">data</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="✨-处理关键点"><a href="#✨-处理关键点" class="headerlink" title="✨ 处理关键点"></a>✨ 处理关键点</h3><ul>
+<li>事件统一格式（JSON Schema）</li>
+<li>推入 <strong>TaskQueue</strong>（保证顺序 &amp; 防止爆破）</li>
+<li>加入 <code>context_id</code>、<code>correlation_id</code> 用于串联链路</li>
+</ul>
+<hr>
+<h2 id="2-Task-Queue（任务队列-事件调度）"><a href="#2-Task-Queue（任务队列-事件调度）" class="headerlink" title="2. Task Queue（任务队列 &#x2F; 事件调度）"></a><strong>2. Task Queue（任务队列 &#x2F; 事件调度）</strong></h2><p>你不能让事件直接喂给 LLM，否则会：</p>
+<ul>
+<li>爆内存</li>
+<li>乱序</li>
+<li>推理竞争</li>
+</ul>
+<p>必须设计一个 <strong>事件队列</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Incoming Events → Queue → Worker → MCP Agent</span><br></pre></td></tr></table></figure>
+
+<p>Node.js 可用：</p>
+<ul>
+<li>BullMQ</li>
+<li>Node-resque</li>
+<li>内存队列（简单）</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskQueue.<span class="title function_">add</span>(<span class="string">&quot;handleEvent&quot;</span>, event);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-Reasoning-Engine（推理层）-←-这是整个智能的核心"><a href="#3-Reasoning-Engine（推理层）-←-这是整个智能的核心" class="headerlink" title="3. Reasoning Engine（推理层）  ← 这是整个智能的核心"></a><strong>3. Reasoning Engine（推理层）</strong>  ← 这是整个智能的核心</h2><p>推理层工作：</p>
+<ol>
+<li><p>接收事件</p>
+</li>
+<li><p>将事件填入系统提示词 + 历史上下文</p>
+</li>
+<li><p>让 LLM 判断：</p>
+<ul>
+<li>问题原因？</li>
+<li>哪些工具要调用？</li>
+<li>调用顺序？</li>
+</ul>
+</li>
+<li><p>返回结构化指令：</p>
+</li>
+</ol>
+<p>示例返回：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;intention&quot;</span><span class="punctuation">:</span> <span class="string">&quot;diagnosis_and_repair&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tools&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;get_container_logs&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;container&quot;</span><span class="punctuation">:</span> <span class="string">&quot;web&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;restart_container&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;container&quot;</span><span class="punctuation">:</span> <span class="string">&quot;web&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;trigger_cypress_retry&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;spec&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user-flow&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="推理链必须用-ReAct-Prompting："><a href="#推理链必须用-ReAct-Prompting：" class="headerlink" title="推理链必须用 ReAct Prompting："></a>推理链必须用 ReAct Prompting：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Event: test failure in login.spec</span><br><span class="line">Thought: likely service auth is down. Need logs.</span><br><span class="line">Action: get_container_logs</span><br><span class="line">Observation: ...</span><br><span class="line">Thought: container unhealthy, needs restart</span><br><span class="line">Action: restart_container</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-Tool-Router（工具路由器）"><a href="#4-Tool-Router（工具路由器）" class="headerlink" title="4. Tool Router（工具路由器）"></a><strong>4. Tool Router（工具路由器）</strong></h2><p>推理层决定“调用哪个工具”，但必须交给 Tool Router 执行。</p>
+<p>Router 做：</p>
+<ul>
+<li>工具注册</li>
+<li>工具权限检查（安全）</li>
+<li>执行</li>
+<li>返回结果给 Reasoning Engine</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tools = &#123;</span><br><span class="line">  get_container_logs,</span><br><span class="line">  restart_container,</span><br><span class="line">  health_check,</span><br><span class="line">  cypress_runner</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">toolRouter</span>(<span class="params">toolCall</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> fn = tools[toolCall.<span class="property">name</span>];</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">await</span> <span class="title function_">fn</span>(toolCall.<span class="property">args</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-Tools-Layer（执行层）"><a href="#5-Tools-Layer（执行层）" class="headerlink" title="5. Tools Layer（执行层）"></a><strong>5. Tools Layer（执行层）</strong></h2><p>你至少会有：</p>
+<h3 id="✔-docker-工具"><a href="#✔-docker-工具" class="headerlink" title="✔ docker 工具"></a>✔ docker 工具</h3><ul>
+<li>restart container</li>
+<li>get logs</li>
+<li>check health</li>
+</ul>
+<h3 id="✔-k8s-工具（未来）"><a href="#✔-k8s-工具（未来）" class="headerlink" title="✔ k8s 工具（未来）"></a>✔ k8s 工具（未来）</h3><ul>
+<li>rollout restart</li>
+<li>pod logs</li>
+<li>pod health</li>
+</ul>
+<h3 id="✔-系统级工具"><a href="#✔-系统级工具" class="headerlink" title="✔ 系统级工具"></a>✔ 系统级工具</h3><ul>
+<li>CPU&#x2F;Memory</li>
+<li>disk</li>
+<li>process check</li>
+</ul>
+<h3 id="✔-Cypress-工具"><a href="#✔-Cypress-工具" class="headerlink" title="✔ Cypress 工具"></a>✔ Cypress 工具</h3><ul>
+<li>触发某 spec 重测</li>
+<li>停止某机器运行</li>
+</ul>
+<h3 id="✔-Event-发射工具"><a href="#✔-Event-发射工具" class="headerlink" title="✔ Event 发射工具"></a>✔ Event 发射工具</h3><ul>
+<li>将修复结果发到 event bus</li>
+</ul>
+<hr>
+<h2 id="6-Output-Layer（输出层）"><a href="#6-Output-Layer（输出层）" class="headerlink" title="6. Output Layer（输出层）"></a><strong>6. Output Layer（输出层）</strong></h2><p>MCP Agent 执行后要写入：</p>
+<h3 id="✔-1-事件总线（NATS）"><a href="#✔-1-事件总线（NATS）" class="headerlink" title="✔ 1. 事件总线（NATS）"></a>✔ 1. 事件总线（NATS）</h3><p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">selfheal.success</span><br><span class="line">selfheal.fail</span><br><span class="line">diagnosis.completed</span><br><span class="line">test.retry.triggered</span><br></pre></td></tr></table></figure>
+
+<h3 id="✔-2-Prometheus（push-gateway）"><a href="#✔-2-Prometheus（push-gateway）" class="headerlink" title="✔ 2. Prometheus（push-gateway）"></a>✔ 2. Prometheus（push-gateway）</h3><p>将自愈指标、诊断指标写入 metrics：</p>
+<ul>
+<li>selfheal_latency</li>
+<li>root_cause_type</li>
+<li>flaky_test_count</li>
+</ul>
+<hr>
+<h1 id="🕸-第三部分：MCP-Agent-从事件到推理到工具调用-的完整职业流程"><a href="#🕸-第三部分：MCP-Agent-从事件到推理到工具调用-的完整职业流程" class="headerlink" title="🕸 第三部分：MCP Agent 从事件到推理到工具调用 的完整职业流程"></a>🕸 第三部分：<strong>MCP Agent 从事件到推理到工具调用 的完整职业流程</strong></h1><p>这是整个系统的灵魂。</p>
+<hr>
+<h2 id="完整事件驱动闭环"><a href="#完整事件驱动闭环" class="headerlink" title="完整事件驱动闭环"></a><strong>完整事件驱动闭环</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Cypress 事件 → EventBus → MCP Agent → LLM 推理</span><br><span class="line">    ↓                                ↑</span><br><span class="line">Tool Router → Docker/Logs/Actions → Tools Result</span><br><span class="line">    ↓                                ↑</span><br><span class="line">EventBus/Prometheus ←───────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="真实实例：登录流程失败"><a href="#真实实例：登录流程失败" class="headerlink" title="真实实例：登录流程失败"></a>真实实例：登录流程失败</h2><h3 id="Step-1：事件来了"><a href="#Step-1：事件来了" class="headerlink" title="Step 1：事件来了"></a>Step 1：事件来了</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">event: cypress.test.fail</span><br><span class="line">spec: login.spec</span><br><span class="line">error: 500 on POST /api/auth</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Step-2：丢进队列"><a href="#Step-2：丢进队列" class="headerlink" title="Step 2：丢进队列"></a>Step 2：丢进队列</h3><hr>
+<h3 id="Step-3：推理层处理"><a href="#Step-3：推理层处理" class="headerlink" title="Step 3：推理层处理"></a>Step 3：推理层处理</h3><p>Agent prompt：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Given event:</span><br><span class="line">- test: login.spec</span><br><span class="line">- error: 500 /api/auth</span><br><span class="line"></span><br><span class="line">Identify possible root cause:</span><br><span class="line">Plan tool calls to diagnose and fix.</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="LLM-返回："><a href="#LLM-返回：" class="headerlink" title="LLM 返回："></a>LLM 返回：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Thought: probably auth service down</span><br><span class="line">Action 1: health_check(&#123;&quot;service&quot;:&quot;auth&quot;&#125;)</span><br><span class="line">Action 2: get_container_logs(&#123;&quot;service&quot;:&quot;auth&quot;&#125;)</span><br><span class="line">Action 3: restart_container(&#123;&quot;service&quot;:&quot;auth&quot;&#125;)</span><br><span class="line">Action 4: trigger_cypress_retry(&#123;&quot;spec&quot;:&quot;login&quot;&#125;)</span><br><span class="line">Answer: Proposed fix executed</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Step-4：Tool-Router-执行链条"><a href="#Step-4：Tool-Router-执行链条" class="headerlink" title="Step 4：Tool Router 执行链条"></a>Step 4：Tool Router 执行链条</h3><ul>
+<li>health check → unhealthy</li>
+<li>get logs → fatal error</li>
+<li>restart container → success</li>
+<li>retry Cypress → success</li>
+</ul>
+<hr>
+<h3 id="Step-5：输出事件"><a href="#Step-5：输出事件" class="headerlink" title="Step 5：输出事件"></a>Step 5：输出事件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">selfheal.success</span><br><span class="line">rootcause.auth_down</span><br><span class="line">test.retry.success</span><br></pre></td></tr></table></figure>
+
+<p>Prometheus 更新指标。</p>
+<hr>
+<h1 id="🔥-第四部分：MCP-Agent-完整代码结构（工程级）"><a href="#🔥-第四部分：MCP-Agent-完整代码结构（工程级）" class="headerlink" title="🔥 第四部分：MCP Agent 完整代码结构（工程级）"></a>🔥 第四部分：MCP Agent 完整代码结构（工程级）</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/mcp-agent</span><br><span class="line">  /event</span><br><span class="line">    eventReceiver.js</span><br><span class="line">    eventSchema.js</span><br><span class="line">    eventEmitter.js</span><br><span class="line">  /queue</span><br><span class="line">    queue.js</span><br><span class="line">  /reasoning</span><br><span class="line">    reasoner.js</span><br><span class="line">    prompts.js</span><br><span class="line">  /router</span><br><span class="line">    toolRouter.js</span><br><span class="line">  /tools</span><br><span class="line">    docker.js</span><br><span class="line">    logs.js</span><br><span class="line">    cypress.js</span><br><span class="line">    health.js</span><br><span class="line">    system.js</span><br><span class="line">  /output</span><br><span class="line">    eventPublisher.js</span><br><span class="line">    metricsPublisher.js</span><br><span class="line">  agent.js</span><br></pre></td></tr></table></figure>
+
+<p>模块化设计，让你可以扩展。</p>
+<hr>
+<h1 id="🔮-第五部分：MCP-Agent-设计的关键哲学"><a href="#🔮-第五部分：MCP-Agent-设计的关键哲学" class="headerlink" title="🔮 第五部分：MCP Agent 设计的关键哲学"></a>🔮 第五部分：MCP Agent 设计的关键哲学</h1><p>MCP Agent 本质是：</p>
+<p>👉 <strong>事件驱动系统</strong>（不是同步调用）<br>👉 <strong>LLM 推理链驱动系统</strong>（不是规则引擎）<br>👉 <strong>工具链执行器</strong>（不是 monolithic）<br>👉 <strong>构建 DevOps 自愈闭环的中心大脑</strong></p>
+<p>你的技术亮点就在这里。</p>
+<hr>
+<h1 id="🧵-最后总结一句："><a href="#🧵-最后总结一句：" class="headerlink" title="🧵 最后总结一句："></a>🧵 最后总结一句：</h1><blockquote>
+<p><strong>真正复杂的不是 Cypress，不是 Docker，不是 Prometheus，而是 MCP Agent 如何“像人一样处理事件、思考、行动”。<br>而这个设计就是让 Agent 具备“自动诊断 + 自愈能力”的核心。</strong></p>
+</blockquote>
+<p>下面我分成 <strong>三个核心问题</strong> 来回答，并给你完整、可实现的工程级架构。</p>
+<p>你问得非常精准：真正的难点不是 Cypress、Prometheus、Docker，而是：</p>
+<ol>
+<li><strong>MCP Agent 如何设计成“可扩展、可感知能力缺失、可自主决策”的智能体？</strong></li>
+<li><strong>测试数据如何与 Prometheus 解耦并可靠采集？</strong></li>
+<li><strong>VSCode 自带 LLM（Copilot Agent MCP）如何在 Docker 中运行并和你的系统联动？</strong></li>
+</ol>
+<p>我下面给出的方案全部具有<strong>实操性</strong>，你可以真的搭起来，不是概念性的空架构。</p>
+<hr>
+<h1 id="✅-一、核心：MCP-Agent-如何设计？（能力感知-动态工具-事件输入）"><a href="#✅-一、核心：MCP-Agent-如何设计？（能力感知-动态工具-事件输入）" class="headerlink" title="✅ 一、核心：MCP Agent 如何设计？（能力感知 + 动态工具 + 事件输入）"></a>✅ <strong>一、核心：MCP Agent 如何设计？（能力感知 + 动态工具 + 事件输入）</strong></h1><h3 id="🔥（1）MCP-Agent-的本质角色"><a href="#🔥（1）MCP-Agent-的本质角色" class="headerlink" title="🔥（1）MCP Agent 的本质角色"></a>🔥（1）MCP Agent 的本质角色</h3><p>它不是测试执行器，而是：</p>
+<blockquote>
+<p><strong>事件驱动的智能决策中枢（Decision Brain）</strong><br>会根据事件动态选择工具链，自动诊断 &amp; 修复。</p>
+</blockquote>
+<p>MCP Agent 架构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌───────────────────────────┐</span><br><span class="line">│         Event Bus          │</span><br><span class="line">│ (TestEvent / FailEvent..)  │</span><br><span class="line">└──────────────┬────────────┘</span><br><span class="line">               │</span><br><span class="line">        ┌──────▼──────┐</span><br><span class="line">        │   MCP Agent  │  &lt;— 智能体</span><br><span class="line">        │ (LLM + Tools)│</span><br><span class="line">        └──────┬──────┘</span><br><span class="line">               │</span><br><span class="line">     ┌─────────┴───────────┬───────────┐</span><br><span class="line">     ▼                     ▼           ▼</span><br><span class="line">Log Query Tool   Docker Ops Tool    Health Check Tool</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🍬（2）能力动态扩展（你提到的“工具不具备就不调用”）"><a href="#🍬（2）能力动态扩展（你提到的“工具不具备就不调用”）" class="headerlink" title="🍬（2）能力动态扩展（你提到的“工具不具备就不调用”）"></a>🍬（2）能力动态扩展（你提到的“工具不具备就不调用”）</h2><p>你可以让 Agent 在启动时执行：</p>
+<h3 id="Capability-Discovery（能力发现）"><a href="#Capability-Discovery（能力发现）" class="headerlink" title="Capability Discovery（能力发现）"></a><strong>Capability Discovery（能力发现）</strong></h3><p>Agent 启动后会扫描可用工具：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;available_tools&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;docker_ops&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;log_query&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;prometheus_query&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>LLM Prompt 中加入：</p>
+<blockquote>
+<p>“当你需要使用某工具时，请先检查工具是否存在于 available_tools 中；<br>如果不存在，不得调用，必须退化为描述性分析。”</p>
+</blockquote>
+<p>这个机制 &#x3D; <strong>能力感知（Capability Awareness）</strong></p>
+<p>这样你可以做到动态扩展工具：</p>
+<ul>
+<li>新工具只需挂载进 container &#x2F; 配置</li>
+<li>Agent 自动感知，不需要修改代码</li>
+<li>LLM 决策时会 条件选择工具、避免调用缺失工具</li>
+</ul>
+<hr>
+<h2 id="🧠（3）MCP-Agent-如何接受事件？（重点）"><a href="#🧠（3）MCP-Agent-如何接受事件？（重点）" class="headerlink" title="🧠（3）MCP Agent 如何接受事件？（重点）"></a>🧠（3）MCP Agent 如何接受事件？（重点）</h2><p>你不让 Cypress 直接跟 LLM 交互，而是引入事件总线：</p>
+<h3 id="Event-Bus-技术选择"><a href="#Event-Bus-技术选择" class="headerlink" title="Event Bus 技术选择"></a><strong>Event Bus 技术选择</strong></h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>是否推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Redis Stream</td>
+<td>⭐⭐⭐⭐⭐ 最推荐（轻量、分布式、多机器）</td>
+</tr>
+<tr>
+<td>NATS</td>
+<td>⭐⭐⭐ 高性能，但你当前集群小</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>⭐ 太重，不适合 6 台集群</td>
+</tr>
+<tr>
+<td>HTTP webhook</td>
+<td>⭐ 临时方案但不持久化</td>
+</tr>
+</tbody></table>
+<p>建议 Redis Stream。</p>
+<p>Cypress 发送测试事件：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;test_complete&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;failed&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;spec&quot;</span><span class="punctuation">:</span> <span class="string">&quot;login.cy.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;timestamp&quot;</span><span class="punctuation">:</span> <span class="number">1732939200</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;machine&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node-3&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>MCP Agent 监听 Stream：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XREAD BLOCK 0 STREAMS test_events $</span><br></pre></td></tr></table></figure>
+
+<hr>
+<hr>
+<h1 id="✅-二、Prometheus-如何接入-Cypress-业务数据？（你的第2个问题）"><a href="#✅-二、Prometheus-如何接入-Cypress-业务数据？（你的第2个问题）" class="headerlink" title="✅ 二、Prometheus 如何接入 Cypress 业务数据？（你的第2个问题）"></a>✅ <strong>二、Prometheus 如何接入 Cypress 业务数据？（你的第2个问题）</strong></h1><p>Cypress 业务数据并不是指标格式，需要转换成 Prometheus Format。</p>
+<p>关键：<br><strong>不要让 Cypress 直接推指标</strong>。<br>会绑死测试流程 → 你说得对，要完全解耦。</p>
+<hr>
+<h2 id="🎯-最优架构：Cypress-→-Event-Bus-→-Metric-Collector-→-Prometheus"><a href="#🎯-最优架构：Cypress-→-Event-Bus-→-Metric-Collector-→-Prometheus" class="headerlink" title="🎯 最优架构：Cypress → Event Bus → Metric Collector → Prometheus"></a>🎯 最优架构：Cypress → Event Bus → Metric Collector → Prometheus</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Cypress</span><br><span class="line">   │</span><br><span class="line">Emit JSON</span><br><span class="line">   │(decoupled)</span><br><span class="line">   ▼</span><br><span class="line">Redis Stream (test_event)</span><br><span class="line">   │</span><br><span class="line">   ▼</span><br><span class="line">Metric Collector (Node/Python)</span><br><span class="line">   │</span><br><span class="line">Expose /metrics</span><br><span class="line">   │</span><br><span class="line">Scraped by Prometheus</span><br></pre></td></tr></table></figure>
+
+<h3 id="流程解释："><a href="#流程解释：" class="headerlink" title="流程解释："></a>流程解释：</h3><ol>
+<li><p>Cypress 完成测试后只负责：<br>✔ 发送事件（状态、耗时、场景、数据）<br>❌ 不处理 metrics，不同步阻塞</p>
+</li>
+<li><p>Metric Collector（微服务）负责：</p>
+<ul>
+<li>读取 Cypress 事件</li>
+<li>转换为 Prometheus Counter&#x2F;Gauge&#x2F;Histogram</li>
+<li>暴露成 <code>/metrics</code> endpoint</li>
+<li>被 Prometheus 定时 scrape</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="Prometheus-支持的数据类型"><a href="#Prometheus-支持的数据类型" class="headerlink" title="Prometheus 支持的数据类型"></a><strong>Prometheus 支持的数据类型</strong></h3><p>你可以将 Cypress 数据转成：</p>
+<h4 id="1️⃣-PASS-FAIL-counter"><a href="#1️⃣-PASS-FAIL-counter" class="headerlink" title="1️⃣ PASS&#x2F;FAIL counter"></a>1️⃣ PASS&#x2F;FAIL counter</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cypress_test_pass_total&#123;spec=&quot;login&quot;&#125; 12</span><br><span class="line">cypress_test_fail_total&#123;spec=&quot;login&quot;&#125; 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="2️⃣-测试耗时-histogram"><a href="#2️⃣-测试耗时-histogram" class="headerlink" title="2️⃣ 测试耗时 histogram"></a>2️⃣ 测试耗时 histogram</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cypress_test_duration_seconds_bucket&#123;spec=&quot;checkout&quot;,le=&quot;2&quot;&#125; 5</span><br></pre></td></tr></table></figure>
+
+<h4 id="3️⃣-业务自定义指标"><a href="#3️⃣-业务自定义指标" class="headerlink" title="3️⃣ 业务自定义指标"></a>3️⃣ 业务自定义指标</h4><p>如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">order_create_latency_seconds&#123;env=&quot;uat&quot;&#125; 1.3</span><br></pre></td></tr></table></figure>
+
+<p>这个是 Cypress 专属创新点。</p>
+<hr>
+<hr>
+<h1 id="✅-三、VSCode-自带的-LLM-如何放进-Docker-（你的第3个问题）"><a href="#✅-三、VSCode-自带的-LLM-如何放进-Docker-（你的第3个问题）" class="headerlink" title="✅ 三、VSCode 自带的 LLM 如何放进 Docker?（你的第3个问题）"></a>✅ <strong>三、VSCode 自带的 LLM 如何放进 Docker?（你的第3个问题）</strong></h1><p>你想把 <strong>VSCode + MCP Agent（LLM）</strong> 集成在 Docker 容器里，让它作为服务运行。</p>
+<p>是可以做到的。</p>
+<hr>
+<h2 id="方法1（推荐）：使用-VSCode-Web-Copilot-Agent-Server"><a href="#方法1（推荐）：使用-VSCode-Web-Copilot-Agent-Server" class="headerlink" title="方法1（推荐）：使用 VSCode Web + Copilot Agent Server"></a>方法1（推荐）：使用 VSCode Web + Copilot Agent Server</h2><p>你可以在 Docker 中运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">code-server (VSCode Web)</span><br><span class="line">+ Copilot Agent MCP Server</span><br><span class="line">+ Your custom MCP Tools</span><br></pre></td></tr></table></figure>
+
+<p>Dockerfile 示例：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">22.04</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 node</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y curl git</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> curl -fsSL https://deb.nodesource.com/setup_20.x | bash -</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get install -y nodejs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 code-server</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> curl -fsSL https://code-server.dev/install.sh | sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 MCP agent（包括 LLM 工具）</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install -g @vscode/copilot-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制工具</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> mcp-tools /usr/local/mcp-tools</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;code-server&quot;</span>, <span class="string">&quot;--bind-addr&quot;</span>, <span class="string">&quot;0.0.0.0:8080&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>启动后你就可以：</p>
+<ul>
+<li>通过浏览器访问 VSCode Web</li>
+<li>容器内推理 Copilot LLM</li>
+<li>作为 MCP Agent 服务，响应 Cypress 测试事件</li>
+</ul>
+<hr>
+<h2 id="方法2：独立-MCP-Agent，不依赖-VSCode-UI"><a href="#方法2：独立-MCP-Agent，不依赖-VSCode-UI" class="headerlink" title="方法2：独立 MCP Agent，不依赖 VSCode UI"></a>方法2：独立 MCP Agent，不依赖 VSCode UI</h2><p>直接运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx @vscode/copilot-agent start --tools ./tools</span><br></pre></td></tr></table></figure>
+
+<p>这样容器内只运行 LLM&#x2F;Tools，不需要 VSCode UI。</p>
+<hr>
+<h2 id="方法3：（高级）在-Container-中使用-OpenAI-本地模型-or-Ollama"><a href="#方法3：（高级）在-Container-中使用-OpenAI-本地模型-or-Ollama" class="headerlink" title="方法3：（高级）在 Container 中使用 OpenAI 本地模型 or Ollama"></a>方法3：（高级）在 Container 中使用 OpenAI 本地模型 or Ollama</h2><p>VSCode LLM 层换成：</p>
+<ul>
+<li>OpenAI GPT</li>
+<li>OpenAI O-model</li>
+<li>Ollama (Llama3.1)</li>
+<li>Azure AI</li>
+</ul>
+<p>通过 MCP agent 的 config.json 指定：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;llm&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openai&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;...&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gpt-5.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样 LLM 就可插拔。</p>
+<hr>
+<h1 id="🧠-你最后得到的是一个真正的分布式-AIOps-级系统"><a href="#🧠-你最后得到的是一个真正的分布式-AIOps-级系统" class="headerlink" title="🧠 你最后得到的是一个真正的分布式 AIOps 级系统"></a>🧠 你最后得到的是一个真正的分布式 AIOps 级系统</h1><p>完整大图如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">                 ┌────────────────────────────┐</span><br><span class="line">                 │        Prometheus/Grafana   │</span><br><span class="line">                 └───────────────▲────────────┘</span><br><span class="line">                                 │scrape</span><br><span class="line">                         ┌───────┴────────┐</span><br><span class="line">                         │ Metric Collector│</span><br><span class="line">                         └───────▲────────┘</span><br><span class="line">                                 │</span><br><span class="line">                   ┌─────────────┴──────────────┐</span><br><span class="line">                   │     Redis Stream (events)    │</span><br><span class="line">                   └─────────────▲──────────────┘</span><br><span class="line">                                 │</span><br><span class="line">                       ┌─────────┴────────────┐</span><br><span class="line">                       │     MCP Agent         │</span><br><span class="line">                       │ (LLM + Tools)         │</span><br><span class="line">                       └─────────▲────────────┘</span><br><span class="line">                                 │</span><br><span class="line">       ┌──────────────┬──────────┴────────────┬─────────────┐</span><br><span class="line">       ▼              ▼                       ▼             ▼</span><br><span class="line">Docker Ops Tool   Log Query Tool     Prometheus Query   MLOps Tool</span><br></pre></td></tr></table></figure>
+
+<p>你现在具备：</p>
+<ul>
+<li>✔ 6 台机器（可分布式）</li>
+<li>✔ Cypress</li>
+<li>✔ Docker Compose</li>
+<li>✔ Prometheus</li>
+<li>✔ Grafana</li>
+<li>✔ Redis</li>
+<li>✔ MCP Agent（你的核心）</li>
+</ul>
+<p>这是一个完整的 “自愈式智能测试平台”。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/11/12/ai_tools/ai-agent%E5%92%8Cvscode%E9%9B%86%E6%88%90%E6%9C%80%E7%BB%88/">
+        <span class="nav-arrow">← </span>
+        
+          ai agent和vscode集成最终
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/12/10/do_at_workspace/2025%E5%B9%B4%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E5%BB%BA%E8%AE%AE/">
+        
+          2025年前端趋势学习建议
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-MCP-Agent-%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%9C%80%E7%BB%88%E7%9B%AE%E6%A0%87"><span class="toc-nav-text">🧠 MCP Agent 设计的最终目标</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9AMCP-Agent-%E7%9A%84%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">🧱 第一部分：MCP Agent 的整体架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">🧩 第二部分：核心模块拆解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-Event-Intake-Layer%EF%BC%88%E4%BA%8B%E4%BB%B6%E6%8E%A5%E6%94%B6%E5%B1%82%EF%BC%89"><span class="toc-nav-text">1. Event Intake Layer（事件接收层）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%A8-%E5%A4%84%E7%90%86%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-nav-text">✨ 处理关键点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-Task-Queue%EF%BC%88%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97-%E4%BA%8B%E4%BB%B6%E8%B0%83%E5%BA%A6%EF%BC%89"><span class="toc-nav-text">2. Task Queue（任务队列 &#x2F; 事件调度）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-Reasoning-Engine%EF%BC%88%E6%8E%A8%E7%90%86%E5%B1%82%EF%BC%89-%E2%86%90-%E8%BF%99%E6%98%AF%E6%95%B4%E4%B8%AA%E6%99%BA%E8%83%BD%E7%9A%84%E6%A0%B8%E5%BF%83"><span class="toc-nav-text">3. Reasoning Engine（推理层）  ← 这是整个智能的核心</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8E%A8%E7%90%86%E9%93%BE%E5%BF%85%E9%A1%BB%E7%94%A8-ReAct-Prompting%EF%BC%9A"><span class="toc-nav-text">推理链必须用 ReAct Prompting：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-Tool-Router%EF%BC%88%E5%B7%A5%E5%85%B7%E8%B7%AF%E7%94%B1%E5%99%A8%EF%BC%89"><span class="toc-nav-text">4. Tool Router（工具路由器）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-Tools-Layer%EF%BC%88%E6%89%A7%E8%A1%8C%E5%B1%82%EF%BC%89"><span class="toc-nav-text">5. Tools Layer（执行层）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-docker-%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">✔ docker 工具</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-k8s-%E5%B7%A5%E5%85%B7%EF%BC%88%E6%9C%AA%E6%9D%A5%EF%BC%89"><span class="toc-nav-text">✔ k8s 工具（未来）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-%E7%B3%BB%E7%BB%9F%E7%BA%A7%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">✔ 系统级工具</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-Cypress-%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">✔ Cypress 工具</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-Event-%E5%8F%91%E5%B0%84%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">✔ Event 发射工具</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-Output-Layer%EF%BC%88%E8%BE%93%E5%87%BA%E5%B1%82%EF%BC%89"><span class="toc-nav-text">6. Output Layer（输出层）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-1-%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF%EF%BC%88NATS%EF%BC%89"><span class="toc-nav-text">✔ 1. 事件总线（NATS）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%94-2-Prometheus%EF%BC%88push-gateway%EF%BC%89"><span class="toc-nav-text">✔ 2. Prometheus（push-gateway）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%95%B8-%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%EF%BC%9AMCP-Agent-%E4%BB%8E%E4%BA%8B%E4%BB%B6%E5%88%B0%E6%8E%A8%E7%90%86%E5%88%B0%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8-%E7%9A%84%E5%AE%8C%E6%95%B4%E8%81%8C%E4%B8%9A%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">🕸 第三部分：MCP Agent 从事件到推理到工具调用 的完整职业流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E9%97%AD%E7%8E%AF"><span class="toc-nav-text">完整事件驱动闭环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%9C%9F%E5%AE%9E%E5%AE%9E%E4%BE%8B%EF%BC%9A%E7%99%BB%E5%BD%95%E6%B5%81%E7%A8%8B%E5%A4%B1%E8%B4%A5"><span class="toc-nav-text">真实实例：登录流程失败</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Step-1%EF%BC%9A%E4%BA%8B%E4%BB%B6%E6%9D%A5%E4%BA%86"><span class="toc-nav-text">Step 1：事件来了</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Step-2%EF%BC%9A%E4%B8%A2%E8%BF%9B%E9%98%9F%E5%88%97"><span class="toc-nav-text">Step 2：丢进队列</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Step-3%EF%BC%9A%E6%8E%A8%E7%90%86%E5%B1%82%E5%A4%84%E7%90%86"><span class="toc-nav-text">Step 3：推理层处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#LLM-%E8%BF%94%E5%9B%9E%EF%BC%9A"><span class="toc-nav-text">LLM 返回：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Step-4%EF%BC%9ATool-Router-%E6%89%A7%E8%A1%8C%E9%93%BE%E6%9D%A1"><span class="toc-nav-text">Step 4：Tool Router 执行链条</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Step-5%EF%BC%9A%E8%BE%93%E5%87%BA%E4%BA%8B%E4%BB%B6"><span class="toc-nav-text">Step 5：输出事件</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%A5-%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%EF%BC%9AMCP-Agent-%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84%EF%BC%88%E5%B7%A5%E7%A8%8B%E7%BA%A7%EF%BC%89"><span class="toc-nav-text">🔥 第四部分：MCP Agent 完整代码结构（工程级）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%94%AE-%E7%AC%AC%E4%BA%94%E9%83%A8%E5%88%86%EF%BC%9AMCP-Agent-%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B3%E9%94%AE%E5%93%B2%E5%AD%A6"><span class="toc-nav-text">🔮 第五部分：MCP Agent 设计的关键哲学</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%B5-%E6%9C%80%E5%90%8E%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%EF%BC%9A"><span class="toc-nav-text">🧵 最后总结一句：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%EF%BC%9AMCP-Agent-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%EF%BC%9F%EF%BC%88%E8%83%BD%E5%8A%9B%E6%84%9F%E7%9F%A5-%E5%8A%A8%E6%80%81%E5%B7%A5%E5%85%B7-%E4%BA%8B%E4%BB%B6%E8%BE%93%E5%85%A5%EF%BC%89"><span class="toc-nav-text">✅ 一、核心：MCP Agent 如何设计？（能力感知 + 动态工具 + 事件输入）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A5%EF%BC%881%EF%BC%89MCP-Agent-%E7%9A%84%E6%9C%AC%E8%B4%A8%E8%A7%92%E8%89%B2"><span class="toc-nav-text">🔥（1）MCP Agent 的本质角色</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8D%AC%EF%BC%882%EF%BC%89%E8%83%BD%E5%8A%9B%E5%8A%A8%E6%80%81%E6%89%A9%E5%B1%95%EF%BC%88%E4%BD%A0%E6%8F%90%E5%88%B0%E7%9A%84%E2%80%9C%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%85%B7%E5%A4%87%E5%B0%B1%E4%B8%8D%E8%B0%83%E7%94%A8%E2%80%9D%EF%BC%89"><span class="toc-nav-text">🍬（2）能力动态扩展（你提到的“工具不具备就不调用”）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Capability-Discovery%EF%BC%88%E8%83%BD%E5%8A%9B%E5%8F%91%E7%8E%B0%EF%BC%89"><span class="toc-nav-text">Capability Discovery（能力发现）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0%EF%BC%883%EF%BC%89MCP-Agent-%E5%A6%82%E4%BD%95%E6%8E%A5%E5%8F%97%E4%BA%8B%E4%BB%B6%EF%BC%9F%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-nav-text">🧠（3）MCP Agent 如何接受事件？（重点）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Event-Bus-%E6%8A%80%E6%9C%AF%E9%80%89%E6%8B%A9"><span class="toc-nav-text">Event Bus 技术选择</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9C%85-%E4%BA%8C%E3%80%81Prometheus-%E5%A6%82%E4%BD%95%E6%8E%A5%E5%85%A5-Cypress-%E4%B8%9A%E5%8A%A1%E6%95%B0%E6%8D%AE%EF%BC%9F%EF%BC%88%E4%BD%A0%E7%9A%84%E7%AC%AC2%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-nav-text">✅ 二、Prometheus 如何接入 Cypress 业务数据？（你的第2个问题）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E6%9C%80%E4%BC%98%E6%9E%B6%E6%9E%84%EF%BC%9ACypress-%E2%86%92-Event-Bus-%E2%86%92-Metric-Collector-%E2%86%92-Prometheus"><span class="toc-nav-text">🎯 最优架构：Cypress → Event Bus → Metric Collector → Prometheus</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%81%E7%A8%8B%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-nav-text">流程解释：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Prometheus-%E6%94%AF%E6%8C%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">Prometheus 支持的数据类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-PASS-FAIL-counter"><span class="toc-nav-text">1️⃣ PASS&#x2F;FAIL counter</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-%E6%B5%8B%E8%AF%95%E8%80%97%E6%97%B6-histogram"><span class="toc-nav-text">2️⃣ 测试耗时 histogram</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-%E4%B8%9A%E5%8A%A1%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E6%A0%87"><span class="toc-nav-text">3️⃣ 业务自定义指标</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81VSCode-%E8%87%AA%E5%B8%A6%E7%9A%84-LLM-%E5%A6%82%E4%BD%95%E6%94%BE%E8%BF%9B-Docker-%EF%BC%88%E4%BD%A0%E7%9A%84%E7%AC%AC3%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-nav-text">✅ 三、VSCode 自带的 LLM 如何放进 Docker?（你的第3个问题）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%951%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89%EF%BC%9A%E4%BD%BF%E7%94%A8-VSCode-Web-Copilot-Agent-Server"><span class="toc-nav-text">方法1（推荐）：使用 VSCode Web + Copilot Agent Server</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E7%8B%AC%E7%AB%8B-MCP-Agent%EF%BC%8C%E4%B8%8D%E4%BE%9D%E8%B5%96-VSCode-UI"><span class="toc-nav-text">方法2：独立 MCP Agent，不依赖 VSCode UI</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%96%B9%E6%B3%953%EF%BC%9A%EF%BC%88%E9%AB%98%E7%BA%A7%EF%BC%89%E5%9C%A8-Container-%E4%B8%AD%E4%BD%BF%E7%94%A8-OpenAI-%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B-or-Ollama"><span class="toc-nav-text">方法3：（高级）在 Container 中使用 OpenAI 本地模型 or Ollama</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BD%A0%E6%9C%80%E5%90%8E%E5%BE%97%E5%88%B0%E7%9A%84%E6%98%AF%E4%B8%80%E4%B8%AA%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F-AIOps-%E7%BA%A7%E7%B3%BB%E7%BB%9F"><span class="toc-nav-text">🧠 你最后得到的是一个真正的分布式 AIOps 级系统</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/11/30/ai_tools/aiops-agent+vscode-llm/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

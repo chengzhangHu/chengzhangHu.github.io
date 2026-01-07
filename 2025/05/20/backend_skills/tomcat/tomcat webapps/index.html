@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      tomcat webapps 和 target | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>tomcat webapps 和 target</h2>
+  <p class="post-date">2025-05-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><code>webapps</code> 和 <code>target</code> 是在 Java Web 应用开发和部署中经常遇到的两个目录，它们的功能和作用是不同的。以下是它们的详细区别：</p>
+<hr>
+<h3 id="🔸-webapps-——-Tomcat-的部署目录"><a href="#🔸-webapps-——-Tomcat-的部署目录" class="headerlink" title="🔸 webapps —— Tomcat 的部署目录"></a>🔸 <code>webapps</code> —— Tomcat 的部署目录</h3><ul>
+<li><p><strong>位置：</strong> 位于 Tomcat 安装目录下，例如：<code>$TOMCAT_HOME/webapps</code></p>
+</li>
+<li><p><strong>作用：</strong> Tomcat 在启动时会自动扫描该目录下的 <code>.war</code> 文件或已解压的 Web 应用文件夹并进行部署。</p>
+</li>
+<li><p><strong>使用方式：</strong></p>
+<ul>
+<li>把编译好的 <code>.war</code> 文件放到 <code>webapps</code> 中，Tomcat 会自动解压并部署。</li>
+<li>也可以直接将解压后的 Web 应用目录放入 <code>webapps</code>，无需 <code>.war</code> 文件。</li>
+</ul>
+</li>
+<li><p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$TOMCAT_HOME/webapps/myapp.war</span><br><span class="line">$TOMCAT_HOME/webapps/myapp/  （解压后的文件夹）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="🔸-target-——-Maven-Gradle-构建输出目录"><a href="#🔸-target-——-Maven-Gradle-构建输出目录" class="headerlink" title="🔸 target —— Maven&#x2F;Gradle 构建输出目录"></a>🔸 <code>target</code> —— Maven&#x2F;Gradle 构建输出目录</h3><ul>
+<li><strong>位置：</strong> 位于你的项目目录下，例如：<code>/your-project/target</code></li>
+<li><strong>作用：</strong> 存放项目构建后的输出内容，包括 <code>.class</code> 文件、打包好的 <code>.war</code> 文件、临时构建文件等。</li>
+<li><strong>自动生成：</strong> 每次运行 Maven 的 <code>mvn package</code> 或 <code>mvn install</code> 时，都会生成或更新。</li>
+<li><strong>不能直接部署：</strong> <code>target</code> 是本地构建目录，Tomcat 不会读取它，除非你手动将 <code>.war</code> 拷贝到 <code>webapps</code> 中。</li>
+</ul>
+<hr>
+<h3 id="🔄-常见流程："><a href="#🔄-常见流程：" class="headerlink" title="🔄 常见流程："></a>🔄 常见流程：</h3><ol>
+<li><p>开发完成后，使用 Maven 构建项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package</span><br></pre></td></tr></table></figure></li>
+<li><p>构建后会在 <code>target/</code> 下生成 <code>.war</code> 文件，比如：<code>target/myapp.war</code></p>
+</li>
+<li><p>手动将该 <code>.war</code> 文件拷贝到 Tomcat 的 <code>webapps/</code> 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> target/myapp.war <span class="variable">$TOMCAT_HOME</span>/webapps/</span><br></pre></td></tr></table></figure></li>
+<li><p>启动 Tomcat，自动部署。</p>
+</li>
+</ol>
+<hr>
+<h3 id="✅-总结对比表："><a href="#✅-总结对比表：" class="headerlink" title="✅ 总结对比表："></a>✅ 总结对比表：</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th><code>webapps</code></th>
+<th><code>target</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所属</td>
+<td>Tomcat</td>
+<td>开发构建工具 (如 Maven)</td>
+</tr>
+<tr>
+<td>功能</td>
+<td>Tomcat 部署目录</td>
+<td>项目构建输出目录</td>
+</tr>
+<tr>
+<td>使用方式</td>
+<td>Tomcat 启动时自动读取</td>
+<td>需要手动拷贝或通过插件部署</td>
+</tr>
+<tr>
+<td>是否自动生成</td>
+<td>否，需要你放置文件</td>
+<td>是，构建时自动生成</td>
+</tr>
+<tr>
+<td>内容</td>
+<td><code>.war</code> 或 Web 应用目录结构</td>
+<td><code>.class</code> 文件、<code>.war</code> 文件等</td>
+</tr>
+</tbody></table>
+<hr>
+<p>如需自动将 <code>target/*.war</code> 部署到 Tomcat，可以使用插件（如 Maven 的 <code>tomcat7-maven-plugin</code>）进行自动部署。</p>
+<p>要通过浏览器访问部署在 Tomcat 的 <code>webapps</code> 目录中的 Web 应用</p>
+<ol>
+<li>Tomcat 正常启动；</li>
+<li>Web 应用已正确部署到 <code>webapps</code>；</li>
+<li>使用正确的 URL 进行访问。</li>
+</ol>
+<hr>
+<h2 id="✅-一、访问请求的基本格式："><a href="#✅-一、访问请求的基本格式：" class="headerlink" title="✅ 一、访问请求的基本格式："></a>✅ 一、访问请求的基本格式：</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;服务器IP&gt;:&lt;端口&gt;/&lt;项目名&gt;/&lt;资源路径&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>服务器IP</code>：部署 Tomcat 的主机 IP，开发本地通常是 <code>localhost</code> 或 <code>127.0.0.1</code></li>
+<li><code>端口</code>：默认是 <code>8080</code>，除非你改了 <code>server.xml</code></li>
+<li><code>项目名</code>：等于部署在 <code>webapps</code> 下 <code>.war</code> 或文件夹的名字（除非是 ROOT）</li>
+<li><code>资源路径</code>：Web 应用中的请求路径，比如 JSP、Servlet、Spring 控制器路径等</li>
+</ul>
+<hr>
+<h2 id="🔸-二、示例说明"><a href="#🔸-二、示例说明" class="headerlink" title="🔸 二、示例说明"></a>🔸 二、示例说明</h2><p>假设你的 Tomcat 安装在本地，端口是默认的 <code>8080</code>，<code>webapps</code> 下有一个应用叫 <code>myapp</code>：</p>
+<h3 id="示例-1：访问首页"><a href="#示例-1：访问首页" class="headerlink" title="示例 1：访问首页"></a>示例 1：访问首页</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/myapp/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>默认会加载 <code>web.xml</code> 中配置的 <code>welcome-file</code>（比如 <code>index.jsp</code>）</p>
+</blockquote>
+<hr>
+<h3 id="示例-2：访问-JSP-页面"><a href="#示例-2：访问-JSP-页面" class="headerlink" title="示例 2：访问 JSP 页面"></a>示例 2：访问 JSP 页面</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/myapp/login.jsp</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="示例-3：访问-Servlet"><a href="#示例-3：访问-Servlet" class="headerlink" title="示例 3：访问 Servlet"></a>示例 3：访问 Servlet</h3><p>如果在 <code>web.xml</code> 中定义了一个 Servlet 映射路径 <code>/login</code>，那么可以通过：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/myapp/login</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="示例-4：访问-Spring-MVC-Controller"><a href="#示例-4：访问-Spring-MVC-Controller" class="headerlink" title="示例 4：访问 Spring MVC Controller"></a>示例 4：访问 Spring MVC Controller</h3><p>如果你用的是 Spring MVC，并在 Controller 中写了路径：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/user/list&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<p>则访问地址是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/myapp/user/list</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-三、特殊情况：ROOT-项目"><a href="#✅-三、特殊情况：ROOT-项目" class="headerlink" title="✅ 三、特殊情况：ROOT 项目"></a>✅ 三、特殊情况：ROOT 项目</h2><p>如果你将应用部署为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webapps/ROOT/</span><br></pre></td></tr></table></figure>
+
+<p>或：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webapps/ROOT.war</span><br></pre></td></tr></table></figure>
+
+<p>那么你就<strong>不需要写项目名</strong>，直接访问：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-四、排查访问不了的问题"><a href="#✅-四、排查访问不了的问题" class="headerlink" title="✅ 四、排查访问不了的问题"></a>✅ 四、排查访问不了的问题</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>检查方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>页面 404</td>
+<td>路径是否正确、应用是否成功部署</td>
+</tr>
+<tr>
+<td>端口访问不了</td>
+<td>Tomcat 是否启动、端口是否防火墙拦截</td>
+</tr>
+<tr>
+<td>报错页面</td>
+<td>JSP&#x2F;Servlet&#x2F;Controller 是否有异常</td>
+</tr>
+</tbody></table>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#学习笔记" >
+    <span class="tag-code">学习笔记</span>
+  </a>
+
+  <a target="_blank" href="/tags#tomcat" >
+    <span class="tag-code">tomcat</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/19/front_skills/canvas/webgl%20vs%20webgpu/">
+        <span class="nav-arrow">← </span>
+        
+          webgl vs webgpu
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/21/bigdata_for_analyze/ai%E5%9B%BE%E7%89%87%E8%AF%86%E5%88%AB/">
+        
+          ai图片识别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B8-webapps-%E2%80%94%E2%80%94-Tomcat-%E7%9A%84%E9%83%A8%E7%BD%B2%E7%9B%AE%E5%BD%95"><span class="toc-nav-text">🔸 webapps —— Tomcat 的部署目录</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B8-target-%E2%80%94%E2%80%94-Maven-Gradle-%E6%9E%84%E5%BB%BA%E8%BE%93%E5%87%BA%E7%9B%AE%E5%BD%95"><span class="toc-nav-text">🔸 target —— Maven&#x2F;Gradle 构建输出目录</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%84-%E5%B8%B8%E8%A7%81%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-nav-text">🔄 常见流程：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94%E8%A1%A8%EF%BC%9A"><span class="toc-nav-text">✅ 总结对比表：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E8%AE%BF%E9%97%AE%E8%AF%B7%E6%B1%82%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-nav-text">✅ 一、访问请求的基本格式：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%B8-%E4%BA%8C%E3%80%81%E7%A4%BA%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">🔸 二、示例说明</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B-1%EF%BC%9A%E8%AE%BF%E9%97%AE%E9%A6%96%E9%A1%B5"><span class="toc-nav-text">示例 1：访问首页</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B-2%EF%BC%9A%E8%AE%BF%E9%97%AE-JSP-%E9%A1%B5%E9%9D%A2"><span class="toc-nav-text">示例 2：访问 JSP 页面</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B-3%EF%BC%9A%E8%AE%BF%E9%97%AE-Servlet"><span class="toc-nav-text">示例 3：访问 Servlet</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%A4%BA%E4%BE%8B-4%EF%BC%9A%E8%AE%BF%E9%97%AE-Spring-MVC-Controller"><span class="toc-nav-text">示例 4：访问 Spring MVC Controller</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%EF%BC%9AROOT-%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">✅ 三、特殊情况：ROOT 项目</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%9B%9B%E3%80%81%E6%8E%92%E6%9F%A5%E8%AE%BF%E9%97%AE%E4%B8%8D%E4%BA%86%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-nav-text">✅ 四、排查访问不了的问题</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/20/backend_skills/tomcat/tomcat webapps/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

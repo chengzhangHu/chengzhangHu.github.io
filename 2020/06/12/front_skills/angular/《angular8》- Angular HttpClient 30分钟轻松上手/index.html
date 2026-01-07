@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular8》- Angular HttpClient 30分钟轻松上手 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular8》- Angular HttpClient 30分钟轻松上手</h2>
+  <p class="post-date">2020-06-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><hr>
+<h2 id="Angular8-HttpClient-30分钟深入了解下"><a href="#Angular8-HttpClient-30分钟深入了解下" class="headerlink" title="Angular8 HttpClient 30分钟深入了解下"></a>Angular8 HttpClient 30分钟深入了解下</h2><p>前端开发，axios是标配的http请求发起libary, 采用的是Promise的方式。然后，Angular中采用的是另外一种形式Observable，观察订阅模式。Angular默认推荐采用内置的HTTPClient。<br>下面让我们开始今天的主题，HTTPClient</p>
+<h3 id="模块引入"><a href="#模块引入" class="headerlink" title="模块引入"></a>模块引入</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import &#123;HttpClientModule&#125; from &#x27;@angular/common/http&#x27;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">    declarations: [</span><br><span class="line">        AppComponent</span><br><span class="line">    ],</span><br><span class="line">    imports: [</span><br><span class="line">        BrowserModule,</span><br><span class="line">        HttpClientModule</span><br><span class="line">    ],</span><br><span class="line">    providers: [],</span><br><span class="line">    bootstrap: [AppComponent]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><h4 id="GET请求"><a href="#GET请求" class="headerlink" title="GET请求"></a>GET请求</h4><h5 id="指定请求返回类型"><a href="#指定请求返回类型" class="headerlink" title="指定请求返回类型"></a>指定请求返回类型</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.http.get&lt;Config&gt;(this.configUrl)</span><br><span class="line">  .subscribe((data: Config) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>get请求，明确返回的数据类型为Config,故请求形式为：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.http.get&lt;Config&gt;()...</span><br></pre></td></tr></table></figure></li>
+<li>请求返回后，进行数据转换</li>
+</ul>
+<h5 id="不指定请求返回类型"><a href="#不指定请求返回类型" class="headerlink" title="不指定请求返回类型"></a>不指定请求返回类型</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.http.get(this.configUrl)</span><br><span class="line">.subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<p> 等效于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.http.get&lt;Object&gt;(this.configUrl)</span><br><span class="line">.subscribe((data: Object) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<p>  <strong>问题1： 如果服务端，返回的数据就是一个text文本，譬如Hello,world，你猜会怎么样？</strong></p>
+<h5 id="请求url携带参数"><a href="#请求url携带参数" class="headerlink" title="请求url携带参数"></a>请求url携带参数</h5><ul>
+<li>方法一：HttpParams 形式set <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 必须.链式set，否则参数空</span><br><span class="line">const params = new HttpParams()</span><br><span class="line">    .set(&#x27;orderBy&#x27;, &#x27;&quot;$key&quot;&#x27;)</span><br><span class="line">    .set(&#x27;limitToFirst&#x27;, &quot;1&quot;);</span><br><span class="line">    </span><br><span class="line">this.http.get(this.configUrl,&#123;params&#125;)</span><br><span class="line">  .subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure></li>
+<li>方法二： fromString<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const params = new HttpParams(&#123;</span><br><span class="line">  fromString: &#x27;orderBy=&quot;$key&quot;&amp;limitToFirst=1&#x27;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">this.http.get(this.configUrl,&#123;params&#125;)</span><br><span class="line">    .subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<strong>问题2： 如果前端想拿到后端api header头中参数，怎么办？</strong></li>
+</ul>
+<h4 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">this.http.post(url,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;courseListIcon&quot;: &quot;...&quot;,</span><br><span class="line">        &quot;description&quot;: &quot;TEST&quot;,</span><br><span class="line">        &quot;iconUrl&quot;: &quot;..&quot;,</span><br><span class="line">        &quot;longDescription&quot;: &quot;...&quot;,</span><br><span class="line">        &quot;url&quot;: &quot;new-url&quot;</span><br><span class="line">    &#125;)</span><br><span class="line">    .subscribe(</span><br><span class="line">        (res) =&gt; &#123;</span><br><span class="line">            console.log(&quot;POST call successful value returned in body&quot;, </span><br><span class="line">                        res);</span><br><span class="line">        &#125;,</span><br><span class="line">        error =&gt; &#123;</span><br><span class="line">            console.log(&quot;POST call in error&quot;, error);</span><br><span class="line">        &#125;,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            console.log(&quot;The POST observable is now completed.&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">this.http.delete(url1)</span><br><span class="line">    .subscribe(</span><br><span class="line">        (res) =&gt; &#123;</span><br><span class="line">            console.log(&quot;DELETE call successful value returned in body&quot;, </span><br><span class="line">                        res);</span><br><span class="line">        &#125;,</span><br><span class="line">        error =&gt; &#123;</span><br><span class="line">            console.log(&quot;DELETE call in error&quot;, error);</span><br><span class="line">        &#125;,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            console.log(&quot;The DELETE observable is now completed.&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="PATCH"><a href="#PATCH" class="headerlink" title="PATCH"></a>PATCH</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">this.http.patch(url,</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;description&quot;: &quot;Angular Tutorial For Beginners PATCH TEST&quot;,</span><br><span class="line">    &#125;)</span><br><span class="line">    .subscribe(</span><br><span class="line">        (res) =&gt; &#123;</span><br><span class="line">            console.log(&quot;PATCH call successful value returned in body&quot;, </span><br><span class="line">                        res);</span><br><span class="line">        &#125;,</span><br><span class="line">        error =&gt; &#123;</span><br><span class="line">            console.log(&quot;PATCH call in error&quot;, error);</span><br><span class="line">        &#125;,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            console.log(&quot;The PATCH observable is now completed.&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><h4 id="GET请求-1"><a href="#GET请求-1" class="headerlink" title="GET请求"></a>GET请求</h4><h5 id="request方式传参"><a href="#request方式传参" class="headerlink" title="request方式传参"></a>request方式传参</h5>   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   const params = new HttpParams(&#123;</span><br><span class="line">    fromString: &#x27;orderBy=&quot;$key&quot;&amp;limitToFirst=1&#x27;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">this.http.request(&quot;GET&quot;,this.configUrl, &#123; params &#125;)</span><br></pre></td></tr></table></figure>
+<h5 id="header传参"><a href="#header传参" class="headerlink" title="header传参"></a>header传参</h5><ul>
+<li>方法一： HttpHeaders   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> const headers = new HttpHeaders()</span><br><span class="line">          .set(&quot;X-CustomHeader&quot;, &quot;custom header value&quot;);</span><br><span class="line">          </span><br><span class="line">this.http.get(this.configUrl,&#123; headers &#125;)</span><br><span class="line">  .do(console.log)</span><br><span class="line">  .map(data =&gt; _.values(data));</span><br></pre></td></tr></table></figure></li>
+<li>方法二：{} 字面量   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> const headers = &#123;</span><br><span class="line">   &quot;X-CustomHeader&quot;, &quot;custom header value&quot;,</span><br><span class="line">   &#x27;content-type&#x27;: &#x27;application/json&#x27;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line">this.http.get(this.configUrl,&#123; headers &#125;)</span><br><span class="line">  .do(console.log)</span><br><span class="line">  .map(data =&gt; _.values(data));</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="解答问题1："><a href="#解答问题1：" class="headerlink" title="解答问题1："></a>解答问题1：</h5><ul>
+<li><p>我们看一下源码针对Get方法请求参数的定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">get(url: string, options?: &#123;</span><br><span class="line">      headers?: HttpHeaders | &#123;</span><br><span class="line">          [header: string]: string | string[];</span><br><span class="line">      &#125;;</span><br><span class="line">      </span><br><span class="line">      # 默认值有： response| body| event </span><br><span class="line">      observe?: &#x27;body&#x27;;# 默认读取的是response中的body </span><br><span class="line">      params?: HttpParams | &#123;</span><br><span class="line">          [param: string]: string | string[];</span><br><span class="line">      &#125;;</span><br><span class="line">      reportProgress?: boolean;</span><br><span class="line">      </span><br><span class="line">      # 默认值有： arraybuffer | json | blob |text</span><br><span class="line">      responseType?: &#x27;json&#x27;;# 这里，ts参数类型可选，默认值json，</span><br><span class="line">      withCredentials?: boolean;</span><br><span class="line">  &#125;): Observable&lt;Object&gt;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>故从源码我们可以知道，后端返回Hello,world,前端get方法会返回JSON解析异常。此时我们设置下responseType即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.http.get(this.configUrl,&#123;responseType:&#x27;text&#x27;&#125;)</span><br><span class="line">.subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="解答问题二："><a href="#解答问题二：" class="headerlink" title="解答问题二："></a>解答问题二：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.http.get&lt;Config&gt;(</span><br><span class="line">   this.configUrl, &#123; observe: &#x27;response&#x27; &#125;)</span><br><span class="line">  .subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="那么event-是干什么的呢？"><a href="#那么event-是干什么的呢？" class="headerlink" title="那么event 是干什么的呢？"></a>那么event 是干什么的呢？</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const request = new HttpRequest(</span><br><span class="line">      &quot;POST&quot;, this.uploadURL, &#123;&#125;,&#123;observe: &#x27;events&#x27;,reportProgress: true&#125;);</span><br><span class="line">  this.http.request(request)</span><br><span class="line">      .subscribe(</span><br><span class="line">          event =&gt; &#123;</span><br><span class="line">              # 文件上传进度判定</span><br><span class="line">              if (event.type === HttpEventType.DownloadProgress) &#123;</span><br><span class="line">                  console.log(&quot;Download progress event&quot;, event);</span><br><span class="line">              &#125;</span><br><span class="line">              if (event.type === HttpEventType.UploadProgress) &#123;</span><br><span class="line">                  console.log(&quot;Upload progress event&quot;, event);</span><br><span class="line">              &#125;</span><br><span class="line">              if (event.type === HttpEventType.Response) &#123;</span><br><span class="line">                  console.log(&quot;response received...&quot;, event.body);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">      );</span><br></pre></td></tr></table></figure>
+<h3 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h3><h4 id="GET请求-2"><a href="#GET请求-2" class="headerlink" title="GET请求"></a>GET请求</h4><h5 id="并行多个Get处理"><a href="#并行多个Get处理" class="headerlink" title="并行多个Get处理"></a>并行多个Get处理</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const parallel$ = Observable.forkJoin(</span><br><span class="line">        this.http.get(url1),</span><br><span class="line">        this.http.get(url2)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">parallel$.subscribe(</span><br><span class="line">    values =&gt; &#123;</span><br><span class="line">        console.log(&quot;all values&quot;, values)</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="串行多个Get请求"><a href="#串行多个Get请求" class="headerlink" title="串行多个Get请求"></a>串行多个Get请求</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const sequence$ = this.http.get&lt;Config&gt;(url1)</span><br><span class="line">    .switchMap(config =&gt; &#123;</span><br><span class="line">        config.description+= &#x27; - TEST &#x27;;</span><br><span class="line">        return this.http.put(url2,config)</span><br><span class="line">    &#125;);</span><br><span class="line">sequence$.subscribe(</span><br><span class="line">    values =&gt; console.log(&quot;result observable &quot;, values) </span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h5 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">this.http</span><br><span class="line">    .get(&quot;/api/simulate-error&quot;)</span><br><span class="line">    .catch( error =&gt; &#123;</span><br><span class="line">        // here we can show an error message to the user,</span><br><span class="line">        // for example via a service</span><br><span class="line">        console.error(&quot;error catched&quot;, error);</span><br><span class="line">        return Observable.of(&#123;description: &quot;Error Value Emitted&quot;&#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">    .subscribe(</span><br><span class="line">        val =&gt; console.log(&#x27;Value emitted successfully&#x27;, val),</span><br><span class="line">        error =&gt; &#123;</span><br><span class="line">            console.error(&quot;This line is never called &quot;,error);</span><br><span class="line">        &#125;,</span><br><span class="line">        () =&gt; console.log(&quot;HTTP Observable completed...&quot;)</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+<h5 id="请求拦截"><a href="#请求拦截" class="headerlink" title="请求拦截"></a>请求拦截</h5><ul>
+<li>定义鉴权拦截器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import &#123;Injectable&#125; from &quot;@angular/core&quot;;</span><br><span class="line">import &#123;HttpEvent, HttpHandler, HttpInterceptor&#125; </span><br><span class="line">     from &quot;@angular/common/http&quot;;</span><br><span class="line">import &#123;HttpRequest&#125; from &quot;@angular/common/http&quot;;</span><br><span class="line">import &#123;Observable&#125; from &quot;rxjs/Observable&quot;;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line">export class AuthInterceptor implements HttpInterceptor &#123;</span><br><span class="line">    </span><br><span class="line">    constructor(private authService: AuthService) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    intercept(req: HttpRequest&lt;any&gt;, </span><br><span class="line">               next: HttpHandler):Observable&lt;HttpEvent&lt;any&gt;&gt; &#123;</span><br><span class="line">        </span><br><span class="line">        const clonedRequest = req.clone(&#123;</span><br><span class="line">            headers: req.headers.set(</span><br><span class="line">                &#x27;X-CustomAuthHeader&#x27;, </span><br><span class="line">                authService.getToken())</span><br><span class="line">        &#125;);</span><br><span class="line">        console.log(&quot;new headers&quot;, clonedRequest.headers.keys());</span><br><span class="line">        return next.handle(clonedRequest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>配置拦截器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@NgModule(&#123;</span><br><span class="line">    declarations: [</span><br><span class="line">        AppComponent</span><br><span class="line">    ],</span><br><span class="line">    imports: [</span><br><span class="line">        BrowserModule,</span><br><span class="line">        HttpClientModule</span><br><span class="line">    ],</span><br><span class="line">    providers: [</span><br><span class="line">        [ </span><br><span class="line">           &#123; </span><br><span class="line">            provide: HTTP_INTERCEPTORS, </span><br><span class="line">            useClass: AuthInterceptor,</span><br><span class="line">            multi: true </span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">    bootstrap: [AppComponent]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.angular-university.io/angular-http/">angular </a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://angular.cn/guide/http#reading-the-full-response">angular 官网 </a></p>
+</li>
+</ul>
+<h3 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h3><h4 id="Angular8状态管理NgRx"><a href="#Angular8状态管理NgRx" class="headerlink" title="Angular8状态管理NgRx"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5ddcd2b56fb9a07ad9676ca2">Angular8状态管理NgRx</a></h4><h4 id="前端Rollup-RxJs响应式编程实践"><a href="#前端Rollup-RxJs响应式编程实践" class="headerlink" title="前端Rollup+RxJs响应式编程实践"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5dca49d35188255700056e44">前端Rollup+RxJs响应式编程实践</a></h4><h4 id="Angular8-httpclient简单入门"><a href="#Angular8-httpclient简单入门" class="headerlink" title="Angular8 httpclient简单入门"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5dc534ce51882559706f82f9">Angular8 httpclient简单入门</a></h4><h4 id="20个你值得了解的Angular开源项目"><a href="#20个你值得了解的Angular开源项目" class="headerlink" title="20个你值得了解的Angular开源项目"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5edf916a6fb9a047e6080dd9">20个你值得了解的Angular开源项目</a></h4><h4 id="angular8-日常开发填坑指南"><a href="#angular8-日常开发填坑指南" class="headerlink" title="angular8 日常开发填坑指南"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5ed080ebe51d45788325f27e">angular8 日常开发填坑指南</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#http" >
+    <span class="tag-code">http</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/06/10/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20%20angular%20%E7%BB%84%E4%BB%B6%E9%99%8D%E7%BA%A7%E5%BC%95%E7%94%A8ui-grid%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》-  angular 组件升级引用ui-grid最佳实践
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/13/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20Rxjs%20%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E8%B5%B0%E5%90%91%E9%AB%98%E7%AB%AF/">
+        
+          《angular8》- Rxjs 深入了解走向高端
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Angular8-HttpClient-30%E5%88%86%E9%92%9F%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E4%B8%8B"><span class="toc-nav-text">Angular8 HttpClient 30分钟深入了解下</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%A8%A1%E5%9D%97%E5%BC%95%E5%85%A5"><span class="toc-nav-text">模块引入</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-nav-text">入门</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#GET%E8%AF%B7%E6%B1%82"><span class="toc-nav-text">GET请求</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">指定请求返回类型</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%B8%8D%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">不指定请求返回类型</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%AF%B7%E6%B1%82url%E6%90%BA%E5%B8%A6%E5%8F%82%E6%95%B0"><span class="toc-nav-text">请求url携带参数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#POST"><span class="toc-nav-text">POST</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DELETE"><span class="toc-nav-text">DELETE</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PATCH"><span class="toc-nav-text">PATCH</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-nav-text">进阶</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#GET%E8%AF%B7%E6%B1%82-1"><span class="toc-nav-text">GET请求</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#request%E6%96%B9%E5%BC%8F%E4%BC%A0%E5%8F%82"><span class="toc-nav-text">request方式传参</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#header%E4%BC%A0%E5%8F%82"><span class="toc-nav-text">header传参</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%A7%A3%E7%AD%94%E9%97%AE%E9%A2%981%EF%BC%9A"><span class="toc-nav-text">解答问题1：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%A7%A3%E7%AD%94%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9A"><span class="toc-nav-text">解答问题二：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E9%82%A3%E4%B9%88event-%E6%98%AF%E5%B9%B2%E4%BB%80%E4%B9%88%E7%9A%84%E5%91%A2%EF%BC%9F"><span class="toc-nav-text">那么event 是干什么的呢？</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-nav-text">高级</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#GET%E8%AF%B7%E6%B1%82-2"><span class="toc-nav-text">GET请求</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%B9%B6%E8%A1%8C%E5%A4%9A%E4%B8%AAGet%E5%A4%84%E7%90%86"><span class="toc-nav-text">并行多个Get处理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%B8%B2%E8%A1%8C%E5%A4%9A%E4%B8%AAGet%E8%AF%B7%E6%B1%82"><span class="toc-nav-text">串行多个Get请求</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-nav-text">异常处理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA"><span class="toc-nav-text">请求拦截</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">推荐</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86NgRx"><span class="toc-nav-text">Angular8状态管理NgRx</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%89%8D%E7%AB%AFRollup-RxJs%E5%93%8D%E5%BA%94%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="toc-nav-text">前端Rollup+RxJs响应式编程实践</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8-httpclient%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="toc-nav-text">Angular8 httpclient简单入门</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#20%E4%B8%AA%E4%BD%A0%E5%80%BC%E5%BE%97%E4%BA%86%E8%A7%A3%E7%9A%84Angular%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">20个你值得了解的Angular开源项目</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#angular8-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%A1%AB%E5%9D%91%E6%8C%87%E5%8D%97"><span class="toc-nav-text">angular8 日常开发填坑指南</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/12/front_skills/angular/《angular8》- Angular HttpClient 30分钟轻松上手/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

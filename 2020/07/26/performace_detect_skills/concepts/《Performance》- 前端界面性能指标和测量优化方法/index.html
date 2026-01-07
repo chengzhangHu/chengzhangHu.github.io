@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Performance》- 前端界面性能指标和测量优化方法 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Performance》- 前端界面性能指标和测量优化方法</h2>
+  <p class="post-date">2020-07-27</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="性能定义"><a href="#性能定义" class="headerlink" title="性能定义"></a>性能定义</h2><h3 id="性能理解"><a href="#性能理解" class="headerlink" title="性能理解"></a>性能理解</h3><blockquote>
+<p>性能是相对的，非绝对的<br>快的网络好的硬件设备，加载同样网页 ，会比差的网络和硬件设备<br>不同站点的加载耗时，也可能是相同的<br>站点加载虽然快，但是用户交互、请求响应也可能慢</p>
+</blockquote>
+<h3 id="好的性能如何定义"><a href="#好的性能如何定义" class="headerlink" title="好的性能如何定义"></a>好的性能如何定义</h3><blockquote>
+<p>Perceived load speeda(界面加载和渲染速度)</p>
+</blockquote>
+<ul>
+<li>how quickly a page can load and render all of its visual elements to the screen.</li>
+</ul>
+<blockquote>
+<p>Load responsiveness(js执行加载和执行速度)</p>
+</blockquote>
+<ul>
+<li>how quickly a page can load and execute any required JavaScript code in order for components to respond quickly to user interaction</li>
+</ul>
+<blockquote>
+<p>Runtime responsiveness(js交互执行速度)</p>
+</blockquote>
+<ul>
+<li>after page load, how quickly can the page respond to user interaction.</li>
+</ul>
+<blockquote>
+<p>Visual stability(界面Ui友好、体验稳定性)</p>
+</blockquote>
+<ul>
+<li>do elements on the page shift in ways that users don’t expect and potentially interfere with their interactions?</li>
+</ul>
+<blockquote>
+<p>Smoothness(Ui界面动画性能)</p>
+</blockquote>
+<ul>
+<li>do transitions and animations render at a consistent frame rate and flow fluidly from one state to the next?</li>
+</ul>
+<h3 id="如何测量"><a href="#如何测量" class="headerlink" title="如何测量"></a>如何测量</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://developers.google.com/speed/pagespeed/insights/">PageSpeed Insights</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-user-experience-report">Chrome User Experience Report</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://webmasters.googleblog.com/2019/11/search-console-speed-report.html">Search Console (Speed Report)</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/lighthouse/">Lighthouse</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/">Chrome DevTools</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://webpagetest.org/">webpagetest</a></p>
+</li>
+</ul>
+<h2 id="性能指标量化"><a href="#性能指标量化" class="headerlink" title="性能指标量化"></a>性能指标量化</h2><h3 id="First-Contentful-Paint-FCP"><a href="#First-Contentful-Paint-FCP" class="headerlink" title="First Contentful Paint (FCP)"></a>First Contentful Paint (FCP)</h3><blockquote>
+<p>First Contentful Paint reports the time when the browser first rendered any text, image (including background images), non-white canvas or SVG. This includes text with pending webfonts. This is the first time users could start consuming page content.</p>
+</blockquote>
+<ul>
+<li>标准： 1s </li>
+<li>还可通过<a target="_blank" rel="noopener" href="https://firebase.google.com/docs/perf-mon/get-started-web">Firebase Performance Monitoring (beta)</a>测量</li>
+</ul>
+<h3 id="Largest-Contentful-Paint-LCP"><a href="#Largest-Contentful-Paint-LCP" class="headerlink" title="Largest Contentful Paint (LCP)"></a>Largest Contentful Paint (LCP)</h3><blockquote>
+<p>Largest Contentful Paint (LCP) is an important, user-centric metric for measuring perceived load speed because it marks the point in the page load timeline when the page’s main content has likely loaded—a fast LCP helps reassure the user that the page is useful.</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/07/30/anF0ln.png"></p>
+<h3 id="First-Input-Delay-FID"><a href="#First-Input-Delay-FID" class="headerlink" title="First Input Delay (FID)"></a>First Input Delay (FID)</h3><blockquote>
+<p>First Input Delay (FID) is an important, user-centric metric for measuring load responsiveness because it quantifies the experience users feel when trying to interact with unresponsive pages—a low FID helps ensure that the page is usable</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/07/30/anFgkF.png"></p>
+<h3 id="Time-to-Interactive-TTI"><a href="#Time-to-Interactive-TTI" class="headerlink" title="Time to Interactive (TTI)"></a>Time to Interactive (TTI)</h3><blockquote>
+<p>The TTI metric measures the time from when the page starts loading to when its main sub-resources have loaded and it is capable of reliably responding to user input quickly</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/07/30/anFRfJ.png"></p>
+<h3 id="Total-Blocking-Time-TBT"><a href="#Total-Blocking-Time-TBT" class="headerlink" title="Total Blocking Time (TBT)"></a>Total Blocking Time (TBT)</h3><blockquote>
+<p>The Total Blocking Time (TBT) metric measures the total amount of time between First Contentful Paint (FCP) and Time to Interactive (TTI) where the main thread was blocked for long enough to prevent input responsiveness.</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/07/30/anF5Ox.md.png"></p>
+<p><a target="_blank" rel="noopener" href="https://web.dev/custom-metrics/#long-tasks-api">Long Task</a></p>
+<ul>
+<li>主线程上运行</li>
+<li>运行时间超过50ms</li>
+</ul>
+<h3 id="Cumulative-Layout-Shift-CLS"><a href="#Cumulative-Layout-Shift-CLS" class="headerlink" title="Cumulative Layout Shift (CLS)"></a>Cumulative Layout Shift (CLS)</h3><blockquote>
+<p>Cumulative Layout Shift (CLS) is an important, user-centric metric for measuring visual stability because it helps quantify how often users experience unexpected layout shifts—a low CLS helps ensure that the page is delightful.</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/07/30/anFom6.md.png"></p>
+<h3 id="Time-to-first-byte（TTFB-）"><a href="#Time-to-first-byte（TTFB-）" class="headerlink" title="Time to first byte（TTFB ）"></a>Time to first byte（TTFB ）</h3><blockquote>
+<p>Time to first byte (TTFB) is a measurement used as an indication of the responsiveness of a webserver or other network resource. TTFB measures the duration from the user or client making an HTTP request to the first byte of the page being received by the client’s browser. This time is made up of the socket connection time, the time taken to send the HTTP request, and the time taken to get the first byte of the page</p>
+</blockquote>
+<p>Load time is how long it takes for a webpage to be loaded and usable by a browser. Often in web page delivery a page is compressed in the Gzip format to make the size of the download smaller. This practice prevents the first byte from being sent until the compression is complete and increases the TTFB significantly. TTFB can go from 100–200 ms to 1000–2000 ms, but the page will load much faster and be ready for the user in a much smaller amount of time. Many websites see a common 5–10× increase in TTFB but a much faster browser response time garnering 20% load-time decrease. There are some drawbacks however in using Gzip compression:</p>
+<p>server CPU load increases during compression.<br>data can take a long time to process and since a first byte isn’t sent until it’s done compressing it can make the webpage appear to be hung.<br>long times to first bytes will often cause a user to cancel and reissue their request to the web-server resulting in increased CPU loads because of sequential load requests.</p>
+<h2 id="如何优化"><a href="#如何优化" class="headerlink" title="如何优化"></a>如何优化</h2><h3 id="FCP"><a href="#FCP" class="headerlink" title="FCP"></a>FCP</h3><ul>
+<li>减少header头中，阻塞html渲染的script，link请求</li>
+<li>移除不用的js,css,html 代码</li>
+<li>css代码压缩</li>
+<li>预连接到所需的起点</li>
+<li>减少服务器响应时间（TTFB）</li>
+<li>避免多次页面重定向</li>
+<li>预加载关键请求</li>
+<li>避免巨大的网络负载</li>
+<li>通过有效的缓存策略服务静态资产</li>
+<li>避免DOM太大</li>
+<li>最小化关键请求深度</li>
+<li>确保文本在Webfont加载期间保持可见</li>
+<li>保持低请求数量和小传输大小</li>
+</ul>
+<h3 id="LCP"><a href="#LCP" class="headerlink" title="LCP"></a>LCP</h3><blockquote>
+<p>影响因素：</p>
+</blockquote>
+<ul>
+<li>服务器响应时间慢</li>
+<li>渲染阻止的JavaScript和CSS</li>
+<li>资源加载时间</li>
+<li>客户端渲染</li>
+</ul>
+<blockquote>
+<p>优化方法</p>
+</blockquote>
+<ul>
+<li><p>使用PRPL模式应用即时加载</p>
+</li>
+<li><p>Push (or preload) rel&#x3D;”preload”来预加载关键资源</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;preload&quot; as=&quot;style&quot; href=&quot;css/style.css&quot;&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>Render 渲染界面尽可能的快</p>
+<ul>
+<li>没有任何一种正确的解决方案可以减少应用程序中的First Paint，并且只有在收益大于应用程序的权衡因素的情况下，才应考虑内联样式和服务器端渲染</li>
+</ul>
+</li>
+<li><p>Pre-cache 预缓存剩余静态资源</p>
+</li>
+<li><p>Lazy load 按需拆分整个捆绑包和延迟加载块</p>
+</li>
+<li><p>优化关键渲染路径</p>
+</li>
+<li><p>优化您的CSS</p>
+</li>
+<li><p>优化图像</p>
+</li>
+<li><p>优化网络字体</p>
+</li>
+<li><p>优化您的JavaScript（适用于客户端呈现的网站）</p>
+</li>
+</ul>
+<h3 id="FID"><a href="#FID" class="headerlink" title="FID"></a>FID</h3><ul>
+<li>减少第三方代码的影响</li>
+<li>减少JavaScript执行时间</li>
+<li>减少主线程工作</li>
+<li>保持低请求数量和小传输大小</li>
+</ul>
+<h3 id="TTI"><a href="#TTI" class="headerlink" title="TTI"></a>TTI</h3><ul>
+<li>缩小JavaScript</li>
+<li>预连接到所需的起点</li>
+<li>预加载关键请求</li>
+<li>减少第三方代码的影响</li>
+<li>最小化关键请求深度</li>
+<li>减少JavaScript执行时间</li>
+<li>减少主线程工作</li>
+<li>保持低请求数量和小传输大小</li>
+</ul>
+<h3 id="TBT"><a href="#TBT" class="headerlink" title="TBT"></a>TBT</h3><ul>
+<li>减少第三方代码的影响</li>
+<li>减少JavaScript执行时间</li>
+<li>减少主线程工作</li>
+<li>保持低请求数量和小传输大小</li>
+</ul>
+<h3 id="CLS"><a href="#CLS" class="headerlink" title="CLS"></a>CLS</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://web.dev/optimize-cls/">影响原因</a>：</p>
+</blockquote>
+<ul>
+<li>图片无尺寸</li>
+<li>没有尺寸的广告，嵌入和iframe</li>
+<li>动态注入的内容</li>
+<li>Web字体导致FOIT &#x2F; FOUT</li>
+<li>在更新DOM之前等待网络响应的操作</li>
+</ul>
+<blockquote>
+<p>优化方法</p>
+</blockquote>
+<ul>
+<li>请务必在图片和视频元素上包含size属性，否则，请使用CSS宽高比框保留所需的空间。这种方法可确保在加载图像时浏览器可以在文档中分配正确的空间量。请注意，您还可以使用unsize-media功能部件策略 在支持功能部件策略的浏览器中强制执行此行为。</li>
+<li>除非响应用户交互，否则切勿在现有内容上方插入内容。这样可以确保可以预期发生任何版式移位。</li>
+<li>优先于变换动画而不是触发布局更改的属性动画。对过渡进行动画处理，以提供状态与状态之间的上下文和连续性</li>
+</ul>
+<h3 id="TTFB"><a href="#TTFB" class="headerlink" title="TTFB"></a>TTFB</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="user-experience"><a href="#user-experience" class="headerlink" title="user-experience"></a><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-user-experience-report">user-experience</a></h4><h4 id="pageSpeed"><a href="#pageSpeed" class="headerlink" title="pageSpeed"></a><a target="_blank" rel="noopener" href="https://developers.google.com/speed/pagespeed/insights/">pageSpeed</a></h4><h4 id="improve-performance"><a href="#improve-performance" class="headerlink" title="improve performance"></a><a target="_blank" rel="noopener" href="https://royal.pingdom.com/how-to-analyze-and-improve-page-load-performance/">improve performance</a></h4><h4 id="Time-to-first-byte"><a href="#Time-to-first-byte" class="headerlink" title="Time_to_first_byte"></a><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Time_to_first_byte">Time_to_first_byte</a></h4><h4 id="New-Metrics"><a href="#New-Metrics" class="headerlink" title="New Metrics"></a><a target="_blank" rel="noopener" href="https://web.dev/metrics/">New Metrics</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#performance" >
+    <span class="tag-code">performance</span>
+  </a>
+
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/07/25/devops_skills/security/%E3%80%8ASecurity%E3%80%8B-%20SameSite%E5%85%A5%E9%97%A8/">
+        <span class="nav-arrow">← </span>
+        
+          《Security》- SameSite入门
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/07/28/performace_detect_skills/concepts/%E3%80%8APerformance%E3%80%8B-%20%E5%8D%9A%E5%AE%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%88%B090%E5%88%86+%E5%AE%9E%E8%B7%B5/">
+        
+          《Performance》- 博客性能优化到90分+实践
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%80%A7%E8%83%BD%E5%AE%9A%E4%B9%89"><span class="toc-nav-text">性能定义</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%A7%E8%83%BD%E7%90%86%E8%A7%A3"><span class="toc-nav-text">性能理解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A5%BD%E7%9A%84%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89"><span class="toc-nav-text">好的性能如何定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E6%B5%8B%E9%87%8F"><span class="toc-nav-text">如何测量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E9%87%8F%E5%8C%96"><span class="toc-nav-text">性能指标量化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#First-Contentful-Paint-FCP"><span class="toc-nav-text">First Contentful Paint (FCP)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Largest-Contentful-Paint-LCP"><span class="toc-nav-text">Largest Contentful Paint (LCP)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#First-Input-Delay-FID"><span class="toc-nav-text">First Input Delay (FID)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Time-to-Interactive-TTI"><span class="toc-nav-text">Time to Interactive (TTI)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Total-Blocking-Time-TBT"><span class="toc-nav-text">Total Blocking Time (TBT)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cumulative-Layout-Shift-CLS"><span class="toc-nav-text">Cumulative Layout Shift (CLS)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Time-to-first-byte%EF%BC%88TTFB-%EF%BC%89"><span class="toc-nav-text">Time to first byte（TTFB ）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96"><span class="toc-nav-text">如何优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#FCP"><span class="toc-nav-text">FCP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#LCP"><span class="toc-nav-text">LCP</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#FID"><span class="toc-nav-text">FID</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TTI"><span class="toc-nav-text">TTI</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TBT"><span class="toc-nav-text">TBT</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#CLS"><span class="toc-nav-text">CLS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#TTFB"><span class="toc-nav-text">TTFB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#user-experience"><span class="toc-nav-text">user-experience</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#pageSpeed"><span class="toc-nav-text">pageSpeed</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#improve-performance"><span class="toc-nav-text">improve performance</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Time-to-first-byte"><span class="toc-nav-text">Time_to_first_byte</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#New-Metrics"><span class="toc-nav-text">New Metrics</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/07/26/performace_detect_skills/concepts/《Performance》- 前端界面性能指标和测量优化方法/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      python学习增强笔记 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>python学习增强笔记</h2>
+  <p class="post-date">2022-08-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p> python 学了忘了，忘了学的过程。没有实战，终究会忘记。</p>
+<h2 id="python-版本问题"><a href="#python-版本问题" class="headerlink" title="python 版本问题"></a>python 版本问题</h2><h3 id="如何快速的切换python-版本"><a href="#如何快速的切换python-版本" class="headerlink" title="如何快速的切换python 版本"></a>如何快速的切换python 版本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 查看有哪些可用版本</span><br><span class="line">C:\Users\cheohu&gt;py --list</span><br><span class="line">Installed Pythons found by py Launcher for Windows</span><br><span class="line"> -3.8-64 *</span><br><span class="line"> -2.7-64</span><br><span class="line"> </span><br><span class="line">C:\Users\cheohu&gt;py -2</span><br><span class="line">Python 2.7.15 (v2.7.15:ca079a3ea3, Apr 30 2018, 16:30:26) [MSC v.1500 64 bit (AMD64)] on win32</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; exit()</span><br><span class="line"></span><br><span class="line">C:\Users\cheohu&gt;py -3</span><br></pre></td></tr></table></figure>
+<h3 id="vscode-如何配置python"><a href="#vscode-如何配置python" class="headerlink" title="vscode 如何配置python"></a>vscode 如何配置python</h3><blockquote>
+<p>写代码之前，要先安装 Python 拓展。在侧边栏的拓展栏里搜索 Python，安装有星标的拓展; 安装完毕后，左侧配置选择Command Palette ，选择Python interceptor ，设置即可。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 格式化</span><br><span class="line">pip install flake8</span><br><span class="line">pip install yapf</span><br></pre></td></tr></table></figure>
+
+<h2 id="python书写规范"><a href="#python书写规范" class="headerlink" title="python书写规范"></a>python书写规范</h2><blockquote>
+<p>&#x3D;&#x3D;、&gt;&#x3D;和&lt;&#x3D;等比较运算符两边各添加一个空格 ,更易读。</p>
+</blockquote>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><h3 id="列表-可修改，相当于数组"><a href="#列表-可修改，相当于数组" class="headerlink" title="列表 - 可修改，相当于数组"></a>列表 - 可修改，相当于数组</h3><ul>
+<li>len，max,min,sum 等全局通用函数</li>
+<li>if,elif,else </li>
+<li>&#x3D;&#x3D; ，!&#x3D; ,</li>
+<li>list &#x3D; []; if list ，python自动判断，<strong>没有元素返回false,存在元素返回true</strong>。这个跟js 不同。</li>
+</ul>
+<h3 id="元组-不可修改，相当于坐标"><a href="#元组-不可修改，相当于坐标" class="headerlink" title="元组 - 不可修改，相当于坐标"></a>元组 - 不可修改，相当于坐标</h3><h3 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h3><ul>
+<li>int, float ,comple </li>
+<li>为何没有double，因为float使用双精度，可以表达double范围</li>
+</ul>
+<h3 id="Set-去重、唯一元素处理"><a href="#Set-去重、唯一元素处理" class="headerlink" title="Set - 去重、唯一元素处理"></a>Set - 去重、唯一元素处理</h3><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><h3 id="True-False"><a href="#True-False" class="headerlink" title="True | False"></a>True | False</h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#python" >
+    <span class="tag-code">python</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/08/09/devops_skills/linux/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8F%98%E9%87%8F%E3%80%81%E5%BC%95%E7%94%A8/">
+        <span class="nav-arrow">← </span>
+        
+          linux 学习笔记一
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/08/16/bigdata_for_analyze/%E5%81%A5%E5%BA%B7%E7%A0%81%E7%9A%84%E8%83%8C%E5%90%8E/">
+        
+          健康码的背后
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AF%BC%E8%AF%AD"><span class="toc-nav-text">导语</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#python-%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-nav-text">python 版本问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E7%9A%84%E5%88%87%E6%8D%A2python-%E7%89%88%E6%9C%AC"><span class="toc-nav-text">如何快速的切换python 版本</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#vscode-%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AEpython"><span class="toc-nav-text">vscode 如何配置python</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#python%E4%B9%A6%E5%86%99%E8%A7%84%E8%8C%83"><span class="toc-nav-text">python书写规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Python"><span class="toc-nav-text">Python</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%97%E8%A1%A8-%E5%8F%AF%E4%BF%AE%E6%94%B9%EF%BC%8C%E7%9B%B8%E5%BD%93%E4%BA%8E%E6%95%B0%E7%BB%84"><span class="toc-nav-text">列表 - 可修改，相当于数组</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%83%E7%BB%84-%E4%B8%8D%E5%8F%AF%E4%BF%AE%E6%94%B9%EF%BC%8C%E7%9B%B8%E5%BD%93%E4%BA%8E%E5%9D%90%E6%A0%87"><span class="toc-nav-text">元组 - 不可修改，相当于坐标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Number%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">Number类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Set-%E5%8E%BB%E9%87%8D%E3%80%81%E5%94%AF%E4%B8%80%E5%85%83%E7%B4%A0%E5%A4%84%E7%90%86"><span class="toc-nav-text">Set - 去重、唯一元素处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#String"><span class="toc-nav-text">String</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#True-False"><span class="toc-nav-text">True | False</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/08/09/python_skills/python学习增强笔记/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

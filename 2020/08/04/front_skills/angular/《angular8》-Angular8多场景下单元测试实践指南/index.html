@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular8》-Angular8多场景下单元测试实践指南 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular8》-Angular8多场景下单元测试实践指南</h2>
+  <p class="post-date">2020-08-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="开篇三问："><a href="#开篇三问：" class="headerlink" title="开篇三问："></a>开篇三问：</h2><blockquote>
+<p>为何要进行单元测试？</p>
+</blockquote>
+<blockquote>
+<p>单元测试有什么好处？</p>
+</blockquote>
+<blockquote>
+<p>如何编写angular单元测试？</p>
+</blockquote>
+<h4 id="没有单元测试会如何？"><a href="#没有单元测试会如何？" class="headerlink" title="没有单元测试会如何？"></a>没有单元测试会如何？</h4><blockquote>
+<p>或者换句话说，为何要开发编写单元测试？<br>在业务开发紧张的情况下，往往会忽略单元测试，直接采用，然后开启下方的难忘人生回忆~<br><img src="https://s1.ax1x.com/2020/08/04/aDK5Ox.md.png"></p>
+</blockquote>
+<h4 id="单元测试有啥好处？"><a href="#单元测试有啥好处？" class="headerlink" title="单元测试有啥好处？"></a>单元测试有啥好处？</h4><blockquote>
+<p>我们在开发完毕，加入单元测试环节，下划线部分可能就不存在了~<br><img src="https://s1.ax1x.com/2020/08/04/aDQyiF.md.png"></p>
+</blockquote>
+<h3 id="如何进行angular单元测试？"><a href="#如何进行angular单元测试？" class="headerlink" title="如何进行angular单元测试？"></a>如何进行angular单元测试？</h3><h4 id="angular前提背景知识"><a href="#angular前提背景知识" class="headerlink" title="angular前提背景知识"></a>angular前提背景知识</h4><ul>
+<li>构建angular框架，<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903981966163982">angular-cli</a>命令可以，在创建service、pipe、component时候，同时创建对应的测试用例**.spec.ts文件</li>
+<li>运行单元测试 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng test --no-watch --code-coverage //根目录下会生成coverage目录，其中index.html记录组件覆盖率</span><br></pre></td></tr></table></figure></li>
+<li>查看<br> <img src="https://s1.ax1x.com/2020/08/04/aD8nFf.png"><br> <img src="https://s1.ax1x.com/2020/08/04/aD82tK.md.png"></li>
+</ul>
+<h2 id="编写angular8-单元测试"><a href="#编写angular8-单元测试" class="headerlink" title="编写angular8 单元测试"></a>编写angular8 单元测试</h2><h3 id="测试service-无依赖"><a href="#测试service-无依赖" class="headerlink" title="测试service-无依赖"></a>测试service-无依赖</h3><blockquote>
+<p>框架new实例测试</p>
+</blockquote>
+<p>代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Injectable() //交给angular管理，帮忙注入依赖</span><br><span class="line">export class ValueService &#123;</span><br><span class="line">  value:string;</span><br><span class="line">  constructor() &#123; &#125;</span><br><span class="line">  getValue() &#123; return this.value&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试用例如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 1.直接new service 实例</span><br><span class="line">let service: ValueService;</span><br><span class="line">  beforeEach(() =&gt; &#123; service = new ValueService(); &#125;);</span><br><span class="line"></span><br><span class="line">  it(&#x27;#getValue should return real value&#x27;, () =&gt; &#123;</span><br><span class="line">    expect(service.getValue()).toBe(&#x27;real value&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">	</span><br><span class="line"># or </span><br><span class="line"></span><br><span class="line"># 2.直接获取服务实例进行测试，通过调用服务，校验逻辑</span><br><span class="line">let service: ValueService;</span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  TestBed.configureTestingModule(&#123; providers: [ValueService] &#125;); //等效于useClass</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;should use ValueService&#x27;, () =&gt; &#123;</span><br><span class="line">  service = TestBed.get(ValueService);</span><br><span class="line">  expect(service.getValue()).toBe(&#x27;real value&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试service-有依赖"><a href="#测试service-有依赖" class="headerlink" title="测试service - 有依赖"></a>测试service - 有依赖</h3><h4 id="利用spyOn-mock"><a href="#利用spyOn-mock" class="headerlink" title="利用spyOn mock"></a>利用spyOn mock</h4><blockquote>
+<p>代码如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Injectable()</span><br><span class="line">export class MasterService &#123;</span><br><span class="line">  constructor(private valueService: ValueService) &#123; &#125;</span><br><span class="line">  getValue() &#123; return this.valueService.getValue(); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>获取真实的依赖服务，常因为服务中依赖原因，难以顺利创建。此时spy,跳过真正的服务业务逻辑，进行单独测试，是最简单的方法。** 不跳过依赖，则属于集成测试范畴。**</p>
+</blockquote>
+<blockquote>
+<p>测试如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let masterService: MasterService;</span><br><span class="line">let valueServiceSpy: jasmine.SpyObj&lt;ValueService&gt;;</span><br><span class="line"></span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  const spy = jasmine.createSpyObj(&#x27;ValueService&#x27;, [&#x27;getValue&#x27;]);//需要注意位置，在beforeEach</span><br><span class="line"></span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    // Provide both the service-to-test and its (spy) dependency</span><br><span class="line">    providers: [</span><br><span class="line">      MasterService,</span><br><span class="line">	//注入服务，mock提供依赖服务的支持，完成MasterService实例创建</span><br><span class="line">      &#123; provide: ValueService, useValue: spy &#125; </span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">  // Inject both the service-to-test and its (spy) dependency</span><br><span class="line">  masterService = TestBed.get(MasterService);</span><br><span class="line">  valueServiceSpy = TestBed.get(ValueService);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;#getValue should return stubbed value from a spy&#x27;, () =&gt; &#123;</span><br><span class="line">  const stubValue = &#x27;stub value&#x27;;</span><br><span class="line">  # mock 返回值 </span><br><span class="line">  valueServiceSpy.getValue.and.returnValue(stubValue);</span><br><span class="line">  expect(masterService.getValue())</span><br><span class="line">    .toBe(stubValue, &#x27;service returned stub value&#x27;); //利用mock依赖返回的值，进行期望判断业务逻辑</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试组件-无依赖"><a href="#测试组件-无依赖" class="headerlink" title="测试组件-无依赖"></a>测试组件-无依赖</h3><blockquote>
+<p>代码如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;lightswitch-comp&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;button (click)=&quot;clicked()&quot;&gt;Click me!&lt;/button&gt;</span><br><span class="line">    &lt;span&gt;&#123;&#123;message&#125;&#125;&lt;/span&gt;`</span><br><span class="line">&#125;)</span><br><span class="line">export class LightswitchComponent &#123;</span><br><span class="line">  isOn = false;</span><br><span class="line">  clicked() &#123; this.isOn = !this.isOn; &#125;</span><br><span class="line">  get message() &#123; return `The light is $&#123;this.isOn ? &#x27;On&#x27; : &#x27;Off&#x27;&#125;`; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试代码如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//直接new </span><br><span class="line">it(&#x27;#clicked() should set #message to &quot;is on&quot;&#x27;, () =&gt; &#123;</span><br><span class="line">    const comp = new LightswitchComponent();</span><br><span class="line">    expect(comp.message).toMatch(/is off/i, &#x27;off at first&#x27;);</span><br><span class="line">    comp.clicked();</span><br><span class="line">    expect(comp.message).toMatch(/is on/i, &#x27;on after clicked&#x27;);</span><br><span class="line"> &#125;);</span><br><span class="line"> </span><br><span class="line"> //or 获取组件实例,交给框架创建new</span><br><span class="line"> let comp:LightswitchComponent;</span><br><span class="line"> beforeEach(() =&gt; &#123;</span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    // provide the component-under-test and dependent service</span><br><span class="line">    providers: [</span><br><span class="line">      LightswitchComponent,</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">  // inject both the component and the dependent service.</span><br><span class="line">  comp = TestBed.get(LightswitchComponent);</span><br><span class="line">&#125;);</span><br><span class="line"> it(&#x27;#clicked() should set #message to &quot;is on&quot;&#x27;, () =&gt; &#123;</span><br><span class="line">    expect(comp.message).toMatch(/is off/i, &#x27;off at first&#x27;);</span><br><span class="line">    comp.clicked();</span><br><span class="line">    expect(comp.message).toMatch(/is on/i, &#x27;on after clicked&#x27;);</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试组件-有input、output"><a href="#测试组件-有input、output" class="headerlink" title="测试组件-有input、output"></a>测试组件-有input、output</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export class DashboardHeroComponent &#123;</span><br><span class="line">  @Input() hero: Hero;</span><br><span class="line">  @Output() selected = new EventEmitter&lt;Hero&gt;();</span><br><span class="line">  click() &#123; this.selected.emit(this.hero); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试代码如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let comp:DashboardHeroComponent;</span><br><span class="line"> beforeEach(() =&gt; &#123;</span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    // provide the component-under-test and dependent service</span><br><span class="line">    providers: [</span><br><span class="line">      DashboardHeroComponent,</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">  // inject both the component and the dependent service.</span><br><span class="line">  comp = TestBed.get(DashboardHeroComponent);</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;raises the selected event when clicked&#x27;, () =&gt; &#123;</span><br><span class="line">  const hero: Hero = &#123; id: 42, name: &#x27;Test&#x27; &#125;;</span><br><span class="line">  comp.hero = hero;</span><br><span class="line"></span><br><span class="line">  comp.selected.subscribe((selectedHero: Hero) =&gt; expect(selectedHero).toBe(hero));</span><br><span class="line">  comp.click();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试组件-有依赖"><a href="#测试组件-有依赖" class="headerlink" title="测试组件 - 有依赖"></a>测试组件 - 有依赖</h3><blockquote>
+<p>WelcomeComponent 依赖于 UserService</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">export class WelcomeComponent  implements OnInit &#123;</span><br><span class="line">	welcome: string;</span><br><span class="line">	constructor(private userService: UserService) &#123; &#125;</span><br><span class="line"></span><br><span class="line">	ngOnInit(): void &#123;</span><br><span class="line">		this.welcome = this.userService.isLoggedIn ?</span><br><span class="line">			&#x27;Welcome, &#x27; + this.userService.user.name : &#x27;Please log in.&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试代码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># spect.ts</span><br><span class="line">class MockUserService &#123;</span><br><span class="line">	isLoggedIn = true;</span><br><span class="line">	user = &#123; name: &#x27;Test User&#x27;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">	TestBed.configureTestingModule(&#123;</span><br><span class="line">		// provide the component-under-test and dependent service</span><br><span class="line">		providers: [</span><br><span class="line">			WelcomeComponent,</span><br><span class="line">			&#123; provide: UserService, useClass: MockUserService &#125; </span><br><span class="line">			// &#123;provide: UserService, useVale: userServiceSpy&#125; # 两者都可以，不同方式而已</span><br><span class="line">		]</span><br><span class="line">	&#125;);</span><br><span class="line">	// inject both the component and the dependent service.</span><br><span class="line">	comp = TestBed.get(WelcomeComponent);</span><br><span class="line">    //容易记住，也不太冗长。但是，只有当Angular在测试的根注入器中将带有服务实例的组件注入组件时，它才起作用。</span><br><span class="line">	userService = TestBed.get(UserService); </span><br><span class="line">    //userService = fixture.debugElement.injector.get(UserService);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should not have welcome message after construction&#x27;, () =&gt; &#123;</span><br><span class="line">	expect(comp.welcome).toBeUndefined();</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;should welcome logged in user after Angular calls ngOnInit&#x27;, () =&gt; &#123;</span><br><span class="line">	comp.ngOnInit();</span><br><span class="line">	expect(comp.welcome).toContain(userService.user.name);</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;should ask user to log in if not logged in after ngOnInit&#x27;, () =&gt; &#123;</span><br><span class="line">	userService.isLoggedIn = false;</span><br><span class="line">	comp.ngOnInit();</span><br><span class="line">	expect(comp.welcome).not.toContain(userService.user.name);</span><br><span class="line">	expect(comp.welcome).toContain(&#x27;log in&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="组件中dom元素测试"><a href="#组件中dom元素测试" class="headerlink" title="组件中dom元素测试"></a>组件中dom元素测试</h3><h4 id="组件创建测试"><a href="#组件创建测试" class="headerlink" title="组件创建测试"></a>组件创建测试</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import &#123; async, ComponentFixture, TestBed &#125; from &#x27;@angular/core/testing&#x27;;</span><br><span class="line">import &#123; BannerComponent &#125; from &#x27;./banner.component&#x27;;</span><br><span class="line">describe(&#x27;BannerComponent&#x27;, () =&gt; &#123;</span><br><span class="line">  let component: BannerComponent;</span><br><span class="line">  let fixture: ComponentFixture&lt;BannerComponent&gt;;</span><br><span class="line">  beforeEach(async(() =&gt; &#123;</span><br><span class="line">    TestBed.configureTestingModule(&#123;</span><br><span class="line">      declarations: [ BannerComponent ]</span><br><span class="line">    &#125;)</span><br><span class="line">    .compileComponents();</span><br><span class="line">  &#125;));</span><br><span class="line">  beforeEach(() =&gt; &#123;</span><br><span class="line">    fixture = TestBed.createComponent(BannerComponent);</span><br><span class="line">    component = fixture.componentInstance;</span><br><span class="line">    fixture.detectChanges();</span><br><span class="line">  &#125;);</span><br><span class="line">  # 只有在组件创建初期有意义，后面添加业务单元测试，推荐删除的</span><br><span class="line">  it(&#x27;should create&#x27;, () =&gt; &#123;</span><br><span class="line">    expect(component).toBeDefined();</span><br><span class="line">  &#125;);</span><br><span class="line">	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="页面元素固定"><a href="#页面元素固定" class="headerlink" title="页面元素固定"></a>页面元素固定</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> it(&#x27;should contain &quot;banner works!&quot;&#x27;, () =&gt; &#123;</span><br><span class="line">	const bannerElement: HTMLElement = fixture.nativeElement;</span><br><span class="line">	expect(bannerElement.textContent).toContain(&#x27;banner works!&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line"> it(&#x27;should have &lt;p&gt; with &quot;banner works!&quot;&#x27;, () =&gt; &#123;</span><br><span class="line">	const bannerElement: HTMLElement = fixture.nativeElement;</span><br><span class="line">	const p = bannerElement.querySelector(&#x27;p&#x27;);</span><br><span class="line">	expect(p.textContent).toEqual(&#x27;banner works!&#x27;);</span><br><span class="line"> &#125;);</span><br><span class="line"> </span><br><span class="line"> it(&#x27;should find the &lt;p&gt; with fixture.debugElement.nativeElement)&#x27;, () =&gt; &#123;</span><br><span class="line">  const bannerDe: DebugElement = fixture.debugElement;</span><br><span class="line">  const bannerEl: HTMLElement = bannerDe.nativeElement;</span><br><span class="line">  const p = bannerEl.querySelector(&#x27;p&#x27;);</span><br><span class="line">  expect(p.textContent).toEqual(&#x27;banner works!&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果querySelector不能使用，</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &#123; By &#125; from &#x27;@angular/platform-browser&#x27;;</span><br><span class="line">it(&#x27;should find the &lt;p&gt; with fixture.debugElement.query(By.css)&#x27;, () =&gt; &#123;</span><br><span class="line">	const bannerDe: DebugElement = fixture.debugElement;</span><br><span class="line">	const paragraphDe = bannerDe.query(By.css(&#x27;p&#x27;));</span><br><span class="line">	const p: HTMLElement = paragraphDe.nativeElement;</span><br><span class="line">	expect(p.textContent).toEqual(&#x27;banner works!&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="页面元素动态修改"><a href="#页面元素动态修改" class="headerlink" title="页面元素动态修改"></a>页面元素动态修改</h4><blockquote>
+<p>页面元素动态修改，测试</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should display a different test title&#x27;, () =&gt; &#123;</span><br><span class="line">  component.title = &#x27;Test Title&#x27;;</span><br><span class="line">  fixture.detectChanges(); //显示的进行修改检测</span><br><span class="line">  expect(h1.textContent).toContain(&#x27;Test Title&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>除去上述显示声明detectChanges，使用自动检测也可以实现</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &#123; ComponentFixtureAutoDetect &#125; from &#x27;@angular/core/testing&#x27;;</span><br><span class="line">TestBed.configureTestingModule(&#123;</span><br><span class="line">  declarations: [ BannerComponent ],</span><br><span class="line">  providers: [</span><br><span class="line">    &#123; provide: ComponentFixtureAutoDetect, useValue: true &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Render2-样式测试"><a href="#Render2-样式测试" class="headerlink" title="Render2 样式测试"></a>Render2 样式测试</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import &#123;Type ,Render2 &#125; from &#x27;angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">let renderer2: Renderer2;</span><br><span class="line">...</span><br><span class="line">beforeEach(async( () =&gt; &#123;</span><br><span class="line">    TestBed.configureTestingModule(&#123;</span><br><span class="line">        ...</span><br><span class="line">        providers: [Renderer2]</span><br><span class="line">    &#125;).compileComponents();</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">    fixture = TestBed.createComponent(BannerComponent);</span><br><span class="line">    renderer2 = fixture.componentRef.injector.get&lt;Renderer2&gt;(Renderer2 as Type&lt;Renderer2&gt;);</span><br><span class="line">    // and spy on it</span><br><span class="line">    spyOn(renderer2, &#x27;addClass&#x27;).and.callThrough();</span><br><span class="line">    // or replace</span><br><span class="line">    // spyOn(renderer2, &#x27;addClass&#x27;).and.callFake(..);</span><br><span class="line">    // etc</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">it(&#x27;should call renderer&#x27;, () =&gt; &#123;</span><br><span class="line">    expect(renderer2.addClass).toHaveBeenCalledWith(jasmine.any(Object), &#x27;css-class&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Observable测试"><a href="#Observable测试" class="headerlink" title="Observable测试"></a>Observable测试</h3><blockquote>
+<p>代码如下 </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">getQuote() &#123;</span><br><span class="line">  this.errorMessage = &#x27;&#x27;;</span><br><span class="line">  this.quote = this.twainService.getQuote().pipe(</span><br><span class="line">    startWith(&#x27;...&#x27;),</span><br><span class="line">    catchError( (err: any) =&gt; &#123;</span><br><span class="line">      // Wait a turn because errorMessage already set once this turn</span><br><span class="line">      () =&gt; this.errorMessage = err.message || err.toString()</span><br><span class="line">      return of(&#x27;...&#x27;); // reset message to placeholder</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+<h4 id="正常返回"><a href="#正常返回" class="headerlink" title="正常返回"></a>正常返回</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  testQuote = &#x27;Test Quote&#x27;;</span><br><span class="line">  const twainServiceSpy = jasmine.createSpyObj(&#x27;TwainService&#x27;, [&#x27;getQuote&#x27;]);</span><br><span class="line">  getQuoteSpy = twainServiceSpy.getQuote.and.returnValue( of(testQuote) ); //关键在此</span><br><span class="line"></span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    declarations: [ TwainComponent ],</span><br><span class="line">    providers:    [</span><br><span class="line">      &#123; provide: TwainService, useValue: twainServiceSpy &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fixture = TestBed.createComponent(TwainComponent);</span><br><span class="line">  component = fixture.componentInstance;</span><br><span class="line">  quoteEl = fixture.nativeElement.querySelector(&#x27;.twain&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;should show quote after component initialized&#x27;, () =&gt; &#123;</span><br><span class="line">  fixture.detectChanges(); // onInit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  expect(quoteEl.textContent).toBe(testQuote);</span><br><span class="line">  expect(getQuoteSpy.calls.any()).toBe(true, &#x27;getQuote called&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="返回异常"><a href="#返回异常" class="headerlink" title="返回异常"></a>返回异常</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  const twainService = jasmine.createSpyObj(&#x27;TwainService&#x27;, [&#x27;getQuote&#x27;]);</span><br><span class="line">  getQuoteSpy = twainService.getQuote.and.returnValue( throwError(&#x27;ops&#x27;) ); //关键在此</span><br><span class="line"></span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    declarations: [ TwainComponent ],</span><br><span class="line">    providers:    [</span><br><span class="line">      &#123; provide: TwainService, useValue: twainService &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fixture = TestBed.createComponent(TwainComponent);</span><br><span class="line">  component = fixture.componentInstance;</span><br><span class="line">  quoteEl = fixture.nativeElement.querySelector(&#x27;.twain&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line">it(&#x27;should show quote after component initialized&#x27;, () =&gt; &#123;</span><br><span class="line">  fixture.detectChanges(); // onInit()</span><br><span class="line"></span><br><span class="line">  expect(errorMessage()).toMatch(/test failure/, &#x27;should display error&#x27;);</span><br><span class="line">  expect(quoteEl.textContent).toBe(&#x27;...&#x27;, &#x27;should show placeholder&#x27;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="返回异常，但异步处理"><a href="#返回异常，但异步处理" class="headerlink" title="返回异常，但异步处理"></a>返回异常，但异步处理</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">getQuote() &#123;</span><br><span class="line">  this.errorMessage = &#x27;&#x27;;</span><br><span class="line">  this.quote = this.twainService.getQuote().pipe(</span><br><span class="line">    startWith(&#x27;...&#x27;),</span><br><span class="line">    catchError( (err: any) =&gt; &#123;</span><br><span class="line">      setTimeout(() =&gt; this.errorMessage = err.message || err.toString());</span><br><span class="line">      return of(&#x27;...&#x27;);</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line"> beforeEach(() =&gt; &#123;</span><br><span class="line">  const twainService = jasmine.createSpyObj(&#x27;TwainService&#x27;, [&#x27;getQuote&#x27;]);</span><br><span class="line">  getQuoteSpy = twainService.getQuote.and.returnValue( throwError(&#x27;ops&#x27;) ); //关键在此</span><br><span class="line"></span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    declarations: [ TwainComponent ],</span><br><span class="line">    providers:    [</span><br><span class="line">      &#123; provide: TwainService, useValue: twainService &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  fixture = TestBed.createComponent(TwainComponent);</span><br><span class="line">  component = fixture.componentInstance;</span><br><span class="line">  quoteEl = fixture.nativeElement.querySelector(&#x27;.twain&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">it(&#x27;should display error when TwainService fails&#x27;, fakeAsync(() =&gt; &#123; //fakeAsync不适用与ajax</span><br><span class="line">  getQuoteSpy.and.returnValue(</span><br><span class="line">    throwError(&#x27;TwainService test failure&#x27;));</span><br><span class="line"></span><br><span class="line">  fixture.detectChanges(); // onInit()</span><br><span class="line">  tick(); // flush the component&#x27;s setTimeout()</span><br><span class="line">  fixture.detectChanges(); // update errorMessage within setTimeout()</span><br><span class="line"></span><br><span class="line">  expect(errorMessage()).toMatch(/test failure/, &#x27;should display error&#x27;);</span><br><span class="line">  expect(quoteEl.textContent).toBe(&#x27;...&#x27;, &#x27;should show placeholder&#x27;);</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步代码测试"><a href="#异步代码测试" class="headerlink" title="异步代码测试"></a>异步代码测试</h3><h4 id="使用fakeAsync"><a href="#使用fakeAsync" class="headerlink" title="使用fakeAsync"></a>使用fakeAsync</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should get Date diff correctly in fakeAsync&#x27;, fakeAsync(() =&gt; &#123;</span><br><span class="line">    const start = Date.now();</span><br><span class="line">    tick(100);</span><br><span class="line">    const end = Date.now();</span><br><span class="line">    expect(end - start).toBe(100);</span><br><span class="line"> &#125;));</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<p>fakeAsync支持以下异步任务：</p>
+<ul>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>requestAnimationFrame</li>
+<li>webkitRequestAnimationFrame</li>
+<li>mozRequestAnimationFrame</li>
+<li>rxjs - delay、interval等</li>
+</ul>
+<h4 id="ajax请求测试"><a href="#ajax请求测试" class="headerlink" title="ajax请求测试"></a>ajax请求测试</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should show quote after getQuote (async)&#x27;, async(() =&gt; &#123;</span><br><span class="line">  fixture.detectChanges(); // ngOnInit()</span><br><span class="line">  expect(quoteEl.textContent).toBe(&#x27;...&#x27;, &#x27;should show placeholder&#x27;);</span><br><span class="line"></span><br><span class="line">  fixture.whenStable().then(() =&gt; &#123; // wait for async getQuote</span><br><span class="line">    fixture.detectChanges();        // update view with quote</span><br><span class="line">    expect(quoteEl.textContent).toBe(testQuote);</span><br><span class="line">    expect(errorMessage()).toBeNull(&#x27;should not show error&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+<h4 id="jasmine-done"><a href="#jasmine-done" class="headerlink" title="jasmine done"></a>jasmine done</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should show quote after getQuote (spy done)&#x27;, (done: DoneFn) =&gt; &#123;</span><br><span class="line">  fixture.detectChanges();</span><br><span class="line"></span><br><span class="line">  // the spy&#x27;s most recent call returns the observable with the test quote</span><br><span class="line">  getQuoteSpy.calls.mostRecent().returnValue.subscribe(() =&gt; &#123;</span><br><span class="line">    fixture.detectChanges(); // update view with quote</span><br><span class="line">    expect(quoteEl.textContent).toBe(testQuote);</span><br><span class="line">    expect(errorMessage()).toBeNull(&#x27;should not show error&#x27;);</span><br><span class="line">    done();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="组件嵌套测试"><a href="#组件嵌套测试" class="headerlink" title="组件嵌套测试"></a>组件嵌套测试</h3><h4 id="服务依赖错误"><a href="#服务依赖错误" class="headerlink" title="服务依赖错误"></a>服务依赖错误</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: ctor is not a constructor</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>问题原因：provide中错误的配置<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//错误的</span><br><span class="line">providers: [&#123;provide: OrderService, useClass: new OrderServiceMock()&#125;]</span><br></pre></td></tr></table></figure><br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//正确的</span><br><span class="line">providers: [&#123;provide: OrderService, useValue: new OrderServiceMock()&#125;]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="HTTP-service测试"><a href="#HTTP-service测试" class="headerlink" title="HTTP service测试"></a>HTTP service测试</h3><h4 id="类似service测试，使用Spy"><a href="#类似service测试，使用Spy" class="headerlink" title="类似service测试，使用Spy"></a>类似service测试，使用Spy</h4><h4 id="使用HttpTestingController"><a href="#使用HttpTestingController" class="headerlink" title="使用HttpTestingController"></a>使用HttpTestingController</h4><blockquote>
+<p>配置</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let service: BlogPostsService;</span><br><span class="line">let backend: HttpTestingController;</span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  TestBed.configureTestingModule(&#123;</span><br><span class="line">    providers: [BlogPostsService],</span><br><span class="line">    imports: [</span><br><span class="line">      HttpClientTestingModule</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">beforeEach(() =&gt; &#123;</span><br><span class="line">  service = TestBed.get(BlogPostsService);</span><br><span class="line">  backend = TestBed.get(HttpTestingController);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>expectOne判定url</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should expectOne url&#x27;, () =&gt; &#123;</span><br><span class="line">  service.getAll().subscribe();</span><br><span class="line">  backend.expectOne(`https://rails-rest.herokuapp.com/posts`);</span><br><span class="line">  backend.verify();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>method判定</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should expectOne url and method&#x27;, () =&gt; &#123;</span><br><span class="line">  service.getAll().subscribe();</span><br><span class="line">  backend.expectOne(&#123;url: `https://rails-rest.herokuapp.com/posts`&#125;);</span><br><span class="line">  service.getAll().subscribe();</span><br><span class="line">  backend.expectOne(&#123;url: `https://rails-rest.herokuapp.com/posts`, method: &#x27;GET&#x27;&#125;);</span><br><span class="line">  backend.verify();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>none判定</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should not expect one when not subscribed&#x27;, () =&gt; &#123;</span><br><span class="line">   service.getAll()// .subscribe();</span><br><span class="line">   backend.expectNone(`https://rails-rest.herokuapp.com/posts`);</span><br><span class="line">   backend.verify();</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>match 正则判定</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should match two requests&#x27;, () =&gt; &#123;</span><br><span class="line">   service.getAll().subscribe();</span><br><span class="line">   service.get(1).subscribe();</span><br><span class="line">   const calls = backend.match((request) =&gt; &#123;</span><br><span class="line">     return request.url.match(/posts/) &amp;&amp; # url正则匹配</span><br><span class="line">            request.method === &#x27;GET&#x27;;</span><br><span class="line">   &#125;);</span><br><span class="line">   expect(calls.length).toEqual(2);</span><br><span class="line">   expect(calls[0].request.url).toEqual(`https://rails-rest.herokuapp.com/posts`);</span><br><span class="line">   expect(calls[1].request.url).toEqual(`https://rails-rest.herokuapp.com/posts/1.json`);</span><br><span class="line">   backend.verify();</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>match 不同url</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should match different requests&#x27;, () =&gt; &#123;</span><br><span class="line">    service.getAll().subscribe();</span><br><span class="line">    service.get(1).subscribe();</span><br><span class="line">    const otherCalls = backend.match((request) =&gt; &#123;</span><br><span class="line">      return request.url == `https://rails-rest.herokuapp.com/posts/1.json` &amp;&amp;</span><br><span class="line">             request.method === &#x27;GET&#x27;;</span><br><span class="line">    &#125;);</span><br><span class="line">    const calls = backend.match((request) =&gt; &#123;</span><br><span class="line">      return request.url == `https://rails-rest.herokuapp.com/posts` &amp;&amp;</span><br><span class="line">             request.method === &#x27;GET&#x27;;</span><br><span class="line">    &#125;);</span><br><span class="line">    expect(calls.length).toEqual(1);</span><br><span class="line">    expect(otherCalls.length).toEqual(1);</span><br><span class="line">    expect(calls[0].request.url).toEqual(`https://rails-rest.herokuapp.com/posts`);</span><br><span class="line">    expect(otherCalls[0].request.url).toEqual(`https://rails-rest.herokuapp.com/posts/1.json`);</span><br><span class="line">    backend.verify();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>match 判定urlWithParams</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should have url and urlWithParams&#x27;, () =&gt; &#123;</span><br><span class="line">      service.getAll(&#123;page: 1&#125;).subscribe();</span><br><span class="line">      const calls = backend.match((request) =&gt; &#123;</span><br><span class="line">        return request.url == `https://rails-rest.herokuapp.com/posts` &amp;&amp;</span><br><span class="line">               request.urlWithParams == `https://rails-rest.herokuapp.com/posts?page=1` &amp;&amp;</span><br><span class="line">               request.method === &#x27;GET&#x27;;</span><br><span class="line">      &#125;);</span><br><span class="line">      backend.expectNone(`https://rails-rest.herokuapp.com/posts`); // If url with params, use `.match`</span><br><span class="line">      backend.verify();</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>match 其余request参数</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should have a few more attributes on request that are useful&#x27;, () =&gt; &#123;</span><br><span class="line">    service.getAll(&#123;page: 1&#125;).subscribe();</span><br><span class="line">    const calls = backend.match((request: HttpRequest&lt;any&gt;) =&gt; &#123;</span><br><span class="line">      return request.url == `https://rails-rest.herokuapp.com/posts` &amp;&amp;</span><br><span class="line">             request.urlWithParams == `https://rails-rest.herokuapp.com/posts?page=1` &amp;&amp;</span><br><span class="line">             request.method === &#x27;GET&#x27; &amp;&amp;</span><br><span class="line">             request.params.get(&#x27;page&#x27;) == &#x27;1&#x27; &amp;&amp;</span><br><span class="line">             request.body == null &amp;&amp;</span><br><span class="line">             request.headers instanceof HttpHeaders &amp;&amp;</span><br><span class="line">             request.responseType == &#x27;json&#x27; &amp;&amp;</span><br><span class="line">             request.withCredentials == false;</span><br><span class="line">    &#125;);</span><br><span class="line">    backend.expectNone(`https://rails-rest.herokuapp.com/posts`); // If url with params, use `.match`</span><br><span class="line">    backend.verify();</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>subscribe 结果验证</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">it(&#x27;should create post&#x27;, () =&gt; &#123;</span><br><span class="line">      service.save(&#123;</span><br><span class="line">        title: &#x27;Creating a post&#x27;,</span><br><span class="line">        content: &#x27;Another long description...&#x27;</span><br><span class="line">      &#125;).subscribe((response) =&gt; &#123;</span><br><span class="line">        expect(response).toEqual(jasmine.objectContaining(&#123;</span><br><span class="line">          id: 2,</span><br><span class="line">          title: &#x27;Creating a post&#x27;,</span><br><span class="line">          content: jasmine.any(String),</span><br><span class="line">          created_at: new Date(&#x27;2017-12-07T04:39:49.447Z&#x27;),</span><br><span class="line">          updated_at: jasmine.any(Date)</span><br><span class="line">        &#125;));</span><br><span class="line">      &#125;);</span><br><span class="line">      const response = &#123;</span><br><span class="line">        &#x27;id&#x27;: 2,</span><br><span class="line">        &#x27;title&#x27;: &#x27;Creating a post&#x27;,</span><br><span class="line">        &#x27;content&#x27;: &#x27;Another long description...&#x27;,</span><br><span class="line">        &#x27;created_at&#x27;: &#x27;2017-12-07T04:39:49.447Z&#x27;,</span><br><span class="line">        &#x27;updated_at&#x27;: &#x27;2017-12-07T04:39:49.447Z&#x27;</span><br><span class="line">      &#125;;</span><br><span class="line">      const call = backend.expectOne(`https://rails-rest.herokuapp.com/posts`);</span><br><span class="line">      expect(call.request.method).toEqual(&#x27;POST&#x27;);</span><br><span class="line">      call.flush(response); # 返回结果</span><br><span class="line">      backend.verify();</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h3><ul>
+<li>测试用例的编写，应该尽可能的简化测试对象逻辑，分而测之，</li>
+<li>避免一次调用，敲定全部测试，这属于集成测试范畴</li>
+<li>编写代码时候，需要有意识的拆分代码，便于单元测试，不要一个方法一大屏看不到低</li>
+</ul>
+<h3 id="更多推荐"><a href="#更多推荐" class="headerlink" title="更多推荐"></a>更多推荐</h3><h4 id="Angular开发提效vscode插件"><a href="#Angular开发提效vscode插件" class="headerlink" title="Angular开发提效vscode插件"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/6844903981966163982">Angular开发提效vscode插件</a></h4><h4 id="angular开发需要了解的rxjs操作符实践"><a href="#angular开发需要了解的rxjs操作符实践" class="headerlink" title="angular开发需要了解的rxjs操作符实践"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/6844903997451534343">angular开发需要了解的rxjs操作符实践</a></h4><h4 id="Angular8-日常开发避坑指南"><a href="#Angular8-日常开发避坑指南" class="headerlink" title="Angular8 日常开发避坑指南"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/6844904174237433863">Angular8 日常开发避坑指南</a></h4><h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><h4 id="window-变量"><a href="#window-变量" class="headerlink" title="window 变量"></a><a target="_blank" rel="noopener" href="https://juristr.com/blog/2016/09/ng2-get-window-ref/">window 变量</a></h4><h4 id="Angular"><a href="#Angular" class="headerlink" title="Angular"></a><a target="_blank" rel="noopener" href="https://angular.io/guide/testing#component-dom-testing">Angular</a></h4><h4 id="d3-测试"><a href="#d3-测试" class="headerlink" title="d3 测试"></a><a target="_blank" rel="noopener" href="https://eng.wealthfront.com/2016/07/27/tips-for-unit-testing-d3/">d3 测试</a></h4><h4 id="HttpTestingContrller"><a href="#HttpTestingContrller" class="headerlink" title="HttpTestingContrller"></a><a target="_blank" rel="noopener" href="https://github.com/angularityio/playground/blob/master/apps/example-001-httpclient-testing/src/app/blog-posts.service.spec.ts#L32">HttpTestingContrller</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#测试用例" >
+    <span class="tag-code">测试用例</span>
+  </a>
+
+  <a target="_blank" href="/tags#UT" >
+    <span class="tag-code">UT</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/07/28/performace_detect_skills/concepts/%E3%80%8APerformance%E3%80%8B-%20%E5%8D%9A%E5%AE%A2%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%88%B090%E5%88%86+%E5%AE%9E%E8%B7%B5/">
+        <span class="nav-arrow">← </span>
+        
+          《Performance》- 博客性能优化到90分+实践
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/05/front_skills/node/%E3%80%8ANode%E3%80%8B-%20npm%20%E4%B8%8Eyarn%20%E5%8C%BA%E5%88%AB/">
+        
+          《Node》- npm 与yarn 区别
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BC%80%E7%AF%87%E4%B8%89%E9%97%AE%EF%BC%9A"><span class="toc-nav-text">开篇三问：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B2%A1%E6%9C%89%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E4%BC%9A%E5%A6%82%E4%BD%95%EF%BC%9F"><span class="toc-nav-text">没有单元测试会如何？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%9C%89%E5%95%A5%E5%A5%BD%E5%A4%84%EF%BC%9F"><span class="toc-nav-text">单元测试有啥好处？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8Cangular%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%EF%BC%9F"><span class="toc-nav-text">如何进行angular单元测试？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#angular%E5%89%8D%E6%8F%90%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-nav-text">angular前提背景知识</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BC%96%E5%86%99angular8-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">编写angular8 单元测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%8B%E8%AF%95service-%E6%97%A0%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">测试service-无依赖</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%8B%E8%AF%95service-%E6%9C%89%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">测试service - 有依赖</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%A9%E7%94%A8spyOn-mock"><span class="toc-nav-text">利用spyOn mock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6-%E6%97%A0%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">测试组件-无依赖</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6-%E6%9C%89input%E3%80%81output"><span class="toc-nav-text">测试组件-有input、output</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6-%E6%9C%89%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">测试组件 - 有依赖</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BB%84%E4%BB%B6%E4%B8%ADdom%E5%85%83%E7%B4%A0%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">组件中dom元素测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%84%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">组件创建测试</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%85%83%E7%B4%A0%E5%9B%BA%E5%AE%9A"><span class="toc-nav-text">页面元素固定</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%85%83%E7%B4%A0%E5%8A%A8%E6%80%81%E4%BF%AE%E6%94%B9"><span class="toc-nav-text">页面元素动态修改</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Render2-%E6%A0%B7%E5%BC%8F%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">Render2 样式测试</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Observable%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">Observable测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E"><span class="toc-nav-text">正常返回</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%94%E5%9B%9E%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">返回异常</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%94%E5%9B%9E%E5%BC%82%E5%B8%B8%EF%BC%8C%E4%BD%86%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86"><span class="toc-nav-text">返回异常，但异步处理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%BC%82%E6%AD%A5%E4%BB%A3%E7%A0%81%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">异步代码测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8fakeAsync"><span class="toc-nav-text">使用fakeAsync</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ajax%E8%AF%B7%E6%B1%82%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">ajax请求测试</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#jasmine-done"><span class="toc-nav-text">jasmine done</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BB%84%E4%BB%B6%E5%B5%8C%E5%A5%97%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">组件嵌套测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E4%BE%9D%E8%B5%96%E9%94%99%E8%AF%AF"><span class="toc-nav-text">服务依赖错误</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTTP-service%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">HTTP service测试</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%B1%BB%E4%BC%BCservice%E6%B5%8B%E8%AF%95%EF%BC%8C%E4%BD%BF%E7%94%A8Spy"><span class="toc-nav-text">类似service测试，使用Spy</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8HttpTestingController"><span class="toc-nav-text">使用HttpTestingController</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%AA%E4%BA%BA%E5%BF%83%E5%BE%97"><span class="toc-nav-text">个人心得</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">更多推荐</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular%E5%BC%80%E5%8F%91%E6%8F%90%E6%95%88vscode%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">Angular开发提效vscode插件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#angular%E5%BC%80%E5%8F%91%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84rxjs%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%AE%9E%E8%B7%B5"><span class="toc-nav-text">angular开发需要了解的rxjs操作符实践</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97"><span class="toc-nav-text">Angular8 日常开发避坑指南</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-nav-text">参考文献</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#window-%E5%8F%98%E9%87%8F"><span class="toc-nav-text">window 变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular"><span class="toc-nav-text">Angular</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#d3-%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">d3 测试</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HttpTestingContrller"><span class="toc-nav-text">HttpTestingContrller</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/04/front_skills/angular/《angular8》-Angular8多场景下单元测试实践指南/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

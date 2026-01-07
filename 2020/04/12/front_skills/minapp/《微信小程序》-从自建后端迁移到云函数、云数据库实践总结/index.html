@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《微信小程序》- 从自建后端迁移到云函数、云数据库实践总结 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《微信小程序》- 从自建后端迁移到云函数、云数据库实践总结</h2>
+  <p class="post-date">2020-04-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="小程序代码修改"><a href="#小程序代码修改" class="headerlink" title="小程序代码修改"></a>小程序代码修改</h4><ul>
+<li>之前调用服务端代码，修改为调用云函数</li>
+<li>新建云函数，并upload部署</li>
+<li>云函数，不要求域名配置</li>
+</ul>
+<h4 id="添加云函数"><a href="#添加云函数" class="headerlink" title="添加云函数"></a>添加云函数</h4><ul>
+<li>之前后端请求的js逻辑，迁移到云函数，</li>
+<li>难点就是云函数如何发出get,post请求</li>
+<li>get请求方案如下：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># package.json</span><br><span class="line">&quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;wx-server-sdk&quot;: &quot;latest&quot;,</span><br><span class="line">    &quot;request-promise&quot;: &quot;^4.2.5&quot;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># index.js</span><br><span class="line">// 云函数入口文件</span><br><span class="line">const cloud = require(&#x27;wx-server-sdk&#x27;)</span><br><span class="line">const req = require(&quot;request-promise&quot;);</span><br><span class="line">const prefix = &quot;http://xxxx&quot;</span><br><span class="line"></span><br><span class="line">cloud.init()</span><br><span class="line"></span><br><span class="line">// 云函数入口函数</span><br><span class="line">exports.main = async (event, context) =&gt; &#123;</span><br><span class="line">  let url = `$&#123;prefix&#125;`;</span><br><span class="line">  const res = await req(url);</span><br><span class="line">  return &#123;</span><br><span class="line">    res,</span><br><span class="line">    event,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="云数据库"><a href="#云数据库" class="headerlink" title="云数据库"></a>云数据库</h4><ul>
+<li>mysql数据库，如何转换为nosql数据库<br>  方案一：<br>云函数数据库增量，先调用云函数，发现没有，请求后端服务，然后增量添加到数据库中。<br>  方案二：<br> 利用云数据库，导入&#x2F;导出功能，先转换已有数据，批量导入</li>
+<li>为应对快速上线更新，采用方案一</li>
+</ul>
+<h4 id="storage封装"><a href="#storage封装" class="headerlink" title="storage封装"></a>storage封装</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"> module.exports = &#123;</span><br><span class="line">  /**</span><br><span class="line">   * 异步存储，支持promise</span><br><span class="line">   */</span><br><span class="line">  setLocalStorage: function (key, data) &#123;</span><br><span class="line">    if (!data) &#123; return; &#125;</span><br><span class="line">    wx.setStorage(&#123;</span><br><span class="line">      key: key,</span><br><span class="line">      data: data,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * 同步存储</span><br><span class="line">   */</span><br><span class="line">  setLocalStorageSync: function (key, data) &#123;</span><br><span class="line">    return wx.setStorageSync(key, data);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * 异步获取存储，支持promise</span><br><span class="line">   */</span><br><span class="line">  getLocalStorage: function (key) &#123;</span><br><span class="line">    return wx.getStorage(&#123;</span><br><span class="line">      key: key</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * 同步获取</span><br><span class="line">   */</span><br><span class="line">  getLocalStorageSync: function (key) &#123;</span><br><span class="line">    const res = wx.getStorageSync(key);</span><br><span class="line">    console.log(`[本地] storage sync get $&#123;key&#125; 成功`, res);</span><br><span class="line">    return res;</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * 同步删除，会等待</span><br><span class="line">   */</span><br><span class="line">  removeStorageSync: function (key) &#123;</span><br><span class="line">    return wx.removeStorageSync(key);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * 异步删除，返回promise</span><br><span class="line">   */</span><br><span class="line">  removeLocalStorage: function (key) &#123;</span><br><span class="line">    wx.removeStorage(&#123;</span><br><span class="line">      key: key</span><br><span class="line">    &#125;).then(res =&gt; &#123;</span><br><span class="line">      console.log(`[本地] storage 删除 $&#123;key&#125; 成功`);</span><br><span class="line">    &#125;).catch(err =&gt; &#123;</span><br><span class="line">      console.error(`[本地] storage 删除 $&#123;key&#125; 失败`);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="云端数据库db工具封装"><a href="#云端数据库db工具封装" class="headerlink" title="云端数据库db工具封装"></a>云端数据库db工具封装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  /**</span><br><span class="line">   * params:&#123;</span><br><span class="line">   *  data:xxxx</span><br><span class="line">   * &#125;</span><br><span class="line">   */</span><br><span class="line">  addItem: function (dbName, params)&#123;</span><br><span class="line">    if (!params)&#123;</span><br><span class="line">      console.error(`[数据库]$&#123;dbName&#125; [新增记录],参数空`);</span><br><span class="line">    &#125;</span><br><span class="line">    const data = &#123;</span><br><span class="line">      data: params</span><br><span class="line">    &#125;</span><br><span class="line">    const db = wx.cloud.database();</span><br><span class="line">    return db.collection(dbName).add(data).then((res) =&gt; &#123;</span><br><span class="line">      console.log(`[数据库]$&#123;dbName&#125; [新增记录] 成功，记录 _id:`, params, res._id)</span><br><span class="line">    &#125;).catch(err =&gt; &#123;</span><br><span class="line">      console.error(`[数据库]$&#123;dbName&#125; [新增记录] 失败：`, params, err)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * where:&#123;</span><br><span class="line">   *    _openid:openid</span><br><span class="line">   * &#125;</span><br><span class="line">   */</span><br><span class="line">  queryItem:function(dbName,where)&#123;</span><br><span class="line">    const db = wx.cloud.database();</span><br><span class="line">    return new Promise((resolve,reject) =&gt; &#123;</span><br><span class="line">      db.collection(dbName).where(where).get().then(res =&gt; &#123;</span><br><span class="line">        const data = res.data;</span><br><span class="line">        console.log(`[数据库]$&#123;dbName&#125; [查询记录] 成功：`, where, data);</span><br><span class="line">        resolve(data)</span><br><span class="line">      &#125;).catch(err =&gt; &#123;</span><br><span class="line">        console.log(`[数据库]$&#123;dbName&#125; [查询记录] 失败：`, where, err);</span><br><span class="line">        reject(err);</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * where:&#123;</span><br><span class="line">   *    _openid:openid</span><br><span class="line">   * &#125;</span><br><span class="line">   */</span><br><span class="line">  queryLimitItem: function (dbName, where, &#123; skip, limit &#125;) &#123;</span><br><span class="line">    const db = wx.cloud.database();</span><br><span class="line">    return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">      db.collection(dbName).where(where).skip(skip).orderBy(&#x27;subIndex&#x27;,&#x27;asc&#x27;).limit(limit).get().then(res =&gt; &#123;</span><br><span class="line">        const data = res.data;</span><br><span class="line">        console.log(`[数据库]$&#123;dbName&#125; [查询记录] 成功：`, where, data);</span><br><span class="line">        resolve(data)</span><br><span class="line">      &#125;).catch(err =&gt; &#123;</span><br><span class="line">        console.log(`[数据库]$&#123;dbName&#125; [查询记录] 失败：`, where, err);</span><br><span class="line">        reject(err);</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * where:&#123;</span><br><span class="line">   *    _openid:openid</span><br><span class="line">   * &#125;</span><br><span class="line">   * params:&#123;</span><br><span class="line">   *  data:xxx</span><br><span class="line">   * &#125;</span><br><span class="line">   */</span><br><span class="line">  updateItem:function(dbName,where,params)&#123;</span><br><span class="line">    if (!params) &#123;</span><br><span class="line">      console.error(`[数据库]$&#123;dbName&#125; [更新记录],参数空`);</span><br><span class="line">    &#125;</span><br><span class="line">    const data = &#123;</span><br><span class="line">      data: params</span><br><span class="line">    &#125;</span><br><span class="line">    const db = wx.cloud.database();</span><br><span class="line">    return db.collection(dbName).where(where).update(data).then(res =&gt; &#123;</span><br><span class="line">        console.log(`[数据库]$&#123;dbName&#125; [更新记录] 成功：`, where, params ,res);</span><br><span class="line">      &#125;).catch(err =&gt; &#123;</span><br><span class="line">        console.error(`[数据库]$&#123;dbName&#125; [更新记录] 失败：`, where, params, err);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  /**</span><br><span class="line">   * where:&#123;</span><br><span class="line">   *    _openid:openid</span><br><span class="line">   * &#125;</span><br><span class="line">   */</span><br><span class="line">  deleteItem: function(dbName, where) &#123;</span><br><span class="line">    const db = wx.cloud.database();</span><br><span class="line">    return db.collection(dbName).where(where).then(res =&gt; &#123;</span><br><span class="line">      console.log(`[数据库]$&#123;dbName&#125; [删除记录]$&#123;uniqueId&#125; 成功：`, params, res);</span><br><span class="line">    &#125;).catch(err =&gt; &#123;</span><br><span class="line">      onsole.error(`[数据库]$&#123;dbName&#125; [删除记录] $&#123;uniqueId&#125; 失败：`, params, err);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#云函数" >
+    <span class="tag-code">云函数</span>
+  </a>
+
+  <a target="_blank" href="/tags#云数据库" >
+    <span class="tag-code">云数据库</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/04/02/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%AE%9A%E4%BD%8Dapi%E7%9A%84%E4%BD%BF%E7%94%A8/">
+        <span class="nav-arrow">← </span>
+        
+          《微信小程序》- 谈一谈定位api的使用
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/04/13/front_skills/node/%E3%80%8ANode%E3%80%8B-%20%E8%AF%9D%E8%AF%B4process.env%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+        
+          《Node》- 话说process.env的那些事儿.md
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%A3%E7%A0%81%E4%BF%AE%E6%94%B9"><span class="toc-nav-text">小程序代码修改</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%BA%91%E5%87%BD%E6%95%B0"><span class="toc-nav-text">添加云函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-nav-text">云数据库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#storage%E5%B0%81%E8%A3%85"><span class="toc-nav-text">storage封装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BA%91%E7%AB%AF%E6%95%B0%E6%8D%AE%E5%BA%93db%E5%B7%A5%E5%85%B7%E5%B0%81%E8%A3%85"><span class="toc-nav-text">云端数据库db工具封装</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/04/12/front_skills/minapp/《微信小程序》-从自建后端迁移到云函数、云数据库实践总结/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular8》- 你需要了解的Render2 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular8》- 你需要了解的Render2</h2>
+  <p class="post-date">2020-06-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="Render2"><a href="#Render2" class="headerlink" title="Render2"></a>Render2</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p> Render2 是angular中用于操作dom的，Angular做了封装，屏蔽底层差异，通用性更强。不仅仅可以用于浏览器端，还可以用于Server Side rendering, Web-Worker, mobile apps, and desktop apps等。</p>
+<h4 id="Render2之指令用法"><a href="#Render2之指令用法" class="headerlink" title="Render2之指令用法"></a>Render2之指令用法</h4><ul>
+<li><p>setStyle、removeStyle</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 定义指令</span><br><span class="line"> import &#123; Directive, ElementRef, OnInit, Renderer2, HostListener &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"> @Directive(&#123; </span><br><span class="line">     selector: &#x27;[animate]&#x27; </span><br><span class="line"> &#125;)</span><br><span class="line"> export class Animate  &#123;</span><br><span class="line"> constructor(private renderer: Renderer2, private el: ElementRef) &#123;&#125;</span><br><span class="line">     </span><br><span class="line"> @HostListener(&#x27;click&#x27;) </span><br><span class="line"> performTask() &#123;</span><br><span class="line">     let randomColor = &quot;#&quot;+((1&lt;&lt;24)*Math.random()|0).toString(16);</span><br><span class="line">     this.renderer.setStyle(this.el.nativeElement, &#x27;color&#x27;, randomColor);</span><br><span class="line">     this.renderer.setStyle(this.el.nativeElement, &#x27;background-color&#x27;, &#x27;black&#x27;);   </span><br><span class="line">     this.renderer.removeStyle(this.el.nativeElement, &#x27;color&#x27;,&#x27;red&#x27;);   </span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">&lt;h2  animate&gt;Click here to give me a random color&lt;/h2&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>setAttribute、removeAttribute</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @Directive(&#123; </span><br><span class="line">     selector: &#x27;[defaultValue]&#x27; </span><br><span class="line">&#125;)</span><br><span class="line">export class DefaultInputValueDirective &#123;</span><br><span class="line">   constructor(private elRef: ElementRef, private renderer: Renderer2) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">   @HostListener(&#x27;mouseover&#x27;) </span><br><span class="line">   onMouseOver() &#123;</span><br><span class="line">       this.renderer.setAttribute(this.elRef.nativeElement, &#x27;value&#x27;, &#x27;Enter a Value&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">   @HostListener(&#x27;mouseleave&#x27;) </span><br><span class="line">   onMouseLeave() &#123;</span><br><span class="line">       this.renderer.removeAttribute(this.elRef.nativeElement, &#x27;value&#x27;);</span><br><span class="line">   &#125;   </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+<li><p>addClass、removeClass</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> @Directive(&#123; </span><br><span class="line">     selector: &#x27;[hlOnMouseOver]&#x27; </span><br><span class="line">&#125;)</span><br><span class="line">export class HlOnMouseOverDirective &#123;</span><br><span class="line">   constructor(private elRef: ElementRef, private renderer: Renderer2) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">   @HostListener(&#x27;mouseover&#x27;) </span><br><span class="line">   onMouseOver() &#123;</span><br><span class="line">       this.renderer.addClass(this.elRef.nativeElement, &#x27;hl-text&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">   @HostListener(&#x27;mouseleave&#x27;) </span><br><span class="line">   onMouseLeave() &#123;</span><br><span class="line">       this.renderer.removeClass(this.elRef.nativeElement, &#x27;hl-text&#x27;);</span><br><span class="line">   &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>removeChild、appendChild</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> @Directive(&#123; </span><br><span class="line">     selector: &#x27;[removeChild]&#x27; </span><br><span class="line">&#125;)</span><br><span class="line">export class RemoveChildDirective &#123;</span><br><span class="line">   constructor(private elRef: ElementRef, private renderer: Renderer2) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">   p = this.renderer.createElement(&#x27;p&#x27;);</span><br><span class="line">   text = this.renderer.createText(&#x27;Hello World !&#x27;);</span><br><span class="line">   </span><br><span class="line">   @HostListener(&#x27;mouseover&#x27;) </span><br><span class="line">   onMouseOver() &#123;</span><br><span class="line">       this.renderer.appendChild(this.p, this.text);  </span><br><span class="line">       this.renderer.appendChild(this.elRef.nativeElement, this.p);</span><br><span class="line">   &#125;</span><br><span class="line">   @HostListener(&#x27;mouseleave&#x27;) </span><br><span class="line">   onMouseLeave() &#123;</span><br><span class="line">       this.renderer.removeChild(this.elRef.nativeElement, this.p);</span><br><span class="line">   &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>setProperty</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> @Directive(&#123; </span><br><span class="line">     selector: &#x27;[imgAlt]&#x27; </span><br><span class="line">&#125;)</span><br><span class="line">export class ImageAltdDirective &#123;</span><br><span class="line">   constructor(private renderer: Renderer2, private elRef: ElementRef) &#123;&#125;</span><br><span class="line"></span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">     this.renderer.setProperty(this.elRef.nativeElement, &#x27;alt&#x27;, &#x27;image description&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Render2之组件用法-大部分构造方法只有Renderer2"><a href="#Render2之组件用法-大部分构造方法只有Renderer2" class="headerlink" title="Render2之组件用法 - 大部分构造方法只有Renderer2"></a>Render2之组件用法 - 大部分构造方法只有Renderer2</h4><ul>
+<li><p>viewChild操作dom appendChild</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ElementRef, Renderer2, ViewChild &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">   selector: &#x27;app-component&#x27;,</span><br><span class="line">   template: `&lt;ul class=&quot;col-md-2&quot;&gt;</span><br><span class="line">                &lt;li (click)=&quot;addBtn()&quot; #addButton&gt;Click here to add new button&lt;/li&gt;</span><br><span class="line">              &lt;/ul&gt; </span><br><span class="line">              `</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">export class AppComponent &#123; </span><br><span class="line">   @ViewChild(&#x27;addButton&#x27;) </span><br><span class="line">   private animateThis: ElementRef;	</span><br><span class="line">   constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   addBtn() &#123;</span><br><span class="line">     const button = this.renderer.createElement(&#x27;button&#x27;); </span><br><span class="line">     const buttonText = this.renderer.createText(&#x27;This is a button&#x27;);</span><br><span class="line">     this.renderer.appendChild(button, buttonText);</span><br><span class="line">     this.renderer.appendChild(this.animateThis.nativeElement, button);</span><br><span class="line">   &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">&lt;ul class=&quot;col-md-2&quot;&gt;</span><br><span class="line">  &lt;li (click)=&quot;addBtn()&quot; #addButton&gt;Click here to add new button&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>insertBefore 、createComment</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ElementRef, Renderer2, ViewChild &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">   selector: &#x27;app-component&#x27;,</span><br><span class="line">   template: `&lt;ul class=&quot;col-md-2&quot;&gt;</span><br><span class="line">                &lt;li (click)=&quot;addBtn()&quot; #addButton&gt;Click here to add new button&lt;/li&gt;</span><br><span class="line">              &lt;/ul&gt; </span><br><span class="line">              `</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">export class AppComponent &#123; </span><br><span class="line">   @ViewChild(&#x27;addButton&#x27;) </span><br><span class="line">   private animateThis: ElementRef;	</span><br><span class="line">   constructor(private elRef: ElementRef, private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   addBtn() &#123;</span><br><span class="line">     const button = this.renderer.createElement(&#x27;button&#x27;); </span><br><span class="line">     const buttonText = this.renderer.createText(&#x27;This is a button&#x27;);</span><br><span class="line">     const comment = this.renderer.createComment(&#x27;createComment? Comment Created!&#x27;);</span><br><span class="line">     const parent = this.elRef.nativeElement.parentNode;</span><br><span class="line">     const reference = this.elRef.nativeElement;</span><br><span class="line">     this.renderer.appendChild(button, buttonText);</span><br><span class="line">     this.renderer.insertBefore(parent, comment, reference )</span><br><span class="line">     this.renderer.appendChild(this.animateThis.nativeElement, button);</span><br><span class="line">   &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>setStyle</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ViewChild, ElementRef, Renderer2  &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    Username: </span><br><span class="line">    &lt;input type=&quot;text&quot; placeholder=&quot;type your name...&quot;  #changeStyle&gt;</span><br><span class="line">  `,</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent  &#123;</span><br><span class="line">   @ViewChild(&#x27;changeStyle&#x27;) </span><br><span class="line">   private elRef: ElementRef;	</span><br><span class="line">   constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">     this.renderer.setStyle(this.elRef.nativeElement, &#x27;border&#x27;, &#x27;1px solid red&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>addClass</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ViewChild, ElementRef, Renderer2  &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    Username: </span><br><span class="line">    &lt;input type=&quot;text&quot; placeholder=&quot;type your name...&quot;  #changeStyle&gt;</span><br><span class="line">  `,</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent  &#123;</span><br><span class="line">   @ViewChild(&#x27;changeStyle&#x27;) </span><br><span class="line">   private elRef: ElementRef;	</span><br><span class="line">   constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">     this.renderer.addClass(this.elRef.nativeElement, &#x27;someClass&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">  </span><br><span class="line">  //HTML output</span><br><span class="line">  //&lt;input placeholder=&quot;type your name...&quot; type=&quot;text&quot; class=&quot;someClass&quot;&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>setAttribute</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ViewChild, ElementRef, Renderer2  &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    Username: </span><br><span class="line">    &lt;input type=&quot;text&quot; placeholder=&quot;type your name...&quot;  #changeStyle&gt;</span><br><span class="line">  `,</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent  &#123;</span><br><span class="line">   @ViewChild(&#x27;changeStyle&#x27;) </span><br><span class="line">   private elRef: ElementRef;	</span><br><span class="line">   constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">     this.renderer.setAttribute(this.elRef.nativeElement, &#x27;value&#x27;, &#x27;Gokhan&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>setProperty</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ViewChild, ElementRef, Renderer2  &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    Username: </span><br><span class="line">    &lt;input type=&quot;text&quot; placeholder=&quot;type your name...&quot;  #changeStyle&gt;</span><br><span class="line">  `,</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent  &#123;</span><br><span class="line">   @ViewChild(&#x27;changeStyle&#x27;) </span><br><span class="line">   private elRef: ElementRef;	</span><br><span class="line">   constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">   </span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">      this.renderer.setProperty(this.elRef.nativeElement, &#x27;disabled&#x27;, &#x27;disabled&#x27;);</span><br><span class="line">      this.renderer.setProperty(this.elRef.nativeElement, &#x27;innerHTML&#x27;, change the inner html&#x27;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>nextSibling</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, Renderer2, ElementRef, ViewChild, OnInit &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;p #next&gt;First&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Second&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Third&lt;/p&gt;</span><br><span class="line">  `,</span><br><span class="line">  styleUrls: [ &#x27;./app.component.css&#x27; ]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent implements OnInit &#123;</span><br><span class="line">  @ViewChild(&#x27;next&#x27;) </span><br><span class="line">  private elRef: ElementRef;	</span><br><span class="line">  constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit()&#123;</span><br><span class="line">    const currentElement = this.elRef.nativeElement;</span><br><span class="line">    const nextEl = this.renderer.nextSibling(currentElement);</span><br><span class="line">    this.renderer.addClass(nextEl, &#x27;red&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>parentNode</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, Renderer2, ElementRef, ViewChild, OnInit &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p #parent&gt;First&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Second&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Third&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">      `,</span><br><span class="line">  styleUrls: [ &#x27;./app.component.css&#x27; ]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent implements OnInit &#123;</span><br><span class="line">  @ViewChild(&#x27;parent&#x27;) </span><br><span class="line">  private elRef: ElementRef;	</span><br><span class="line">  constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit()&#123;</span><br><span class="line">    const currentElement = this.elRef.nativeElement;</span><br><span class="line">    const parent = this.renderer.parentNode(currentElement);</span><br><span class="line">    this.renderer.addClass(parent, &#x27;red&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>selectRootElement</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># selectRootElement(selectorOrNode: any, preserveContent?: boolean) - 是否保留子内容</span><br><span class="line"></span><br><span class="line">import &#123; Component, Renderer2, ElementRef, ViewChild, OnInit &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">        &lt;div #root&gt;</span><br><span class="line">        X or Y?</span><br><span class="line">        &lt;/div&gt; </span><br><span class="line">        &lt;button (click)=&quot;changeIt()&quot;&gt;Click&lt;/button&gt;</span><br><span class="line">      `,</span><br><span class="line">  styleUrls: [ &#x27;./app.component.css&#x27; ]</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent &#123;</span><br><span class="line">  switchText: boolean = false;</span><br><span class="line">  @ViewChild(&#x27;root&#x27;) </span><br><span class="line">  private elRef: ElementRef;	</span><br><span class="line">  constructor(private renderer: Renderer2) &#123;&#125;</span><br><span class="line">  changeIt()&#123;</span><br><span class="line">    this.switchText = !this.switchText;</span><br><span class="line">    const rootEl = this.elRef.nativeElement;</span><br><span class="line">    const text = this.switchText ? </span><br><span class="line">      this.renderer.createText(&#x27;Hey X!&#x27;) :</span><br><span class="line">      this.renderer.createText(&#x27;Hey Y!&#x27;);</span><br><span class="line">    this.renderer.selectRootElement(rootEl); </span><br><span class="line">    this.renderer.appendChild(rootEl, text)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 源码</span><br><span class="line">selectRootElement(selector: string): Element &#123;</span><br><span class="line">    var el = DOM.querySelector(this._rootRenderer.document, selector);</span><br><span class="line">    if (isBlank(el)) &#123;</span><br><span class="line">      throw new BaseException(`The selector &quot;$&#123;selector&#125;&quot; did not match any elements`);</span><br><span class="line">    &#125;</span><br><span class="line">    DOM.clearNodes(el);</span><br><span class="line">    return el;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>listen</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, ViewChild, ElementRef, Renderer2 &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-app&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;p #listen&gt;</span><br><span class="line">      Hover to see some magic!</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">    &#123;&#123;count&#125;&#125;</span><br><span class="line">  `,</span><br><span class="line">&#125;)</span><br><span class="line">export class AppComponent  &#123;</span><br><span class="line">  @ViewChild(&#x27;listen&#x27;) </span><br><span class="line">    private elRef: ElementRef;	</span><br><span class="line">    constructor(private renderer: Renderer2) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    toggle = false; </span><br><span class="line">    count = 0;  </span><br><span class="line">    ngAfterViewInit() &#123;</span><br><span class="line">    this.renderer.listen(this.elRef.nativeElement, &#x27;mouseover&#x27;, () =&gt; &#123;</span><br><span class="line">      this.toggle = !this.toggle;</span><br><span class="line">      this.count++;</span><br><span class="line">      const currentElement = this.elRef.nativeElement;</span><br><span class="line">      const firstText = this.renderer.createText(&#x27;Hover to see new text! (Hover me)&#x27;);</span><br><span class="line">      const secondText = this.renderer.createText(&#x27;Text changed! (Hover me)&#x27;);</span><br><span class="line">      const thirdText = this.renderer.createText(&#x27;Reached maximum count!&#x27;);</span><br><span class="line"></span><br><span class="line">      this.renderer.selectRootElement(currentElement);</span><br><span class="line">      if(this.count &lt; 10)&#123;</span><br><span class="line">          this.toggle ? this.renderer.appendChild(currentElement, secondText) : </span><br><span class="line">          this.renderer.appendChild(currentElement, firstText);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">          this.renderer.appendChild(currentElement, thirdText);</span><br><span class="line">          this.count = 10;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="Angular-Render2"><a href="#Angular-Render2" class="headerlink" title="Angular Render2"></a><a target="_blank" rel="noopener" href="https://itnext.io/using-renderer2-in-angular-8f80da6756f8">Angular Render2</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#render2" >
+    <span class="tag-code">render2</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/05/28/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》- angular8 日常开发避坑指南
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/09/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%2020%E4%B8%AA%E4%BD%A0%E5%80%BC%E5%BE%97%E4%BA%86%E8%A7%A3%E7%9A%84Angular%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">
+        
+          《angular8》- 20个你值得了解的Angular开源项目
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Render2"><span class="toc-nav-text">Render2</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Render2%E4%B9%8B%E6%8C%87%E4%BB%A4%E7%94%A8%E6%B3%95"><span class="toc-nav-text">Render2之指令用法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Render2%E4%B9%8B%E7%BB%84%E4%BB%B6%E7%94%A8%E6%B3%95-%E5%A4%A7%E9%83%A8%E5%88%86%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%8F%AA%E6%9C%89Renderer2"><span class="toc-nav-text">Render2之组件用法 - 大部分构造方法只有Renderer2</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular-Render2"><span class="toc-nav-text">Angular Render2</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/09/front_skills/angular/《angular8》- 你需要了解的Render2/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

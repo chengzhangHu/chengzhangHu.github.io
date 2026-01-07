@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      js 堆栈 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>js 堆栈</h2>
+  <p class="post-date">2025-07-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><hr>
+<h2 id="🧠-一、为何要有-栈内存-和-非堆内存（包括代码空间、MapSpace-等）？"><a href="#🧠-一、为何要有-栈内存-和-非堆内存（包括代码空间、MapSpace-等）？" class="headerlink" title="🧠 一、为何要有 栈内存 和 非堆内存（包括代码空间、MapSpace 等）？"></a>🧠 一、为何要有 <strong>栈内存</strong> 和 <strong>非堆内存（包括代码空间、MapSpace 等）</strong>？</h2><h3 id="📌-1-栈内存-vs-堆内存：性能与功能的权衡"><a href="#📌-1-栈内存-vs-堆内存：性能与功能的权衡" class="headerlink" title="📌 1. 栈内存 vs 堆内存：性能与功能的权衡"></a>📌 1. 栈内存 vs 堆内存：性能与功能的权衡</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>栈内存（Stack）</th>
+<th>堆内存（Heap）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分配速度</td>
+<td><strong>非常快（指针移动）</strong></td>
+<td>相对较慢（需要查找空闲内存）</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>函数调用期内（自动回收）</td>
+<td>不确定（取决于引用和 GC）</td>
+</tr>
+<tr>
+<td>存储类型</td>
+<td>原始值、函数上下文、局部引用</td>
+<td>对象、数组、闭包、函数体等复杂结构</td>
+</tr>
+<tr>
+<td>大小限制</td>
+<td><strong>较小</strong>（通常几十 KB ~ 几 MB）</td>
+<td><strong>大得多</strong>（老生代最大可设 GB 级）</td>
+</tr>
+<tr>
+<td>管理方式</td>
+<td>由编译器&#x2F;运行时自动管理，<strong>顺序存取</strong></td>
+<td>由垃圾回收器管理，<strong>非连续结构</strong></td>
+</tr>
+</tbody></table>
+<p>👉 <strong>为什么需要栈？</strong></p>
+<ul>
+<li>快速响应函数调用（如递归、作用域压栈）</li>
+<li>更节省内存，临时变量很快被释放</li>
+</ul>
+<p>👉 <strong>为什么需要堆？</strong></p>
+<ul>
+<li>存放动态分配和生命周期不确定的对象</li>
+<li>如闭包对象、事件监听器、DOM 节点引用等</li>
+</ul>
+<hr>
+<h3 id="📌-2-为什么还需要“非堆内存”空间（如-Code-Space、ReadOnly-Space）？"><a href="#📌-2-为什么还需要“非堆内存”空间（如-Code-Space、ReadOnly-Space）？" class="headerlink" title="📌 2. 为什么还需要“非堆内存”空间（如 Code Space、ReadOnly Space）？"></a>📌 2. 为什么还需要“非堆内存”空间（如 Code Space、ReadOnly Space）？</h3><p>V8 除了“普通堆”，还有很多<strong>特殊用途的内存区间</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>空间名称</th>
+<th>作用与意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Code Space</strong></td>
+<td>存储 JS 编译后的字节码 &#x2F; 机器码。为了<strong>性能优化和执行权限控制</strong>，需要特殊对待。</td>
+</tr>
+<tr>
+<td><strong>Map Space</strong></td>
+<td>存储对象的隐藏类（Hidden Class）结构，支持快速对象访问。</td>
+</tr>
+<tr>
+<td><strong>ReadOnly Space</strong></td>
+<td>存不可变结构，如 <code>NaN</code>, <code>Infinity</code>，<strong>多线程共享</strong>更安全。</td>
+</tr>
+<tr>
+<td><strong>Large Object Space</strong></td>
+<td>避免复制大对象，直接分配，提高效率。</td>
+</tr>
+</tbody></table>
+<p>✅ 这些空间本质上是为了<strong>安全性、性能、内存利用率</strong>最大化设计的。</p>
+<hr>
+<h2 id="🛠️-二、Chrome-DevTools-→-Memory-面板使用技巧"><a href="#🛠️-二、Chrome-DevTools-→-Memory-面板使用技巧" class="headerlink" title="🛠️ 二、Chrome DevTools → Memory 面板使用技巧"></a>🛠️ 二、Chrome DevTools → Memory 面板使用技巧</h2><p>Chrome DevTools 提供了强大的内存分析功能，主要用于：</p>
+<ul>
+<li><strong>查找内存泄漏</strong></li>
+<li><strong>分析对象生命周期</strong></li>
+<li><strong>监控垃圾回收行为</strong></li>
+</ul>
+<hr>
+<h3 id="📌-打开方式"><a href="#📌-打开方式" class="headerlink" title="📌 打开方式"></a>📌 打开方式</h3><ol>
+<li>打开 DevTools（<code>F12</code> 或 <code>Ctrl + Shift + I</code>）</li>
+<li>切换到 <strong>Memory</strong> 面板</li>
+</ol>
+<hr>
+<h3 id="📌-三种快照工具的作用"><a href="#📌-三种快照工具的作用" class="headerlink" title="📌 三种快照工具的作用"></a>📌 三种快照工具的作用</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Heap snapshot</strong></td>
+<td><strong>静态快照</strong>，显示某一时刻所有内存中的对象和引用关系</td>
+</tr>
+<tr>
+<td><strong>Allocation instrumentation on timeline</strong></td>
+<td><strong>记录分配过程</strong>，查看哪些对象持续存在，适合定位内存泄漏</td>
+</tr>
+<tr>
+<td><strong>Allocation profiler</strong></td>
+<td>显示内存分配的堆栈，帮助你理解<strong>哪些代码</strong>创建了对象</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🧪-使用技巧（经典排查流程）"><a href="#🧪-使用技巧（经典排查流程）" class="headerlink" title="🧪 使用技巧（经典排查流程）"></a>🧪 使用技巧（经典排查流程）</h3><h4 id="✅-1-分析内存泄漏（快照对比法）"><a href="#✅-1-分析内存泄漏（快照对比法）" class="headerlink" title="✅ 1. 分析内存泄漏（快照对比法）"></a>✅ 1. 分析内存泄漏（快照对比法）</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">① 打开页面 → Snapshot1</span><br><span class="line">② 执行操作 → Snapshot2</span><br><span class="line">③ 再清理操作（如返回、解绑）→ Snapshot3</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对比 Snapshot2 和 Snapshot3，看是否有对象未被回收</li>
+<li>用 <strong>“Object retained by”</strong> 找出哪个对象引用了它</li>
+</ul>
+<h4 id="✅-2-查看-Detached-DOM-节点"><a href="#✅-2-查看-Detached-DOM-节点" class="headerlink" title="✅ 2. 查看 Detached DOM 节点"></a>✅ 2. 查看 Detached DOM 节点</h4><ul>
+<li>搜索关键字：<code>Detached</code>，表示已脱离 DOM 树但仍在 JS 引用中的元素</li>
+<li>这类对象非常容易导致内存泄漏（如事件未解绑）</li>
+</ul>
+<h4 id="✅-3-观察“retainers”（引用链）"><a href="#✅-3-观察“retainers”（引用链）" class="headerlink" title="✅ 3. 观察“retainers”（引用链）"></a>✅ 3. 观察“retainers”（引用链）</h4><ul>
+<li>在某个对象上右键 → <code>Reveal in Summary</code></li>
+<li>查看其被哪些对象引用</li>
+<li>找到 GC 无法释放的根引用（通常是全局变量、闭包、缓存）</li>
+</ul>
+<h4 id="✅-4-使用-Timeline-模式分析增长"><a href="#✅-4-使用-Timeline-模式分析增长" class="headerlink" title="✅ 4. 使用 Timeline 模式分析增长"></a>✅ 4. 使用 Timeline 模式分析增长</h4><ul>
+<li>点击 <code>Allocation instrumentation on timeline</code></li>
+<li>执行交互操作</li>
+<li>观察内存是否持续增长，是否 GC 无法回收</li>
+</ul>
+<hr>
+<h3 id="📘-小技巧列表"><a href="#📘-小技巧列表" class="headerlink" title="📘 小技巧列表"></a>📘 小技巧列表</h3><table>
+<thead>
+<tr>
+<th>技巧</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>window.leak = someObject</code></td>
+<td>主动把对象挂到全局，帮助你调试和快照标记</td>
+</tr>
+<tr>
+<td>分配对象时添加 className 或 custom ID</td>
+<td>帮助在 heap snapshot 中识别</td>
+</tr>
+<tr>
+<td>用 <code>console.profile()</code>&#x2F;<code>profileEnd()</code></td>
+<td>结合 Performance 分析内存或执行瓶颈</td>
+</tr>
+<tr>
+<td>开启 GC 日志（Node）</td>
+<td><code>--trace-gc</code>、<code>--inspect</code> 等可用于服务端调试</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-总结"><a href="#✅-总结" class="headerlink" title="✅ 总结"></a>✅ 总结</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>栈内存</td>
+<td>快速处理函数调用、临时变量，生命周期短，性能高</td>
+</tr>
+<tr>
+<td>堆内存</td>
+<td>动态分配复杂数据结构，对象生命周期受引用控制</td>
+</tr>
+<tr>
+<td>非堆空间</td>
+<td>存机器码、Map 结构、只读常量等，引擎层级优化需要</td>
+</tr>
+<tr>
+<td>DevTools 技巧</td>
+<td>快照比对 + Timeline 观察 + Retainer 链分析是三大绝招</td>
+</tr>
+</tbody></table>
+<hr>
+<p>是的，完全正确！在 JavaScript 中，<strong>栈</strong>不仅仅用于存储原始数据类型，还承担着非常核心的职责：<strong>管理函数的执行过程</strong>。我们来具体解释一下这句话：</p>
+<hr>
+<h2 id="✅-一、栈中包含的内容"><a href="#✅-一、栈中包含的内容" class="headerlink" title="✅ 一、栈中包含的内容"></a>✅ 一、栈中包含的内容</h2><p>在 JavaScript 中，所谓“栈”主要是指<strong>调用栈（Call Stack）</strong>，这是 JS 引擎（如 V8）在运行时用来追踪函数调用的结构。</p>
+<h3 id="📦-调用栈中每一层都叫一个“执行上下文（Execution-Context）”，它包含："><a href="#📦-调用栈中每一层都叫一个“执行上下文（Execution-Context）”，它包含：" class="headerlink" title="📦 调用栈中每一层都叫一个“执行上下文（Execution Context）”，它包含："></a>📦 调用栈中每一层都叫一个“执行上下文（Execution Context）”，它包含：</h3><table>
+<thead>
+<tr>
+<th>组成部分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>函数参数</td>
+<td>当前函数调用时传入的参数</td>
+</tr>
+<tr>
+<td>局部变量</td>
+<td>在函数内部声明的变量（<code>let</code>, <code>const</code>, <code>var</code>）</td>
+</tr>
+<tr>
+<td><code>this</code> 绑定</td>
+<td>当前执行环境的 <code>this</code> 值（根据调用方式不同而变化）</td>
+</tr>
+<tr>
+<td>外部引用环境指针</td>
+<td>指向当前上下文的外部作用域，用于作用域链（<code>[[Scope]]</code>）</td>
+</tr>
+<tr>
+<td>函数调用状态</td>
+<td>调用位置、是否暂停等状态信息</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>✅ 这些内容整体就是函数的“调用帧”（Call Frame），每当你调用一个函数，JS 引擎就把这个帧压到调用栈顶部。</p>
+</blockquote>
+<hr>
+<h2 id="🔁-二、函数调用过程中的调用栈演化示例"><a href="#🔁-二、函数调用过程中的调用栈演化示例" class="headerlink" title="🔁 二、函数调用过程中的调用栈演化示例"></a>🔁 二、函数调用过程中的调用栈演化示例</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> a = <span class="number">10</span>;</span><br><span class="line">  <span class="title function_">bar</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> b = <span class="number">20</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">foo</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="🧱-执行步骤与调用栈状态变化："><a href="#🧱-执行步骤与调用栈状态变化：" class="headerlink" title="🧱 执行步骤与调用栈状态变化："></a>🧱 执行步骤与调用栈状态变化：</h3><ol>
+<li><p><strong>初始状态</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Global Execution Context]   // 全局上下文入栈</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>调用 foo()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[foo Execution Context]      // foo 调用帧压栈</span><br><span class="line">[Global Execution Context]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>foo 中调用 bar()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bar Execution Context]      // bar 调用帧压栈</span><br><span class="line">[foo Execution Context]</span><br><span class="line">[Global Execution Context]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>console.log 执行完毕，bar() 结束</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[foo Execution Context]      // bar 出栈</span><br><span class="line">[Global Execution Context]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>foo() 结束</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Global Execution Context]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>脚本执行结束，栈清空</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h2 id="🎯-三、作用域链也依赖“执行上下文”栈结构"><a href="#🎯-三、作用域链也依赖“执行上下文”栈结构" class="headerlink" title="🎯 三、作用域链也依赖“执行上下文”栈结构"></a>🎯 三、作用域链也依赖“执行上下文”栈结构</h2><ul>
+<li>每个执行上下文都有一个作用域链（scope chain）指针。</li>
+<li>JS 在查找变量时，先在当前帧找，找不到就向“外层上下文”继续查找，直到全局。</li>
+</ul>
+<hr>
+<h2 id="🧠-总结"><a href="#🧠-总结" class="headerlink" title="🧠 总结"></a>🧠 总结</h2><table>
+<thead>
+<tr>
+<th>栈中内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Call Stack（调用栈）</td>
+<td>管理函数调用流程，每次调用函数就压栈，函数返回就出栈</td>
+</tr>
+<tr>
+<td>执行上下文（Execution Context）</td>
+<td>每个函数调用的“帧”，包含作用域、变量、参数、<code>this</code> 等</td>
+</tr>
+<tr>
+<td>作用域链指针</td>
+<td>每个上下文记录其外部上下文，构成作用域链</td>
+</tr>
+</tbody></table>
+<hr>
+<p>如果你想深入了解如<strong>闭包变量是如何在栈与堆之间共享的</strong>、<strong>递归调用导致的栈溢出原理</strong>、或<strong>如何用 DevTools 可视化这些调用栈</strong>，我可以给你具体例子或图解。需要吗？</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#内存空间" >
+    <span class="tag-code">内存空间</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/01/front_skills/angular/angular%20service%20worker/">
+        <span class="nav-arrow">← </span>
+        
+          Angular Service Worker
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">
+        
+          js v8内存空间
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%80%E3%80%81%E4%B8%BA%E4%BD%95%E8%A6%81%E6%9C%89-%E6%A0%88%E5%86%85%E5%AD%98-%E5%92%8C-%E9%9D%9E%E5%A0%86%E5%86%85%E5%AD%98%EF%BC%88%E5%8C%85%E6%8B%AC%E4%BB%A3%E7%A0%81%E7%A9%BA%E9%97%B4%E3%80%81MapSpace-%E7%AD%89%EF%BC%89%EF%BC%9F"><span class="toc-nav-text">🧠 一、为何要有 栈内存 和 非堆内存（包括代码空间、MapSpace 等）？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%8C-1-%E6%A0%88%E5%86%85%E5%AD%98-vs-%E5%A0%86%E5%86%85%E5%AD%98%EF%BC%9A%E6%80%A7%E8%83%BD%E4%B8%8E%E5%8A%9F%E8%83%BD%E7%9A%84%E6%9D%83%E8%A1%A1"><span class="toc-nav-text">📌 1. 栈内存 vs 堆内存：性能与功能的权衡</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%8C-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E9%9C%80%E8%A6%81%E2%80%9C%E9%9D%9E%E5%A0%86%E5%86%85%E5%AD%98%E2%80%9D%E7%A9%BA%E9%97%B4%EF%BC%88%E5%A6%82-Code-Space%E3%80%81ReadOnly-Space%EF%BC%89%EF%BC%9F"><span class="toc-nav-text">📌 2. 为什么还需要“非堆内存”空间（如 Code Space、ReadOnly Space）？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A0%EF%B8%8F-%E4%BA%8C%E3%80%81Chrome-DevTools-%E2%86%92-Memory-%E9%9D%A2%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-nav-text">🛠️ 二、Chrome DevTools → Memory 面板使用技巧</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">📌 打开方式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E4%B8%89%E7%A7%8D%E5%BF%AB%E7%85%A7%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-nav-text">📌 三种快照工具的作用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%88%E7%BB%8F%E5%85%B8%E6%8E%92%E6%9F%A5%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="toc-nav-text">🧪 使用技巧（经典排查流程）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%85-1-%E5%88%86%E6%9E%90%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%EF%BC%88%E5%BF%AB%E7%85%A7%E5%AF%B9%E6%AF%94%E6%B3%95%EF%BC%89"><span class="toc-nav-text">✅ 1. 分析内存泄漏（快照对比法）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%85-2-%E6%9F%A5%E7%9C%8B-Detached-DOM-%E8%8A%82%E7%82%B9"><span class="toc-nav-text">✅ 2. 查看 Detached DOM 节点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%85-3-%E8%A7%82%E5%AF%9F%E2%80%9Cretainers%E2%80%9D%EF%BC%88%E5%BC%95%E7%94%A8%E9%93%BE%EF%BC%89"><span class="toc-nav-text">✅ 3. 观察“retainers”（引用链）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%85-4-%E4%BD%BF%E7%94%A8-Timeline-%E6%A8%A1%E5%BC%8F%E5%88%86%E6%9E%90%E5%A2%9E%E9%95%BF"><span class="toc-nav-text">✅ 4. 使用 Timeline 模式分析增长</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%98-%E5%B0%8F%E6%8A%80%E5%B7%A7%E5%88%97%E8%A1%A8"><span class="toc-nav-text">📘 小技巧列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">✅ 总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E6%A0%88%E4%B8%AD%E5%8C%85%E5%90%AB%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-nav-text">✅ 一、栈中包含的内容</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%A6-%E8%B0%83%E7%94%A8%E6%A0%88%E4%B8%AD%E6%AF%8F%E4%B8%80%E5%B1%82%E9%83%BD%E5%8F%AB%E4%B8%80%E4%B8%AA%E2%80%9C%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88Execution-Context%EF%BC%89%E2%80%9D%EF%BC%8C%E5%AE%83%E5%8C%85%E5%90%AB%EF%BC%9A"><span class="toc-nav-text">📦 调用栈中每一层都叫一个“执行上下文（Execution Context）”，它包含：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-%E4%BA%8C%E3%80%81%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E8%B0%83%E7%94%A8%E6%A0%88%E6%BC%94%E5%8C%96%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">🔁 二、函数调用过程中的调用栈演化示例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E6%89%A7%E8%A1%8C%E6%AD%A5%E9%AA%A4%E4%B8%8E%E8%B0%83%E7%94%A8%E6%A0%88%E7%8A%B6%E6%80%81%E5%8F%98%E5%8C%96%EF%BC%9A"><span class="toc-nav-text">🧱 执行步骤与调用栈状态变化：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E4%B8%89%E3%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE%E4%B9%9F%E4%BE%9D%E8%B5%96%E2%80%9C%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D%E6%A0%88%E7%BB%93%E6%9E%84"><span class="toc-nav-text">🎯 三、作用域链也依赖“执行上下文”栈结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🧠 总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/03/front_skills/js/js 堆栈/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

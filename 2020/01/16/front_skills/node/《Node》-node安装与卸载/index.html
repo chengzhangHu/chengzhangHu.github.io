@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Node》- node安装与卸载 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Node》- node安装与卸载</h2>
+  <p class="post-date">2020-01-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="mac环境下，pkg包安装"><a href="#mac环境下，pkg包安装" class="headerlink" title="mac环境下，pkg包安装"></a>mac环境下，pkg包安装</h3><h4 id="nodejs-官网下载"><a href="#nodejs-官网下载" class="headerlink" title="nodejs 官网下载"></a><a target="_blank" rel="noopener" href="https://nodejs.org/en/">nodejs 官网下载</a></h4><h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; which node</span><br><span class="line">/User/&lt;your&#x27;s-user-name&gt;/.nvm/versions/node/&lt;latest-node-lts-version&gt;/bin/node</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; node -v</span><br><span class="line">v10.16.3</span><br></pre></td></tr></table></figure>
+<h4 id="pkg卸载"><a href="#pkg卸载" class="headerlink" title="pkg卸载"></a>pkg卸载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/local/&#123;bin/&#123;node,npm&#125;,lib/node_modules/npm,lib/node,share/man/*/node.*&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="brew-安装node"><a href="#brew-安装node" class="headerlink" title="brew 安装node"></a>brew 安装node</h3><h4 id="brew-search"><a href="#brew-search" class="headerlink" title="brew search"></a>brew search</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; brew search node </span><br><span class="line"></span><br><span class="line">==&gt; Formulae</span><br><span class="line">leafnode            node-build          node@8              nodenv</span><br><span class="line">libbitcoin-node     node-sass           node_exporter</span><br><span class="line">llnode              node@10             nodebrew</span><br><span class="line">node                node@12             nodeenv</span><br><span class="line"></span><br><span class="line">==&gt; Casks</span><br><span class="line">nodebox                    nodeclipse                 soundnode</span><br></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node@12</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 建立软连接</span><br><span class="line">&gt; ln -s ~/.nvm/versions/node/ /usr/local/Cellar/</span><br></pre></td></tr></table></figure>
+<h4 id="brew-卸载node"><a href="#brew-卸载node" class="headerlink" title="brew 卸载node"></a>brew 卸载node</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; brew uninstall node --ignore-dependencies </span><br><span class="line">Error: No such keg: /usr/local/Cellar/node</span><br></pre></td></tr></table></figure>
+<p>解决方法：<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall node --force</span><br></pre></td></tr></table></figure></p>
+<h3 id="mac-nvm-安装node"><a href="#mac-nvm-安装node" class="headerlink" title="mac nvm 安装node"></a>mac nvm 安装node</h3><h4 id="脚本安装"><a href="#脚本安装" class="headerlink" title="脚本安装"></a>脚本安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br></pre></td></tr></table></figure>
+<h4 id="brew-install-nvm"><a href="#brew-install-nvm" class="headerlink" title="brew install nvm"></a>brew install nvm</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install nvm </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&gt; nvm ls-remote</span><br><span class="line">     ...</span><br><span class="line">	 v10.16.2   (LTS: Dubnium)</span><br><span class="line">-&gt;   v10.16.3   (LTS: Dubnium)</span><br><span class="line">	 v10.17.0   (LTS: Dubnium)</span><br><span class="line">	 v10.18.0   (Latest LTS: Dubnium)</span><br><span class="line">	 ...</span><br><span class="line">	 v11.9.0</span><br><span class="line">	 v11.10.0</span><br><span class="line">	 ....</span><br><span class="line">	 v12.0.0</span><br><span class="line">	 v12.1.0</span><br><span class="line">	 ...</span><br><span class="line">	 v12.13.0   (LTS: Erbium)</span><br><span class="line">	 v12.13.1   (LTS: Erbium)</span><br><span class="line">	 v12.14.0   (Latest LTS: Erbium) </span><br><span class="line">     ...</span><br><span class="line">	v13.4.0</span><br><span class="line">	v13.5.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; nvm ls-remote --lts=Erbium</span><br><span class="line">       v12.13.0   (LTS: Erbium)</span><br><span class="line">       v12.13.1   (LTS: Erbium)</span><br><span class="line">       v12.14.0   (Latest LTS: Erbium)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install v12.13.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; nvm current </span><br><span class="line">v10.16.3</span><br></pre></td></tr></table></figure>
+<h4 id="常用nvm命令"><a href="#常用nvm命令" class="headerlink" title="常用nvm命令"></a>常用nvm命令</h4><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nvm –help</td>
+<td>展示帮助信息</td>
+</tr>
+<tr>
+<td>nvm –version</td>
+<td>查看nvm版本</td>
+</tr>
+<tr>
+<td>nvm install [-s] [version]</td>
+<td><strong>安装特定版本node</strong></td>
+</tr>
+<tr>
+<td>nvm install     –reinstall-packages-from&#x3D;[version]</td>
+<td>重新安装特定版本</td>
+</tr>
+<tr>
+<td>nvm install  –lts</td>
+<td>选择最新的LTS版本安装</td>
+</tr>
+<tr>
+<td>nvm install      –lts&#x3D;[LTS name]</td>
+<td><strong>选择特定的LTS版本安装</strong></td>
+</tr>
+<tr>
+<td>nvm install   –skip-default-packages</td>
+<td>跳过默认包安装</td>
+</tr>
+<tr>
+<td>nvm install       –latest-npm</td>
+<td>安装完毕，顺带更新npm</td>
+</tr>
+<tr>
+<td>nvm install –no-progress</td>
+<td>静默安装，不显示进度条</td>
+</tr>
+<tr>
+<td>nvm uninstall [version]</td>
+<td>** 卸载特定版本**</td>
+</tr>
+<tr>
+<td>nvm uninstall –lts</td>
+<td>卸载最新的LTS版本</td>
+</tr>
+<tr>
+<td>nvm uninstall –lts&#x3D;[LTS name]</td>
+<td>**  卸载特定的LTS版本**</td>
+</tr>
+<tr>
+<td>nvm use [–silent] [version]</td>
+<td><strong>切换node版本</strong></td>
+</tr>
+<tr>
+<td>nvm use –lts</td>
+<td>使用最新的LTS版本</td>
+</tr>
+<tr>
+<td>nvm use –lts&#x3D;[LTS name]</td>
+<td>使用特定的LTS版本</td>
+</tr>
+<tr>
+<td>nvm exec [–silent] [version] [command]</td>
+<td>使用特定node版本作为执行上下文</td>
+</tr>
+<tr>
+<td>nvm exec  –lts</td>
+<td>使用最新node LTS版本作为执行上下文</td>
+</tr>
+<tr>
+<td>nvm exec  –lts&#x3D;[LTS name]</td>
+<td>使用特定LTS node版本作为执行上下文</td>
+</tr>
+<tr>
+<td>nvm run [–silent] [version] [args]</td>
+<td>使用参数args代入版本node上下文执行命令</td>
+</tr>
+<tr>
+<td>nvm run  –lts</td>
+<td>使用最新LTS版本</td>
+</tr>
+<tr>
+<td>nvm run  –lts&#x3D;[LTS name]</td>
+<td>使用特定LTS版本</td>
+</tr>
+<tr>
+<td>nvm current</td>
+<td>** 展示当前使用的node版本**</td>
+</tr>
+<tr>
+<td>nvm ls [version]</td>
+<td><strong>展示已安装的node版本</strong></td>
+</tr>
+<tr>
+<td>nvm ls  –no-colors</td>
+<td>不使用颜色区分输出内容</td>
+</tr>
+<tr>
+<td>nvm ls  –no-alias</td>
+<td>仅仅输出版本号，不输出额外信息</td>
+</tr>
+<tr>
+<td>nvm ls-remote [version]</td>
+<td><strong>列出可供安装的node版本</strong></td>
+</tr>
+<tr>
+<td>nvm ls-remote  –lts</td>
+<td>列出最新的LTS版本</td>
+</tr>
+<tr>
+<td>nvm ls-remote  –lts&#x3D;[LTS name&gt;]</td>
+<td><strong>列出特定名称LTS版本</strong></td>
+</tr>
+<tr>
+<td>nvm ls-remote  –no-colors</td>
+<td>不颜色区分输出</td>
+</tr>
+<tr>
+<td>nvm version [version]</td>
+<td>查看nvm版本</td>
+</tr>
+<tr>
+<td>nvm version-remote [version]</td>
+<td>查看源特定版本信息</td>
+</tr>
+<tr>
+<td>nvm version-remote  –lts</td>
+<td>查看源最新LTS版本信息</td>
+</tr>
+<tr>
+<td>nvm version-remote  –lts&#x3D;[LTS name&gt;]</td>
+<td>查看源特定LTS版本信息</td>
+</tr>
+<tr>
+<td>nvm deactivate</td>
+<td>Undo effects of <code>nvm</code> on current shell</td>
+</tr>
+<tr>
+<td>nvm alias [pattern]</td>
+<td>正则查找别名</td>
+</tr>
+<tr>
+<td>nvm alias  –no-colors</td>
+<td>Suppress colored output</td>
+</tr>
+<tr>
+<td>nvm alias [name] [version]</td>
+<td><strong>特定版本设置别名name</strong></td>
+</tr>
+<tr>
+<td>nvm unalias [name]</td>
+<td><strong>移除之前的设置的版本别名</strong></td>
+</tr>
+<tr>
+<td>nvm install-latest-npm</td>
+<td>更新node下的npm包</td>
+</tr>
+<tr>
+<td>nvm reinstall-packages [version]</td>
+<td>重新更新node下npm包</td>
+</tr>
+<tr>
+<td>nvm unload</td>
+<td>shell下卸载nvm</td>
+</tr>
+<tr>
+<td>nvm which [current  [version]]</td>
+<td>展示node path路径</td>
+</tr>
+<tr>
+<td>nvm cache dir</td>
+<td>展示nvm的缓存路径</td>
+</tr>
+<tr>
+<td>nvm cache clear</td>
+<td>清空nvm缓存</td>
+</tr>
+</tbody></table>
+<h4 id="软连接作用"><a href="#软连接作用" class="headerlink" title="软连接作用"></a>软连接作用</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; ln -s ~/.nvm/versions/node/&lt;latest-node-lts-version&gt;/ /usr/local/Cellar/node</span><br></pre></td></tr></table></figure>
+
+<h4 id="nvm-卸载-node"><a href="#nvm-卸载-node" class="headerlink" title="nvm 卸载 node"></a>nvm 卸载 node</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; nvm uninstall v10.16.2</span><br><span class="line">Uninstalled node v10.16.2</span><br></pre></td></tr></table></figure>
+
+<h4 id="yarn安装"><a href="#yarn安装" class="headerlink" title="yarn安装"></a>yarn安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># yarn 安装</span><br><span class="line">curl -o- -L https://yarnpkg.com/install.sh | bash  </span><br></pre></td></tr></table></figure>
+
+<h4 id="卸载nvm"><a href="#卸载nvm" class="headerlink" title="卸载nvm"></a>卸载nvm</h4><p> 删除 ~&#x2F;.nvm 文件夹即可</p>
+<h3 id="windows下nvm"><a href="#windows下nvm" class="headerlink" title="windows下nvm"></a>windows下nvm</h3><h4 id="nvm命令"><a href="#nvm命令" class="headerlink" title="nvm命令"></a>nvm命令</h4><p><img src="https://user-gold-cdn.xitu.io/2020/1/8/16f857c735d63cb4?w=680&h=292&f=png&s=105039" alt="nvm"></p>
+<h4 id="nvm-安装node"><a href="#nvm-安装node" class="headerlink" title="nvm 安装node"></a>nvm 安装node</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install 10.16.3</span><br></pre></td></tr></table></figure>
+<h4 id="查看可用列表"><a href="#查看可用列表" class="headerlink" title="查看可用列表"></a>查看可用列表</h4><p><img src="https://user-gold-cdn.xitu.io/2020/1/8/16f857b7da16156a?w=680&h=403&f=png&s=81697" alt="nvm node list"></p>
+<h3 id="linux-下安装nvm"><a href="#linux-下安装nvm" class="headerlink" title="linux 下安装nvm"></a>linux 下安装nvm</h3><h4 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git -y</span><br></pre></td></tr></table></figure>
+<h4 id="下载nvm"><a href="#下载nvm" class="headerlink" title="下载nvm"></a>下载nvm</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git://github.com/creationix/nvm.git ~/nvm</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2020/1/8/16f85b3f39be0a88?w=680&h=263&f=png&s=72222"></p>
+<h4 id="编译安装nvm"><a href="#编译安装nvm" class="headerlink" title="编译安装nvm"></a>编译安装nvm</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#设置nvm 自动运行;</span><br><span class="line">echo &quot;source ~/nvm/nvm.sh&quot; &gt;&gt; ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h4 id="验证nvm"><a href="#验证nvm" class="headerlink" title="验证nvm"></a>验证nvm</h4><p><img src="https://user-gold-cdn.xitu.io/2020/1/8/16f85b54f72a0a03?w=680&h=387&f=png&s=143116" alt="nvm version"></p>
+<h4 id="mac-rar"><a href="#mac-rar" class="headerlink" title="mac rar"></a>mac rar</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew cask install keka</span><br><span class="line">brew cask install rar </span><br></pre></td></tr></table></figure></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/01/08/%E3%80%8AHexo%E3%80%8B-%20introduction/">
+        <span class="nav-arrow">← </span>
+        
+          《Hexo》- introduction
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/01/17/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20%E5%8F%AA%E8%BE%93%E5%85%A5%E4%B8%80%E6%AC%A1%E5%AF%86%E7%A0%81%E6%93%8D%E4%BD%9C%E9%85%8D%E7%BD%AE/">
+        
+          《Git》- 只输入一次密码操作配置
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mac%E7%8E%AF%E5%A2%83%E4%B8%8B%EF%BC%8Cpkg%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-nav-text">mac环境下，pkg包安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nodejs-%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD"><span class="toc-nav-text">nodejs 官网下载</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#pkg%E5%8D%B8%E8%BD%BD"><span class="toc-nav-text">pkg卸载</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#brew-%E5%AE%89%E8%A3%85node"><span class="toc-nav-text">brew 安装node</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#brew-search"><span class="toc-nav-text">brew search</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#brew-%E5%8D%B8%E8%BD%BDnode"><span class="toc-nav-text">brew 卸载node</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mac-nvm-%E5%AE%89%E8%A3%85node"><span class="toc-nav-text">mac nvm 安装node</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%84%9A%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-nav-text">脚本安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#brew-install-nvm"><span class="toc-nav-text">brew install nvm</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B8%B8%E7%94%A8nvm%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">常用nvm命令</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BD%AF%E8%BF%9E%E6%8E%A5%E4%BD%9C%E7%94%A8"><span class="toc-nav-text">软连接作用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nvm-%E5%8D%B8%E8%BD%BD-node"><span class="toc-nav-text">nvm 卸载 node</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn%E5%AE%89%E8%A3%85"><span class="toc-nav-text">yarn安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%B8%E8%BD%BDnvm"><span class="toc-nav-text">卸载nvm</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#windows%E4%B8%8Bnvm"><span class="toc-nav-text">windows下nvm</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nvm%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">nvm命令</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nvm-%E5%AE%89%E8%A3%85node"><span class="toc-nav-text">nvm 安装node</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8F%AF%E7%94%A8%E5%88%97%E8%A1%A8"><span class="toc-nav-text">查看可用列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#linux-%E4%B8%8B%E5%AE%89%E8%A3%85nvm"><span class="toc-nav-text">linux 下安装nvm</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85git"><span class="toc-nav-text">安装git</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8B%E8%BD%BDnvm"><span class="toc-nav-text">下载nvm</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nvm"><span class="toc-nav-text">编译安装nvm</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81nvm"><span class="toc-nav-text">验证nvm</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mac-rar"><span class="toc-nav-text">mac rar</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/01/16/front_skills/node/《Node》-node安装与卸载/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

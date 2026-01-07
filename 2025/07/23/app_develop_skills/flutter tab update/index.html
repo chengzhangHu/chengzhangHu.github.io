@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Flutter Windows tab 自动更新 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Flutter Windows tab 自动更新</h2>
+  <p class="post-date">2025-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>Flutter 的 Tab 是完全可以通过配置动态更新的</strong>。可以做到：</p>
+<ul>
+<li>✅ Tab 的数量从 3 → 4 → 5 动态变化（甚至运行时改变）</li>
+<li>✅ 每个 Tab 的标题、图标、URL 都由配置文件（如 JSON）控制</li>
+<li>✅ 配置可以从本地或远程加载，实现远程动态更新界面结构</li>
+</ul>
+<hr>
+<h2 id="✅-实现原理概述"><a href="#✅-实现原理概述" class="headerlink" title="✅ 实现原理概述"></a>✅ 实现原理概述</h2><ol>
+<li>定义一个 Tab 配置结构，比如本地或远程的 JSON 文件：</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;首页&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;home&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yourdomain.com/tab1/index.html&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;发现&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;search&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yourdomain.com/tab2/index.html&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;我&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;person&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yourdomain.com/tab3/index.html&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p>可以在某次更新后，变成 5 个：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;设置&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;settings&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yourdomain.com/tab4/index.html&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;帮助&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;help&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://yourdomain.com/tab5/index.html&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-Flutter-动态加载配置-构建-Tab-示例（核心代码）"><a href="#✅-Flutter-动态加载配置-构建-Tab-示例（核心代码）" class="headerlink" title="✅ Flutter 动态加载配置 + 构建 Tab 示例（核心代码）"></a>✅ Flutter 动态加载配置 + 构建 Tab 示例（核心代码）</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:webview_flutter/webview_flutter.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:convert&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/services.dart&#x27;</span> <span class="keyword">show</span> rootBundle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TabItem</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line">  <span class="keyword">final</span> IconData icon;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> url;</span><br><span class="line"></span><br><span class="line">  TabItem(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.title, <span class="keyword">required</span> <span class="keyword">this</span>.icon, <span class="keyword">required</span> <span class="keyword">this</span>.url&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">factory</span> TabItem.fromJson(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; json) &#123;</span><br><span class="line">    <span class="keyword">return</span> TabItem(</span><br><span class="line">      title: json[<span class="string">&#x27;title&#x27;</span>],</span><br><span class="line">      icon: _iconFromName(json[<span class="string">&#x27;icon&#x27;</span>]),</span><br><span class="line">      url: json[<span class="string">&#x27;url&#x27;</span>],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> IconData _iconFromName(<span class="built_in">String</span> name) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (name) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;home&#x27;</span>: <span class="keyword">return</span> Icons.home;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;search&#x27;</span>: <span class="keyword">return</span> Icons.search;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;person&#x27;</span>: <span class="keyword">return</span> Icons.person;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;settings&#x27;</span>: <span class="keyword">return</span> Icons.settings;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;help&#x27;</span>: <span class="keyword">return</span> Icons.help;</span><br><span class="line">      <span class="keyword">default</span>: <span class="keyword">return</span> Icons.device_unknown;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;MyApp&gt; createState() =&gt; _MyAppState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyAppState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyApp</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">List</span>&lt;TabItem&gt; tabs = [];</span><br><span class="line">  <span class="built_in">int</span> _selectedIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    loadTabs();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; loadTabs() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> jsonStr = <span class="keyword">await</span> rootBundle.loadString(<span class="string">&#x27;assets/tab_config.json&#x27;</span>);</span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">dynamic</span>&gt; jsonList = json.decode(jsonStr);</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      tabs = jsonList.map((e) =&gt; TabItem.fromJson(e)).toList();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">if</span> (tabs.isEmpty) &#123;</span><br><span class="line">      <span class="keyword">return</span> MaterialApp(</span><br><span class="line">        home: Scaffold(body: Center(child: CircularProgressIndicator())),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(title: Text(tabs[_selectedIndex].title)),</span><br><span class="line">        body: WebView(</span><br><span class="line">          initialUrl: tabs[_selectedIndex].url,</span><br><span class="line">          javascriptMode: JavascriptMode.unrestricted,</span><br><span class="line">        ),</span><br><span class="line">        bottomNavigationBar: BottomNavigationBar(</span><br><span class="line">          currentIndex: _selectedIndex,</span><br><span class="line">          items: tabs</span><br><span class="line">              .map((tab) =&gt;</span><br><span class="line">                  BottomNavigationBarItem(icon: Icon(tab.icon), label: tab.title))</span><br><span class="line">              .toList(),</span><br><span class="line">          onTap: (index) &#123;</span><br><span class="line">            setState(() &#123;</span><br><span class="line">              _selectedIndex = index;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-JSON-配置说明"><a href="#✅-JSON-配置说明" class="headerlink" title="✅ JSON 配置说明"></a>✅ JSON 配置说明</h2><ul>
+<li>放置路径：<code>assets/tab_config.json</code></li>
+<li>记得在 <code>pubspec.yaml</code> 中声明资源：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/tab_config.json</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-实现“远程配置”的动态更新？"><a href="#✅-实现“远程配置”的动态更新？" class="headerlink" title="✅ 实现“远程配置”的动态更新？"></a>✅ 实现“远程配置”的动态更新？</h2><p>可以把 <code>tab_config.json</code> 放到服务器上，通过 HTTP 获取：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> response = <span class="keyword">await</span> http.<span class="keyword">get</span>(<span class="built_in">Uri</span>.parse(<span class="string">&#x27;https://yourdomain.com/tab_config.json&#x27;</span>));</span><br><span class="line"><span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">dynamic</span>&gt; jsonList = json.decode(response.body);</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以远程动态控制：<br>✅ Tab 数量<br>✅ Tab 标题 &#x2F; 图标 &#x2F; 跳转页面<br>✅ 无需发版即可更新用户体验</p>
+<hr>
+<h2 id="✅-总结"><a href="#✅-总结" class="headerlink" title="✅ 总结"></a>✅ 总结</h2><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>是否可行</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>动态控制 Tab 数量（3 → 5）</td>
+<td>✅</td>
+<td>配置驱动 + 动态构建</td>
+</tr>
+<tr>
+<td>配置从本地加载</td>
+<td>✅</td>
+<td>assets 中 JSON</td>
+</tr>
+<tr>
+<td>配置从远程加载</td>
+<td>✅</td>
+<td>HTTP + JSON</td>
+</tr>
+<tr>
+<td>更新不发版</td>
+<td>✅</td>
+<td>远程配置 + 缓存机制</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧱-目录结构建议（Flutter-项目）"><a href="#🧱-目录结构建议（Flutter-项目）" class="headerlink" title="🧱 目录结构建议（Flutter 项目）"></a>🧱 目录结构建议（Flutter 项目）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">flutter_vue_shell/</span><br><span class="line">├── assets/</span><br><span class="line">│   ├── tab1/index.html</span><br><span class="line">│   ├── tab2/index.html</span><br><span class="line">│   └── tab3/index.html</span><br><span class="line">├── lib/</span><br><span class="line">│   └── main.dart</span><br><span class="line">├── pubspec.yaml</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✨-第一步：准备-Vue3-页面"><a href="#✨-第一步：准备-Vue3-页面" class="headerlink" title="✨ 第一步：准备 Vue3 页面"></a>✨ 第一步：准备 Vue3 页面</h2><p>使用 Vue3（比如 Vite）构建的三个页面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例：构建 tab1 页面</span></span><br><span class="line"><span class="built_in">cd</span> vue-tab1</span><br><span class="line">npm run build</span><br><span class="line"><span class="comment"># 生成 dist/index.html，拷贝到 flutter/assets/tab1/index.html</span></span><br></pre></td></tr></table></figure>
+
+<p>重复这个过程，把三个页面的构建结果（<code>index.html + 静态资源</code>）分别放进：</p>
+<ul>
+<li><code>assets/tab1/</code></li>
+<li><code>assets/tab2/</code></li>
+<li><code>assets/tab3/</code></li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：Vue3 的构建结果路径需相对引用（建议使用相对路径打包 <code>vite.config.js</code> 里设置 <code>base: &#39;./&#39;</code>）</p>
+</blockquote>
+<hr>
+<h2 id="📦-第二步：Flutter-添加依赖"><a href="#📦-第二步：Flutter-添加依赖" class="headerlink" title="📦 第二步：Flutter 添加依赖"></a>📦 第二步：Flutter 添加依赖</h2><p>在 <code>pubspec.yaml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/tab1/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/tab2/</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">assets/tab3/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">webview_flutter:</span> <span class="string">^4.0.7</span> <span class="comment"># 最新版本查 pub.dev</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧭-第三步：Flutter-主界面代码（main-dart）"><a href="#🧭-第三步：Flutter-主界面代码（main-dart）" class="headerlink" title="🧭 第三步：Flutter 主界面代码（main.dart）"></a>🧭 第三步：Flutter 主界面代码（main.dart）</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:webview_flutter/webview_flutter.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Flutter + Vue3 Web Tabs&#x27;</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: WebTabPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebTabPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _WebTabPageState createState() =&gt; _WebTabPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_WebTabPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">WebTabPage</span>&gt; <span class="title">with</span> <span class="title">WidgetsBindingObserver</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> _selectedIndex = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; _tabHtmlPaths = [</span><br><span class="line">    <span class="string">&#x27;assets/tab1/index.html&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;assets/tab2/index.html&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;assets/tab3/index.html&#x27;</span>,</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    <span class="comment">// 初始化 WebView 平台</span></span><br><span class="line">    <span class="keyword">if</span> (Platform.isAndroid) &#123;</span><br><span class="line">      WebView.platform = SurfaceAndroidWebView();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> htmlFileUrl &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Uri</span>.dataFromString(</span><br><span class="line">      File(_tabHtmlPaths[_selectedIndex]).readAsStringSync(),</span><br><span class="line">      mimeType: <span class="string">&#x27;text/html&#x27;</span>,</span><br><span class="line">      encoding: Encoding.getByName(<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">    ).toString();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">&#x27;Flutter + Vue Tabs&#x27;</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: WebView(</span><br><span class="line">        initialUrl: htmlFileUrl,</span><br><span class="line">        javascriptMode: JavascriptMode.unrestricted,</span><br><span class="line">      ),</span><br><span class="line">      bottomNavigationBar: BottomNavigationBar(</span><br><span class="line">        currentIndex: _selectedIndex,</span><br><span class="line">        onTap: (index) =&gt; setState(() =&gt; _selectedIndex = index),</span><br><span class="line">        items: <span class="keyword">const</span> [</span><br><span class="line">          BottomNavigationBarItem(icon: Icon(Icons.home), label: <span class="string">&#x27;Tab1&#x27;</span>),</span><br><span class="line">          BottomNavigationBarItem(icon: Icon(Icons.search), label: <span class="string">&#x27;Tab2&#x27;</span>),</span><br><span class="line">          BottomNavigationBarItem(icon: Icon(Icons.person), label: <span class="string">&#x27;Tab3&#x27;</span>),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>🔧 注意：<code>File().readAsStringSync()</code> 读取 asset 文件在 Android&#x2F;iOS 上会报错，因为 Flutter 的 asset 不是磁盘路径。可以用 <code>flutter_inappwebview</code> 或将 HTML 复制为 <code>data:</code> URL 或使用 <code>WebViewAssetLoader</code>（推荐方式见下）</p>
+</blockquote>
+<hr>
+<h2 id="✅-替代推荐：加载-Asset-HTML-更安全（推荐）"><a href="#✅-替代推荐：加载-Asset-HTML-更安全（推荐）" class="headerlink" title="✅ 替代推荐：加载 Asset HTML 更安全（推荐）"></a>✅ 替代推荐：加载 Asset HTML 更安全（推荐）</h2><p>使用 webview_flutter + <code>WebViewAssetLoader</code> 加载 Flutter 项目中的 assets：</p>
+<p>参考： <a target="_blank" rel="noopener" href="https://github.com/flutter/plugins/blob/main/packages/webview_flutter/webview_flutter/example/lib/main.dart">https://github.com/flutter/plugins/blob/main/packages/webview_flutter&#x2F;webview_flutter&#x2F;example&#x2F;lib&#x2F;main.dart</a></p>
+<hr>
+<h2 id="🔚-总结"><a href="#🔚-总结" class="headerlink" title="🔚 总结"></a>🔚 总结</h2><p>现在拥有了：</p>
+<ul>
+<li>✅ Flutter 外壳（可打包 Android&#x2F;iOS）</li>
+<li>✅ 三个 Tab 页面，每个加载 Vue3 构建后的 HTML 界面</li>
+<li>✅ 可扩展的结构，适合嵌入 Web 小应用或微前端子系统</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">
+        <span class="nav-arrow">← </span>
+        
+          Flutter Windows 开发环境搭建指南
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/23/app_develop_skills/app%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E6%AF%94%E8%BE%83/">
+        
+          app开发框架比较
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">✅ 实现原理概述</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-Flutter-%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E9%85%8D%E7%BD%AE-%E6%9E%84%E5%BB%BA-Tab-%E7%A4%BA%E4%BE%8B%EF%BC%88%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%EF%BC%89"><span class="toc-nav-text">✅ Flutter 动态加载配置 + 构建 Tab 示例（核心代码）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-JSON-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">✅ JSON 配置说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%AE%9E%E7%8E%B0%E2%80%9C%E8%BF%9C%E7%A8%8B%E9%85%8D%E7%BD%AE%E2%80%9D%E7%9A%84%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%EF%BC%9F"><span class="toc-nav-text">✅ 实现“远程配置”的动态更新？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">✅ 总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%BB%BA%E8%AE%AE%EF%BC%88Flutter-%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="toc-nav-text">🧱 目录结构建议（Flutter 项目）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%A8-%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%87%86%E5%A4%87-Vue3-%E9%A1%B5%E9%9D%A2"><span class="toc-nav-text">✨ 第一步：准备 Vue3 页面</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%A6-%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9AFlutter-%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">📦 第二步：Flutter 添加依赖</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9AFlutter-%E4%B8%BB%E7%95%8C%E9%9D%A2%E4%BB%A3%E7%A0%81%EF%BC%88main-dart%EF%BC%89"><span class="toc-nav-text">🧭 第三步：Flutter 主界面代码（main.dart）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%9B%BF%E4%BB%A3%E6%8E%A8%E8%8D%90%EF%BC%9A%E5%8A%A0%E8%BD%BD-Asset-HTML-%E6%9B%B4%E5%AE%89%E5%85%A8%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-nav-text">✅ 替代推荐：加载 Asset HTML 更安全（推荐）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%9A-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🔚 总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/23/app_develop_skills/flutter tab update/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

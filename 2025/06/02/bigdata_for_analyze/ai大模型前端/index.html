@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      AI大模型的前端架构 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>AI大模型的前端架构</h2>
+  <p class="post-date">2025-06-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>“AI 大模型的前端架构” 是一个很有深度的话题，通常指的是基于大模型能力构建的 Web 应用前端架构设计，<br>例如像 ChatGPT、Copilot、Notion AI 这样的产品。下面从 架构层次、技术栈、关键模块设计 等方面详细说明。</p>
+<p>🧠 AI 大模型应用的前端架构全貌<br>🧱 一、前端整体架构层次<br>用户交互层（UI）<br>└──&gt; 会话管理与状态层（上下文 &#x2F; Prompt 管理）<br>     └──&gt; AI 接口调用层（API 调用 &#x2F; 流式处理 &#x2F; 错误重试）<br>         └──&gt; 数据缓存层（本地缓存 &#x2F; IndexedDB &#x2F; session）<br>             └──&gt; 服务通信层（WebSocket &#x2F; REST &#x2F; SSE）</p>
+<p>🧩 二、核心前端模块</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>📜 Prompt 构建器</td>
+<td>用户输入转系统提示，结构化构建 prompt（模板引擎&#x2F;JSON构造）</td>
+</tr>
+<tr>
+<td>🎤 多模态输入支持</td>
+<td>文本、图片、语音等输入处理和上传</td>
+</tr>
+<tr>
+<td>⌛ 流式响应渲染</td>
+<td>支持 Token-by-token 响应展示（如 GPT 输出打字机效果）</td>
+</tr>
+<tr>
+<td>🧠 会话管理</td>
+<td>记录对话上下文、多轮历史、嵌套调用树</td>
+</tr>
+<tr>
+<td>🛡️ 安全 &amp; 过滤</td>
+<td>屏蔽敏感输出、token 超长裁剪、前端 PII 脱敏</td>
+</tr>
+<tr>
+<td>💾 本地缓存</td>
+<td>IndexedDB 或 localStorage 做最近历史或响应缓存</td>
+</tr>
+<tr>
+<td>🧪 工具插件</td>
+<td>支持工具调用（Function Calling）、代码执行（REPL）等</td>
+</tr>
+</tbody></table>
+<p>🔧 三、技术栈建议</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>推荐技术</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端框架</td>
+<td>React（或 Vue）、Next.js（SSR &#x2F; SEO）</td>
+</tr>
+<tr>
+<td>状态管理</td>
+<td>Zustand、Redux Toolkit（轻量）、Jotai</td>
+</tr>
+<tr>
+<td>请求框架</td>
+<td>Axios &#x2F; fetch + React Query（支持缓存 &amp; 错误重试）</td>
+</tr>
+<tr>
+<td>流式渲染</td>
+<td>使用 SSE（EventSource）&#x2F; WebSocket 配合分片渲染</td>
+</tr>
+<tr>
+<td>富文本输出</td>
+<td>Markdown + 语法高亮（如 Shiki、PrismJS）</td>
+</tr>
+<tr>
+<td>多模态支持</td>
+<td>上传组件、画布、音频录制（如 RecordRTC）</td>
+</tr>
+<tr>
+<td>Web Worker</td>
+<td>做 Token 分析、批量文本处理的异步任务</td>
+</tr>
+<tr>
+<td>设计系统</td>
+<td>Tailwind CSS &#x2F; ShadCN UI &#x2F; Ant Design</td>
+</tr>
+</tbody></table>
+<p>🔁 四、与大模型的通信方式<br>✅ 通常支持以下几种接口模式：<br>REST API（同步返回）<br>SSE（Server-Sent Events）：流式输出（如 OpenAI GPT）<br>WebSocket：需要双向通信（如多人协同 &#x2F; 智能体框架）<br>&#x2F;&#x2F; SSE 示例：流式响应<br>const eventSource &#x3D; new EventSource(‘&#x2F;api&#x2F;stream’);<br>eventSource.onmessage &#x3D; (e) &#x3D;&gt; {<br>  const data &#x3D; JSON.parse(e.data);<br>  updateUI(data.delta);<br>};</p>
+<p>🧠 五、前端如何提升 AI 应用体验？</p>
+<table>
+<thead>
+<tr>
+<th>技术手段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>延迟打字效果（stream rendering）</td>
+<td>更像人类思考过程，避免“卡顿感”</td>
+</tr>
+<tr>
+<td>Prompt 可视化构建</td>
+<td>提高 prompt 质量，减少冗余</td>
+</tr>
+<tr>
+<td>多轮上下文合并与裁剪</td>
+<td>保持 token 不超限，同时保留语义</td>
+</tr>
+<tr>
+<td>插件系统（tool call UI）</td>
+<td>增强 AI 调用工具时的交互（如调用“天气插件”）</td>
+</tr>
+<tr>
+<td>本地思维链（Chain-of-Thought 展示）</td>
+<td>帮助用户理解 AI 推理过程</td>
+</tr>
+</tbody></table>
+<p>🔒 六、安全与性能关注点<br>Token 超限处理（自动截断 &#x2F; 滑窗）<br>前端敏感信息屏蔽（如 PII 过滤）<br>防 prompt injection 攻击（前端输入校验）<br>模型响应超时、断流处理<br>请求幂等性（防止重复发送）</p>
+<p>✨ 示例项目&#x2F;应用参考<br>ChatGPT UI<br>OpenAI Cookbooks<br>LangChain UI</p>
+<h2 id="✅-构建一个【ChatGPT-类-AI-聊天网页】"><a href="#✅-构建一个【ChatGPT-类-AI-聊天网页】" class="headerlink" title="✅ 构建一个【ChatGPT 类 AI 聊天网页】"></a>✅ 构建一个【ChatGPT 类 AI 聊天网页】</h2><h3 id="✅-可选目标方向举例："><a href="#✅-可选目标方向举例：" class="headerlink" title="✅ 可选目标方向举例："></a>✅ 可选目标方向举例：</h3><table>
+<thead>
+<tr>
+<th>目标类型</th>
+<th>实现方向建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🔹 聊天网页 Demo</td>
+<td>适合从零开发，聚焦 UI 和流式响应</td>
+</tr>
+<tr>
+<td>🔹 工具增强型 AI 助手</td>
+<td>支持函数调用 + 工具注册机制</td>
+</tr>
+<tr>
+<td>🔹 团队协同对话界面</td>
+<td>引入 WebSocket + 多用户上下文隔离</td>
+</tr>
+<tr>
+<td>🔹 嵌入已有系统的 AI 能力</td>
+<td>模块化封装 + 组件解耦，适配嵌入</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🏗️-构建-“AI-聊天网页”-类产品，以下是一个组件级蓝图示例："><a href="#🏗️-构建-“AI-聊天网页”-类产品，以下是一个组件级蓝图示例：" class="headerlink" title="🏗️ 构建 “AI 聊天网页” 类产品，以下是一个组件级蓝图示例："></a>🏗️ 构建 “AI 聊天网页” 类产品，以下是一个<strong>组件级蓝图示例：</strong></h2><h3 id="🔧-架构主模块图："><a href="#🔧-架构主模块图：" class="headerlink" title="🔧 架构主模块图："></a>🔧 架构主模块图：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">App</span><br><span class="line">├── UI 层</span><br><span class="line">│   ├── ChatInput              // Prompt 输入框组件（支持多模态）</span><br><span class="line">│   ├── ChatWindow             // 消息流展示 + Stream 渲染</span><br><span class="line">│   ├── ToolCallBar            // 函数调用建议 / 插件面板</span><br><span class="line">│   └── CoTVisualizer          // 本地推理链条展示组件（可选）</span><br><span class="line">│</span><br><span class="line">├── 状态管理层（Zustand/Jotai）</span><br><span class="line">│   └── useChatStore          // 当前会话上下文、历史记录管理</span><br><span class="line">│</span><br><span class="line">├── 网络通信层</span><br><span class="line">│   ├── useChatAPI             // 请求封装，支持流式 / 工具调用</span><br><span class="line">│   └── SSEListener / WSBridge // SSE or WebSocket 通信模块</span><br><span class="line">│</span><br><span class="line">├── Prompt 编译器</span><br><span class="line">│   └── buildPrompt.ts         // 可视化 prompt → JSON or string</span><br><span class="line">│</span><br><span class="line">├── 安全模块</span><br><span class="line">│   └── sanitizeInput.ts       // PII 过滤、注入攻击拦截等</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔁-接入-LLM-接口（如-OpenAI）的小贴士："><a href="#🔁-接入-LLM-接口（如-OpenAI）的小贴士：" class="headerlink" title="🔁 接入 LLM 接口（如 OpenAI）的小贴士："></a>🔁 接入 LLM 接口（如 OpenAI）的小贴士：</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SSE 请求封装</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">fetchStreamedResponse</span>(<span class="params">prompt: <span class="built_in">string</span>, onMessage: (delta: <span class="built_in">string</span>) =&gt; <span class="built_in">void</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> source = <span class="keyword">new</span> <span class="title class_">EventSource</span>(<span class="string">`/api/stream?prompt=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(prompt)&#125;</span>`</span>);</span><br><span class="line">  source.<span class="property">onmessage</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(e.<span class="property">data</span>);</span><br><span class="line">    <span class="title function_">onMessage</span>(data.<span class="property">delta</span>); <span class="comment">// 渲染 delta 内容</span></span><br><span class="line">  &#125;;</span><br><span class="line">  source.<span class="property">onerror</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    source.<span class="title function_">close</span>();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧰-Prompt-工程-工具调用结构（支持-Function-Calling）："><a href="#🧰-Prompt-工程-工具调用结构（支持-Function-Calling）：" class="headerlink" title="🧰 Prompt 工程 + 工具调用结构（支持 Function Calling）："></a>🧰 Prompt 工程 + 工具调用结构（支持 Function Calling）：</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构建 Prompt 请求体</span></span><br><span class="line"><span class="keyword">const</span> payload = &#123;</span><br><span class="line">  <span class="attr">model</span>: <span class="string">&quot;gpt-4&quot;</span>,</span><br><span class="line">  <span class="attr">messages</span>: chatHistory,</span><br><span class="line">  <span class="attr">tools</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;function&quot;</span>,</span><br><span class="line">      <span class="attr">function</span>: &#123;</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&quot;getWeather&quot;</span>,</span><br><span class="line">        <span class="attr">description</span>: <span class="string">&quot;获取天气&quot;</span>,</span><br><span class="line">        <span class="attr">parameters</span>: &#123; <span class="attr">location</span>: <span class="string">&quot;string&quot;</span> &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🎨-UI-设计系统推荐（简洁-响应式）："><a href="#🎨-UI-设计系统推荐（简洁-响应式）：" class="headerlink" title="🎨 UI 设计系统推荐（简洁 + 响应式）："></a>🎨 UI 设计系统推荐（简洁 + 响应式）：</h2><ul>
+<li><strong>Tailwind CSS + ShadCN UI</strong>：快速构建聊天框、按钮、卡片等</li>
+<li><strong>Code 高亮</strong>：PrismJS + markdown-it（含语法扩展）</li>
+<li><strong>对话气泡式布局</strong>：基于 <code>flex</code> 和 <code>scroll-auto</code> 实现双端输出</li>
+</ul>
+<hr>
+<h2 id="🧱-你可以选择的部署方式："><a href="#🧱-你可以选择的部署方式：" class="headerlink" title="🧱 你可以选择的部署方式："></a>🧱 你可以选择的部署方式：</h2><table>
+<thead>
+<tr>
+<th>目标平台</th>
+<th>技术路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ 网页端</td>
+<td>Next.js &#x2F; Vite + React + Tailwind</td>
+</tr>
+<tr>
+<td>✅ 桌面端</td>
+<td>Electron + React（可整合本地文件调用）</td>
+</tr>
+<tr>
+<td>✅ 微信小程序</td>
+<td>使用 uni-app &#x2F; Taro + 云函数</td>
+</tr>
+<tr>
+<td>✅ 浏览器插件</td>
+<td>manifest v3 + Web UI + background 连接</td>
+</tr>
+<tr>
+<td>✅ 嵌入企业系统</td>
+<td>封装为组件库或 iframe 嵌入</td>
+</tr>
+</tbody></table>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#大模型" >
+    <span class="tag-code">大模型</span>
+  </a>
+
+  <a target="_blank" href="/tags#前端架构" >
+    <span class="tag-code">前端架构</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/06/01/automatically_test_skills/Prometheus%20gateway/">
+        <span class="nav-arrow">← </span>
+        
+          Prometheus gateway
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/06/02/front_skills/angular/postmessage%E4%B8%8Engrx%E7%9A%84%E9%80%89%E6%8B%A9/">
+        
+          postMessage vs NgRx
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E3%80%90ChatGPT-%E7%B1%BB-AI-%E8%81%8A%E5%A4%A9%E7%BD%91%E9%A1%B5%E3%80%91"><span class="toc-nav-text">✅ 构建一个【ChatGPT 类 AI 聊天网页】</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8F%AF%E9%80%89%E7%9B%AE%E6%A0%87%E6%96%B9%E5%90%91%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">✅ 可选目标方向举例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8F%97%EF%B8%8F-%E6%9E%84%E5%BB%BA-%E2%80%9CAI-%E8%81%8A%E5%A4%A9%E7%BD%91%E9%A1%B5%E2%80%9D-%E7%B1%BB%E4%BA%A7%E5%93%81%EF%BC%8C%E4%BB%A5%E4%B8%8B%E6%98%AF%E4%B8%80%E4%B8%AA%E7%BB%84%E4%BB%B6%E7%BA%A7%E8%93%9D%E5%9B%BE%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">🏗️ 构建 “AI 聊天网页” 类产品，以下是一个组件级蓝图示例：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E6%9E%B6%E6%9E%84%E4%B8%BB%E6%A8%A1%E5%9D%97%E5%9B%BE%EF%BC%9A"><span class="toc-nav-text">🔧 架构主模块图：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-%E6%8E%A5%E5%85%A5-LLM-%E6%8E%A5%E5%8F%A3%EF%BC%88%E5%A6%82-OpenAI%EF%BC%89%E7%9A%84%E5%B0%8F%E8%B4%B4%E5%A3%AB%EF%BC%9A"><span class="toc-nav-text">🔁 接入 LLM 接口（如 OpenAI）的小贴士：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B0-Prompt-%E5%B7%A5%E7%A8%8B-%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%E7%BB%93%E6%9E%84%EF%BC%88%E6%94%AF%E6%8C%81-Function-Calling%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">🧰 Prompt 工程 + 工具调用结构（支持 Function Calling）：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%A8-UI-%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F%E6%8E%A8%E8%8D%90%EF%BC%88%E7%AE%80%E6%B4%81-%E5%93%8D%E5%BA%94%E5%BC%8F%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">🎨 UI 设计系统推荐（简洁 + 响应式）：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E4%BD%A0%E5%8F%AF%E4%BB%A5%E9%80%89%E6%8B%A9%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-nav-text">🧱 你可以选择的部署方式：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/06/02/bigdata_for_analyze/ai大模型前端/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

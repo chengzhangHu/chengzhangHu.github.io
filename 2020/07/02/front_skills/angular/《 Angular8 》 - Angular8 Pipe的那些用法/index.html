@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《 Angular8 》 - Angular8 Pipe的那些用法 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《 Angular8 》 - Angular8 Pipe的那些用法</h2>
+  <p class="post-date">2020-07-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="Angular-Pipe"><a href="#Angular-Pipe" class="headerlink" title="Angular Pipe"></a>Angular Pipe</h3><p>  Pipe的存在，目的在于进行数据的转换。前后端开发，后端提供的数据，不一定刚好就是要展示的数据，前端经常在拿到原始数据后，进行一次或者多次转换，才展示。</p>
+<h3 id="内置Pipe"><a href="#内置Pipe" class="headerlink" title="内置Pipe"></a>内置Pipe</h3><h4 id="DatePipe"><a href="#DatePipe" class="headerlink" title="DatePipe"></a>DatePipe</h4><blockquote>
+<p>根据时区格式化</p>
+</blockquote>
+<ul>
+<li>采用默认的格式   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;The hero&#x27;s birthday is &#123;&#123; birthday | date &#125;&#125;&lt;/p&gt;</span><br></pre></td></tr></table></figure></li>
+<li>指定格式   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;The hero&#x27;s birthday is &#123;&#123; birthday | date:&quot;MM/dd/yy&quot; &#125;&#125; &lt;/p&gt;</span><br></pre></td></tr></table></figure></li>
+<li>指定转换的方法   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># example.ts</span><br><span class="line">template: `</span><br><span class="line">   &lt;p&gt;The hero&#x27;s birthday is &#123;&#123; birthday | date:format &#125;&#125;&lt;/p&gt;</span><br><span class="line">   &lt;button (click)=&quot;toggleFormat()&quot;&gt;Toggle Format&lt;/button&gt;</span><br><span class="line"> `</span><br><span class="line"> ....</span><br><span class="line"></span><br><span class="line"> birthday = new Date(1988, 3, 15); // April 15, 1988 -- since month parameter is zero-based</span><br><span class="line"> toggle = true; // start with true == shortDate</span><br><span class="line"></span><br><span class="line"> get format()   &#123; return this.toggle ? &#x27;shortDate&#x27; : &#x27;fullDate&#x27;; &#125;</span><br><span class="line"> toggleFormat() &#123; this.toggle = !this.toggle; &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="UpperCasePipe"><a href="#UpperCasePipe" class="headerlink" title="UpperCasePipe"></a>UpperCasePipe</h4><blockquote>
+<p>字母转换为大写</p>
+</blockquote>
+<ul>
+<li>pipe可以链式调用,前者的output,是后者的input  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt; The chained hero&#x27;s birthday is &#123;&#123; birthday | date | uppercase&#125;&#125; &lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="LowerCasePipe"><a href="#LowerCasePipe" class="headerlink" title="LowerCasePipe"></a>LowerCasePipe</h4><blockquote>
+<p>字母转换为小写</p>
+</blockquote>
+<h4 id="CurrencyPipe"><a href="#CurrencyPipe" class="headerlink" title="CurrencyPipe:"></a>CurrencyPipe:</h4><blockquote>
+<p> 根据所在地，进行货币转换 </p>
+</blockquote>
+<ul>
+<li>可以通过:传递参数  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;&#123; amount | currency:&#x27;EUR&#x27; &#125;&#125;&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+<li>传递多个参数  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;&#123; amount | currency:&#x27;EUR&#x27;:&#x27;Euros &#x27;&#125;&#125;&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="DecimalPipe"><a href="#DecimalPipe" class="headerlink" title="DecimalPipe"></a>DecimalPipe</h4><blockquote>
+<p>十进制处理数字</p>
+</blockquote>
+<h4 id="PercentPipe"><a href="#PercentPipe" class="headerlink" title="PercentPipe"></a>PercentPipe</h4><blockquote>
+<p>数字转百分比 </p>
+</blockquote>
+<h4 id="AsyncPipe"><a href="#AsyncPipe" class="headerlink" title="AsyncPipe"></a>AsyncPipe</h4><h4 id="JsonPipe"><a href="#JsonPipe" class="headerlink" title="JsonPipe"></a>JsonPipe</h4><h4 id="KeyValuePipe"><a href="#KeyValuePipe" class="headerlink" title="KeyValuePipe"></a>KeyValuePipe</h4><h4 id="TitleCasePipe"><a href="#TitleCasePipe" class="headerlink" title="TitleCasePipe"></a>TitleCasePipe</h4><h4 id="SlicePipe"><a href="#SlicePipe" class="headerlink" title="SlicePipe"></a>SlicePipe</h4><h3 id="自定义Pipe"><a href="#自定义Pipe" class="headerlink" title="自定义Pipe"></a>自定义Pipe</h3><blockquote>
+<p>定义类，实现接口 PipeTransform<br>重载方法transform<br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  import &#123; Pipe, PipeTransform &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">@Pipe(&#123;name: &#x27;exponentialStrength&#x27;&#125;)</span><br><span class="line">export class ExponentialStrengthPipe implements PipeTransform &#123;</span><br><span class="line">  transform(value: number, exponent?: number): number &#123;</span><br><span class="line">    return Math.pow(value, isNaN(exponent) ? 1 : exponent);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>NgModule中声明即可</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;app-power-booster&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;h2&gt;Power Booster&lt;/h2&gt;</span><br><span class="line">    &lt;p&gt;Super power boost: &#123;&#123;2 | exponentialStrength: 10&#125;&#125;&lt;/p&gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br><span class="line">export class PowerBoosterComponent &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据转义"><a href="#数据转义" class="headerlink" title="数据转义"></a>数据转义</h3><blockquote>
+<p>angular8 中内置一下几种：</p>
+</blockquote>
+<ul>
+<li>bypassSecurityTrustHtml  - 防止html中注入script脚本</li>
+<li>bypassSecurityTrustStyle</li>
+<li>bypassSecurityTrustScript</li>
+<li>bypassSecurityTrustUrl</li>
+<li>bypassSecurityTrustResourceUrl</li>
+</ul>
+<blockquote>
+<p>定义转义safe，传递不同参数即可</p>
+</blockquote>
+<ul>
+<li>使用如下命令：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate pipe safe</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Pipe, PipeTransform &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; DomSanitizer, SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl &#125; from &#x27;@angular/platform-browser&#x27;;</span><br><span class="line"></span><br><span class="line">@Pipe(&#123;</span><br><span class="line">  name: &#x27;safe&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class SafePipe implements PipeTransform &#123;</span><br><span class="line"></span><br><span class="line">  constructor(protected sanitizer: DomSanitizer) &#123;&#125;</span><br><span class="line"> </span><br><span class="line"> public transform(value: any, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl &#123;</span><br><span class="line">    switch (type) &#123;</span><br><span class="line">			case &#x27;html&#x27;: return this.sanitizer.bypassSecurityTrustHtml(value);</span><br><span class="line">			case &#x27;style&#x27;: return this.sanitizer.bypassSecurityTrustStyle(value);</span><br><span class="line">			case &#x27;script&#x27;: return this.sanitizer.bypassSecurityTrustScript(value);</span><br><span class="line">			case &#x27;url&#x27;: return this.sanitizer.bypassSecurityTrustUrl(value);</span><br><span class="line">			case &#x27;resourceUrl&#x27;: return this.sanitizer.bypassSecurityTrustResourceUrl(value);</span><br><span class="line">			default: throw new Error(`Invalid safe type specified: $&#123;type&#125;`);</span><br><span class="line">		&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>模块中声明pipe，同时引入模块BrowserModule</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    SafePipe</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    AppRoutingModule</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent],</span><br><span class="line">  exports: [UserComponent, SafePipe]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;imgUrl | safe:&#x27;resourceUrl&#x27;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;script src=&quot;url | safe:&#x27;url&#x27;&quot;&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#pipe" >
+    <span class="tag-code">pipe</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/07/02/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20Git%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/">
+        <span class="nav-arrow">← </span>
+        
+          《 Git 》 - Git日常开发命令从入门到精通
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/07/10/front_skills/ts/%E3%80%8Atypescript%E3%80%8B-%20tsconfig.json%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">
+        
+          《typescript》- tsconfig.json你了解多少
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Angular-Pipe"><span class="toc-nav-text">Angular Pipe</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%86%85%E7%BD%AEPipe"><span class="toc-nav-text">内置Pipe</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DatePipe"><span class="toc-nav-text">DatePipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#UpperCasePipe"><span class="toc-nav-text">UpperCasePipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#LowerCasePipe"><span class="toc-nav-text">LowerCasePipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CurrencyPipe"><span class="toc-nav-text">CurrencyPipe:</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DecimalPipe"><span class="toc-nav-text">DecimalPipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PercentPipe"><span class="toc-nav-text">PercentPipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AsyncPipe"><span class="toc-nav-text">AsyncPipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JsonPipe"><span class="toc-nav-text">JsonPipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#KeyValuePipe"><span class="toc-nav-text">KeyValuePipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#TitleCasePipe"><span class="toc-nav-text">TitleCasePipe</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SlicePipe"><span class="toc-nav-text">SlicePipe</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89Pipe"><span class="toc-nav-text">自定义Pipe</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E8%BD%AC%E4%B9%89"><span class="toc-nav-text">数据转义</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/07/02/front_skills/angular/《 Angular8 》 - Angular8 Pipe的那些用法/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

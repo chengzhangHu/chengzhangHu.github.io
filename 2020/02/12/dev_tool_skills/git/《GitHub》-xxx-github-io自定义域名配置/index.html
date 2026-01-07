@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《GitHub》-xxx.github.io自定义域名配置 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《GitHub》-xxx.github.io自定义域名配置</h2>
+  <p class="post-date">2020-02-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="GitHub-pages产品支持"><a href="#GitHub-pages产品支持" class="headerlink" title="GitHub pages产品支持"></a>GitHub pages产品支持</h4><ul>
+<li>public 分支</li>
+<li>Pro </li>
+<li>Team</li>
+<li>Enterprise Cloud</li>
+<li>Enterprise Server</li>
+</ul>
+<h4 id="创建Public分支"><a href="#创建Public分支" class="headerlink" title="创建Public分支"></a>创建Public分支</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chengzhangHu.github.io</span><br></pre></td></tr></table></figure>
+<p> <img src="https://s2.ax1x.com/2020/02/22/3KWZxf.md.png"></p>
+<h4 id="自定义域名分类"><a href="#自定义域名分类" class="headerlink" title="自定义域名分类"></a>自定义域名分类</h4><ul>
+<li>直接使用顶级域名，example.com</li>
+<li>使用子域名，<a target="_blank" rel="noopener" href="http://www.example.com,blog.example.com/">www.example.com,blog.example.com</a></li>
+</ul>
+<h4 id="共同配置"><a href="#共同配置" class="headerlink" title="共同配置"></a>共同配置</h4><ul>
+<li>CNAME </li>
+<li>DNS</li>
+</ul>
+<h4 id="DNS配置"><a href="#DNS配置" class="headerlink" title="DNS配置"></a>DNS配置</h4><ul>
+<li><p>顶级域名 </p>
+</li>
+<li><p>子域名</p>
+</li>
+<li><p>直接使用A记录 — 固定ip </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">185.199.108.153</span><br><span class="line">185.199.109.153</span><br><span class="line">185.199.110.153</span><br><span class="line">185.199.111.153</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2020/02/22/3Kf7N9.png"></p>
+</li>
+<li><p>使用CNAME – 指向固定域名，由另一个域名提供ip<br><img src="https://s2.ax1x.com/2020/02/22/3Khv2q.png"><br><img src="https://s2.ax1x.com/2020/02/22/3K4prT.md.png"></p>
+</li>
+</ul>
+<h4 id="CNAME"><a href="#CNAME" class="headerlink" title="CNAME"></a>CNAME</h4><ul>
+<li><p>可以界面配置<br> <img src="https://s2.ax1x.com/2020/02/22/3KWnsS.md.png"></p>
+</li>
+<li><p>也可以使用CNAME文件</p>
+<ul>
+<li><p>顶级域名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">huchengzhang.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>子域名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.huchengzhang.com</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>CNAME配置注意点：</p>
+<ul>
+<li>CNAME只能配置一个域名</li>
+<li>CNAME必须全部大写</li>
+<li>配置多个域名，需要DNS配置跳转</li>
+<li>CNAME中内容，在GitHub中要唯一</li>
+</ul>
+</li>
+<li><p>CNAME原理简单猜测：</p>
+<ul>
+<li>浏览器访问 xxx.github.io</li>
+<li>域名查找DNS,找到 185.199.108.153</li>
+<li>服务器上存在CNAME,进行重定向 </li>
+<li>浏览器访问域名 example.com</li>
+<li>域名查找DNS,找到 185.199.109.153</li>
+<li>读取资源，返回界面，加载显示</li>
+</ul>
+</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+  <a target="_blank" href="/tags#GitHub" >
+    <span class="tag-code">GitHub</span>
+  </a>
+
+  <a target="_blank" href="/tags#自定义域名" >
+    <span class="tag-code">自定义域名</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/02/08/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84js%E7%B1%BB%E5%9E%8B%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95/">
+        <span class="nav-arrow">← </span>
+        
+          《Lodash源码阅读笔记》- 需要了解的js类型判定方法
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/02/13/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E6%96%B9%E6%A1%88%E8%B0%83%E7%A0%94/">
+        
+          《微信小程序》-图表组件方案调研
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#GitHub-pages%E4%BA%A7%E5%93%81%E6%94%AF%E6%8C%81"><span class="toc-nav-text">GitHub pages产品支持</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%9B%E5%BB%BAPublic%E5%88%86%E6%94%AF"><span class="toc-nav-text">创建Public分支</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E5%88%86%E7%B1%BB"><span class="toc-nav-text">自定义域名分类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%85%B1%E5%90%8C%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">共同配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DNS%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">DNS配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CNAME"><span class="toc-nav-text">CNAME</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/02/12/dev_tool_skills/git/《GitHub》-xxx-github-io自定义域名配置/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

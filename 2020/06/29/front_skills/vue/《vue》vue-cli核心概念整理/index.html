@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《 vue 》 - vue-cli核心概念整理 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《 vue 》 - vue-cli核心概念整理</h2>
+  <p class="post-date">2020-06-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="vue-cli"><a href="#vue-cli" class="headerlink" title="vue-cli"></a>vue-cli</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
+<li>vue-cli版本基于4.4.x </li>
+<li>Vue CLI 致力于将 Vue 生态中的工具基础标准化</li>
+<li>让使用者专注在撰写应用上，而不必花好几天去纠结配置的问题</li>
+<li>提供了如下功能：<ul>
+<li>@vue&#x2F;cli  交互式的项目脚手架</li>
+<li>@vue&#x2F;cli + @vue&#x2F;cli-service-global  零配置原型开发</li>
+<li>运行时依赖 (@vue&#x2F;cli-service） <blockquote>
+<p>可升级；<br>基于 webpack 构建，并带有合理的默认配置；<br>可以通过项目内的配置文件进行配置；<br>可以通过插件进行扩展</p>
+</blockquote>
+</li>
+<li>丰富的官方插件集合, @vue&#x2F;cli-plugin- (内建插件) ,vue-cli-plugin- (社区插件)  </li>
+<li>完全图形化的创建和管理 Vue.js 项目的用户界面</li>
+</ul>
+</li>
+</ul>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="node-安装"><a href="#node-安装" class="headerlink" title="node 安装"></a>node 安装</h5><h5 id="cli-安装"><a href="#cli-安装" class="headerlink" title="cli 安装"></a>cli 安装</h5> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @vue/cli</span><br><span class="line"># OR</span><br><span class="line">yarn global add @vue/cli</span><br></pre></td></tr></table></figure>
+<h5 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h5> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vue --version</span><br><span class="line">@vue/cli 4.4.6</span><br></pre></td></tr></table></figure>
+<h4 id="快速原型开发"><a href="#快速原型开发" class="headerlink" title="快速原型开发"></a>快速原型开发</h4><h5 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h5>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@vue/cli </span><br><span class="line">@vue/cli-service-global </span><br></pre></td></tr></table></figure>
+<h5 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h5>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @vue/cli-service-global</span><br></pre></td></tr></table></figure>
+<h5 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h5><ul>
+<li>vue serve  开发环境启动命令  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ vue serve --help </span><br><span class="line">Usage: serve [options] [entry]</span><br><span class="line"></span><br><span class="line">serve a .js or .vue file in development mode with zero config</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">-o, --open         Open browser</span><br><span class="line">-c, --copy         Copy local url to clipboard</span><br><span class="line">-p, --port &lt;port&gt;  Port used by the server (default: 8080 or next available port)</span><br><span class="line">-h, --help         output usage information</span><br></pre></td></tr></table></figure></li>
+<li>vue build 线上版本构建  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ vue build --help </span><br><span class="line">Usage: build [options] [entry]</span><br><span class="line"></span><br><span class="line">build a .js or .vue file in production mode with zero config</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">-t, --target &lt;target&gt;  Build target (app | lib | wc | wc-async, default: app)</span><br><span class="line">-n, --name &lt;name&gt;      name for lib or web-component mode (default: entry filename)</span><br><span class="line">-d, --dest &lt;dir&gt;       output directory (default: dist)</span><br><span class="line">-h, --help             output usage information</span><br></pre></td></tr></table></figure></li>
+<li>指令默认入口文件（以下列表之一）<blockquote>
+<p>main.js<br>index.js<br>App.vue 或 app.vue<br>也可以指定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vue serve MyComponent.vue</span><br><span class="line">vue build MyComponent.vue</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+</ul>
+<h4 id="vue-cli-指令"><a href="#vue-cli-指令" class="headerlink" title="vue-cli 指令"></a>vue-cli 指令</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ vue --help </span><br><span class="line">create [options] &lt;app-name&gt;                create a new project powered by vue-cli-service</span><br><span class="line">  add [options] &lt;plugin&gt; [pluginOptions]     install a plugin and invoke its generator in an already created project</span><br><span class="line">  invoke [options] &lt;plugin&gt; [pluginOptions]  invoke the generator of a plugin in an already created project</span><br><span class="line">  inspect [options] [paths...]               inspect the webpack config in a project with vue-cli-service</span><br><span class="line">  serve [options] [entry]                    serve a .js or .vue file in development mode with zero config</span><br><span class="line">  build [options] [entry]                    build a .js or .vue file in production mode with zero config</span><br><span class="line">  ui [options]                               start and open the vue-cli ui</span><br><span class="line">  init [options] &lt;template&gt; &lt;app-name&gt;       generate a project from a remote template (legacy API, requires @vue/cli-init)</span><br><span class="line">  config [options] [value]                   inspect and modify the config</span><br><span class="line">  outdated [options]                         (experimental) check for outdated vue cli service / plugins</span><br><span class="line">  upgrade [options] [plugin-name]            (experimental) upgrade vue cli service / plugins</span><br><span class="line">  migrate [options] [plugin-name]            (experimental) run migrator for an already-installed cli plugin</span><br><span class="line">  info                                       print debugging information about your environment</span><br></pre></td></tr></table></figure>
+<h5 id="vue-create-创建新项目"><a href="#vue-create-创建新项目" class="headerlink" title="vue create 创建新项目"></a>vue create 创建新项目</h5><blockquote>
+<p>指令介绍</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ vue create --help</span><br><span class="line">Usage: create [options] &lt;app-name&gt;</span><br><span class="line"></span><br><span class="line">create a new project powered by vue-cli-service</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -p, --preset &lt;presetName&gt;       Skip prompts and use saved or remote preset</span><br><span class="line">  -d, --default                   Skip prompts and use default preset</span><br><span class="line">  -i, --inlinePreset &lt;json&gt;       Skip prompts and use inline JSON string as preset</span><br><span class="line">  -m, --packageManager &lt;command&gt;  Use specified npm client when installing dependencies</span><br><span class="line">  -r, --registry &lt;url&gt;            Use specified npm registry when installing dependencies (only for npm)</span><br><span class="line">  -g, --git [message]             Force git initialization with initial commit message</span><br><span class="line">  -n, --no-git                    Skip git initialization</span><br><span class="line">  -f, --force                     Overwrite target directory if it exists</span><br><span class="line">  --merge                         Merge target directory if it exists</span><br><span class="line">  -c, --clone                     Use git clone when fetching remote preset</span><br><span class="line">  -x, --proxy                     Use specified proxy when creating project</span><br><span class="line">  -b, --bare                      Scaffold project without beginner instructions</span><br><span class="line">  --skipGetStarted                Skip displaying &quot;Get started&quot; instructions</span><br><span class="line">  -h, --help                      output usage information</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指令应用</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create hello-world </span><br></pre></td></tr></table></figure>
+<h5 id="vue-add-添加插件"><a href="#vue-add-添加插件" class="headerlink" title="vue add 添加插件"></a>vue add 添加插件</h5><h5 id="vue-invoke-调用插件"><a href="#vue-invoke-调用插件" class="headerlink" title="vue invoke  调用插件"></a>vue invoke  调用插件</h5><h5 id="vue-inspect-查看配置"><a href="#vue-inspect-查看配置" class="headerlink" title="vue inspect 查看配置"></a>vue inspect 查看配置</h5><h5 id="vue-serve-启动"><a href="#vue-serve-启动" class="headerlink" title="vue serve  启动"></a>vue serve  启动</h5><h5 id="vue-build-构建"><a href="#vue-build-构建" class="headerlink" title="vue build 构建"></a>vue build 构建</h5><h5 id="vue-ui-启动ui界面"><a href="#vue-ui-启动ui界面" class="headerlink" title="vue ui 启动ui界面"></a>vue ui 启动ui界面</h5><h5 id="vue-init-初始化项目"><a href="#vue-init-初始化项目" class="headerlink" title="vue init 初始化项目"></a>vue init 初始化项目</h5><h5 id="vue-config-查看修改配置"><a href="#vue-config-查看修改配置" class="headerlink" title="vue config 查看修改配置"></a>vue config 查看修改配置</h5><h5 id="vue-outdated"><a href="#vue-outdated" class="headerlink" title="vue outdated"></a>vue outdated</h5><h5 id="vue-upgrade-升级插件"><a href="#vue-upgrade-升级插件" class="headerlink" title="vue upgrade 升级插件"></a>vue upgrade 升级插件</h5><h5 id="vue-migrate-合并插件"><a href="#vue-migrate-合并插件" class="headerlink" title="vue migrate 合并插件"></a>vue migrate 合并插件</h5><h5 id="vue-info-查看环境信息"><a href="#vue-info-查看环境信息" class="headerlink" title="vue info  查看环境信息"></a>vue info  查看环境信息</h5></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#vue" >
+    <span class="tag-code">vue</span>
+  </a>
+
+  <a target="_blank" href="/tags#vue-cli" >
+    <span class="tag-code">vue-cli</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/06/19/front_skills/angular/%E3%80%8Aangular%E3%80%8B-%20Angular%20cli%20%E4%BD%A0%E7%86%9F%E7%BB%83%E5%88%B0%E5%93%AA%E7%A7%8D%E7%A8%8B%E5%BA%A6%EF%BC%9F/">
+        <span class="nav-arrow">← </span>
+        
+          《angular》- Angular cli 你熟练到哪种程度？
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/29/front_skills/vue/vite%20HMR/">
+        
+          vite 文件路径 + mtime
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#vue-cli"><span class="toc-nav-text">vue-cli</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#node-%E5%AE%89%E8%A3%85"><span class="toc-nav-text">node 安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#cli-%E5%AE%89%E8%A3%85"><span class="toc-nav-text">cli 安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">验证</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%BF%AB%E9%80%9F%E5%8E%9F%E5%9E%8B%E5%BC%80%E5%8F%91"><span class="toc-nav-text">快速原型开发</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-nav-text">依赖</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">指令</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#vue-cli-%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">vue-cli 指令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-create-%E5%88%9B%E5%BB%BA%E6%96%B0%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">vue create 创建新项目</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-add-%E6%B7%BB%E5%8A%A0%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">vue add 添加插件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-invoke-%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">vue invoke  调用插件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-inspect-%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">vue inspect 查看配置</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-serve-%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">vue serve  启动</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-build-%E6%9E%84%E5%BB%BA"><span class="toc-nav-text">vue build 构建</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-ui-%E5%90%AF%E5%8A%A8ui%E7%95%8C%E9%9D%A2"><span class="toc-nav-text">vue ui 启动ui界面</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-init-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">vue init 初始化项目</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-config-%E6%9F%A5%E7%9C%8B%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">vue config 查看修改配置</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-outdated"><span class="toc-nav-text">vue outdated</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-upgrade-%E5%8D%87%E7%BA%A7%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">vue upgrade 升级插件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-migrate-%E5%90%88%E5%B9%B6%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">vue migrate 合并插件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#vue-info-%E6%9F%A5%E7%9C%8B%E7%8E%AF%E5%A2%83%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">vue info  查看环境信息</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/29/front_skills/vue/《vue》vue-cli核心概念整理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

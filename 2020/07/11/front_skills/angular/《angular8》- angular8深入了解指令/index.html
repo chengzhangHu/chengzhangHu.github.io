@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《 Angular8 》 -  angular8深入了解指令 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《 Angular8 》 -  angular8深入了解指令</h2>
+  <p class="post-date">2020-07-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p> angular指令，目的在于影响Dom布局，或者修改Dom属性。</p>
+<h3 id="Directive分类"><a href="#Directive分类" class="headerlink" title="Directive分类"></a>Directive分类</h3><h4 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h4><blockquote>
+<p>an extension of @Directive()</p>
+</blockquote>
+<h5 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, OnInit &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;idata&#x27;,</span><br><span class="line">  templateUrl: &#x27;./user.component.html&#x27;,</span><br><span class="line">  styleUrls: [&#x27;./user.component.scss&#x27;]</span><br><span class="line">&#125;)</span><br><span class="line">export class UserComponent implements OnInit &#123;</span><br><span class="line"></span><br><span class="line">  constructor() &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit(): void &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@Component定义在class上</li>
+<li>templateUrl、template定义视图模板</li>
+</ul>
+<h5 id="Component源码"><a href="#Component源码" class="headerlink" title="@Component源码"></a>@Component源码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">export declare interface Component extends Directive &#123;</span><br><span class="line"></span><br><span class="line">    changeDetection?: ChangeDetectionStrategy;</span><br><span class="line"></span><br><span class="line">    viewProviders?: Provider[];</span><br><span class="line"></span><br><span class="line">    moduleId?: string;</span><br><span class="line"></span><br><span class="line">    templateUrl?: string;</span><br><span class="line"></span><br><span class="line">    template?: string;</span><br><span class="line"></span><br><span class="line">    styleUrls?: string[];</span><br><span class="line"></span><br><span class="line">    styles?: string[];</span><br><span class="line"></span><br><span class="line">    animations?: any[];</span><br><span class="line"></span><br><span class="line">    encapsulation?: ViewEncapsulation;</span><br><span class="line"></span><br><span class="line">    interpolation?: [string, string];</span><br><span class="line"></span><br><span class="line">    entryComponents?: Array&lt;Type&lt;any&gt; | any[]&gt;;</span><br><span class="line"></span><br><span class="line">    preserveWhitespaces?: boolean;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>从中我们得出如下：</p>
+</blockquote>
+<ul>
+<li>Component是一种特殊的指令</li>
+<li>Component 上述自有属性，都是可选</li>
+<li>那么Directive的源码又是什么呢？</li>
+</ul>
+<h5 id="Directive源码"><a href="#Directive源码" class="headerlink" title="@Directive源码"></a>@Directive源码</h5> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">export declare interface Directive &#123;</span><br><span class="line">    </span><br><span class="line">    selector?: string;</span><br><span class="line">   </span><br><span class="line">    inputs?: string[];</span><br><span class="line">    </span><br><span class="line">    outputs?: string[];</span><br><span class="line">    </span><br><span class="line">    providers?: Provider[];</span><br><span class="line">    </span><br><span class="line">    exportAs?: string;</span><br><span class="line">    </span><br><span class="line">    queries?: &#123;</span><br><span class="line">        [key: string]: any;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    host?: &#123;</span><br><span class="line">        [key: string]: string;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    jit?: true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="属性指令"><a href="#属性指令" class="headerlink" title="属性指令"></a>属性指令</h4><blockquote>
+<p>Attribute directives are used as attributes of elements</p>
+</blockquote>
+<h5 id="内置指令"><a href="#内置指令" class="headerlink" title="内置指令"></a>内置指令</h5><ul>
+<li>NgStyle</li>
+<li>NgClass</li>
+</ul>
+<h5 id="自定义指令"><a href="#自定义指令" class="headerlink" title="自定义指令"></a>自定义指令</h5><ul>
+<li><p>step 1: </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 要求不能ng开头</span><br><span class="line">ng generate directive highlight</span><br></pre></td></tr></table></figure></li>
+<li><p>code如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># src/app/highlight.directive.ts </span><br><span class="line">import &#123; Directive &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;[appHighlight]&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class HighlightDirective &#123;</span><br><span class="line">  constructor() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>step 2:  添加指令处理逻辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive, ElementRef &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;[appHighlight]&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class HighlightDirective &#123;</span><br><span class="line">    constructor(el: ElementRef) &#123;</span><br><span class="line">        # 修改元素背景</span><br><span class="line">       el.nativeElement.style.backgroundColor = &#x27;yellow&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>step3: 模块中声明指令的存在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import &#123; BrowserModule &#125; from &#x27;@angular/platform-browser&#x27;;</span><br><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">import &#123; AppRoutingModule &#125; from &#x27;./app-routing.module&#x27;;</span><br><span class="line">import &#123; AppComponent &#125; from &#x27;./app.component&#x27;;</span><br><span class="line">import &#123; HighlightDirective &#125; from &#x27;./highlight.directive&#x27;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    HighlightDirective # 视图中声明指令的引用</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    AppRoutingModule,</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent],</span><br><span class="line">  exports: []</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>step 4： 应用指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p appHighlight&gt;Highlight me!&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/07/11/Ulk7uT.png"></p>
+</li>
+</ul>
+<h4 id="结构指令"><a href="#结构指令" class="headerlink" title="结构指令"></a>结构指令</h4><blockquote>
+<p>Structural directives are responsible for HTML layout</p>
+</blockquote>
+<ul>
+<li>结构指令，影响当前元素以及后代元素</li>
+<li>结构指令，大多以*开头</li>
+</ul>
+<h5 id="内置结构指令"><a href="#内置结构指令" class="headerlink" title="内置结构指令"></a>内置结构指令</h5><ul>
+<li>ngIf - <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># false，不渲染元素，而非渲染后隐藏</span><br><span class="line">&lt;div *ngIf=&quot;hero&quot; class=&quot;name&quot;&gt;&#123;&#123;hero.name&#125;&#125;&lt;/div&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>ngIf false为何不隐藏元素，而是删除元素？<br>  这里应该是框架设计者针对利弊的取舍吧！如果元素仅仅隐藏，那么元素还占据原来的位置，那么对应的鼠标事件，有可能还是存在的，那么就会影响现有组件的功能，视图渲染数据。<br>  具体的可以参考这边文章<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000015116392">针对visible,opacity,hiden之间区别</a>，写的挺好的！</li>
+<li>angular 编译ngIf为以下代码： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ng-template [ngIf]=&quot;hero&quot;&gt;</span><br><span class="line">&lt;div class=&quot;name&quot;&gt;&#123;&#123;hero.name&#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/ng-template&gt;</span><br></pre></td></tr></table></figure></li>
+<li>ngFor<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div *ngFor=&quot;let hero of heroes; let i=index; let odd=odd; trackBy: trackById&quot; [class.odd]=&quot;odd&quot;&gt;</span><br><span class="line">  (&#123;&#123;i&#125;&#125;) &#123;&#123;hero.name&#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+<li>angular编译为以下代码 ：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ng-template ngFor let-hero [ngForOf]=&quot;heroes&quot; let-i=&quot;index&quot; let-odd=&quot;odd&quot; [ngForTrackBy]=&quot;trackById&quot;&gt;</span><br><span class="line">  &lt;div [class.odd]=&quot;odd&quot;&gt;(&#123;&#123;i&#125;&#125;) &#123;&#123;hero.name&#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/ng-template&gt;</span><br></pre></td></tr></table></figure></li>
+<li>ngSwitch<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [ngSwitch]=&quot;hero?.emotion&quot;&gt;</span><br><span class="line">  &lt;app-happy-hero    *ngSwitchCase=&quot;&#x27;happy&#x27;&quot;    [hero]=&quot;hero&quot;&gt;&lt;/app-happy-hero&gt;</span><br><span class="line">  &lt;app-sad-hero      *ngSwitchCase=&quot;&#x27;sad&#x27;&quot;      [hero]=&quot;hero&quot;&gt;&lt;/app-sad-hero&gt;</span><br><span class="line">  &lt;app-confused-hero *ngSwitchCase=&quot;&#x27;confused&#x27;&quot; [hero]=&quot;hero&quot;&gt;&lt;/app-confused-hero&gt;</span><br><span class="line">  &lt;app-unknown-hero  *ngSwitchDefault           [hero]=&quot;hero&quot;&gt;&lt;/app-unknown-hero&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="自定义结构指令"><a href="#自定义结构指令" class="headerlink" title="自定义结构指令"></a>自定义结构指令</h5><ul>
+<li>step 1:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate directive appUnless</span><br></pre></td></tr></table></figure>
+<ul>
+<li>code 如下： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">selector: &#x27;[appUnless]&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class AppUnlessDirective &#123;</span><br><span class="line"></span><br><span class="line">constructor() &#123; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>step 2: 定义元素逻辑<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive, TemplateRef, ViewContainerRef, Input &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;[appUnless]&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class AppUnlessDirective &#123;</span><br><span class="line"></span><br><span class="line">  private hasView = false;</span><br><span class="line"></span><br><span class="line">  constructor(</span><br><span class="line">    private templateRef: TemplateRef&lt;any&gt;,</span><br><span class="line">    private viewContainer: ViewContainerRef) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  @Input() set appUnless(condition: boolean) &#123;</span><br><span class="line">    if (!condition &amp;&amp; !this.hasView) &#123;</span><br><span class="line">      this.viewContainer.createEmbeddedView(this.templateRef);</span><br><span class="line">      this.hasView = true;</span><br><span class="line">    &#125; else if (condition &amp;&amp; this.hasView) &#123;</span><br><span class="line">      this.viewContainer.clear();</span><br><span class="line">      this.hasView = false;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>step 3: 声明指令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import &#123; BrowserModule &#125; from &#x27;@angular/platform-browser&#x27;;</span><br><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">import &#123; AppRoutingModule &#125; from &#x27;./app-routing.module&#x27;;</span><br><span class="line">import &#123; AppComponent &#125; from &#x27;./app.component&#x27;;</span><br><span class="line">import &#123; HighlightDirective &#125; from &#x27;./highlight.directive&#x27;;</span><br><span class="line">import &#123; AppUnlessDirective &#125; from &#x27;./app-unless.directive&#x27;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    HighlightDirective,</span><br><span class="line">    AppUnlessDirective # 声明结构指令</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    AppRoutingModule,</span><br><span class="line">  ],</span><br><span class="line">  providers: [],</span><br><span class="line">  bootstrap: [AppComponent],</span><br><span class="line">  exports: []</span><br><span class="line">&#125;)</span><br><span class="line">export class AppModule &#123; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>step 4: 应用指令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;p *appUnless=&quot;condition&quot; class=&quot;unless a&quot;&gt;</span><br><span class="line">  (A) This paragraph is displayed because the condition is false.</span><br><span class="line">&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">#ts</span><br><span class="line">public condition = false;</span><br><span class="line">constructor(private domSanitizer: DomSanitizer)&#123;</span><br><span class="line">    interval(2000).subscribe(() =&gt; &#123;</span><br><span class="line">        this.condition = !this.condition;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/07/11/UlM1dP.gif" width="300" height="100"></li>
+</ul>
+<h3 id="更多推荐"><a href="#更多推荐" class="headerlink" title="更多推荐"></a>更多推荐</h3><h4 id="Rxjs-操作符分类后的那些事"><a href="#Rxjs-操作符分类后的那些事" class="headerlink" title="Rxjs 操作符分类后的那些事"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5f03ad0d5188252e884e7297">Rxjs 操作符分类后的那些事</a></h4><h4 id="Angular-Render2你了解吗？"><a href="#Angular-Render2你了解吗？" class="headerlink" title="Angular Render2你了解吗？"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5edf9211f265da76c76b1d81">Angular Render2你了解吗？</a></h4><h4 id="Angular8-日常开发填坑指南"><a href="#Angular8-日常开发填坑指南" class="headerlink" title="Angular8 日常开发填坑指南"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5ed080ebe51d45788325f27e">Angular8 日常开发填坑指南</a></h4><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="Angular"><a href="#Angular" class="headerlink" title="Angular"></a><a target="_blank" rel="noopener" href="https://angular.io/guide/glossary#structural-directive">Angular</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#directive" >
+    <span class="tag-code">directive</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/07/10/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-angular.json%E6%96%87%E4%BB%B6%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">
+        <span class="nav-arrow">← </span>
+        
+          《 Angular8 》 - angular.json文件你了解多少？
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/07/11/front_package_build_skills/webpack/%E3%80%8Awebpack%E3%80%8B-%20%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">
+        
+          《webpack》- 核心概念整理
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Directive%E5%88%86%E7%B1%BB"><span class="toc-nav-text">Directive分类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Component"><span class="toc-nav-text">Component</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Demo"><span class="toc-nav-text">Demo</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Component%E6%BA%90%E7%A0%81"><span class="toc-nav-text">@Component源码</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Directive%E6%BA%90%E7%A0%81"><span class="toc-nav-text">@Directive源码</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B1%9E%E6%80%A7%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">属性指令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%86%85%E7%BD%AE%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">内置指令</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">自定义指令</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%93%E6%9E%84%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">结构指令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%86%85%E7%BD%AE%E7%BB%93%E6%9E%84%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">内置结构指令</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%93%E6%9E%84%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">自定义结构指令</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">更多推荐</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Rxjs-%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%88%86%E7%B1%BB%E5%90%8E%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B"><span class="toc-nav-text">Rxjs 操作符分类后的那些事</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular-Render2%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F"><span class="toc-nav-text">Angular Render2你了解吗？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8-%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%A1%AB%E5%9D%91%E6%8C%87%E5%8D%97"><span class="toc-nav-text">Angular8 日常开发填坑指南</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular"><span class="toc-nav-text">Angular</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/07/11/front_skills/angular/《angular8》- angular8深入了解指令/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

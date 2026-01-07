@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/13/front_skills/node/%E3%80%8ANode%E3%80%8B-%20%E8%AF%9D%E8%AF%B4process.env%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">《Node》- 话说process.env的那些事儿.md</a>
+      </h2>
+      <p class="article-date">April 13, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#process.env" >
+    <span class="tag-code">process.env</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          node环境变量
+process 是node的全局变量，类似浏览器的window
+env 是process的一个属性
+
+process.env的用法修改启动端口123456const http = require(&#x27;http&#x27;);const port = process. ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/13/front_skills/node/%E3%80%8ANode%E3%80%8B-%20%E8%AF%9D%E8%AF%B4process.env%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/12/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BB%8E%E8%87%AA%E5%BB%BA%E5%90%8E%E7%AB%AF%E8%BF%81%E7%A7%BB%E5%88%B0%E4%BA%91%E5%87%BD%E6%95%B0%E3%80%81%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">《微信小程序》- 从自建后端迁移到云函数、云数据库实践总结</a>
+      </h2>
+      <p class="article-date">April 12, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#云函数" >
+    <span class="tag-code">云函数</span>
+  </a>
+
+  <a target="_blank" href="/tags#云数据库" >
+    <span class="tag-code">云数据库</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          小程序代码修改
+之前调用服务端代码，修改为调用云函数
+新建云函数，并upload部署
+云函数，不要求域名配置
+
+添加云函数
+之前后端请求的js逻辑，迁移到云函数，
+难点就是云函数如何发出get,post请求
+get请求方案如下：12345# package.json&quot;depende ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/12/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BB%8E%E8%87%AA%E5%BB%BA%E5%90%8E%E7%AB%AF%E8%BF%81%E7%A7%BB%E5%88%B0%E4%BA%91%E5%87%BD%E6%95%B0%E3%80%81%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/02/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%AE%9A%E4%BD%8Dapi%E7%9A%84%E4%BD%BF%E7%94%A8/">《微信小程序》- 谈一谈定位api的使用</a>
+      </h2>
+      <p class="article-date">April 2, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#定位" >
+    <span class="tag-code">定位</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          定位api需求
+根据attitude,lottitde，获取地理位置
+或者能直接调用api，返回地理位置
+
+方案一
+根据微信小程序官网，如下代码，得到attitude,lottitde。12345678910wx.getLocation(&#123;    type: &#x27;wgs84 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/02/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%AE%9A%E4%BD%8Dapi%E7%9A%84%E4%BD%BF%E7%94%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/30/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%BC%82%E6%AD%A5Rxjs%E4%BD%BF%E7%94%A8/">《微信小程序》- 谈一谈异步Rxjs使用</a>
+      </h2>
+      <p class="article-date">March 30, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#rxjs" >
+    <span class="tag-code">rxjs</span>
+  </a>
+
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Rxjs
+js lib库
+实时响应编程
+类似node Event机制，或者说观察者模式 
+
+为何使用rxjs
+技术诉求根本原因，在于异步
+数据依赖关系 → 异步 → 必须等待数据OK，才能操作下一步
+为了迁移小程序后端到云端，把请求前缀，配置到云端；但是小程序index界面，就请求banne ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/30/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%20%E8%B0%88%E4%B8%80%E8%B0%88%E5%BC%82%E6%AD%A5Rxjs%E4%BD%BF%E7%94%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/25/app_develop_skills/%E3%80%8ADart%E3%80%8B-%20%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/">《Dart》- 入门整理</a>
+      </h2>
+      <p class="article-date">March 25, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+  <a target="_blank" href="/tags#dart" >
+    <span class="tag-code">dart</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          环境安装安装12$ brew tap dart-lang/dart$ brew install dart
+验证1$ dart --version
+
+版本命名123456789# 升级$ brew upgrade dart# 版本切换$ brew switch dart 1.24.3$ bre ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/25/app_develop_skills/%E3%80%8ADart%E3%80%8B-%20%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/19/front_skills/node/%E3%80%8ANode%E3%80%8B-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97RabbitMQ%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/">《Node》- 消息队列RabbitMQ实战笔记</a>
+      </h2>
+      <p class="article-date">March 19, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#rabbitmq" >
+    <span class="tag-code">rabbitmq</span>
+  </a>
+
+  <a target="_blank" href="/tags#Docker" >
+    <span class="tag-code">Docker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          server环境搭建node安装 参考另一篇文章
+rabbitMQ 安装
+brew安装
+12#mac brew install rabbitmq
+
+docker rabbitmq安装
+1$ docker pull rabbitmq
+
+启动rabbitmq
+brew 启动1$ brew ser ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/19/front_skills/node/%E3%80%8ANode%E3%80%8B-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97RabbitMQ%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/34/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/36/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

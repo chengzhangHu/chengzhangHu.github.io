@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular》- Angular cli 你熟练到哪种程度？ | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular》- Angular cli 你熟练到哪种程度？</h2>
+  <p class="post-date">2020-06-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>angular-cli，顾名思义，用于angular应用开发的脚手架,我们可以在命令行执行对应的命令。</p>
+<ul>
+<li>angular-cli主版本，跟angular保持一致。譬如angular9 → angular-cli 9 </li>
+<li>但是，子版本独立的。<blockquote>
+<p>@angular&#x2F;<a href="mailto:&#x63;&#108;&#105;&#x40;&#57;&#46;&#49;&#46;&#57;">&#x63;&#108;&#105;&#x40;&#57;&#46;&#49;&#46;&#57;</a><br>added 269 packages from 206 contributors in 77.894s</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @angular/cli</span><br></pre></td></tr></table></figure>
+<h4 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall -g @angular/cli</span><br><span class="line">npm cache clean</span><br></pre></td></tr></table></figure>
+<h4 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; ng v</span><br><span class="line"></span><br><span class="line">     _                      _                 ____ _     ___</span><br><span class="line">    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|</span><br><span class="line">   / △ \ | &#x27;_ \ / _` | | | | |/ _` | &#x27;__|   | |   | |    | |</span><br><span class="line">  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |</span><br><span class="line"> /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|</span><br><span class="line">                |___/</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">Angular CLI: 9.1.9</span><br><span class="line">Node: 10.19.0</span><br><span class="line">OS: darwin x64</span><br><span class="line"></span><br><span class="line">Angular: </span><br><span class="line">... </span><br><span class="line">Ivy Workspace: </span><br><span class="line"></span><br><span class="line">Package                      Version</span><br><span class="line">------------------------------------------------------</span><br><span class="line">@angular-devkit/architect    0.901.9</span><br><span class="line">@angular-devkit/core         9.1.9</span><br><span class="line">@angular-devkit/schematics   9.1.9</span><br><span class="line">@schematics/angular          9.1.9</span><br><span class="line">@schematics/update           0.901.9</span><br><span class="line">rxjs                         6.5.4</span><br></pre></td></tr></table></figure>
+<h3 id="cli命令介绍"><a href="#cli命令介绍" class="headerlink" title="cli命令介绍"></a>cli命令介绍</h3><h4 id="ng-命令列表"><a href="#ng-命令列表" class="headerlink" title="ng 命令列表"></a>ng 命令列表</h4><h5 id="1-add"><a href="#1-add" class="headerlink" title="1.add"></a>1.add</h5><blockquote>
+<p>Adds support for an external library to your project.</p>
+</blockquote>
+<h5 id="2-analytics"><a href="#2-analytics" class="headerlink" title="2.analytics"></a>2.analytics</h5><blockquote>
+<p>Configures the gathering of Angular CLI usage metrics. See <a target="_blank" rel="noopener" href="https://angular.io/cli/usage-analytics-gathering">https://angular.io/cli/usage-analytics-gathering</a>.</p>
+</blockquote>
+<h5 id="3-build-b"><a href="#3-build-b" class="headerlink" title="3.build(b)"></a>3.build(b)</h5><blockquote>
+<p>Compiles an Angular app into an output directory named dist&#x2F; at the given output path. Must be executed from within a workspace directory.</p>
+</blockquote>
+<h5 id="4-deploy"><a href="#4-deploy" class="headerlink" title="4.deploy"></a>4.deploy</h5><blockquote>
+<p> Invokes the deploy builder for a specified project or for the default project in the workspace.</p>
+</blockquote>
+<h5 id="5-config"><a href="#5-config" class="headerlink" title="5.config"></a>5.config</h5><blockquote>
+<p>  Retrieves or sets Angular configuration values in the angular.json file for the workspace.</p>
+</blockquote>
+<h5 id="6-doc-d"><a href="#6-doc-d" class="headerlink" title="6.doc (d)"></a>6.doc (d)</h5><blockquote>
+<p>  Opens the official Angular documentation (angular.io) in a browser, and searches for a given keyword.</p>
+</blockquote>
+<h5 id="7-e2e-e"><a href="#7-e2e-e" class="headerlink" title="7.e2e (e)"></a>7.e2e (e)</h5><blockquote>
+<p> Builds and serves an Angular app, then runs end-to-end tests using Protractor.</p>
+</blockquote>
+<h5 id="8-generate-g"><a href="#8-generate-g" class="headerlink" title="8.generate (g)"></a>8.generate (g)</h5><blockquote>
+<p>Generates and&#x2F;or modifies files based on a schematic.</p>
+</blockquote>
+<blockquote>
+<p>ng g [schematic] [options]<br>schematic 列表如下(&#x3D;&#x3D;&#x3D; options均以两个-分隔 &#x3D;&#x3D;&#x3D; )：</p>
+</blockquote>
+<h6 id="appShell"><a href="#appShell" class="headerlink" title="appShell"></a>appShell</h6><blockquote>
+<ul>
+<li>ss</li>
+</ul>
+</blockquote>
+<h6 id="application"><a href="#application" class="headerlink" title="application"></a>application</h6><blockquote>
+<ul>
+<li>ss</li>
+</ul>
+</blockquote>
+<h6 id="class-产生新的ts文件"><a href="#class-产生新的ts文件" class="headerlink" title="class - 产生新的ts文件"></a>class - 产生新的ts文件</h6><blockquote>
+<ul>
+<li>ng g class [name] [options]</li>
+<li>ng g class classTest –lintFix&#x3D;true   # 文件创建后，应用lint fix功能</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 得到如下ts文件</span><br><span class="line">export class ClassTest &#123;</span><br><span class="line">&#125;</span><br><span class="line"># spec.ts文件</span><br><span class="line">describe(&#x27;ClassTest&#x27;, () =&gt; &#123;</span><br><span class="line">     it(&#x27;should create an instance&#x27;, () =&gt; &#123;</span><br><span class="line">     expect(new ClassTest()).toBeTruthy();</span><br><span class="line">     &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>ng g class classTest –project&#x3D;projectTest  # 设置项目名</li>
+<li>ng g class classTest –skipTests&#x3D;true   #不创建spec.ts的测试文件</li>
+<li>ng g class classTest –type&#x3D;model   # 修改ts，形如 classTest.model.ts</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; ng g class --type=model</span><br><span class="line">? What name would you like to use for the class? Test2</span><br><span class="line">CREATE src/app/test2.model.spec.ts (156 bytes)</span><br><span class="line">CREATE src/app/test2.model.ts (23 bytes)</span><br><span class="line"></span><br><span class="line">&gt; ng g cl test3 --type=bar</span><br><span class="line">CREATE src/app/test3.bar.spec.ts (154 bytes)</span><br><span class="line">CREATE src/app/test3.bar.ts (23 bytes)</span><br></pre></td></tr></table></figure>
+<h6 id="component"><a href="#component" class="headerlink" title="component"></a>component</h6><blockquote>
+<ul>
+<li>ng g c [name] [options]</li>
+<li>ng g c user –prefix&#x3D;we # 指定组件的选择器</li>
+<li>ng g c user –selector&#x3D;idata  # 指定组件的选择器前缀</li>
+<li>ng g c user –export&#x3D;true  # 导出组件</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&gt; ng g c user --selector=idata --prefix=we --export=true</span><br><span class="line">CREATE src/app/user/user.component.scss (0 bytes)</span><br><span class="line">CREATE src/app/user/user.component.html (19 bytes)</span><br><span class="line">CREATE src/app/user/user.component.spec.ts (614 bytes)</span><br><span class="line">CREATE src/app/user/user.component.ts (265 bytes)</span><br><span class="line">UPDATE src/app/app.module.ts (495 bytes)</span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;idata&#x27;,</span><br><span class="line">  templateUrl: &#x27;./user.component.html&#x27;,</span><br><span class="line">  styleUrls: [&#x27;./user.component.scss&#x27;]</span><br><span class="line">&#125;)</span><br><span class="line">export class UserComponent implements OnInit &#123;</span><br><span class="line"></span><br><span class="line">  constructor() &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit(): void &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt; ng g c user2 --prefix=we --export=true</span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;we-user2&#x27;,</span><br><span class="line">  templateUrl: &#x27;./user2.component.html&#x27;,</span><br><span class="line">  styleUrls: [&#x27;./user2.component.scss&#x27;]</span><br><span class="line">&#125;)</span><br><span class="line">export class User2Component implements OnInit &#123;</span><br><span class="line"></span><br><span class="line">  constructor() &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit(): void &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"># 可见，prefix 于selector互斥</span><br></pre></td></tr></table></figure>
+
+<h6 id="directive"><a href="#directive" class="headerlink" title="directive"></a>directive</h6><blockquote>
+<ul>
+<li>ng g d [name] [options]</li>
+</ul>
+</blockquote>
+<h6 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h6><blockquote>
+<ul>
+<li>ng g e [name] [options]</li>
+</ul>
+</blockquote>
+<h6 id="guard"><a href="#guard" class="headerlink" title="guard"></a>guard</h6><h6 id="interceptor"><a href="#interceptor" class="headerlink" title="interceptor"></a>interceptor</h6><h6 id="interface"><a href="#interface" class="headerlink" title="interface"></a>interface</h6><blockquote>
+<ul>
+<li>ng g i [name] [options]</li>
+</ul>
+</blockquote>
+<h6 id="library"><a href="#library" class="headerlink" title="library"></a>library</h6><h6 id="module"><a href="#module" class="headerlink" title="module"></a>module</h6><h6 id="pipe"><a href="#pipe" class="headerlink" title="pipe"></a>pipe</h6><blockquote>
+<ul>
+<li>ng g p [name] [options]</li>
+</ul>
+</blockquote>
+<h6 id="service"><a href="#service" class="headerlink" title="service"></a>service</h6><blockquote>
+<ul>
+<li>ng g s [name] [options]</li>
+</ul>
+</blockquote>
+<h6 id="serviceWorker"><a href="#serviceWorker" class="headerlink" title="serviceWorker"></a>serviceWorker</h6><h6 id="webWorker"><a href="#webWorker" class="headerlink" title="webWorker"></a>webWorker</h6><h5 id="9-help"><a href="#9-help" class="headerlink" title="9.help"></a>9.help</h5><blockquote>
+<p> Lists available commands and their short descriptions.</p>
+</blockquote>
+<h5 id="10-lint-l"><a href="#10-lint-l" class="headerlink" title="10.lint (l)"></a>10.lint (l)</h5><blockquote>
+<p> Runs linting tools on Angular app code in a given project folder.</p>
+</blockquote>
+<h5 id="11-new-n"><a href="#11-new-n" class="headerlink" title="11.new (n)"></a>11.new (n)</h5><blockquote>
+<p>Creates a new workspace and an initial Angular app.</p>
+</blockquote>
+<h6 id="ng-n"><a href="#ng-n" class="headerlink" title="ng n"></a>ng n</h6><ul>
+<li>创建新的angular工程 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> $ ng n my-first-project</span><br><span class="line">? Would you like to add Angular routing? Yes</span><br><span class="line">? Which stylesheet format would you like to use? SCSS       ]</span><br><span class="line">CREATE angular-demo/README.md (1028 bytes)</span><br><span class="line">CREATE angular-demo/.editorconfig (274 bytes)</span><br><span class="line">CREATE angular-demo/.gitignore (631 bytes)</span><br><span class="line">CREATE angular-demo/angular.json (3702 bytes)</span><br><span class="line">CREATE angular-demo/package.json (1254 bytes)</span><br><span class="line">CREATE angular-demo/tsconfig.json (489 bytes)</span><br><span class="line">CREATE angular-demo/tslint.json (3125 bytes)</span><br><span class="line">CREATE angular-demo/browserslist (429 bytes)</span><br><span class="line">CREATE angular-demo/karma.conf.js (1024 bytes)</span><br><span class="line">CREATE angular-demo/tsconfig.app.json (210 bytes)</span><br><span class="line">.....</span><br><span class="line">Packages installed successfully.</span><br><span class="line">Successfully initialized git.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="12-run"><a href="#12-run" class="headerlink" title="12.run"></a>12.run</h5><blockquote>
+<p>Runs an Architect target with an optional custom builder configuration defined in your project.</p>
+</blockquote>
+<h5 id="13-serve-s"><a href="#13-serve-s" class="headerlink" title="13.serve (s)"></a>13.serve (s)</h5><blockquote>
+<p>Builds and serves your app, rebuilding on file changes. </p>
+</blockquote>
+<h5 id="14-test-t"><a href="#14-test-t" class="headerlink" title="14.test (t)"></a>14.test (t)</h5><blockquote>
+<p>Runs unit tests in a project.</p>
+</blockquote>
+<h5 id="15-update"><a href="#15-update" class="headerlink" title="15.update"></a>15.update</h5><blockquote>
+<p>Updates your application and its dependencies. See <a target="_blank" rel="noopener" href="https://update.angular.io/">https://update.angular.io/</a></p>
+</blockquote>
+<h5 id="16-version-v"><a href="#16-version-v" class="headerlink" title="16.version (v)"></a>16.version (v)</h5><blockquote>
+<p>Outputs Angular CLI version.</p>
+</blockquote>
+<h5 id="17-xi18n-i18n-extract"><a href="#17-xi18n-i18n-extract" class="headerlink" title="17.xi18n (i18n-extract)"></a>17.xi18n (i18n-extract)</h5><blockquote>
+<p>Extracts i18n messages from source code.</p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#angular-cli" >
+    <span class="tag-code">angular-cli</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/06/13/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20Rxjs%20%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E8%B5%B0%E5%90%91%E9%AB%98%E7%AB%AF/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》- Rxjs 深入了解走向高端
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/29/front_skills/vue/%E3%80%8Avue%E3%80%8Bvue-cli%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">
+        
+          《 vue 》 - vue-cli核心概念整理
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-nav-text">环境搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="toc-nav-text">卸载</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A0%A1%E9%AA%8C"><span class="toc-nav-text">校验</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#cli%E5%91%BD%E4%BB%A4%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">cli命令介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ng-%E5%91%BD%E4%BB%A4%E5%88%97%E8%A1%A8"><span class="toc-nav-text">ng 命令列表</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-add"><span class="toc-nav-text">1.add</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-analytics"><span class="toc-nav-text">2.analytics</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-build-b"><span class="toc-nav-text">3.build(b)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#4-deploy"><span class="toc-nav-text">4.deploy</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-config"><span class="toc-nav-text">5.config</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#6-doc-d"><span class="toc-nav-text">6.doc (d)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#7-e2e-e"><span class="toc-nav-text">7.e2e (e)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-generate-g"><span class="toc-nav-text">8.generate (g)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#appShell"><span class="toc-nav-text">appShell</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#application"><span class="toc-nav-text">application</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#class-%E4%BA%A7%E7%94%9F%E6%96%B0%E7%9A%84ts%E6%96%87%E4%BB%B6"><span class="toc-nav-text">class - 产生新的ts文件</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#component"><span class="toc-nav-text">component</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#directive"><span class="toc-nav-text">directive</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#enum"><span class="toc-nav-text">enum</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#guard"><span class="toc-nav-text">guard</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#interceptor"><span class="toc-nav-text">interceptor</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#interface"><span class="toc-nav-text">interface</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#library"><span class="toc-nav-text">library</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#module"><span class="toc-nav-text">module</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#pipe"><span class="toc-nav-text">pipe</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#service"><span class="toc-nav-text">service</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#serviceWorker"><span class="toc-nav-text">serviceWorker</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#webWorker"><span class="toc-nav-text">webWorker</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#9-help"><span class="toc-nav-text">9.help</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#10-lint-l"><span class="toc-nav-text">10.lint (l)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#11-new-n"><span class="toc-nav-text">11.new (n)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#ng-n"><span class="toc-nav-text">ng n</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#12-run"><span class="toc-nav-text">12.run</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#13-serve-s"><span class="toc-nav-text">13.serve (s)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#14-test-t"><span class="toc-nav-text">14.test (t)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#15-update"><span class="toc-nav-text">15.update</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#16-version-v"><span class="toc-nav-text">16.version (v)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#17-xi18n-i18n-extract"><span class="toc-nav-text">17.xi18n (i18n-extract)</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/19/front_skills/angular/《angular》- Angular cli 你熟练到哪种程度？/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

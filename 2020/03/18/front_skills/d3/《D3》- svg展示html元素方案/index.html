@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《D3》- svg展示html元素方案 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《D3》- svg展示html元素方案</h2>
+  <p class="post-date">2020-03-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="svg预定义标签"><a href="#svg预定义标签" class="headerlink" title="svg预定义标签"></a>svg预定义标签</h3><h4 id="矩形"><a href="#矩形" class="headerlink" title="矩形 "></a>矩形 <rect></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">  &lt;rect x=&quot;50&quot; y=&quot;20&quot; rx=&quot;20&quot; ry=&quot;20&quot; width=&quot;100&quot; height=&quot;100&quot; style=&quot;fill:red;stroke:black;stroke-width:5;opacity:0.5&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <rect x="50" y="20" rx="20" ry="20" width="100" height="100" style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+</svg>
+
+<h4 id="圆形"><a href="#圆形" class="headerlink" title="圆形 "></a>圆形 <circle></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">   &lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot; stroke-width=&quot;2&quot; fill=&quot;red&quot; /&gt;</span><br><span class="line">&lt;/svg&gt; </span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+   <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+</svg> 
+
+<h4 id="椭圆"><a href="#椭圆" class="headerlink" title="椭圆 "></a>椭圆 <ellipse></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">  &lt;ellipse cx=&quot;240&quot; cy=&quot;100&quot; rx=&quot;220&quot; ry=&quot;30&quot; style=&quot;fill:purple&quot; /&gt;</span><br><span class="line">  &lt;ellipse cx=&quot;220&quot; cy=&quot;70&quot; rx=&quot;190&quot; ry=&quot;20&quot; style=&quot;fill:lime&quot; /&gt;</span><br><span class="line">  &lt;ellipse cx=&quot;210&quot; cy=&quot;45&quot; rx=&quot;170&quot; ry=&quot;15&quot; style=&quot;fill:yellow&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <ellipse cx="240" cy="100" rx="220" ry="30" style="fill:purple" />
+  <ellipse cx="220" cy="70" rx="190" ry="20" style="fill:lime" />
+  <ellipse cx="210" cy="45" rx="170" ry="15" style="fill:yellow" />
+</svg>
+
+<h4 id="线"><a href="#线" class="headerlink" title="线 "></a>线 <line></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">  &lt;line x1=&quot;50&quot; y1=&quot;0&quot; x2=&quot;150&quot; y2=&quot;60&quot; style=&quot;stroke:rgb(255,0,0);stroke-width:2&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <line x1="50" y1="0" x2="150" y2="60" style="stroke:rgb(255,0,0);stroke-width:2" />
+</svg>
+
+<h4 id="折线"><a href="#折线" class="headerlink" title="折线 "></a>折线 <polyline></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">  &lt;polyline points=&quot;0,40 40,40 40,80 80,80 80,120 120,120 120,160&quot; style=&quot;fill:white;stroke:red;stroke-width:4&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,160" style="fill:white;stroke:red;stroke-width:4" />
+</svg>
+
+<h4 id="多边形"><a href="#多边形" class="headerlink" title="多边形 "></a>多边形 <polygon></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg  height=&quot;210&quot; width=&quot;500&quot;&gt;</span><br><span class="line">  &lt;polygon points=&quot;200,10 250,190 160,210&quot;</span><br><span class="line">  style=&quot;fill:lime;stroke:purple;stroke-width:1&quot;/&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg  height="210" width="500">
+  <polygon points="200,10 250,190 160,210"
+  style="fill:lime;stroke:purple;stroke-width:1"/>
+</svg>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg height=&quot;250&quot; width=&quot;500&quot;&gt;</span><br><span class="line">  &lt;polygon points=&quot;220,10 300,210 170,250 123,234&quot; style=&quot;fill:lime;stroke:purple;stroke-width:1&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg height="250" width="500">
+  <polygon points="220,10 300,210 170,250 123,234" style="fill:lime;stroke:purple;stroke-width:1" />
+</svg>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg height=&quot;210&quot; width=&quot;500&quot;&gt;</span><br><span class="line">  &lt;polygon points=&quot;100,10 40,198 190,78 10,78 160,198&quot;</span><br><span class="line">  style=&quot;fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg height="210" width="500">
+  <polygon points="100,10 40,198 190,78 10,78 160,198"
+  style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+</svg>
+
+
+<h4 id="路径"><a href="#路径" class="headerlink" title="路径 "></a>路径 <path></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</span><br><span class="line">    &lt;path d=&quot;M150 0 L75 200 L225 200 Z&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <path d="M150 0 L75 200 L225 200 Z" />
+</svg>
+
+<h3 id="d3-如何展示icon标签"><a href="#d3-如何展示icon标签" class="headerlink" title="d3 如何展示icon标签"></a>d3 如何展示icon标签</h3><h4 id="svg-foreignObject"><a href="#svg-foreignObject" class="headerlink" title="svg foreignObject"></a>svg foreignObject</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">his.chart = d3.select(&quot;#app-div&quot;);//container in html file </span><br><span class="line">this.chart.selectAll(&quot;.font-icon&quot;)</span><br><span class="line">      .data(this.dataset)// data for graph plotting</span><br><span class="line">.enter().append(&#x27;foreignObject&#x27;)</span><br><span class="line">.append(&#x27;xhtml:span&#x27;) </span><br><span class="line">.attr(&#x27;class&#x27;, &#x27;font-icon)</span><br><span class="line">.style(&quot;background-color&quot;, &quot;#EA700D&quot;)</span><br><span class="line">.style(&quot;border-radius&quot;, &quot;5px&quot;)</span><br><span class="line">.style(&quot;padding&quot;, &quot;2px&quot;)</span><br><span class="line">.style(&quot;color&quot;, &quot;#ffffff&quot;)</span><br><span class="line">.style(&quot;font-size&quot;, &quot;20px&quot;)</span><br><span class="line">.style(&quot;width&quot;, &quot;20px&quot;)</span><br><span class="line">.style(&quot;height&quot;, &quot;21px&quot;)</span><br><span class="line">.style(&quot;display&quot;, &quot;block&quot;)</span><br><span class="line">.attr(&quot;width&quot;, 30)</span><br><span class="line">.attr(&quot;height&quot;, 30)  </span><br></pre></td></tr></table></figure>
+<ul>
+<li>foreignObject 不可缺</li>
+<li>xhtml:<tag> 不可缺，不然显示不出来</li>
+<li>style - width| height ,调整显示的</li>
+<li>存在兼容问题，firefox,chrome 显示OK，safari显示异常<br><img src="https://s1.ax1x.com/2020/03/18/8wFYCt.md.png"></li>
+</ul>
+<h4 id="path形式-–-不存在兼容问题"><a href="#path形式-–-不存在兼容问题" class="headerlink" title="path形式 – 不存在兼容问题"></a>path形式 – 不存在兼容问题</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.chart.selectAll(&quot;.icon&quot;)</span><br><span class="line">  .data(this.dataset)// data for graph plotting</span><br><span class="line">.enter().append(&quot;svg:path&quot;).attr(&quot;d&quot;, &quot;M150 0 L75 200 L225 200 Z&quot;)</span><br><span class="line">.attr(&quot;width&quot;, 16)</span><br><span class="line">.attr(&quot;height&quot;, 16)</span><br><span class="line">.attr(&quot;class&quot;, &quot;dot&quot;)</span><br><span class="line">.style(&quot;stroke&quot;, &quot;red&quot;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="url形式"><a href="#url形式" class="headerlink" title="url形式"></a>url形式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.chart.selectAll(&quot;.icon&quot;)</span><br><span class="line">  .data(this.dataset)// data for graph plotting</span><br><span class="line">.enter().append(&quot;image&quot;).attr(&quot;xlink:href&quot;, &quot;https://github.com/favicon.ico&quot;)</span><br><span class="line">.attr(&quot;width&quot;, 16)</span><br><span class="line">.attr(&quot;height&quot;, 16)</span><br><span class="line">.attr(&quot;class&quot;, &quot;dot&quot;)</span><br><span class="line">.style(&quot;stroke&quot;, &quot;red&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p> <a target="_blank" rel="noopener" href="https://www.runoob.com/svg/svg-ellipse.html">svg菜鸟教程</a><br> <a target="_blank" rel="noopener" href="https://www.netwoven.com/2018/01/16/different-ways-adding-custom-svg-images-d3-line-charts-angular-4/">d3 svg</a></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#svg" >
+    <span class="tag-code">svg</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#d3" >
+    <span class="tag-code">d3</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/03/17/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-%E5%AE%B9%E5%99%A8dns%E4%BF%AE%E6%94%B9/">
+        <span class="nav-arrow">← </span>
+        
+          《Docker》- 容器dns修改
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/03/19/bigdata_for_analyze/%E3%80%8ARedis%E3%80%8B-redis%E7%B2%BE%E8%AF%BB%E7%AC%94%E8%AE%B0/">
+        
+          《Redis》- redis精读笔记
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#svg%E9%A2%84%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE"><span class="toc-nav-text">svg预定义标签</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%9F%A9%E5%BD%A2"><span class="toc-nav-text">矩形 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9C%86%E5%BD%A2"><span class="toc-nav-text">圆形 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A4%AD%E5%9C%86"><span class="toc-nav-text">椭圆 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BA%BF"><span class="toc-nav-text">线 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%8A%98%E7%BA%BF"><span class="toc-nav-text">折线 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A4%9A%E8%BE%B9%E5%BD%A2"><span class="toc-nav-text">多边形 </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%B7%AF%E5%BE%84"><span class="toc-nav-text">路径 </span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#d3-%E5%A6%82%E4%BD%95%E5%B1%95%E7%A4%BAicon%E6%A0%87%E7%AD%BE"><span class="toc-nav-text">d3 如何展示icon标签</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#svg-foreignObject"><span class="toc-nav-text">svg foreignObject</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#path%E5%BD%A2%E5%BC%8F-%E2%80%93-%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98"><span class="toc-nav-text">path形式 – 不存在兼容问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#url%E5%BD%A2%E5%BC%8F"><span class="toc-nav-text">url形式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/03/18/front_skills/d3/《D3》- svg展示html元素方案/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

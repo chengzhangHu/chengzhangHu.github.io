@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/08/devops_skills/deploy/%E3%80%8A%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E3%80%8B-%E8%AE%B0%E4%B8%80%E6%AC%A1blog%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%A4%B1%E8%B4%A5/">《自动部署》- 记一次blog自动部署失败</a>
+      </h2>
+      <p class="article-date">March 8, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#GitHub Action" >
+    <span class="tag-code">GitHub Action</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          自动部署方案GitHub action
+action 拉取失败
+
+原因：利用github action构建，构建的public发布到xxx.github.io路径。拉取部署action失败，导致自动部署失败！
+
+解决方案fork action到自己repository下，自己修改构建sh脚本 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/08/devops_skills/deploy/%E3%80%8A%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E3%80%8B-%E8%AE%B0%E4%B8%80%E6%AC%A1blog%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%A4%B1%E8%B4%A5/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E7%8E%AF%E5%A2%83mongo%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/">《Docker》- linux下docker环境mongo安装和配置</a>
+      </h2>
+      <p class="article-date">March 4, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#mongo" >
+    <span class="tag-code">mongo</span>
+  </a>
+
+  <a target="_blank" href="/tags#安装" >
+    <span class="tag-code">安装</span>
+  </a>
+
+  <a target="_blank" href="/tags#配置" >
+    <span class="tag-code">配置</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          mongo 安装docker mongo镜像 1$ docker pull mongo
+  
+mongo运行 12345 # 停留在当前进程 docker run -p 27017:27017 --name mdb mongo  # 守护进程形式后端运行docker run -p 27017 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E7%8E%AF%E5%A2%83mongo%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/04/front_skills/node/%E3%80%8ANode%E3%80%8B-PM2-%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/">《Node》-PM2-操作命令整理</a>
+      </h2>
+      <p class="article-date">March 4, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#PM2" >
+    <span class="tag-code">PM2</span>
+  </a>
+
+  <a target="_blank" href="/tags#Forever" >
+    <span class="tag-code">Forever</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          pm2 介绍  用于进程守护，自动拉起进程。这里介绍都是nodejs进程管理。当然不限定与node。sh,py等都可以管理。node安装请移步
+123$ pm2 start bashscript.sh$ pm2 start python-app.py --watch$ pm2 start b ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/04/front_skills/node/%E3%80%8ANode%E3%80%8B-PM2-%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E5%AE%89%E8%A3%85/">《Docker》- linux下docker安装</a>
+      </h2>
+      <p class="article-date">March 4, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#linux" >
+    <span class="tag-code">linux</span>
+  </a>
+
+  <a target="_blank" href="/tags#安装" >
+    <span class="tag-code">安装</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          docker 安装推荐方式
+1.安装基础包
+   123sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2
+   
+
+2.修改原
+   123sudo yum-config-manager \--add-r ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E5%AE%89%E8%A3%85/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/02/app_develop_skills/%E3%80%8ARN%E3%80%8B-RN-%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/">《RN》- RN 入门整理</a>
+      </h2>
+      <p class="article-date">March 2, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+  <a target="_blank" href="/tags#RN" >
+    <span class="tag-code">RN</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          环境搭建node123456789//其版本是否在 v10 以上brew install node# 使用nrm工具切换淘宝源npx nrm use taobao# 如果之后需要切换回官方源可使用 npx nrm use npm
+
+yarn12//Facebook 提供的替代 npm 的工具 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/02/app_develop_skills/%E3%80%8ARN%E3%80%8B-RN-%E5%85%A5%E9%97%A8%E6%95%B4%E7%90%86/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/01/front_skills/minapp/%E3%80%8A%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%A4%9A%E7%AB%AF%E6%9E%84%E5%BB%BATaro%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">《小程序》-多端构建Taro概念整理</a>
+      </h2>
+      <p class="article-date">March 1, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#构建" >
+    <span class="tag-code">构建</span>
+  </a>
+
+  <a target="_blank" href="/tags#小程序" >
+    <span class="tag-code">小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#多端" >
+    <span class="tag-code">多端</span>
+  </a>
+
+  <a target="_blank" href="/tags#Taro" >
+    <span class="tag-code">Taro</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          学习背景：
+多端构建，可以只书写一套代码，再通过 Taro 的编译工具，将源代码分别编译出可以在不同端（微信&#x2F;百度&#x2F;支付宝&#x2F;字节跳动&#x2F;QQ&#x2F;京东小程序、快应用、H5、React-Native 等）运行的代码
+支持微信小程序转Taro
+支持编译 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/01/front_skills/minapp/%E3%80%8A%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%A4%9A%E7%AB%AF%E6%9E%84%E5%BB%BATaro%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/37/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/39/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      go学习笔记二 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>go学习笔记二</h2>
+  <p class="post-date">2022-08-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="语言简介"><a href="#语言简介" class="headerlink" title="语言简介"></a>语言简介</h2><p>1.Go语言即具备python等动态语言的开发速度，又拥有C&#x2F;C++等编译型语言的性能与安全性。又被称作21世纪的C语言，不但能够访问底层操作系统还提供了强大的网络编程和并发编程，分布式编程。</p>
+<h2 id="为何创建GO"><a href="#为何创建GO" class="headerlink" title="为何创建GO"></a>为何创建GO</h2><h4 id="C语言，却难以开发，编译速度依赖性、运行时错误都非常多"><a href="#C语言，却难以开发，编译速度依赖性、运行时错误都非常多" class="headerlink" title="C语言，却难以开发，编译速度依赖性、运行时错误都非常多"></a>C语言，却难以开发，编译速度依赖性、运行时错误都非常多</h4><h4 id="java语言需要虚拟机才能运行代码"><a href="#java语言需要虚拟机才能运行代码" class="headerlink" title="java语言需要虚拟机才能运行代码"></a>java语言需要虚拟机才能运行代码</h4><h4 id="javascript和node-js-回调多，类型混乱，依赖性包查找也挺麻烦，更重包管理器"><a href="#javascript和node-js-回调多，类型混乱，依赖性包查找也挺麻烦，更重包管理器" class="headerlink" title="javascript和node.js 回调多，类型混乱，依赖性包查找也挺麻烦，更重包管理器"></a>javascript和node.js 回调多，类型混乱，依赖性包查找也挺麻烦，更重包管理器</h4><h2 id="需要什么样的语言呢？"><a href="#需要什么样的语言呢？" class="headerlink" title="需要什么样的语言呢？"></a>需要什么样的语言呢？</h2><ul>
+<li>需要快编译，类似解释性语言， 那么就只有参考Python，js 了</li>
+<li>不能类型混乱，可以参考Java ,C </li>
+<li>不能依赖混乱，可以参考java</li>
+<li>不能虚拟机，编译为字节码，装载为机器码；而是直接变为机器码</li>
+<li>但是内存问题，不能学C，只能学Java，自带内存管理</li>
+<li>响应大数据时代，突破线程限制，改用协程。协程很微型，不会占用电脑资源。一台电脑可以轻松开启成千上万个协程。</li>
+</ul>
+<blockquote>
+<p>最终集合到的就是解释型的、强类型支持的，自带依赖包、内存管理 、直接机器码的</p>
+</blockquote>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><ul>
+<li>在go的官方网址上下载go最新版本<a href="https://link.juejin.cn/?target=https://golang.google.cn/" title="https://golang.google.cn/">golang.google.cn&#x2F;</a>。</li>
+<li>或者 Go 的中文网上下载 <a href="https://link.juejin.cn/?target=https://studygolang.com/dl" title="https://studygolang.com/dl">studygolang.com&#x2F;dl</a></li>
+</ul>
+<h3 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h3><blockquote>
+<p>安装成功与否，go version 进行check</p>
+</blockquote>
+<h4 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h4><blockquote>
+<p>配置 GOPATH， 可以自定义目录</p>
+</blockquote>
+<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><blockquote>
+<p>压缩文件解压到指定目录 </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -xzf go1.13.4.linux-amd64.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim .bashrc</span><br><span class="line">export GOROOT=/usr/local/go        # 安装目录。</span><br><span class="line">export GOPATH=$HOME/go             # 工作环境</span><br><span class="line">export GOBIN=$GOPATH/bin           # 可执行文件存放</span><br><span class="line">export PATH=$GOPATH:$GOBIN:$GOROOT/bin:$PATH       # 添加PATH路径</span><br></pre></td></tr></table></figure>
+<p>添加环境变量到 .profile 这个配置文件中 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#?? 为何</span><br><span class="line">export GOROOT=&quot;/usr/local/go&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="导入包"><a href="#导入包" class="headerlink" title="导入包"></a>导入包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import ( &quot;fmt&quot; &quot;os&quot; )</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>变量定义使用var  </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var name string ;</span><br><span class="line"></span><br><span class="line">age := 12;</span><br></pre></td></tr></table></figure>
+<h3 id="变量互换"><a href="#变量互换" class="headerlink" title="变量互换"></a>变量互换</h3><blockquote>
+<p>不是从地址角度，从人角度，直接互换就行</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a, b int = 100,200;</span><br><span class="line">a,b = b,a;</span><br></pre></td></tr></table></figure>
+<h3 id="匿名变量"><a href="#匿名变量" class="headerlink" title="匿名变量"></a>匿名变量</h3><blockquote>
+<p>_ 下划线表示”_” 也称为空白标识符，任何类型都可以使用它进行赋值,而且任何类型赋值后都将直接被抛弃，所以在使用匿名变量时，表示后续代码不需要再用此变量</p>
+</blockquote>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><ul>
+<li>常量数值不能修改。</li>
+<li>常量定义后可以不使用。</li>
+<li>常量定义不能使用简短定义方式。</li>
+<li>常量中使用的数据类型只能是 整型、布尔、浮点、复数类型、字符串类型</li>
+</ul>
+<h3 id="iota常量"><a href="#iota常量" class="headerlink" title="iota常量"></a>iota常量</h3><blockquote>
+<p>iota是常量里面的计数器，初始值默认值是0，可以被编译器自动修改，每const定义一组常量时，iota逐行自增1。常被用作枚举值</p>
+</blockquote>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><blockquote>
+<p>基本数据类型和复合数据类型, 数据类型要兼容才能转换，否则容易丢失数据精度；Type(x)是强制转换。</p>
+</blockquote>
+<h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><blockquote>
+<p>byte uint8 的别称 rune int32 的别称</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>说明</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>有符号整数</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>int8</td>
+<td>有符号 8位整数</td>
+<td>-128到 127</td>
+</tr>
+<tr>
+<td>int16</td>
+<td>有符号 16位整数</td>
+<td>-32768 到32767</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>有符号 32位整数</td>
+<td>-2147483648到2147483647</td>
+</tr>
+<tr>
+<td>int64</td>
+<td>有符号 64位整数</td>
+<td>-9223372036854775808到9223372036854775807</td>
+</tr>
+<tr>
+<td>无符号整数</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uint8</td>
+<td>无符号 8位整数</td>
+<td>0到255</td>
+</tr>
+<tr>
+<td>uint16</td>
+<td>无符号 16位整数</td>
+<td>0到65535</td>
+</tr>
+<tr>
+<td>uint32</td>
+<td>无符号 32位整数</td>
+<td>0到4294967295</td>
+</tr>
+<tr>
+<td>uint64</td>
+<td>无符号 64位整数</td>
+<td>0到18446744073709551615</td>
+</tr>
+</tbody></table>
+<h4 id="浮点"><a href="#浮点" class="headerlink" title="浮点"></a>浮点</h4><blockquote>
+<p>float32 和 float64</p>
+</blockquote>
+<h5 id="在内存中占有的字节数不同"><a href="#在内存中占有的字节数不同" class="headerlink" title="在内存中占有的字节数不同"></a>在内存中占有的字节数不同</h5><ul>
+<li>单精度浮点数在机内占4个字节。</li>
+<li>双精度浮点数在机内占8个字节。</li>
+</ul>
+<h5 id="有效数字位数不同"><a href="#有效数字位数不同" class="headerlink" title="有效数字位数不同"></a>有效数字位数不同</h5><ul>
+<li>单精度浮点数 有效数字7位。</li>
+<li>双精度浮点数 有效数字16位。</li>
+</ul>
+<h5 id="使用情况区别"><a href="#使用情况区别" class="headerlink" title="使用情况区别"></a>使用情况区别</h5><ul>
+<li>一般用来表示美元和分的时候用单精度类型。</li>
+<li>超出人类经验的数字函数，例如 sin() cos() tan() sqrt() 都使用双精度值。</li>
+</ul>
+<h4 id="布尔"><a href="#布尔" class="headerlink" title="布尔"></a>布尔</h4><blockquote>
+<p>true 、false</p>
+</blockquote>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><h4 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h4><h4 id="位操作赋"><a href="#位操作赋" class="headerlink" title="位操作赋"></a>位操作赋</h4><ul>
+<li>^ 异或 - 同为0 ，不同1</li>
+<li>&amp;^ 位清空 - a&amp;^b , b为0去a；b为1，取0；</li>
+<li>&lt;&lt; , &gt;&gt;</li>
+</ul>
+<h4 id="error"><a href="#error" class="headerlink" title="error"></a>error</h4><h3 id="复合数据类型"><a href="#复合数据类型" class="headerlink" title="复合数据类型"></a>复合数据类型</h3><h3 id="类型输出"><a href="#类型输出" class="headerlink" title="类型输出"></a>类型输出</h3><table>
+<thead>
+<tr>
+<th>占位符</th>
+<th>说明</th>
+<th>举例</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%d</td>
+<td>十进制的数字</td>
+<td>fmt.Printf(“%d”,10)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>二进制的数字</td>
+<td>fmt.Printf(“%b”,5)</td>
+<td>101</td>
+</tr>
+<tr>
+<td>%T</td>
+<td>取类型</td>
+<td>b :&#x3D;true fmt.Printf(“%T”,b)</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>取字符串</td>
+<td>s :&#x3D;”123” fmt.Printf(“%s”,s)</td>
+<td>123</td>
+</tr>
+<tr>
+<td>%t</td>
+<td>取bool类型的值</td>
+<td>b:&#x3D;true fmt.Printf(“%t”,b)</td>
+<td>true</td>
+</tr>
+<tr>
+<td>%p</td>
+<td>取内存地址</td>
+<td>p :&#x3D;”123” fmt.Printf(“%p”, &amp;p)</td>
+<td>0xc0000461f0</td>
+</tr>
+</tbody></table>
+<h3 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h3><blockquote>
+<p>Go语言中有四类标记：标识符（identifiers）、关键字（keywords）、运算符（operators）标点符号（punctuation）以及字面量（literals）</p>
+</blockquote>
+<h3 id="逻辑控制"><a href="#逻辑控制" class="headerlink" title="逻辑控制"></a>逻辑控制</h3><blockquote>
+<p>{} 代码块不可省略，但是() ,可以省略；</p>
+</blockquote>
+<h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><blockquote>
+<p>if条件判断语句中，可以插入一段执行赋值</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if err:= function(); err == nil &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><blockquote>
+<p>简式声明可能常常出现在函数内部</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for i:= 0 ; i &lt; 100;i ++ &#123;</span><br><span class="line">    if i == 5 &#123;</span><br><span class="line">        break; // 只能结束当前一层循环 </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><blockquote>
+<p>可以不用特意添加break，结束语句； fallthrought ,会强制执行下一条case, 不论真假条件</p>
+</blockquote>
+<h3 id="return"><a href="#return" class="headerlink" title="return"></a>return</h3><h2 id="内置的包"><a href="#内置的包" class="headerlink" title="内置的包"></a>内置的包</h2><h3 id="strings-字符串处理"><a href="#strings-字符串处理" class="headerlink" title="strings - 字符串处理"></a>strings - 字符串处理</h3><h3 id="strconv-字符转基本类型"><a href="#strconv-字符转基本类型" class="headerlink" title="strconv - 字符转基本类型"></a>strconv - 字符转基本类型</h3><h3 id="time-时间日期处理"><a href="#time-时间日期处理" class="headerlink" title="time - 时间日期处理"></a>time - 时间日期处理</h3><h2 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h2><blockquote>
+<p><code>dep</code>和<code>glide</code>在项目中加入了<code>vender</code>目录来存储所有项目中需要引入的包。dep init 生成gopkg.lock（清单文件）,gopkg.toml(描述文件) </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MacOS `brew install dep`</span><br><span class="line"></span><br><span class="line">Linux `curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh`</span><br><span class="line"></span><br><span class="line">Windows `go get -u github.com/golang/dep/cmd/dep`</span><br></pre></td></tr></table></figure>
+
+<h2 id="mod"><a href="#mod" class="headerlink" title="mod"></a>mod</h2><p>使用<code>go mod</code> 管理项目，不需要非得把项目放到GOPATH指定目录下，可以在电脑上任何位置新建一个项目。</p>
+<h3 id="mod初始化"><a href="#mod初始化" class="headerlink" title="mod初始化"></a>mod初始化</h3><p>使用mod需要注意的是：</p>
+<ul>
+<li>如果Go的版本太低不能使用，建议将Go的版本升级到最新。</li>
+<li>环境变量中可以增加<code>GOPROXY=https://goproxy.io</code> 这样没有梯子的情况下可以正确的加载相应的包文件。</li>
+<li>环境变量<code>GO111MODULE</code>不要设置，如果已经增加了这个变量请务必设置为<code>GO111MODULE=auto</code>。</li>
+<li>在项目的根目录下使用命令<code>go mod init projectName</code></li>
+</ul>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><blockquote>
+<p>func 关键字， 如果是小写的，表示私有的函数，仅能够在本包中调用，相当于其他语言中的private。大写，等于public。<code>_</code> 空白标识符，舍弃返回的数据。</p>
+</blockquote>
+<p>函数也是一种类型，所以可以将一个函数作为另一个函数的参数传递func1()和func2()是两个函数，将func1函数作为func2这个函数的参数，func2函数就叫做高阶函数，因为他接收了一个函数作为参数。所以func1叫做回调函数，他作为另一个函数的参数</p>
+<h3 id="多个返回值"><a href="#多个返回值" class="headerlink" title="多个返回值"></a>多个返回值</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func Test(age,tel int) (int, string)&#123;</span><br><span class="line"> return 12,&#x27;a&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">x,name = Test(1);</span><br></pre></td></tr></table></figure>
+
+<h3 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h3><blockquote>
+<p>defer 表示延时推迟的意思，在go语言中用来延时一个函数或者方法的执行。如果一个函数或者方法添加了defer关键字，表示则暂时不执行，等到主函数的所有方法都执行完后才开始执行.当多个函数被defer的时候他们被添加到一个堆栈中，并且根据先进后出的原则执行。 即 <code>Last In First Out（LIFO）</code></p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#学习笔记" >
+    <span class="tag-code">学习笔记</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2022/02/16/front_skills/react/%E3%80%8Areact%E3%80%8B-%20%E5%86%8D%E6%AC%A1%E5%9B%9E%E9%A1%BE/">
+        <span class="nav-arrow">← </span>
+        
+          《react》- 再次回顾
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2022/08/04/devops_skills/deploy/%E5%9F%BA%E4%BA%8ENode%E7%9A%84Devops/">
+        
+          基于Node的Devops
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B"><span class="toc-nav-text">语言简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%BA%E4%BD%95%E5%88%9B%E5%BB%BAGO"><span class="toc-nav-text">为何创建GO</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#C%E8%AF%AD%E8%A8%80%EF%BC%8C%E5%8D%B4%E9%9A%BE%E4%BB%A5%E5%BC%80%E5%8F%91%EF%BC%8C%E7%BC%96%E8%AF%91%E9%80%9F%E5%BA%A6%E4%BE%9D%E8%B5%96%E6%80%A7%E3%80%81%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF%E9%83%BD%E9%9D%9E%E5%B8%B8%E5%A4%9A"><span class="toc-nav-text">C语言，却难以开发，编译速度依赖性、运行时错误都非常多</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#java%E8%AF%AD%E8%A8%80%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%8D%E8%83%BD%E8%BF%90%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">java语言需要虚拟机才能运行代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#javascript%E5%92%8Cnode-js-%E5%9B%9E%E8%B0%83%E5%A4%9A%EF%BC%8C%E7%B1%BB%E5%9E%8B%E6%B7%B7%E4%B9%B1%EF%BC%8C%E4%BE%9D%E8%B5%96%E6%80%A7%E5%8C%85%E6%9F%A5%E6%89%BE%E4%B9%9F%E6%8C%BA%E9%BA%BB%E7%83%A6%EF%BC%8C%E6%9B%B4%E9%87%8D%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-nav-text">javascript和node.js 回调多，类型混乱，依赖性包查找也挺麻烦，更重包管理器</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E8%AF%AD%E8%A8%80%E5%91%A2%EF%BC%9F"><span class="toc-nav-text">需要什么样的语言呢？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">环境配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-nav-text">下载</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">环境变量配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#windows"><span class="toc-nav-text">windows</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Linux"><span class="toc-nav-text">Linux</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AF%BC%E5%85%A5%E5%8C%85"><span class="toc-nav-text">导入包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-nav-text">变量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-nav-text">定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F%E4%BA%92%E6%8D%A2"><span class="toc-nav-text">变量互换</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8C%BF%E5%90%8D%E5%8F%98%E9%87%8F"><span class="toc-nav-text">匿名变量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="toc-nav-text">常量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#iota%E5%B8%B8%E9%87%8F"><span class="toc-nav-text">iota常量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">数据类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">基本数据类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%95%B4%E5%9E%8B"><span class="toc-nav-text">整型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B5%AE%E7%82%B9"><span class="toc-nav-text">浮点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E5%8D%A0%E6%9C%89%E7%9A%84%E5%AD%97%E8%8A%82%E6%95%B0%E4%B8%8D%E5%90%8C"><span class="toc-nav-text">在内存中占有的字节数不同</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97%E4%BD%8D%E6%95%B0%E4%B8%8D%E5%90%8C"><span class="toc-nav-text">有效数字位数不同</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">使用情况区别</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B8%83%E5%B0%94"><span class="toc-nav-text">布尔</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-nav-text">字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6"><span class="toc-nav-text">字符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C%E8%B5%8B"><span class="toc-nav-text">位操作赋</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#error"><span class="toc-nav-text">error</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">复合数据类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BE%93%E5%87%BA"><span class="toc-nav-text">类型输出</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%A0%87%E8%AE%B0"><span class="toc-nav-text">标记</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%80%BB%E8%BE%91%E6%8E%A7%E5%88%B6"><span class="toc-nav-text">逻辑控制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#if"><span class="toc-nav-text">if</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#for"><span class="toc-nav-text">for</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#switch"><span class="toc-nav-text">switch</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#return"><span class="toc-nav-text">return</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%86%85%E7%BD%AE%E7%9A%84%E5%8C%85"><span class="toc-nav-text">内置的包</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#strings-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86"><span class="toc-nav-text">strings - 字符串处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#strconv-%E5%AD%97%E7%AC%A6%E8%BD%AC%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">strconv - 字符转基本类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#time-%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86"><span class="toc-nav-text">time - 时间日期处理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-nav-text">包管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mod"><span class="toc-nav-text">mod</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mod%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-nav-text">mod初始化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-nav-text">函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A4%9A%E4%B8%AA%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-nav-text">多个返回值</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#defer"><span class="toc-nav-text">defer</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2022/08/02/backend_skills/go/go学习笔记二/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

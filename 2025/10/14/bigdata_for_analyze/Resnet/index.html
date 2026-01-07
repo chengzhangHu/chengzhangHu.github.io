@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Resnet | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Resnet</h2>
+  <p class="post-date">2025-10-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="🧠-一、ResNet-是什么？"><a href="#🧠-一、ResNet-是什么？" class="headerlink" title="🧠 一、ResNet 是什么？"></a>🧠 一、ResNet 是什么？</h2><p><strong>ResNet（Residual Network，残差网络）</strong><br>由 <strong>何恺明（Kaiming He）等人</strong> 在 2015 年提出，论文是</p>
+<blockquote>
+<p>《Deep Residual Learning for Image Recognition》</p>
+</blockquote>
+<p>ResNet 最初用于 ImageNet 图像分类任务，在 2015 年 ILSVRC 比赛中夺冠，**Top-5 错误率仅 3.57%**，同时成功训练出超过 <strong>152 层</strong> 的深度网络——<br>这是以前的 CNN（如 VGG）难以做到的。</p>
+<hr>
+<h2 id="⚙️-二、为什么要提出-ResNet？"><a href="#⚙️-二、为什么要提出-ResNet？" class="headerlink" title="⚙️ 二、为什么要提出 ResNet？"></a>⚙️ 二、为什么要提出 ResNet？</h2><h3 id="📉-1-深度模型的“退化问题”"><a href="#📉-1-深度模型的“退化问题”" class="headerlink" title="📉 1. 深度模型的“退化问题”"></a>📉 1. 深度模型的“退化问题”</h3><p>直觉上，网络越深，效果越好。<br>但实际发现：</p>
+<ul>
+<li>网络越深，训练误差反而<strong>上升</strong>。</li>
+<li>梯度在反向传播中会<strong>消失或爆炸</strong>，模型难以收敛。</li>
+</ul>
+<p>也就是说：</p>
+<blockquote>
+<p>加更多层 ≠ 学得更好。<br>深度带来了表达能力，却损害了可训练性。</p>
+</blockquote>
+<hr>
+<h2 id="💡-三、ResNet-的核心思想：残差学习（Residual-Learning）"><a href="#💡-三、ResNet-的核心思想：残差学习（Residual-Learning）" class="headerlink" title="💡 三、ResNet 的核心思想：残差学习（Residual Learning）"></a>💡 三、ResNet 的核心思想：<strong>残差学习（Residual Learning）</strong></h2><p>传统层学的是：<br>[<br>y &#x3D; F(x)<br>]<br>ResNet 改成：<br>[<br>y &#x3D; F(x) + x<br>]</p>
+<p>也就是：<br>让每个模块只学习“残差”（差值），而不是完整映射。</p>
+<h3 id="🧩-残差块（Residual-Block）"><a href="#🧩-残差块（Residual-Block）" class="headerlink" title="🧩 残差块（Residual Block）"></a>🧩 残差块（Residual Block）</h3><p>如下图结构（简化表示）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入 x</span><br><span class="line">   │</span><br><span class="line">[卷积 + BN + ReLU]</span><br><span class="line">   │</span><br><span class="line">[卷积 + BN]</span><br><span class="line">   │</span><br><span class="line"> + ───────────────┐</span><br><span class="line"> │                │</span><br><span class="line"> └──&gt; 加法 (skip) ─&gt; ReLU ─&gt; 输出 y</span><br></pre></td></tr></table></figure>
+
+<p>这种“shortcut connection（跳跃连接）”直接把输入 <strong>x</strong> 加到输出 <strong>F(x)</strong> 上。</p>
+<hr>
+<h2 id="🔍-四、为什么这种结构有效？"><a href="#🔍-四、为什么这种结构有效？" class="headerlink" title="🔍 四、为什么这种结构有效？"></a>🔍 四、为什么这种结构有效？</h2><p>1️⃣ <strong>缓解梯度消失</strong></p>
+<ul>
+<li>跳跃连接让梯度可以<strong>直接传到浅层</strong>，不被深层阻塞。</li>
+<li>反向传播时：<br>[<br>\frac{\partial L}{\partial x} &#x3D; \frac{\partial L}{\partial y} (1 + \frac{\partial F}{\partial x})<br>]<br>始终保留一个恒等路径，使梯度不会消失。</li>
+</ul>
+<p>2️⃣ <strong>容易优化</strong></p>
+<ul>
+<li>如果最优函数接近恒等映射，F(x) ≈ 0 就行。</li>
+<li>模型只需“微调”已有特征，而不是重新学习一切。</li>
+</ul>
+<p>3️⃣ <strong>能训练超深网络</strong></p>
+<ul>
+<li>ResNet-50, ResNet-101, ResNet-152 甚至更深都能稳定训练。</li>
+</ul>
+<hr>
+<h2 id="🧱-五、ResNet-的结构层次（以-ResNet-50-为例）"><a href="#🧱-五、ResNet-的结构层次（以-ResNet-50-为例）" class="headerlink" title="🧱 五、ResNet 的结构层次（以 ResNet-50 为例）"></a>🧱 五、ResNet 的结构层次（以 ResNet-50 为例）</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>结构</th>
+<th>输出尺寸</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Conv1</td>
+<td>7×7卷积 + MaxPool</td>
+<td>112×112</td>
+</tr>
+<tr>
+<td>Conv2_x</td>
+<td>3个残差块</td>
+<td>56×56</td>
+</tr>
+<tr>
+<td>Conv3_x</td>
+<td>4个残差块</td>
+<td>28×28</td>
+</tr>
+<tr>
+<td>Conv4_x</td>
+<td>6个残差块</td>
+<td>14×14</td>
+</tr>
+<tr>
+<td>Conv5_x</td>
+<td>3个残差块</td>
+<td>7×7</td>
+</tr>
+<tr>
+<td>全局平均池化 + FC</td>
+<td>分类输出</td>
+<td>1000类</td>
+</tr>
+</tbody></table>
+<p><strong>瓶颈结构（Bottleneck Block）</strong>：<br>采用 1×1 降维 → 3×3 卷积 → 1×1 升维，减少计算量。</p>
+<hr>
+<h2 id="🧬-六、ResNet-的变体家族"><a href="#🧬-六、ResNet-的变体家族" class="headerlink" title="🧬 六、ResNet 的变体家族"></a>🧬 六、ResNet 的变体家族</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ResNet-18&#x2F;34</strong></td>
+<td>基础残差块（两个 3×3 卷积）</td>
+</tr>
+<tr>
+<td><strong>ResNet-50&#x2F;101&#x2F;152</strong></td>
+<td>瓶颈残差块（1×1, 3×3, 1×1）</td>
+</tr>
+<tr>
+<td><strong>ResNeXt</strong></td>
+<td>引入分组卷积（更宽）</td>
+</tr>
+<tr>
+<td><strong>Wide-ResNet</strong></td>
+<td>减少深度，增加宽度</td>
+</tr>
+<tr>
+<td><strong>ResNet-D, ECA-ResNet, etc.</strong></td>
+<td>各种改进版，性能更优</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-七、ResNet-的意义（深远影响）"><a href="#🧠-七、ResNet-的意义（深远影响）" class="headerlink" title="🧠 七、ResNet 的意义（深远影响）"></a>🧠 七、ResNet 的意义（深远影响）</h2><p>✅ <strong>开启了深层网络可训练时代</strong><br>— 深度从几十层 → 上百层甚至上千层。</p>
+<p>✅ <strong>启发了 Transformer 等架构</strong><br>— “残差连接 + 层归一化”成为现代网络标配。</p>
+<p>✅ <strong>几乎所有 CNN 基础模型的基石</strong><br>— 分类、检测、分割任务都以 ResNet 为 backbone。</p>
+<hr>
+<h2 id="🏁-八、总结一句话："><a href="#🏁-八、总结一句话：" class="headerlink" title="🏁 八、总结一句话："></a>🏁 八、总结一句话：</h2><blockquote>
+<p><strong>ResNet 让深度学习真正“学得更深”。</strong><br>它的核心不在“更复杂的卷积”，而在<strong>让梯度流得更顺畅</strong>。</p>
+</blockquote>
+<ul>
+<li></li>
+</ul>
+<h1 id="🧭-一、ResNet-出现之前：深层网络的两大困境"><a href="#🧭-一、ResNet-出现之前：深层网络的两大困境" class="headerlink" title="🧭 一、ResNet 出现之前：深层网络的两大困境"></a>🧭 一、ResNet 出现之前：深层网络的两大困境</h1><p>在 ResNet 之前（约 2012–2014），卷积神经网络（CNN）主流结构是：</p>
+<ul>
+<li><strong>AlexNet (2012)</strong> → 8 层</li>
+<li><strong>VGGNet (2014)</strong> → 16&#x2F;19 层</li>
+<li><strong>GoogLeNet (2014)</strong> → 22 层</li>
+</ul>
+<p>研究者发现：当网络继续加深（如 30 层、50 层以上）时，出现了两个严重问题：</p>
+<hr>
+<h2 id="⚠️-1️⃣-梯度消失-梯度爆炸（Gradient-Vanishing-Exploding）"><a href="#⚠️-1️⃣-梯度消失-梯度爆炸（Gradient-Vanishing-Exploding）" class="headerlink" title="⚠️ 1️⃣ 梯度消失 &#x2F; 梯度爆炸（Gradient Vanishing&#x2F;Exploding）"></a>⚠️ 1️⃣ 梯度消失 &#x2F; 梯度爆炸（Gradient Vanishing&#x2F;Exploding）</h2><h3 id="🔹-现象"><a href="#🔹-现象" class="headerlink" title="🔹 现象"></a>🔹 现象</h3><ul>
+<li>网络越深，反向传播时梯度在层间不断相乘；</li>
+<li>小于 1 的梯度会逐层变小，趋近于 0；</li>
+<li>大于 1 的梯度则会爆炸成无穷大；</li>
+<li>导致浅层几乎无法更新权重。</li>
+</ul>
+<h3 id="🔹-结果"><a href="#🔹-结果" class="headerlink" title="🔹 结果"></a>🔹 结果</h3><blockquote>
+<p>网络越深，反而训练误差越高。<br>明明更复杂的模型，却学不到东西。</p>
+</blockquote>
+<hr>
+<h2 id="⚠️-2️⃣-网络退化问题（Degradation-Problem）"><a href="#⚠️-2️⃣-网络退化问题（Degradation-Problem）" class="headerlink" title="⚠️ 2️⃣ 网络退化问题（Degradation Problem）"></a>⚠️ 2️⃣ 网络退化问题（Degradation Problem）</h2><p>就算没有梯度消失，通过技巧（如 BatchNorm、ReLU）缓解了梯度问题，<br>仍会出现：</p>
+<blockquote>
+<p>当层数增加，<strong>训练集误差反而上升</strong>。</p>
+</blockquote>
+<p>也就是说：</p>
+<ul>
+<li>并不是“过拟合”，因为训练误差都变差；</li>
+<li>而是网络无法学到更优解。</li>
+</ul>
+<p>👉 原因：<br>深层网络要学习一个复杂映射 ( H(x) )，反而比学习“恒等映射”更难。<br>模型反而绕远路了。</p>
+<hr>
+<h1 id="⚙️-二、ResNet-的突破点：残差思想（Residual-Learning）"><a href="#⚙️-二、ResNet-的突破点：残差思想（Residual-Learning）" class="headerlink" title="⚙️ 二、ResNet 的突破点：残差思想（Residual Learning）"></a>⚙️ 二、ResNet 的突破点：残差思想（Residual Learning）</h1><p>ResNet 提出一个革命性思路：</p>
+<blockquote>
+<p>“让网络只学习差异（残差），而不是完整映射。”</p>
+</blockquote>
+<hr>
+<h2 id="🧩-1️⃣-理论核心"><a href="#🧩-1️⃣-理论核心" class="headerlink" title="🧩 1️⃣ 理论核心"></a>🧩 1️⃣ 理论核心</h2><p>假设原目标函数是：<br>[<br>H(x)<br>]<br>传统网络直接学习：<br>[<br>H(x)<br>]<br>ResNet 改为：<br>[<br>F(x) &#x3D; H(x) - x \Rightarrow H(x) &#x3D; F(x) + x<br>]<br>即：让网络学习一个<strong>残差函数</strong> ( F(x) )，表示输入与目标输出的差异。</p>
+<hr>
+<h2 id="🧩-2️⃣-残差块（Residual-Block）"><a href="#🧩-2️⃣-残差块（Residual-Block）" class="headerlink" title="🧩 2️⃣ 残差块（Residual Block）"></a>🧩 2️⃣ 残差块（Residual Block）</h2><p>基本结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入 x</span><br><span class="line">  │</span><br><span class="line">[卷积 + BN + ReLU]</span><br><span class="line">  │</span><br><span class="line">[卷积 + BN]</span><br><span class="line">  │</span><br><span class="line"> +───&gt; x（Shortcut）</span><br><span class="line">  │</span><br><span class="line">ReLU</span><br><span class="line">  │</span><br><span class="line">输出 y = F(x) + x</span><br></pre></td></tr></table></figure>
+
+<p>公式化：<br>[<br>y &#x3D; F(x, W_i) + x<br>]</p>
+<hr>
+<h2 id="🧩-3️⃣-Shortcut-Connection（跳跃连接）"><a href="#🧩-3️⃣-Shortcut-Connection（跳跃连接）" class="headerlink" title="🧩 3️⃣ Shortcut Connection（跳跃连接）"></a>🧩 3️⃣ Shortcut Connection（跳跃连接）</h2><p>关键是这个“<strong>加法连接</strong>”：</p>
+<ul>
+<li>不增加额外参数；</li>
+<li>不增加计算复杂度；</li>
+<li>让梯度可以<strong>直接穿过层</strong>传播。</li>
+</ul>
+<p>这条“捷径”路径（identity mapping）使得网络即使非常深，也能保持稳定的梯度流动。</p>
+<hr>
+<h1 id="🧮-三、ResNet-的工作原理与优势解析"><a href="#🧮-三、ResNet-的工作原理与优势解析" class="headerlink" title="🧮 三、ResNet 的工作原理与优势解析"></a>🧮 三、ResNet 的工作原理与优势解析</h1><table>
+<thead>
+<tr>
+<th>方面</th>
+<th>传统深层网络</th>
+<th>ResNet 机制</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>学习目标</strong></td>
+<td>直接拟合 H(x)</td>
+<td>学习残差 F(x)&#x3D;H(x)-x</td>
+<td>更容易优化</td>
+</tr>
+<tr>
+<td><strong>梯度传播</strong></td>
+<td>梯度逐层衰减</td>
+<td>跳跃连接提供恒等通路</td>
+<td>缓解梯度消失</td>
+</tr>
+<tr>
+<td><strong>最优解存在性</strong></td>
+<td>难找到恒等映射</td>
+<td>恒等映射即 F(x)&#x3D;0</td>
+<td>最优解更容易达到</td>
+</tr>
+<tr>
+<td><strong>训练稳定性</strong></td>
+<td>不稳定</td>
+<td>非常稳定</td>
+<td>能训练上百层</td>
+</tr>
+<tr>
+<td><strong>收敛速度</strong></td>
+<td>慢</td>
+<td>快</td>
+<td>更深更准</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="⚗️-四、ResNet-之后：影响与扩展"><a href="#⚗️-四、ResNet-之后：影响与扩展" class="headerlink" title="⚗️ 四、ResNet 之后：影响与扩展"></a>⚗️ 四、ResNet 之后：影响与扩展</h1><p>ResNet 不仅解决了“深度退化”问题，还奠定了现代深度架构的模板。</p>
+<h3 id="📚-后续改进"><a href="#📚-后续改进" class="headerlink" title="📚 后续改进"></a>📚 后续改进</h3><table>
+<thead>
+<tr>
+<th>变体</th>
+<th>核心改进</th>
+<th>关键点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ResNet-50&#x2F;101&#x2F;152</strong></td>
+<td>使用瓶颈结构 (1x1, 3x3, 1x1)</td>
+<td>提升效率</td>
+</tr>
+<tr>
+<td><strong>ResNeXt</strong></td>
+<td>引入分组卷积</td>
+<td>提升表达能力</td>
+</tr>
+<tr>
+<td><strong>DenseNet</strong></td>
+<td>连接不再是加法，而是拼接</td>
+<td>更强特征复用</td>
+</tr>
+<tr>
+<td><strong>Transformer</strong></td>
+<td>残差连接 + LayerNorm</td>
+<td>从 CNN 扩展到序列建模</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🧠-五、总结一句话"><a href="#🧠-五、总结一句话" class="headerlink" title="🧠 五、总结一句话"></a>🧠 五、总结一句话</h1><blockquote>
+<p>ResNet 的本质不是“多了跳线”，<br>而是改变了学习目标：<br><strong>让模型学会修正（Residual Correction），而非重新发明（Re-learning）。</strong></p>
+</blockquote>
+<h1 id="🧭-一、ResNet-出现前的深度网络发展简史（1998–2015）"><a href="#🧭-一、ResNet-出现前的深度网络发展简史（1998–2015）" class="headerlink" title="🧭 一、ResNet 出现前的深度网络发展简史（1998–2015）"></a>🧭 一、ResNet 出现前的深度网络发展简史（1998–2015）</h1><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>代表网络</th>
+<th>关键特征</th>
+<th>问题所在</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🧩 1️⃣ 早期阶段（1998–2011）</td>
+<td>LeNet-5（Yann LeCun）</td>
+<td>手写数字识别CNN雏形</td>
+<td>网络浅、计算弱、数据不足</td>
+</tr>
+<tr>
+<td>🚀 2️⃣ 深度复兴（2012）</td>
+<td>AlexNet（Hinton、Krizhevsky）</td>
+<td>ReLU + Dropout + GPU训练</td>
+<td>首次在ImageNet上大胜传统算法</td>
+</tr>
+<tr>
+<td>🔥 3️⃣ 结构深化（2014）</td>
+<td>VGGNet、GoogLeNet</td>
+<td>堆叠更多卷积层（16–22层）</td>
+<td>性能提升，但出现“退化问题”</td>
+</tr>
+<tr>
+<td>💡 4️⃣ 结构突破（2015）</td>
+<td>ResNet（何恺明）</td>
+<td>引入残差连接</td>
+<td>解决梯度消失与退化本质问题</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="⚙️-二、ResNet-之前的问题根本：深度带来的“优化困境”"><a href="#⚙️-二、ResNet-之前的问题根本：深度带来的“优化困境”" class="headerlink" title="⚙️ 二、ResNet 之前的问题根本：深度带来的“优化困境”"></a>⚙️ 二、ResNet 之前的问题根本：<strong>深度带来的“优化困境”</strong></h1><p>随着层数增加，网络理论上应该更强——但现实完全相反。<br>问题根源来自于三大机制性矛盾：</p>
+<hr>
+<h2 id="⚠️-1️⃣-梯度传播障碍（Gradient-Flow-Problem）"><a href="#⚠️-1️⃣-梯度传播障碍（Gradient-Flow-Problem）" class="headerlink" title="⚠️ 1️⃣ 梯度传播障碍（Gradient Flow Problem）"></a>⚠️ 1️⃣ 梯度传播障碍（Gradient Flow Problem）</h2><p><strong>根源：反向传播链式求导</strong></p>
+<p>反向传播中，梯度逐层相乘：<br>[<br>\frac{\partial L}{\partial x_1} &#x3D; \frac{\partial L}{\partial x_n} \prod_{i&#x3D;2}^{n} \frac{\partial x_i}{\partial x_{i-1}}<br>]</p>
+<p>如果每层的导数 ( &lt; 1 )，梯度会指数衰减 → **梯度消失**；<br>如果 ( &gt; 1 )，则梯度会迅速放大 → <strong>梯度爆炸</strong>。</p>
+<hr>
+<h3 id="🔹-后果"><a href="#🔹-后果" class="headerlink" title="🔹 后果"></a>🔹 后果</h3><ul>
+<li>浅层权重几乎得不到更新；</li>
+<li>模型训练不稳定；</li>
+<li>学习陷入局部最优或无法收敛。</li>
+</ul>
+<hr>
+<h2 id="⚠️-2️⃣-优化困难与退化问题（Degradation-Problem）"><a href="#⚠️-2️⃣-优化困难与退化问题（Degradation-Problem）" class="headerlink" title="⚠️ 2️⃣ 优化困难与退化问题（Degradation Problem）"></a>⚠️ 2️⃣ 优化困难与退化问题（Degradation Problem）</h2><p>即使通过 ReLU、BatchNorm 缓解了梯度问题，<br>仍发现当层数从 20 → 50 → 100 增加时：</p>
+<blockquote>
+<p><strong>训练误差反而上升。</strong></p>
+</blockquote>
+<p>这不是过拟合，而是<strong>优化失败</strong>。</p>
+<h3 id="🔹-原因分析"><a href="#🔹-原因分析" class="headerlink" title="🔹 原因分析"></a>🔹 原因分析</h3><p>深层网络在优化空间上更复杂：</p>
+<ul>
+<li>存在大量鞍点（saddle points）；</li>
+<li>参数更新路径更难；</li>
+<li>“恒等映射” H(x)&#x3D;x 都学不出来。</li>
+</ul>
+<p>也就是说：</p>
+<blockquote>
+<p>网络越深，不是学不到真理，而是被「学习路径」卡住了。</p>
+</blockquote>
+<hr>
+<h2 id="⚠️-3️⃣-映射学习过难（Representation-Difficulty）"><a href="#⚠️-3️⃣-映射学习过难（Representation-Difficulty）" class="headerlink" title="⚠️ 3️⃣ 映射学习过难（Representation Difficulty）"></a>⚠️ 3️⃣ 映射学习过难（Representation Difficulty）</h2><p>传统网络强迫每一层都去学习一个复杂的目标函数 ( H(x) )。<br>但很多时候我们只需要微调输入（比如略做修正）。</p>
+<p>学习一个“<strong>恒等映射</strong>”其实比“复杂非线性映射”更难，<br>因为参数必须精确拟合到 ( H(x)&#x3D;x )。</p>
+<h3 id="🔹-举个比喻："><a href="#🔹-举个比喻：" class="headerlink" title="🔹 举个比喻："></a>🔹 举个比喻：</h3><p>传统深层网络像让人从零造一辆新车；<br>而有时只是需要“在旧车上加点配件”——但模型不允许这样做。</p>
+<hr>
+<h1 id="🧩-三、问题的根本所在：网络学习目标与优化路径错配"><a href="#🧩-三、问题的根本所在：网络学习目标与优化路径错配" class="headerlink" title="🧩 三、问题的根本所在：网络学习目标与优化路径错配"></a>🧩 三、问题的根本所在：<strong>网络学习目标与优化路径错配</strong></h1><p>这其实是一个<strong>“学习目标不匹配”</strong>的问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题层面</th>
+<th>传统网络做法</th>
+<th>问题本质</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>学习目标</strong></td>
+<td>直接学习 ( H(x) )</td>
+<td>任务复杂、非线性强</td>
+</tr>
+<tr>
+<td><strong>参数优化</strong></td>
+<td>梯度逐层传播</td>
+<td>梯度逐层衰减</td>
+</tr>
+<tr>
+<td><strong>表示路径</strong></td>
+<td>每层完全独立</td>
+<td>缺乏“捷径”传递信息</td>
+</tr>
+<tr>
+<td><strong>恒等映射</strong></td>
+<td>需精确拟合</td>
+<td>难以学习到恒等函数</td>
+</tr>
+</tbody></table>
+<p>因此：</p>
+<blockquote>
+<p>问题根本不在于“层太多”，而在于<strong>每层都被迫学习过于复杂的映射函数</strong>。</p>
+</blockquote>
+<hr>
+<h1 id="💡-四、ResNet-如何从根本上解决这些问题"><a href="#💡-四、ResNet-如何从根本上解决这些问题" class="headerlink" title="💡 四、ResNet 如何从根本上解决这些问题"></a>💡 四、ResNet 如何从根本上解决这些问题</h1><p>ResNet 引入“<strong>恒等捷径连接（Identity Shortcut Connection）</strong>”：</p>
+<p>[<br>H(x) &#x3D; F(x) + x<br>]</p>
+<p>让每一层只学习：<br>[<br>F(x) &#x3D; H(x) - x<br>]</p>
+<hr>
+<h3 id="✅-本质改进："><a href="#✅-本质改进：" class="headerlink" title="✅ 本质改进："></a>✅ 本质改进：</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>ResNet 对策</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>梯度消失</td>
+<td>提供梯度直接通道</td>
+<td>稳定传播</td>
+</tr>
+<tr>
+<td>优化困难</td>
+<td>简化学习任务（学残差）</td>
+<td>易收敛</td>
+</tr>
+<tr>
+<td>恒等映射难学</td>
+<td>直接保留输入</td>
+<td>学习恒等变得自然</td>
+</tr>
+<tr>
+<td>深度退化</td>
+<td>不再出现</td>
+<td>训练上百层依然正常</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="🧠-五、总结一句话-1"><a href="#🧠-五、总结一句话-1" class="headerlink" title="🧠 五、总结一句话"></a>🧠 五、总结一句话</h1><blockquote>
+<p><strong>ResNet 之前的问题根本在于：网络被迫学习完整映射，导致优化路径过长、梯度衰减、恒等难学。</strong><br><strong>ResNet 通过残差连接重新定义了学习目标，让“深度”与“可训练性”首次兼得。</strong></p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/13/bigdata_for_analyze/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-%E9%99%8D%E7%BB%B4/">
+        <span class="nav-arrow">← </span>
+        
+          数据分析算法
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/10/15/bigdata_for_analyze/Ai%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
+        
+          Ai大模型
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%80%E3%80%81ResNet-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-nav-text">🧠 一、ResNet 是什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8F%90%E5%87%BA-ResNet%EF%BC%9F"><span class="toc-nav-text">⚙️ 二、为什么要提出 ResNet？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%89-1-%E6%B7%B1%E5%BA%A6%E6%A8%A1%E5%9E%8B%E7%9A%84%E2%80%9C%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98%E2%80%9D"><span class="toc-nav-text">📉 1. 深度模型的“退化问题”</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%B8%89%E3%80%81ResNet-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%EF%BC%9A%E6%AE%8B%E5%B7%AE%E5%AD%A6%E4%B9%A0%EF%BC%88Residual-Learning%EF%BC%89"><span class="toc-nav-text">💡 三、ResNet 的核心思想：残差学习（Residual Learning）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E6%AE%8B%E5%B7%AE%E5%9D%97%EF%BC%88Residual-Block%EF%BC%89"><span class="toc-nav-text">🧩 残差块（Residual Block）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E5%9B%9B%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E7%A7%8D%E7%BB%93%E6%9E%84%E6%9C%89%E6%95%88%EF%BC%9F"><span class="toc-nav-text">🔍 四、为什么这种结构有效？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E4%BA%94%E3%80%81ResNet-%E7%9A%84%E7%BB%93%E6%9E%84%E5%B1%82%E6%AC%A1%EF%BC%88%E4%BB%A5-ResNet-50-%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-nav-text">🧱 五、ResNet 的结构层次（以 ResNet-50 为例）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AC-%E5%85%AD%E3%80%81ResNet-%E7%9A%84%E5%8F%98%E4%BD%93%E5%AE%B6%E6%97%8F"><span class="toc-nav-text">🧬 六、ResNet 的变体家族</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%83%E3%80%81ResNet-%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%88%E6%B7%B1%E8%BF%9C%E5%BD%B1%E5%93%8D%EF%BC%89"><span class="toc-nav-text">🧠 七、ResNet 的意义（深远影响）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8F%81-%E5%85%AB%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D%EF%BC%9A"><span class="toc-nav-text">🏁 八、总结一句话：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81ResNet-%E5%87%BA%E7%8E%B0%E4%B9%8B%E5%89%8D%EF%BC%9A%E6%B7%B1%E5%B1%82%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%A4%E5%A4%A7%E5%9B%B0%E5%A2%83"><span class="toc-nav-text">🧭 一、ResNet 出现之前：深层网络的两大困境</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-1%EF%B8%8F%E2%83%A3-%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1-%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%EF%BC%88Gradient-Vanishing-Exploding%EF%BC%89"><span class="toc-nav-text">⚠️ 1️⃣ 梯度消失 &#x2F; 梯度爆炸（Gradient Vanishing&#x2F;Exploding）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E7%8E%B0%E8%B1%A1"><span class="toc-nav-text">🔹 现象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E7%BB%93%E6%9E%9C"><span class="toc-nav-text">🔹 结果</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-2%EF%B8%8F%E2%83%A3-%E7%BD%91%E7%BB%9C%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98%EF%BC%88Degradation-Problem%EF%BC%89"><span class="toc-nav-text">⚠️ 2️⃣ 网络退化问题（Degradation Problem）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81ResNet-%E7%9A%84%E7%AA%81%E7%A0%B4%E7%82%B9%EF%BC%9A%E6%AE%8B%E5%B7%AE%E6%80%9D%E6%83%B3%EF%BC%88Residual-Learning%EF%BC%89"><span class="toc-nav-text">⚙️ 二、ResNet 的突破点：残差思想（Residual Learning）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-1%EF%B8%8F%E2%83%A3-%E7%90%86%E8%AE%BA%E6%A0%B8%E5%BF%83"><span class="toc-nav-text">🧩 1️⃣ 理论核心</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-2%EF%B8%8F%E2%83%A3-%E6%AE%8B%E5%B7%AE%E5%9D%97%EF%BC%88Residual-Block%EF%BC%89"><span class="toc-nav-text">🧩 2️⃣ 残差块（Residual Block）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-3%EF%B8%8F%E2%83%A3-Shortcut-Connection%EF%BC%88%E8%B7%B3%E8%B7%83%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="toc-nav-text">🧩 3️⃣ Shortcut Connection（跳跃连接）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%AE-%E4%B8%89%E3%80%81ResNet-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BC%98%E5%8A%BF%E8%A7%A3%E6%9E%90"><span class="toc-nav-text">🧮 三、ResNet 的工作原理与优势解析</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9A%97%EF%B8%8F-%E5%9B%9B%E3%80%81ResNet-%E4%B9%8B%E5%90%8E%EF%BC%9A%E5%BD%B1%E5%93%8D%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="toc-nav-text">⚗️ 四、ResNet 之后：影响与扩展</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%9A-%E5%90%8E%E7%BB%AD%E6%94%B9%E8%BF%9B"><span class="toc-nav-text">📚 后续改进</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">🧠 五、总结一句话</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81ResNet-%E5%87%BA%E7%8E%B0%E5%89%8D%E7%9A%84%E6%B7%B1%E5%BA%A6%E7%BD%91%E7%BB%9C%E5%8F%91%E5%B1%95%E7%AE%80%E5%8F%B2%EF%BC%881998%E2%80%932015%EF%BC%89"><span class="toc-nav-text">🧭 一、ResNet 出现前的深度网络发展简史（1998–2015）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81ResNet-%E4%B9%8B%E5%89%8D%E7%9A%84%E9%97%AE%E9%A2%98%E6%A0%B9%E6%9C%AC%EF%BC%9A%E6%B7%B1%E5%BA%A6%E5%B8%A6%E6%9D%A5%E7%9A%84%E2%80%9C%E4%BC%98%E5%8C%96%E5%9B%B0%E5%A2%83%E2%80%9D"><span class="toc-nav-text">⚙️ 二、ResNet 之前的问题根本：深度带来的“优化困境”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-1%EF%B8%8F%E2%83%A3-%E6%A2%AF%E5%BA%A6%E4%BC%A0%E6%92%AD%E9%9A%9C%E7%A2%8D%EF%BC%88Gradient-Flow-Problem%EF%BC%89"><span class="toc-nav-text">⚠️ 1️⃣ 梯度传播障碍（Gradient Flow Problem）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E5%90%8E%E6%9E%9C"><span class="toc-nav-text">🔹 后果</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-2%EF%B8%8F%E2%83%A3-%E4%BC%98%E5%8C%96%E5%9B%B0%E9%9A%BE%E4%B8%8E%E9%80%80%E5%8C%96%E9%97%AE%E9%A2%98%EF%BC%88Degradation-Problem%EF%BC%89"><span class="toc-nav-text">⚠️ 2️⃣ 优化困难与退化问题（Degradation Problem）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-nav-text">🔹 原因分析</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-3%EF%B8%8F%E2%83%A3-%E6%98%A0%E5%B0%84%E5%AD%A6%E4%B9%A0%E8%BF%87%E9%9A%BE%EF%BC%88Representation-Difficulty%EF%BC%89"><span class="toc-nav-text">⚠️ 3️⃣ 映射学习过难（Representation Difficulty）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9-%E4%B8%BE%E4%B8%AA%E6%AF%94%E5%96%BB%EF%BC%9A"><span class="toc-nav-text">🔹 举个比喻：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%89%E3%80%81%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B9%E6%9C%AC%E6%89%80%E5%9C%A8%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87%E4%B8%8E%E4%BC%98%E5%8C%96%E8%B7%AF%E5%BE%84%E9%94%99%E9%85%8D"><span class="toc-nav-text">🧩 三、问题的根本所在：网络学习目标与优化路径错配</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E5%9B%9B%E3%80%81ResNet-%E5%A6%82%E4%BD%95%E4%BB%8E%E6%A0%B9%E6%9C%AC%E4%B8%8A%E8%A7%A3%E5%86%B3%E8%BF%99%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="toc-nav-text">💡 四、ResNet 如何从根本上解决这些问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%9C%AC%E8%B4%A8%E6%94%B9%E8%BF%9B%EF%BC%9A"><span class="toc-nav-text">✅ 本质改进：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D-1"><span class="toc-nav-text">🧠 五、总结一句话</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/14/bigdata_for_analyze/Resnet/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

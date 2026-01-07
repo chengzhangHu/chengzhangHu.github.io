@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《angular8》- angular8 日常开发避坑指南 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《angular8》- angular8 日常开发避坑指南</h2>
+  <p class="post-date">2020-05-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="1-else使用"><a href="#1-else使用" class="headerlink" title="1.else使用"></a>1.else使用</h4><ul>
+<li>语法糖else <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div *ngIf=&quot;isLoggedIn; else loggedOut&quot;&gt;</span><br><span class="line">Welcome back, friend.</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;ng-template #loggedOut&gt;</span><br><span class="line">Please friend, login.</span><br><span class="line">&lt;/ng-template&gt;</span><br></pre></td></tr></table></figure></li>
+<li>code 等同于下方 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> &lt;ng-template [ngIf]=&quot;isLoggedIn&quot; [ngIfElse]=&quot;loggedOut&quot;&gt;</span><br><span class="line">  Welcome back, friend.</span><br><span class="line">&lt;/ng-template&gt;</span><br><span class="line"></span><br><span class="line">&lt;ng-template #loggedOut&gt;</span><br><span class="line">  Please friend, login.</span><br><span class="line">&lt;/ng-template&gt;</span><br></pre></td></tr></table></figure></li>
+<li>在高级一点： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &lt;ng-container *ngIf=&quot;isLoggedIn;then loggedIn;loggedOut&quot;&gt;</span><br><span class="line">  &lt;ng-template #loggedIn&gt;</span><br><span class="line">    Welcome back, friend.</span><br><span class="line">  &lt;/ng-template&gt;</span><br><span class="line"></span><br><span class="line">  &lt;ng-template #loggedOut&gt;</span><br><span class="line">    Please friend, login.</span><br><span class="line">  &lt;/ng-template&gt;</span><br><span class="line">&lt;ng-container&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-ng-show废弃"><a href="#2-ng-show废弃" class="headerlink" title="2.ng-show废弃"></a>2.ng-show废弃</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;div [hidden]=&quot;!isLoggedIn&quot;&gt;</span><br><span class="line">  Welcome back, friend.</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="3-angular中使用angularjs组件"><a href="#3-angular中使用angularjs组件" class="headerlink" title="3.angular中使用angularjs组件"></a>3.angular中使用angularjs组件</h4><ul>
+<li>angularjs组件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  export const heroDetail = &#123;</span><br><span class="line">  bindings: &#123;</span><br><span class="line">    hero: &#x27;&lt;&#x27;,</span><br><span class="line">    deleted: &#x27;&amp;&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;h2&gt;&#123;&#123;$ctrl.hero.name&#125;&#125; details!&lt;/h2&gt;</span><br><span class="line">    &lt;div&gt;&lt;label&gt;id: &lt;/label&gt;&#123;&#123;$ctrl.hero.id&#125;&#125;&lt;/div&gt;</span><br><span class="line">    &lt;button ng-click=&quot;$ctrl.onDelete()&quot;&gt;Delete&lt;/button&gt;</span><br><span class="line">  `,</span><br><span class="line">  controller: function() &#123;</span><br><span class="line">    this.onDelete = () =&gt; &#123;</span><br><span class="line">      this.deleted(this.hero);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>定义angular指令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive, ElementRef, Injector, Input, Output, EventEmitter &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; UpgradeComponent &#125; from &#x27;@angular/upgrade/static&#x27;;</span><br><span class="line">import &#123; Hero &#125; from &#x27;../hero&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;hero-detail&#x27;</span><br><span class="line">&#125;)</span><br><span class="line">export class HeroDetailDirective extends UpgradeComponent &#123; </span><br><span class="line"> # 需要对应于angularjs组件定义的数据绑定</span><br><span class="line">  @Input() hero: Hero;</span><br><span class="line">  @Output() deleted: EventEmitter&lt;Hero&gt;;</span><br><span class="line"></span><br><span class="line">  constructor(elementRef: ElementRef, injector: Injector) &#123;</span><br><span class="line">    super(&#x27;heroDetail&#x27;, elementRef, injector);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+<li>使用指令，引用angularjs组件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; Hero &#125; from &#x27;../hero&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;my-container&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;h1&gt;Tour of Heroes&lt;/h1&gt;</span><br><span class="line">    &lt;hero-detail [hero]=&quot;hero&quot;</span><br><span class="line">                 (deleted)=&quot;heroDeleted($event)&quot;&gt;</span><br><span class="line">    &lt;/hero-detail&gt;</span><br><span class="line">  `</span><br><span class="line">&#125;)</span><br><span class="line">export class ContainerComponent &#123;</span><br><span class="line">  hero = new Hero(1, &#x27;Windstorm&#x27;);</span><br><span class="line">  heroDeleted(hero: Hero) &#123;</span><br><span class="line">    hero.name = &#x27;Ex-&#x27; + hero.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="4-常用模板语法"><a href="#4-常用模板语法" class="headerlink" title="4.常用模板语法"></a>4.常用模板语法</h4><ul>
+<li><p>结构指令：</p>
+<ul>
+<li>列表渲染 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;li *ngFor=&quot;let hero of heroes;&quot;&gt;</span><br><span class="line">    &#123;&#123; hero &#125;&#125;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure></li>
+<li>列表渲染并展示序号<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;li *ngFor=&quot;let hero of heroes;let i = index;&quot;&gt;</span><br><span class="line">    &#123;&#123;i+1&#125;&#125; &#123;&#123; hero &#125;&#125;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>推荐添加trackBy，提升性能<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> &lt;li *ngFor=&quot;let hero of heroes;trackBy:trackByFn&quot;&gt;</span><br><span class="line">    &#123;&#123; hero &#125;&#125;</span><br><span class="line">&lt;/li&gt;</span><br><span class="line">trackByFn(index, item) &#123;</span><br><span class="line"> return item.id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+</li>
+<li>条件渲染 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;li *ngIf=&quot;isHidden&quot;&gt;</span><br><span class="line">    &#123;&#123; hero &#125;&#125;</span><br><span class="line">&lt;/li&gt;</span><br></pre></td></tr></table></figure></li>
+<li>条件选择 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [ngSwitch]=&quot;hero?.emotion&quot;&gt;</span><br><span class="line">  &lt;app-happy-hero    *ngSwitchCase=&quot;&#x27;happy&#x27;&quot;    [hero]=&quot;hero&quot;&gt;&lt;/app-happy-hero&gt;</span><br><span class="line">  &lt;app-sad-hero      *ngSwitchCase=&quot;&#x27;sad&#x27;&quot;      [hero]=&quot;hero&quot;&gt;&lt;/app-sad-hero&gt;</span><br><span class="line">  &lt;app-confused-hero *ngSwitchCase=&quot;&#x27;confused&#x27;&quot; [hero]=&quot;hero&quot;&gt;&lt;/app-confused-hero&gt;</span><br><span class="line">  &lt;app-unknown-hero  *ngSwitchDefault           [hero]=&quot;hero&quot;&gt;&lt;/app-unknown-hero&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>属性指令：</p>
+<ul>
+<li>数据单向输入 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 动态绑定，更新会触发对应子组件</span><br><span class="line">&lt;app-hero-detail [hero]=&quot;currentHero&quot;&gt;&lt;/app-hero-detail&gt;</span><br><span class="line"></span><br><span class="line"># 绑定字符串，非变量值</span><br><span class="line">&lt;app-item-detail childItem=&quot;parentItem&quot;&gt;&lt;/app-item-detail&gt;</span><br></pre></td></tr></table></figure></li>
+<li>事件反馈 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;w-button (click)=&quot;handlerClick&quot; /&gt;</span><br><span class="line"></span><br><span class="line"># 双向数据绑定</span><br><span class="line">&lt;input [(ngModel)]=&quot;currentItem.name&quot;&gt;</span><br><span class="line"></span><br><span class="line"># 等效于</span><br><span class="line">&lt;input [value]=&quot;currentItem.name&quot;</span><br><span class="line">   (input)=&quot;currentItem.name=$event.target.value&quot; &gt;</span><br></pre></td></tr></table></figure></li>
+<li>属性添加 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;button [attr.aria-label]=&quot;help&quot;&gt;help&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">&lt;div [class.special]=&quot;isSpecial&quot;&gt;Special&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;button [style.color]=&quot;isSpecial ? &#x27;red&#x27; : &#x27;green&#x27;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;button [class]=&quot;&#123;foo: true, bar: false&#125;&quot; /&gt;</span><br></pre></td></tr></table></figure></li>
+<li>自定义双向数据绑定 - x和xChange <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, Input, Output, EventEmitter &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">   selector: &#x27;app-sizer&#x27;,</span><br><span class="line">   templateUrl: &#x27;./sizer.component.html&#x27;,</span><br><span class="line">   styleUrls: [&#x27;./sizer.component.css&#x27;]</span><br><span class="line">&#125;)</span><br><span class="line">export class SizerComponent &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Input()  size: number | string;</span><br><span class="line">@Output() sizeChange = new EventEmitter&lt;number&gt;();</span><br><span class="line"></span><br><span class="line">dec() &#123; this.resize(-1); &#125;</span><br><span class="line">inc() &#123; this.resize(+1); &#125;</span><br><span class="line"></span><br><span class="line">resize(delta: number) &#123;</span><br><span class="line">    this.size = Math.min(40, Math.max(8, +this.size + delta));</span><br><span class="line">    this.sizeChange.emit(this.size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># html</span><br><span class="line">&lt;app-sizer [(size)]=&quot;fontSizePx&quot;&gt;&lt;/app-sizer&gt; 等效于</span><br><span class="line"></span><br><span class="line">&lt;app-sizer [size]=&quot;fontSizePx&quot; (sizeChange)=&quot;fontSizePx=$event&quot;&gt;&lt;/app-sizer&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="5-ng-template"><a href="#5-ng-template" class="headerlink" title="5.ng-template"></a>5.ng-template</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div *ngIf=&quot;isLoggedIn&quot;&gt;</span><br><span class="line">Welcome back, friend.</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"># 等效于</span><br><span class="line">&lt;ng-template [ngIf]=&quot;isLoggedIn&quot;&gt;</span><br><span class="line">    Please friend, login.</span><br><span class="line">&lt;/ng-template&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="6-ng-content"><a href="#6-ng-content" class="headerlink" title="6.ng-content"></a>6.ng-content</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">	</span><br><span class="line">  &lt;fa-input icon=&quot;envelope&quot;&gt;</span><br><span class="line">     &lt;i class=&quot;fa fa-envelope&quot;&gt;&lt;/i&gt;</span><br><span class="line">     &lt;input inputRef type=&quot;email&quot; placeholder=&quot;Email&quot;&gt;</span><br><span class="line">  &lt;/fa-input&gt;</span><br><span class="line"></span><br><span class="line"># js component </span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;fa-input&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;ng-content &gt;&lt;/ng-content&gt;  # 匹配fa-input所有其他的没有指定匹配的</span><br><span class="line">    &lt;ng-content select=&quot;input&quot;&gt;&lt;/ng-content&gt; # 匹配fa-input中特定的input标签</span><br><span class="line">  `&#125;)</span><br><span class="line">export class FaInputComponent &#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-inject-单例模式"><a href="#7-inject-单例模式" class="headerlink" title="7.inject 单例模式"></a>7.inject 单例模式</h4><ul>
+<li>单例模式<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Injectable &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line"># inject root 利用webpack tree-shaking，优化打包</span><br><span class="line">@Injectable(&#123;</span><br><span class="line">    providedIn: &#x27;root&#x27;,</span><br><span class="line">&#125;)</span><br><span class="line">export class UserService &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>privoder配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@NgModule(&#123;</span><br><span class="line">...</span><br><span class="line">providers: [UserService],</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>如果两者都提供了，那么请注意，从UserService中读取内存数据，可能读取不到！！！</li>
+</ul>
+<h4 id="8-angularjs-ui-grid问题"><a href="#8-angularjs-ui-grid问题" class="headerlink" title="8.angularjs ui-grid问题"></a>8.angularjs ui-grid问题</h4><ul>
+<li>使用技术升级-ag-grid</li>
+<li>使用组件升级方案，参考总结3<blockquote>
+<p>directive包裹angularjs ui-grid，在angular中使用，但是需要注意一点：已经使用的ui-grid 文件配置，不可以随意修改，否则会影响现有线上的ui展示功能，</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>譬如：新版本不需要垂直滚动，手动修改默认angularjs ui-grid垂直滚动条配置，那么线上就会导致已有angularjs 表格垂直滚动条不展示，数据展示不全问题。<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> # 我们应该在自己的angular组件中定义配置项，而不应该在通用的配置修改</span><br><span class="line"> this.gridOptions = &#123;</span><br><span class="line">    enableFiltering: true,</span><br><span class="line">    useExternalFiltering: true,</span><br><span class="line">    columnDefs: [</span><br><span class="line">      &#123; name: &#x27;name&#x27;, enableFiltering: false &#125;,</span><br><span class="line">      &#123; name: &#x27;gender&#x27; &#125;,</span><br><span class="line">      &#123; name: &#x27;company&#x27;, enableFiltering: false&#125;</span><br><span class="line">    ],</span><br><span class="line">    enableHorizontalScrollbar: 1, # 0 关闭，1 开启</span><br><span class="line">    enableVerticalScrollbar:0 # 0 关闭，1 开启</span><br><span class="line">&#125;</span><br><span class="line"> </span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="10-Render2-更新样式-，ViewChild选取dom"><a href="#10-Render2-更新样式-，ViewChild选取dom" class="headerlink" title="10.Render2 更新样式 ，ViewChild选取dom"></a>10.Render2 更新样式 ，ViewChild选取dom</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#html </span><br><span class="line">&lt;div #mydiv&gt;&lt;input&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"># js </span><br><span class="line">@ViewChild(&#x27;mydiv&#x27;) mydiv: ElementRef </span><br><span class="line">constructor( </span><br><span class="line">    private el:ElementRef,</span><br><span class="line">    private renderer2: Renderer2)&#123;</span><br><span class="line">&#125;</span><br><span class="line">ngOnInit()&#123;</span><br><span class="line">    this.renderer2.setStyle(this.el.nativeElement.querySelector(&#x27;.btn1&#x27;),&#x27;background&#x27;,&#x27;green&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 尽量减少应用层与渲染层之间强耦合关系, 推荐下方的render2 </span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># render2 api</span><br><span class="line">abstract data: &#123;...&#125;</span><br><span class="line">  destroyNode: ((node: any) =&gt; void) | null</span><br><span class="line">  abstract destroy(): void</span><br><span class="line">  abstract createElement(name: string, namespace?: string): any</span><br><span class="line">  abstract createComment(value: string): any</span><br><span class="line">  abstract createText(value: string): any</span><br><span class="line">  abstract appendChild(parent: any, newChild: any): void</span><br><span class="line">  abstract insertBefore(parent: any, newChild: any, refChild: any): void</span><br><span class="line">  abstract removeChild(parent: any, oldChild: any, isHostElement?: boolean): void</span><br><span class="line">  abstract selectRootElement(selectorOrNode: any, preserveContent?: boolean): any</span><br><span class="line">  abstract parentNode(node: any): any</span><br><span class="line">  abstract nextSibling(node: any): any</span><br><span class="line">  abstract setAttribute(el: any, name: string, value: string, namespace?: string): void</span><br><span class="line">  abstract removeAttribute(el: any, name: string, namespace?: string): void</span><br><span class="line">  abstract addClass(el: any, name: string): void</span><br><span class="line">  abstract removeClass(el: any, name: string): void</span><br><span class="line">  abstract setStyle(el: any, style: string, value: any, flags?: RendererStyleFlags2): void</span><br><span class="line">  abstract removeStyle(el: any, style: string, flags?: RendererStyleFlags2): void</span><br><span class="line">  abstract setProperty(el: any, name: string, value: any): void</span><br><span class="line">  abstract setValue(node: any, value: string): void</span><br><span class="line">  abstract listen(target: any, eventName: string, callback: (event: any) =&gt; boolean | void): () =&gt; void</span><br></pre></td></tr></table></figure>
+
+<h4 id="11-类计算属性"><a href="#11-类计算属性" class="headerlink" title="11.类计算属性"></a>11.类计算属性</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;fa-input&#x27;,</span><br><span class="line">  template: `</span><br><span class="line">    &lt;i class=&quot;fa&quot; [ngClass]=&quot;classes&quot;&gt;&lt;/i&gt;</span><br><span class="line">  `,</span><br><span class="line">  styleUrls: [&#x27;./fa-input.component.css&#x27;]</span><br><span class="line">&#125;)</span><br><span class="line">export class FaInputComponent &#123;</span><br><span class="line">  @Input() icon: string;</span><br><span class="line">	</span><br><span class="line">  get  classes() &#123;</span><br><span class="line">    const cssClasses = &#123;</span><br><span class="line">      fa: true</span><br><span class="line">    &#125;;</span><br><span class="line">    cssClasses[&#x27;fa-&#x27; + this.icon] = true;</span><br><span class="line">    return cssClasses;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="12-元素绑定"><a href="#12-元素绑定" class="headerlink" title="12.元素绑定"></a>12.元素绑定</h4><ul>
+<li>@HostBinding()可以为指令的宿主元素添加类、样式、属性等，</li>
+<li>@HostListener()可以监听宿主元素上的事件。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Directive, HostBinding, HostListener &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line"></span><br><span class="line">@Directive(&#123;</span><br><span class="line">  selector: &#x27;[highLight]&#x27; # 定义指令</span><br><span class="line">&#125;)</span><br><span class="line">export class HighLightDirective&#123;</span><br><span class="line">  colors = [</span><br><span class="line">    &#x27;hotpink&#x27;, &#x27;lightskyblue&#x27;, &#x27;goldenrod&#x27;, &#x27;peachpuff&#x27;</span><br><span class="line">  ]; </span><br><span class="line">  @HostBinding(&#x27;style.color&#x27;) color: string;</span><br><span class="line">  @HostBinding(&#x27;style.borderColor&#x27;) borderColor: string;  # 定义样式</span><br><span class="line">  @HostListener(&#x27;keydown&#x27;) onKeydown()&#123;   # 定义监听</span><br><span class="line">    const color = Math.floor(Math.random() * this.colors.length);</span><br><span class="line">    this.color = this.borderColor = this.colors[colorPick];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="13-viewChild"><a href="#13-viewChild" class="headerlink" title="13.viewChild"></a>13.viewChild</h4><ul>
+<li>@ViewChild 选择组件模板内的节点, 类型 ElementRef 或子组件</li>
+<li>@ContentChild 选择当前组件引用的子组件 @ContentChild(组件名)</li>
+<li>区别在于ViewChild选择Shadow DOM, ContentChild 选择 Light DOM,一般情况下用ViewChild就ok了</li>
+</ul>
+<h4 id="14-元素宽度"><a href="#14-元素宽度" class="headerlink" title="14.元素宽度"></a>14.元素宽度</h4><ul>
+<li>element clientWidth</li>
+</ul>
+<p> 内联元素以及没有 CSS 样式的元素的 clientWidth 属性值为 0。Element.clientWidth 属性表示元素的内部宽度，以像素计。该属性包括内边距 padding，但不包括边框 border、外边距 margin 和垂直滚动条（如果有的话）。<br>当在根元素(<html>元素)上使用clientWidth时(或者在<body>上，如果文档是在quirks(怪异)模式下)，将返回viewport的宽度(不包括任何滚动条).</p>
+<p> <img src="https://user-gold-cdn.xitu.io/2020/5/29/1725e7893dd833ac?w=411&h=247&f=png&s=10558"></p>
+<ul>
+<li>jquery width()</li>
+</ul>
+<p> 始终指内容宽度，不包括border</p>
+<p> <img src="https://user-gold-cdn.xitu.io/2020/5/29/1725e789401f43f6?w=272&h=155&f=png&s=2897" alt="width"></p>
+<h4 id="15-scss-无效"><a href="#15-scss-无效" class="headerlink" title="15.scss 无效"></a>15.scss 无效</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> # scss 文件</span><br><span class="line"> input &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  outline: none;</span><br><span class="line">&#125;</span><br><span class="line"># 界面运行时css</span><br><span class="line">input[_ngcontent-c0] &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  outline: none;</span><br><span class="line">&#125;</span><br><span class="line"># 此时需要添加编译处理</span><br><span class="line">:host ::ng-deep input &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  outline: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="16-httpclient默认json格式接收"><a href="#16-httpclient默认json格式接收" class="headerlink" title="16. httpclient默认json格式接收"></a>16. httpclient默认json格式接收</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 后端传递text,需要设置类型</span><br><span class="line">this.http.get(this.configUrl,&#123;responseType:&#x27;text&#x27;&#125;)</span><br><span class="line">.subscribe((data: any) =&gt; this.config = &#123; ...data &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 源码</span><br><span class="line"> get(url: string, options?: &#123;</span><br><span class="line">      headers?: HttpHeaders | &#123;</span><br><span class="line">          [header: string]: string | string[];</span><br><span class="line">      &#125;;</span><br><span class="line">      # 默认值有： response| body| event </span><br><span class="line">      observe?: &#x27;body&#x27;;# 默认读取的是response中的body </span><br><span class="line">      params?: HttpParams | &#123;</span><br><span class="line">          [param: string]: string | string[];</span><br><span class="line">      &#125;;</span><br><span class="line">      reportProgress?: boolean;</span><br><span class="line">      # 默认值有： arraybuffer | json | blob |text</span><br><span class="line">      responseType?: &#x27;json&#x27;;# 这里，ts参数类型可选，默认值json，</span><br><span class="line">      withCredentials?: boolean;</span><br><span class="line">  &#125;): Observable&lt;Object&gt;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="17-内存泄漏风险"><a href="#17-内存泄漏风险" class="headerlink" title="17.内存泄漏风险"></a>17.内存泄漏风险</h4><blockquote>
+<p>angular中推荐使用rxjs，进行响应式开发</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import &#123; from &#125; from &#x27;rxjs&#x27;;</span><br><span class="line"></span><br><span class="line">const data = fromEvent(&#x27;click&#x27;);</span><br><span class="line">// Subscribe to begin listening for async result</span><br><span class="line">this.$obser = data.subscribe(&#123;</span><br><span class="line">  next(response) &#123; console.log(response); &#125;,</span><br><span class="line">  error(err) &#123; console.error(&#x27;Error: &#x27; + err); &#125;,</span><br><span class="line">  complete() &#123; console.log(&#x27;Completed&#x27;); &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述的subscribe代码，在没有unsubscribe情况下，会出现订阅多次情况</p>
+</blockquote>
+<blockquote>
+<p>我们可以通过多种方法优化</p>
+</blockquote>
+<ul>
+<li>1.在OnDestroy中unsubscribe下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public ngOnDestory()&#123;</span><br><span class="line">    if( this.$obser)&#123;</span><br><span class="line">         this.$obser.unsubscribe();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>2.类似上面写法，只不过参考这段代码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 使用Subscription，一处取消，取消所有的</span><br><span class="line">import &#123; interval &#125; from &#x27;rxjs&#x27;;</span><br><span class="line"> </span><br><span class="line">const observable1 = interval(400);</span><br><span class="line">const observable2 = interval(300);</span><br><span class="line"> </span><br><span class="line"> #也可以私用subscription = new Subscription(); //全局创建，然后依次add</span><br><span class="line">const subscription = observable1.subscribe(x =&gt; console.log(&#x27;first: &#x27; + x));</span><br><span class="line">const childSubscription = observable2.subscribe(x =&gt; console.log(&#x27;second: &#x27; + x));</span><br><span class="line"> </span><br><span class="line">subscription.add(childSubscription);</span><br><span class="line"> </span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">  // Unsubscribes BOTH subscription and childSubscription</span><br><span class="line">  subscription.unsubscribe();</span><br><span class="line">&#125;, 1000);</span><br></pre></td></tr></table></figure></li>
+<li>3.参考使用rxjs pipe，改用异步<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 具体细节还依赖rxjs operator熟练，后期整理一篇供大家参考</span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: &#x27;async-observable-pipe&#x27;,</span><br><span class="line">  template: `&lt;div&gt;&lt;code&gt;observable|async&lt;/code&gt;:</span><br><span class="line">       Time: &#123;&#123; time$ | async &#125;&#125;&lt;/div&gt;`</span><br><span class="line">&#125;)</span><br><span class="line">export class AsyncObservablePipeComponent &#123;</span><br><span class="line">  time$ = new Observable&lt;string&gt;(observer =&gt; &#123;</span><br><span class="line">    setInterval(() =&gt; observer.next(new Date().toString()), 1000);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="18-组件更新策略调整，优化组件树更新性能"><a href="#18-组件更新策略调整，优化组件树更新性能" class="headerlink" title="18.组件更新策略调整，优化组件树更新性能"></a>18.组件更新策略调整，优化组件树更新性能</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Component(&#123;</span><br><span class="line">    selector: &#x27;app-product&#x27;,</span><br><span class="line">    template: `...`,</span><br><span class="line">    changeDetection: ChangeDetectionStrategy.OnPush</span><br><span class="line">&#125;)</span><br><span class="line">export class ProductComponent &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如下情况会触发<a target="_blank" rel="noopener" href="https://indepth.dev/using-angular-in-the-right-way-template-syntax/">OnPush</a></p>
+</blockquote>
+<ul>
+<li>@Input值发生改变</li>
+<li>组件或者子组件，触发Dom事件</li>
+<li>detectChanges 方法调用</li>
+<li>async Pipe 发生改变</li>
+</ul>
+<h4 id="19-tooltip显示-getBoundingClientRect"><a href="#19-tooltip显示-getBoundingClientRect" class="headerlink" title="19. tooltip显示 getBoundingClientRect "></a>19. tooltip显示 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">getBoundingClientRect </a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">&lt;div class=&quot;tips&quot; #tooltip&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#ts</span><br><span class="line">class ToolTipCompoment &#123;</span><br><span class="line">    @ViewChild(&#x27;tips&#x27;)</span><br><span class="line">    tips: ElementRef;</span><br><span class="line">    </span><br><span class="line">    showTip()&#123;</span><br><span class="line">        const dom = this.tips.nativeElement;</span><br><span class="line">        const pos = dom.getBoundingClientRect();</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <img src="https://user-gold-cdn.xitu.io/2020/7/16/17354be96e1de380?w=1466&h=1099&f=png&s=66027" width="300" height="200">
+ 
+<h4 id="20-Observable-lazy-push"><a href="#20-Observable-lazy-push" class="headerlink" title="20 Observable lazy push"></a>20 Observable lazy push</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#rxjs </span><br><span class="line">import &#123; Observable &#125; from &#x27;rxjs&#x27;;</span><br><span class="line"></span><br><span class="line">const observable = new Observable(subscriber =&gt; &#123;</span><br><span class="line">  subscriber.next(1);</span><br><span class="line">  subscriber.next(2);</span><br><span class="line">  subscriber.next(3);</span><br><span class="line">  setTimeout(() =&gt; &#123;</span><br><span class="line">    subscriber.next(4);</span><br><span class="line">    subscriber.complete();</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述代码定义完毕，是否意味着我们就可以获取到数据呢？答案是否定的，请看官网，这样描述的：</p>
+</blockquote>
+<blockquote>
+<p>To invoke the <a target="_blank" rel="noopener" href="https://rxjs-dev.firebaseapp.com/guide/observable">Observable</a> and see these values, we need to subscribe to it:</p>
+</blockquote>
+<blockquote>
+<p>code需要如下修改，添加subscribe：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Observable &#125; from &#x27;rxjs&#x27;;</span><br><span class="line"></span><br><span class="line">const observable = new Observable(subscriber =&gt; &#123;</span><br><span class="line">  subscriber.next(1);</span><br><span class="line">  subscriber.next(2);</span><br><span class="line">  subscriber.next(3);</span><br><span class="line">  setTimeout(() =&gt; &#123;</span><br><span class="line">    subscriber.next(4);</span><br><span class="line">    subscriber.complete();</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">console.log(&#x27;just before subscribe&#x27;);</span><br><span class="line">observable.subscribe(&#123;</span><br><span class="line">  next(x) &#123; console.log(&#x27;got value &#x27; + x); &#125;,</span><br><span class="line">  error(err) &#123; console.error(&#x27;something wrong occurred: &#x27; + err); &#125;,</span><br><span class="line">  complete() &#123; console.log(&#x27;done&#x27;); &#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&#x27;just after subscribe&#x27;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>那么，同理，Rxjs的所有的operators，我们都需要Subscribe才能调用、获取到值 </p>
+</blockquote>
+<ul>
+<li>一种方式： subscribe</li>
+<li>另一种方式，html界面，(count$ | async )</li>
+</ul>
+<h4 id="21-Angular-httpclient-前端日志搜集失败"><a href="#21-Angular-httpclient-前端日志搜集失败" class="headerlink" title="21. Angular httpclient 前端日志搜集失败"></a>21. Angular httpclient 前端日志搜集失败</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 定义http api请求</span><br><span class="line">getConfig() &#123;</span><br><span class="line">  return this.http.get(this.configUrl);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 紧跟着我们会定义</span><br><span class="line">showConfig() &#123;</span><br><span class="line">  this.configService.getConfig()</span><br><span class="line">    .subscribe((data: Config) =&gt; this.config = &#123;</span><br><span class="line">        heroesUrl: data[&#x27;heroesUrl&#x27;],</span><br><span class="line">        textfile:  data[&#x27;textfile&#x27;]</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结合20,我们可以发现，如果不subscribe，http请求是发送不出去的。</p>
+</blockquote>
+<blockquote>
+<p>尤其在前端记录日志，如果只是定义，没有subscribe，那么前端日志是不能记录成功的哦！！！</p>
+</blockquote>
+<h4 id="22-async-与-subscribe-效果等同"><a href="#22-async-与-subscribe-效果等同" class="headerlink" title="22. async 与 subscribe 效果等同"></a>22. async 与 subscribe 效果等同</h4><blockquote>
+<p>20 页面中导出数据，譬如 export json、csv文件时候，如果使用async 异步设置loading，那么会出现一次导出多份文件情况。</p>
+</blockquote>
+<blockquote>
+<p>根本原因在于，asyn与subscribe效果等同，多次订阅，没有unsubscribe情况，触发多次保存</p>
+</blockquote>
+<h4 id="23-rxjs-创建数据流同异步之分"><a href="#23-rxjs-创建数据流同异步之分" class="headerlink" title="23. rxjs 创建数据流同异步之分"></a>23. rxjs 创建数据流同异步之分</h4><blockquote>
+<p>同步数据流</p>
+</blockquote>
+<ul>
+<li>create - Observable 构造函数</li>
+<li>of  - 列举有限的</li>
+<li>range - 特定范围</li>
+<li>generate - 循环</li>
+<li>repeat - 重复</li>
+<li>empty  - 空</li>
+<li>never - 永不完结</li>
+<li>throw - 抛出错误</li>
+</ul>
+<blockquote>
+<p>异步数据流</p>
+</blockquote>
+<ul>
+<li>interval - 特定间隔</li>
+<li>timer - 定时</li>
+<li>from </li>
+<li>fromEvent </li>
+<li>ajax </li>
+<li>defer</li>
+</ul>
+<blockquote>
+<p>编写代码时候，常常没有想到异步的存在，导致undefined异常发生。</p>
+</blockquote>
+<h4 id="24-angular-iframe-loading"><a href="#24-angular-iframe-loading" class="headerlink" title="24. angular iframe loading"></a>24. angular iframe loading</h4><blockquote>
+<p>我们期望的是，在iframe资源加载完毕，loading结束。</p>
+</blockquote>
+<blockquote>
+<p>但是我们发现，chrome、safari load会触发两次，firefox、ie11 仅触发一次</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">&lt;div *ngIf=&quot;loading&quot; class=&quot;v-loading&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;iframe  [src]=&quot;url&quot; (load)=&quot;load()&quot;&gt;</span><br><span class="line"></span><br><span class="line"># ts</span><br><span class="line">class helperComponent extends onInit&#123;</span><br><span class="line">    loading = false;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        console.log(&quot;this is contructor...&quot;);</span><br><span class="line">        //this.loading = true; 通用的写法是，在构造的时候，初始化</span><br><span class="line">    &#125;</span><br><span class="line">    ngOnInit()&#123;</span><br><span class="line">        console.log(&quot;this is init...&quot;);</span><br><span class="line">        this.loading = true;</span><br><span class="line">    &#125;</span><br><span class="line">    load()&#123;</span><br><span class="line">        console.log(&quot;this is load...&quot;);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//output </span><br><span class="line">chrome|safari</span><br><span class="line">this is contructor  // 如果这里初始化true,那么chrome,safari下，loading很快就结束了</span><br><span class="line">this is load...  # 这里会多调用一次，</span><br><span class="line">this is init...  # 所以，我们把loding= true，放置在这里 </span><br><span class="line">this is load...</span><br><span class="line"></span><br><span class="line">ff | ie11</span><br><span class="line">this is contructor</span><br><span class="line">this is init... </span><br><span class="line">this is load...</span><br></pre></td></tr></table></figure>
+
+<h4 id="25-Array-sort"><a href="#25-Array-sort" class="headerlink" title="25. Array sort"></a>25. Array sort</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 请问，你想到结果是什么吗？是否会发生异常？</span><br><span class="line">const arr = [1,undefined,2,undefined,4,undefined];</span><br><span class="line">arr.sort((a,b) =&gt; &#123;</span><br><span class="line">   return a.name &gt; b.name</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#output </span><br><span class="line">[1, 2, 4, undefined, undefined, undefined]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">原因如下</a>：</p>
+</blockquote>
+<blockquote>
+<p>If compareFunction is supplied, all non-undefined array elements are sorted according to the return value of the compare function (all undefined elements are sorted to the end of the array, with no call to compareFunction)</p>
+</blockquote>
+<h4 id="26-ngrx-undefined问题"><a href="#26-ngrx-undefined问题" class="headerlink" title="26. ngrx undefined问题"></a>26. ngrx undefined问题</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://ngrx.io/guide/store/selectors">ngrx</a> 用于状态管理，类似于sessionStorage，有 get&#x2F;set</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># selectors</span><br><span class="line">export const userLogin = createSelector(</span><br><span class="line">  getCounterValue,</span><br><span class="line">  (counter, props) =&gt; counter * props.multiply</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">ngOnInit() &#123;</span><br><span class="line">  this.counter = this.store.pipe(select(fromRoot.getCount, &#123; multiply: 2 &#125;))</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们在selector获取unfined，常见原因有两种：</p>
+</blockquote>
+<ul>
+<li>对应的action，没有触发，没有set对应的value</li>
+<li>对应的value设置了，但是get时候，写法不对，譬如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 正确的写法</span><br><span class="line">this.counter = this.store.pipe(select(fromRoot.getCount, &#123; multiply: 2 &#125;))</span><br><span class="line"></span><br><span class="line"># 错误的写法</span><br><span class="line">  this.counter = this.store.pipe(fromRoot.getCount, &#123; multiply: 2 &#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="27-Cannot-find-module-‘typescript’"><a href="#27-Cannot-find-module-‘typescript’" class="headerlink" title="27. Cannot find module ‘typescript’"></a>27. Cannot find module ‘typescript’</h4><blockquote>
+<p>TypeScript is required if you want to compile using ts-node.</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -D typescript</span><br><span class="line">npm install -D ts-node</span><br></pre></td></tr></table></figure>
+
+<h4 id="28-ngrx-store-pip-sync-or-async"><a href="#28-ngrx-store-pip-sync-or-async" class="headerlink" title="28. ngrx store pip sync or async ?"></a>28. ngrx store pip sync or async ?</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">export const getList = () =&gt;</span><br><span class="line">  createSelector(</span><br><span class="line">    (state, props) =&gt; state.counter[props.key]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">console.log(&quot;before....&quot;);</span><br><span class="line">this.store.pipe(</span><br><span class="line">  select(fromRoot.getList(), &#123; key: &#x27;counter2&#x27;&#125;),</span><br><span class="line">  tap(() =&gt; &#123;</span><br><span class="line">    console.log(&quot;store....&quot;);</span><br><span class="line">  &#125;)</span><br><span class="line">);</span><br><span class="line">console.log(&quot;after....&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//output</span><br><span class="line">before....</span><br><span class="line">store....</span><br><span class="line">after....</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="29-rxjs-EMPTY-与Of"><a href="#29-rxjs-EMPTY-与Of" class="headerlink" title="29 rxjs EMPTY 与Of({})"></a>29 rxjs EMPTY 与Of({})</h4><blockquote>
+<p>EMPTY仅仅触发complete,不会触发next。在整合ngrx时，需要谨慎返回。</p>
+</blockquote>
+<blockquote>
+<p>Of，next先触发，在执行complete</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import &#123; fromEvent, interval , of, EMPTY &#125; from &#x27;rxjs&#x27;;</span><br><span class="line">import &#123; switchAll, map, tap &#125; from &#x27;rxjs/operators&#x27;;</span><br><span class="line"> </span><br><span class="line">EMPTY.subscribe(</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;empty next&#x27;);</span><br><span class="line">  &#125;,</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;empty error&#x27;);</span><br><span class="line">  &#125;,</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;empty complete&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">of(&#123;&#125;).subscribe(</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;of next&#x27;);</span><br><span class="line">  &#125;,</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;of error&#x27;);</span><br><span class="line">  &#125;,</span><br><span class="line">  () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;of complete&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">//output</span><br><span class="line">empty complete</span><br><span class="line">of next</span><br><span class="line">of complete</span><br></pre></td></tr></table></figure>
+
+<h4 id="30-rxjs-编写angular-export"><a href="#30-rxjs-编写angular-export" class="headerlink" title="30 rxjs 编写angular export"></a>30 rxjs 编写angular export</h4><blockquote>
+<p>及时关闭数据流监听</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">getData: () =&gt; &#123;</span><br><span class="line">    const data1:Observabl&lt;any&gt; = this.getDataone();</span><br><span class="line">    const data2:Observable&lt;any&gt; = this.getDataTwo();</span><br><span class="line">    return combineLatest([data1,data2]).pipe(map([data1,data2]) =&gt; &#123;</span><br><span class="line">        //数据整合，返回json str</span><br><span class="line">        return jsonStr</span><br><span class="line">    &#125;)</span><br><span class="line">    //此处一定要关闭数据监听，不然会任何data1,data2改变，都会触发下载，即使没有点击下载按钮</span><br><span class="line">    take(1),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">this.exportService.getData().pipe(</span><br><span class="line"> (res) =&gt; &#123;</span><br><span class="line">     //download js logic </span><br><span class="line">    </span><br><span class="line"> &#125;</span><br><span class="line">).subscribe() </span><br></pre></td></tr></table></figure>
+
+<h3 id="更多推荐"><a href="#更多推荐" class="headerlink" title="更多推荐"></a>更多推荐</h3><h4 id="Angular8-HttpClient-30分钟深入了解下"><a href="#Angular8-HttpClient-30分钟深入了解下" class="headerlink" title="Angular8 HttpClient 30分钟深入了解下"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5ee344586fb9a0479673478e">Angular8 HttpClient 30分钟深入了解下</a></h4><h4 id="Angular-Render2你了解吗？"><a href="#Angular-Render2你了解吗？" class="headerlink" title="Angular Render2你了解吗？"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5edf9211f265da76c76b1d81">Angular Render2你了解吗？</a></h4><h4 id="20个你值得了解的Angular开源项目"><a href="#20个你值得了解的Angular开源项目" class="headerlink" title="20个你值得了解的Angular开源项目"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5edf916a6fb9a047e6080dd9">20个你值得了解的Angular开源项目</a></h4><h4 id="Angular7-8-read-local-json的2种方法"><a href="#Angular7-8-read-local-json的2种方法" class="headerlink" title="Angular7&#x2F;8 read local json的2种方法"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5e15a0c46fb9a047f83eda08">Angular7&#x2F;8 read local json的2种方法</a></h4><h4 id="Angular8-ui-grid替代方案ag-grid入门"><a href="#Angular8-ui-grid替代方案ag-grid入门" class="headerlink" title="Angular8 ui-grid替代方案ag-grid入门"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5def66ae6fb9a0162b7f2f07">Angular8 ui-grid替代方案ag-grid入门</a></h4><h4 id="深入了解指令"><a href="#深入了解指令" class="headerlink" title="深入了解指令"></a><a href="https://huchengzhang.com/2020/07/11/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%8C%87%E4%BB%A4/">深入了解指令</a></h4><h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.angular-university.io/angular-ng-template-ng-container-ngtemplateoutlet/">angular ng-template</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.angular-university.io/angular-ng-content/">angular ng-content</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cme-kai/p/8352087.html">元素绑定</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth">element clientWidth</a></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#避坑" >
+    <span class="tag-code">避坑</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/05/13/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell条件判断
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/06/09/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20%E4%BD%A0%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84Render2/">
+        
+          《angular8》- 你需要了解的Render2
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-else%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">1.else使用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-ng-show%E5%BA%9F%E5%BC%83"><span class="toc-nav-text">2.ng-show废弃</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-angular%E4%B8%AD%E4%BD%BF%E7%94%A8angularjs%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">3.angular中使用angularjs组件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-%E5%B8%B8%E7%94%A8%E6%A8%A1%E6%9D%BF%E8%AF%AD%E6%B3%95"><span class="toc-nav-text">4.常用模板语法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-ng-template"><span class="toc-nav-text">5.ng-template</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-ng-content"><span class="toc-nav-text">6.ng-content</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-inject-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">7.inject 单例模式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-angularjs-ui-grid%E9%97%AE%E9%A2%98"><span class="toc-nav-text">8.angularjs ui-grid问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#10-Render2-%E6%9B%B4%E6%96%B0%E6%A0%B7%E5%BC%8F-%EF%BC%8CViewChild%E9%80%89%E5%8F%96dom"><span class="toc-nav-text">10.Render2 更新样式 ，ViewChild选取dom</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#11-%E7%B1%BB%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7"><span class="toc-nav-text">11.类计算属性</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12-%E5%85%83%E7%B4%A0%E7%BB%91%E5%AE%9A"><span class="toc-nav-text">12.元素绑定</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#13-viewChild"><span class="toc-nav-text">13.viewChild</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#14-%E5%85%83%E7%B4%A0%E5%AE%BD%E5%BA%A6"><span class="toc-nav-text">14.元素宽度</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#15-scss-%E6%97%A0%E6%95%88"><span class="toc-nav-text">15.scss 无效</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#16-httpclient%E9%BB%98%E8%AE%A4json%E6%A0%BC%E5%BC%8F%E6%8E%A5%E6%94%B6"><span class="toc-nav-text">16. httpclient默认json格式接收</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#17-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%A3%8E%E9%99%A9"><span class="toc-nav-text">17.内存泄漏风险</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#18-%E7%BB%84%E4%BB%B6%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5%E8%B0%83%E6%95%B4%EF%BC%8C%E4%BC%98%E5%8C%96%E7%BB%84%E4%BB%B6%E6%A0%91%E6%9B%B4%E6%96%B0%E6%80%A7%E8%83%BD"><span class="toc-nav-text">18.组件更新策略调整，优化组件树更新性能</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#19-tooltip%E6%98%BE%E7%A4%BA-getBoundingClientRect"><span class="toc-nav-text">19. tooltip显示 getBoundingClientRect </span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#20-Observable-lazy-push"><span class="toc-nav-text">20 Observable lazy push</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#21-Angular-httpclient-%E5%89%8D%E7%AB%AF%E6%97%A5%E5%BF%97%E6%90%9C%E9%9B%86%E5%A4%B1%E8%B4%A5"><span class="toc-nav-text">21. Angular httpclient 前端日志搜集失败</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#22-async-%E4%B8%8E-subscribe-%E6%95%88%E6%9E%9C%E7%AD%89%E5%90%8C"><span class="toc-nav-text">22. async 与 subscribe 效果等同</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#23-rxjs-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%8C%E5%BC%82%E6%AD%A5%E4%B9%8B%E5%88%86"><span class="toc-nav-text">23. rxjs 创建数据流同异步之分</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#24-angular-iframe-loading"><span class="toc-nav-text">24. angular iframe loading</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#25-Array-sort"><span class="toc-nav-text">25. Array sort</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#26-ngrx-undefined%E9%97%AE%E9%A2%98"><span class="toc-nav-text">26. ngrx undefined问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#27-Cannot-find-module-%E2%80%98typescript%E2%80%99"><span class="toc-nav-text">27. Cannot find module ‘typescript’</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#28-ngrx-store-pip-sync-or-async"><span class="toc-nav-text">28. ngrx store pip sync or async ?</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#29-rxjs-EMPTY-%E4%B8%8EOf"><span class="toc-nav-text">29 rxjs EMPTY 与Of({})</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#30-rxjs-%E7%BC%96%E5%86%99angular-export"><span class="toc-nav-text">30 rxjs 编写angular export</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">更多推荐</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8-HttpClient-30%E5%88%86%E9%92%9F%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E4%B8%8B"><span class="toc-nav-text">Angular8 HttpClient 30分钟深入了解下</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular-Render2%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F"><span class="toc-nav-text">Angular Render2你了解吗？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#20%E4%B8%AA%E4%BD%A0%E5%80%BC%E5%BE%97%E4%BA%86%E8%A7%A3%E7%9A%84Angular%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE"><span class="toc-nav-text">20个你值得了解的Angular开源项目</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular7-8-read-local-json%E7%9A%842%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-nav-text">Angular7&#x2F;8 read local json的2种方法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Angular8-ui-grid%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88ag-grid%E5%85%A5%E9%97%A8"><span class="toc-nav-text">Angular8 ui-grid替代方案ag-grid入门</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%8C%87%E4%BB%A4"><span class="toc-nav-text">深入了解指令</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-nav-text">参考文献</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/05/28/front_skills/angular/《angular8》- angular8日常开发避坑指南/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

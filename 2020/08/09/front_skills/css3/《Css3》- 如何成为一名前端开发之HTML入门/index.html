@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《HTML》- 如何成为一名前端开发之HTML入门 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《HTML》- 如何成为一名前端开发之HTML入门</h2>
+  <p class="post-date">2020-08-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>前端开发，入门简单，有一台可以运行多款浏览器的电脑，能联网查询资料即可。深入的部分，需要更多的理论知识、肯钻研的精神。<br>前端开发，需要入门了解的屈指可数，主要就是如下几个大方面：</p>
+<h2 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h2><h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><h4 id="文本编辑器"><a href="#文本编辑器" class="headerlink" title="文本编辑器"></a>文本编辑器</h4><ul>
+<li>vscode(推荐使用，功能强大)</li>
+<li>Sublime Text</li>
+<li>NodePad++</li>
+</ul>
+<h4 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h4><blockquote>
+<p> Firefox, <a target="_blank" rel="noopener" href="https://www.google.com/chrome/browser/">Chrome</a>, Opera, Safari, Internet Explorer and Microsoft Edge</p>
+</blockquote>
+<h4 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://git-scm.com/">Git</a><br><a target="_blank" rel="noopener" href="https://github.com/">GitHub</a></p>
+</blockquote>
+<h4 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://webpack.js.org/">Webpack</a></li>
+<li><a target="_blank" rel="noopener" href="http://gulpjs.com/">Gulp</a></li>
+</ul>
+<h3 id="Web-standards"><a href="#Web-standards" class="headerlink" title="Web standards"></a>Web standards</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/The_web_and_web_standards">Web standards</a>，主要定义浏览器端，功能接口标准的，标准的具体实现，由不同的浏览器厂商完成。</p>
+</blockquote>
+<h3 id="当下使用的web技术"><a href="#当下使用的web技术" class="headerlink" title="当下使用的web技术"></a>当下使用的web技术</h3><h4 id="主流浏览器"><a href="#主流浏览器" class="headerlink" title="主流浏览器"></a>主流浏览器</h4><blockquote>
+<p>Firefox, <a target="_blank" rel="noopener" href="https://www.google.com/chrome/browser/">Chrome</a>, Opera, Safari, Internet Explorer and Microsoft Edge</p>
+</blockquote>
+<h4 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h4><blockquote>
+<p>协议，主要用于通信。前后端不是独立的，彼此通过协议，互换信息，web系统才能运行正常</p>
+</blockquote>
+<ul>
+<li>http</li>
+<li>https</li>
+<li>socket</li>
+</ul>
+<h4 id="HTML-CSS-and-JavaScript"><a href="#HTML-CSS-and-JavaScript" class="headerlink" title="HTML, CSS, and JavaScript"></a>HTML, CSS, and JavaScript</h4><h4 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h4><ul>
+<li>各浏览的DevTool,便于调试</li>
+<li>Linters插件</li>
+<li>Minify工具</li>
+<li>CDN等</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing">测试工具</a></li>
+<li>js库和前端框架（站点构建的更快、更高效）</li>
+</ul>
+<h4 id="服务端语言"><a href="#服务端语言" class="headerlink" title="服务端语言"></a>服务端语言</h4><blockquote>
+<p>Python, NodeJS, Deno, Go, Rust </p>
+</blockquote>
+<h3 id="面临的挑战"><a href="#面临的挑战" class="headerlink" title="面临的挑战"></a>面临的挑战</h3><h4 id="浏览器兼容"><a href="#浏览器兼容" class="headerlink" title="浏览器兼容"></a>浏览器兼容</h4><blockquote>
+<p>Web standards，各实现厂商不同，支持力度不同，浏览器兼容问题自然存在</p>
+</blockquote>
+<h4 id="响应式设计"><a href="#响应式设计" class="headerlink" title="响应式设计"></a>响应式设计</h4><blockquote>
+<p>厂商的不同，展示场景的不同，意味着不能全篇一律敲定，需要动态变化展示内容</p>
+</blockquote>
+<h4 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h4><blockquote>
+<p>天下站点，只有快，才能留住用户</p>
+</blockquote>
+<h4 id="易用性"><a href="#易用性" class="headerlink" title="易用性"></a>易用性</h4><blockquote>
+<p>站点的访问人群不同，要具备普适性， 都能轻松使用。</p>
+</blockquote>
+<h4 id="国际化"><a href="#国际化" class="headerlink" title="国际化"></a>国际化</h4><blockquote>
+<p>国际语言众多，需要尽可能的多支持</p>
+</blockquote>
+<h4 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h4><blockquote>
+<p>用户隐私数据保护</p>
+</blockquote>
+<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><h3 id="html基础概念"><a href="#html基础概念" class="headerlink" title="html基础概念"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML">html基础概念</a></h3><h4 id="html元素"><a href="#html元素" class="headerlink" title="html元素"></a>html元素</h4><img src="https://mdn.mozillademos.org/files/9347/grumpy-cat-small.png" height="200" width="600">
+
+<blockquote>
+<p>当然，也有例外，不是这种格式的</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Empty elements， or (void elements.) </span><br><span class="line">&lt;img src=&quot;https://raw.githubusercontent.com/mdn/beginner-html-site/gh-pages/images/firefox-icon.png&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="html元素嵌套"><a href="#html元素嵌套" class="headerlink" title="html元素嵌套"></a>html元素嵌套</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;My cat is &lt;strong&gt;very&lt;/strong&gt; grumpy.&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="块元素和行内元素"><a href="#块元素和行内元素" class="headerlink" title="块元素和行内元素"></a><a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/indices.html#element-content-categories">块元素和行内元素</a></h4><blockquote>
+<p>块元素，独占一行；行内元素，按先后顺序，排列<br>这些与css的display不同，不影响元素能包含哪些元素，能被哪些元素包含</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/09/aorWVK.md.png"></p>
+<h4 id="元素属性"><a href="#元素属性" class="headerlink" title="元素属性"></a>元素属性</h4><p><img src="https://mdn.mozillademos.org/files/9345/grumpy-cat-attribute-small.png"></p>
+<blockquote>
+<p>其中，也存在一种特殊的属性：Boolean attributes</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;text&quot; disabled&gt;</span><br><span class="line"># 等效于</span><br><span class="line">&lt;input type=&quot;text&quot; disabled=&quot;disabled&quot;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>另外，也会存在一些特殊的写法。推荐都是key&#x3D;”value”形式</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=https://www.mozilla.org/&gt;favorite website&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="html文档结构"><a href="#html文档结构" class="headerlink" title="html文档结构"></a>html文档结构</h4><blockquote>
+<p>不管多少连续的空白，浏览器都会解析会一个空格</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt; # 定义解析格式</span><br><span class="line">&lt;html&gt; # 文档的root </span><br><span class="line">  &lt;head&gt; #定义源数据地方 </span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;My test page&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt; # 文档的可见内容部分</span><br><span class="line">    &lt;p&gt;This is my page&lt;/p&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML">元数据等请移步参考</a></p>
+</blockquote>
+<h4 id="html特殊字符"><a href="#html特殊字符" class="headerlink" title="html特殊字符"></a>html特殊字符</h4><blockquote>
+<p> &lt;, &gt;,”,’ and &amp;, 这是html自身使用的，如果用户需要展示，那么需要转义 </p>
+</blockquote>
+<blockquote>
+<p>(不好展示，&amp;添加了 空格,其实是没有的)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>特殊字符</th>
+<th>转义字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt;</td>
+<td>&amp; lt;</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>&amp; gt;</td>
+</tr>
+<tr>
+<td>“</td>
+<td>&amp; quot;</td>
+</tr>
+<tr>
+<td>‘</td>
+<td>&amp; apos;</td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td>&amp; amp;</td>
+</tr>
+</tbody></table>
+<h4 id="html注释"><a href="#html注释" class="headerlink" title="html注释"></a>html注释</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- </span><br><span class="line"> &lt;p&gt;I am!&lt;/p&gt; </span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="html-多媒体"><a href="#html-多媒体" class="headerlink" title="html 多媒体"></a>html 多媒体</h3><h4 id="image"><a href="#image" class="headerlink" title="image"></a>image</h4><ul>
+<li>普通的图片</li>
+</ul>
+<blockquote>
+<p>alt描述图片</p>
+</blockquote>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 推荐添加alt,而不是text子元素节点添加</span><br><span class="line">&lt;img src=&quot;images/dinosaur.jpg&quot;</span><br><span class="line">    alt=&quot;The head and torso of a dinosaur skeleton;</span><br><span class="line">         it has a large head with long sharp teeth&quot;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>caption添加标题</p>
+</blockquote>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> &lt;figure&gt;</span><br><span class="line">  &lt;img src=&quot;images/dinosaur.jpg&quot;</span><br><span class="line">       alt=&quot;The head and torso of a dinosaur skeleton;</span><br><span class="line">            it has a large head with long sharp teeth&quot;</span><br><span class="line">       width=&quot;400&quot;</span><br><span class="line">       height=&quot;341&quot;&gt;</span><br><span class="line"> &lt;figcaption&gt;A T-Rex on display in the Manchester University Museum.&lt;/figcaption&gt;</span><br><span class="line">&lt;/figure&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>响应式图片</li>
+</ul>
+<blockquote>
+<p>根据展示设备尺寸的不同，加载不同的图片</p>
+</blockquote>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;img srcset=&quot;elva-fairy-480w.jpg 480w,</span><br><span class="line">             elva-fairy-800w.jpg 800w&quot;</span><br><span class="line">     sizes=&quot;(max-width: 600px) 480px,</span><br><span class="line">            800px&quot;</span><br><span class="line">     src=&quot;elva-fairy-800w.jpg&quot;</span><br><span class="line">     alt=&quot;Elva dressed as a fairy&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>设备尺寸相同，但是分辨率不同</p>
+</blockquote>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;img srcset=&quot;elva-fairy-320w.jpg,</span><br><span class="line">            elva-fairy-480w.jpg 1.5x,</span><br><span class="line">            elva-fairy-640w.jpg 2x&quot;</span><br><span class="line">    src=&quot;elva-fairy-640w.jpg&quot;</span><br><span class="line">    alt=&quot;Elva dressed as a fairy&quot;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>利用picture，不同设选择加载不同的图片</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;picture&gt;</span><br><span class="line">  &lt;source media=&quot;(max-width: 799px)&quot; srcset=&quot;elva-480w-close-portrait.jpg&quot;&gt;</span><br><span class="line">  &lt;source media=&quot;(min-width: 800px)&quot; srcset=&quot;elva-800w.jpg&quot;&gt;</span><br><span class="line">  &lt;img src=&quot;elva-800w.jpg&quot; alt=&quot;Chris standing up holding his daughter Elva&quot;&gt;</span><br><span class="line">&lt;/picture&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images">picture+svg</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;picture&gt;</span><br><span class="line">  &lt;source type=&quot;image/svg+xml&quot; srcset=&quot;pyramid.svg&quot;&gt;</span><br><span class="line">  &lt;source type=&quot;image/webp&quot; srcset=&quot;pyramid.webp&quot;&gt; </span><br><span class="line">  &lt;img src=&quot;pyramid.png&quot; alt=&quot;regular pyramid built from four equilateral triangles&quot;&gt;</span><br><span class="line">&lt;/picture&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="audio"><a href="#audio" class="headerlink" title="audio"></a>audio</h4><blockquote>
+<p>单一url<br>浏览器厂商，针对音频的支持格式不是不同的，譬如： <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content">MP3, MP4 and WebM</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;video src=&quot;rabbit320.webm&quot; controls&gt;</span><br><span class="line">  &lt;p&gt;Your browser doesn&#x27;t support HTML5 video. Here is a &lt;a href=&quot;rabbit320.webm&quot;&gt;link to the video&lt;/a&gt; instead.&lt;/p&gt; </span><br><span class="line">&lt;/video&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>浏览器适配问题</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;audio controls&gt;</span><br><span class="line">  &lt;source src=&quot;viper.mp3&quot; type=&quot;audio/mp3&quot;&gt;</span><br><span class="line">  &lt;source src=&quot;viper.ogg&quot; type=&quot;audio/ogg&quot;&gt;</span><br><span class="line">  &lt;p&gt;Your browser doesn&#x27;t support HTML5 audio. Here is a &lt;a href=&quot;viper.mp3&quot;&gt;link to the audio&lt;/a&gt; instead.&lt;/p&gt;</span><br><span class="line">&lt;/audio&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="video"><a href="#video" class="headerlink" title="video"></a>video</h4><blockquote>
+<p>单一url<br>浏览器厂商，针对视频的支持格式不是不同的</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;video src=&quot;rabbit320.webm&quot; controls&gt;</span><br><span class="line">  &lt;p&gt;Your browser doesn&#x27;t support HTML5 video. Here is a &lt;a href=&quot;rabbit320.webm&quot;&gt;link to the video&lt;/a&gt; instead.&lt;/p&gt; </span><br><span class="line">&lt;/video&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>浏览器适配问题</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;video controls width=&quot;400&quot; height=&quot;400&quot;</span><br><span class="line">       autoplay loop muted preload=&quot;auto&quot; </span><br><span class="line">       poster=&quot;poster.png&quot;&gt;</span><br><span class="line">  &lt;source src=&quot;rabbit320.mp4&quot; type=&quot;video/mp4&quot;&gt;</span><br><span class="line">  &lt;source src=&quot;rabbit320.webm&quot; type=&quot;video/webm&quot;&gt;</span><br><span class="line">  &lt;p&gt;Your browser doesn&#x27;t support HTML video. Here is a &lt;a href=&quot;rabbit320.mp4&quot;&gt;link to the video&lt;/a&gt; instead.&lt;/p&gt;</span><br><span class="line">&lt;/video&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="svg"><a href="#svg" class="headerlink" title="svg"></a>svg</h4><blockquote>
+<p>image引用svg</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;img </span><br><span class="line">    src=&quot;equilateral.svg&quot; </span><br><span class="line">    alt=&quot;triangle with all three sides equal&quot;</span><br><span class="line">    height=&quot;87&quot;</span><br><span class="line">    width=&quot;100&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>html引用svg</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg width=&quot;300&quot; height=&quot;200&quot;&gt;</span><br><span class="line">    &lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;green&quot; /&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>iframe等中引用svg</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;triangle.svg&quot; width=&quot;500&quot; height=&quot;500&quot; sandbox&gt;</span><br><span class="line">    &lt;img src=&quot;triangle.png&quot; alt=&quot;Triangle with three unequal sides&quot; /&gt;</span><br><span class="line">&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h4><blockquote>
+<p>canvas与svg不同，canvas基于像素,svg基于矢量图</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">&lt;canvas id=&quot;my-canvas&quot; width=&quot;600&quot; height=&quot;400&quot;&gt;&lt;/canvas&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="嵌入元素"><a href="#嵌入元素" class="headerlink" title="嵌入元素"></a>嵌入元素</h4><blockquote>
+<p>iframe, embed and object</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Other_embedding_technologies">iframe</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src=&quot;https://developer.mozilla.org/en-US/docs/Glossary&quot;</span><br><span class="line">        width=&quot;100%&quot; height=&quot;500&quot; frameborder=&quot;0&quot;</span><br><span class="line">        allowfullscreen sandbox&gt;</span><br><span class="line">  &lt;p&gt; </span><br><span class="line">    &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary&quot;&gt;</span><br><span class="line">       Fallback link for browsers that don&#x27;t support iframes</span><br><span class="line">    &lt;/a&gt;</span><br><span class="line">  &lt;/p&gt;</span><br><span class="line">&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="html-table"><a href="#html-table" class="headerlink" title="html table"></a>html table</h3><h4 id="样式指定"><a href="#样式指定" class="headerlink" title="样式指定"></a>样式指定</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;table&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;th&gt;Data 1&lt;/th&gt;</span><br><span class="line">    &lt;th style=&quot;background-color: yellow&quot;&gt;Data 2&lt;/th&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;Calcutta&lt;/td&gt;</span><br><span class="line">    &lt;td style=&quot;background-color: yellow&quot;&gt;Orange&lt;/td&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;Robots&lt;/td&gt;</span><br><span class="line">    &lt;td style=&quot;background-color: yellow&quot;&gt;Jazz&lt;/td&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="更好的样式指定"><a href="#更好的样式指定" class="headerlink" title="更好的样式指定"></a>更好的样式指定</h4><blockquote>
+<p>col 一次指定即可</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/08/09/aoH7b8.md.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;table&gt;</span><br><span class="line">  &lt;colgroup&gt;</span><br><span class="line">    &lt;col&gt; # 定义在colgroup中，与th个数对应</span><br><span class="line">    &lt;col style=&quot;background-color: yellow&quot;&gt;</span><br><span class="line">  &lt;/colgroup&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;th&gt;Data 1&lt;/th&gt;</span><br><span class="line">    &lt;th&gt;Data 2&lt;/th&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;Calcutta&lt;/td&gt;</span><br><span class="line">    &lt;td&gt;Orange&lt;/td&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">  &lt;tr&gt;</span><br><span class="line">    &lt;td&gt;Robots&lt;/td&gt;</span><br><span class="line">    &lt;td&gt;Jazz&lt;/td&gt;</span><br><span class="line">  &lt;/tr&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>全部设置</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;colgroup&gt;</span><br><span class="line">  &lt;col style=&quot;background-color: yellow&quot; span=&quot;2&quot;&gt;</span><br><span class="line">&lt;/colgroup&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><h3 id="web-develop"><a href="#web-develop" class="headerlink" title="web-develop"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer">web-develop</a></h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85/">
+        <span class="nav-arrow">← </span>
+        
+          《Css3》- 如何成为一名前端开发者
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AA%92%E4%BB%8B%E6%9F%A5%E8%AF%A2/">
+        
+          《Css3》- CSS进阶之媒介查询
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86"><span class="toc-nav-text">背景知识</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-nav-text">软件安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-nav-text">文本编辑器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-nav-text">浏览器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="toc-nav-text">版本控制</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">构建工具</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Web-standards"><span class="toc-nav-text">Web standards</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%BD%93%E4%B8%8B%E4%BD%BF%E7%94%A8%E7%9A%84web%E6%8A%80%E6%9C%AF"><span class="toc-nav-text">当下使用的web技术</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%BB%E6%B5%81%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-nav-text">主流浏览器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">协议</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTML-CSS-and-JavaScript"><span class="toc-nav-text">HTML, CSS, and JavaScript</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">开发工具</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AF%AD%E8%A8%80"><span class="toc-nav-text">服务端语言</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%9D%A2%E4%B8%B4%E7%9A%84%E6%8C%91%E6%88%98"><span class="toc-nav-text">面临的挑战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9"><span class="toc-nav-text">浏览器兼容</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">响应式设计</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%A7%E8%83%BD"><span class="toc-nav-text">性能</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%98%93%E7%94%A8%E6%80%A7"><span class="toc-nav-text">易用性</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9B%BD%E9%99%85%E5%8C%96"><span class="toc-nav-text">国际化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-nav-text">安全性</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HTML"><span class="toc-nav-text">HTML</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">html基础概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E5%85%83%E7%B4%A0"><span class="toc-nav-text">html元素</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E5%85%83%E7%B4%A0%E5%B5%8C%E5%A5%97"><span class="toc-nav-text">html元素嵌套</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9D%97%E5%85%83%E7%B4%A0%E5%92%8C%E8%A1%8C%E5%86%85%E5%85%83%E7%B4%A0"><span class="toc-nav-text">块元素和行内元素</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%85%83%E7%B4%A0%E5%B1%9E%E6%80%A7"><span class="toc-nav-text">元素属性</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E6%96%87%E6%A1%A3%E7%BB%93%E6%9E%84"><span class="toc-nav-text">html文档结构</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6"><span class="toc-nav-text">html特殊字符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E6%B3%A8%E9%87%8A"><span class="toc-nav-text">html注释</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html-%E5%A4%9A%E5%AA%92%E4%BD%93"><span class="toc-nav-text">html 多媒体</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#image"><span class="toc-nav-text">image</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#audio"><span class="toc-nav-text">audio</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#video"><span class="toc-nav-text">video</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#svg"><span class="toc-nav-text">svg</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#canvas"><span class="toc-nav-text">canvas</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B5%8C%E5%85%A5%E5%85%83%E7%B4%A0"><span class="toc-nav-text">嵌入元素</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html-table"><span class="toc-nav-text">html table</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A0%B7%E5%BC%8F%E6%8C%87%E5%AE%9A"><span class="toc-nav-text">样式指定</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84%E6%A0%B7%E5%BC%8F%E6%8C%87%E5%AE%9A"><span class="toc-nav-text">更好的样式指定</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#web-develop"><span class="toc-nav-text">web-develop</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/09/front_skills/css3/《Css3》- 如何成为一名前端开发之HTML入门/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

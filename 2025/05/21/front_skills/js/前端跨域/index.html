@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端跨域 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>前端跨域</h2>
+  <p class="post-date">2025-05-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="🌐-什么是跨域（CORS）"><a href="#🌐-什么是跨域（CORS）" class="headerlink" title="🌐 什么是跨域（CORS）"></a>🌐 什么是跨域（CORS）</h2><p><strong>跨域（Cross-Origin）</strong>：当前网页的 JS 在向不同源发起请求时，如果协议、域名、端口任一不相同，就会被认为是“跨域”。</p>
+<h3 id="举个例子："><a href="#举个例子：" class="headerlink" title="举个例子："></a>举个例子：</h3><ul>
+<li>页面地址：<a target="_blank" rel="noopener" href="https://example.com/">https://example.com</a></li>
+<li>访问 API：<a target="_blank" rel="noopener" href="https://api.example.com/">https://api.example.com</a> ✅ <strong>跨域</strong></li>
+</ul>
+<hr>
+<h2 id="🔒-同源策略限制内容"><a href="#🔒-同源策略限制内容" class="headerlink" title="🔒 同源策略限制内容"></a>🔒 同源策略限制内容</h2><p>浏览器会限制以下行为：</p>
+<ul>
+<li><code>XMLHttpRequest</code> &#x2F; <code>fetch</code> 请求被拦截</li>
+<li><code>读取跨域响应数据</code> 会失败（即便请求成功）</li>
+<li>部分 <code>cookie</code>、<code>localStorage</code> 等也受限</li>
+</ul>
+<hr>
+<h2 id="✅-常见跨域解决方案"><a href="#✅-常见跨域解决方案" class="headerlink" title="✅ 常见跨域解决方案"></a>✅ 常见跨域解决方案</h2><h3 id="1-CORS（Cross-Origin-Resource-Sharing）"><a href="#1-CORS（Cross-Origin-Resource-Sharing）" class="headerlink" title="1. CORS（Cross-Origin Resource Sharing）"></a>1. <strong>CORS（Cross-Origin Resource Sharing）</strong></h3><p>最推荐的方式，由服务端设置响应头允许跨域访问。</p>
+<h4 id="服务端设置响应头（示例）："><a href="#服务端设置响应头（示例）：" class="headerlink" title="服务端设置响应头（示例）："></a>服务端设置响应头（示例）：</h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Access-Control-Allow-Origin</span><span class="punctuation">: </span>https://example.com</span><br><span class="line"><span class="attribute">Access-Control-Allow-Methods</span><span class="punctuation">: </span>GET, POST, PUT</span><br><span class="line"><span class="attribute">Access-Control-Allow-Headers</span><span class="punctuation">: </span>Content-Type</span><br><span class="line"><span class="attribute">Access-Control-Allow-Credentials</span><span class="punctuation">: </span>true</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>标准、安全</li>
+<li>支持多种请求方式</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>需要服务端配合设置</li>
+</ul>
+<hr>
+<h3 id="2-JSONP（仅支持-GET-请求）"><a href="#2-JSONP（仅支持-GET-请求）" class="headerlink" title="2. JSONP（仅支持 GET 请求）"></a>2. <strong>JSONP</strong>（仅支持 GET 请求）</h3><p>原理：利用 <code>&lt;script&gt;</code> 标签没有跨域限制的特性，通过动态插入 <code>&lt;script&gt;</code> 实现跨域数据请求。</p>
+<h4 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;https://api.example.com/data?callback=handleData&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">function</span> <span class="title function_">handleData</span>(<span class="params">data</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>兼容老浏览器</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>只支持 GET</li>
+<li>不安全，不推荐用于现代项目</li>
+</ul>
+<hr>
+<h3 id="3-代理转发（开发时最常用）"><a href="#3-代理转发（开发时最常用）" class="headerlink" title="3. 代理转发（开发时最常用）"></a>3. <strong>代理转发（开发时最常用）</strong></h3><p>在本地开发时，可以使用 Webpack&#x2F;Vite 配置代理，将请求转发到目标 API，避免浏览器发起跨域请求。</p>
+<h4 id="Vite-配置示例："><a href="#Vite-配置示例：" class="headerlink" title="Vite 配置示例："></a>Vite 配置示例：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">proxy</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span>: &#123;</span><br><span class="line">        <span class="attr">target</span>: <span class="string">&#x27;https://api.example.com&#x27;</span>,</span><br><span class="line">        <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">rewrite</span>: <span class="function"><span class="params">path</span> =&gt;</span> path.<span class="title function_">replace</span>(<span class="regexp">/^\/api/</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>开发方便</li>
+<li>无需改动后端</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>仅适用于开发环境</li>
+</ul>
+<hr>
+<h3 id="4-服务器中间层代理（后端转发）"><a href="#4-服务器中间层代理（后端转发）" class="headerlink" title="4. 服务器中间层代理（后端转发）"></a>4. <strong>服务器中间层代理（后端转发）</strong></h3><p>后端自己请求外部 API，再返回给前端，前端请求的始终是同源接口。</p>
+<h4 id="原理图："><a href="#原理图：" class="headerlink" title="原理图："></a>原理图：</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前端 ——&gt; 自己服务器 ——&gt; 外部 API</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>彻底规避跨域</li>
+<li>可控制缓存、安全性</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>增加服务器负担</li>
+</ul>
+<hr>
+<h3 id="5-window-postMessage（用于-iframe-跨域通信）"><a href="#5-window-postMessage（用于-iframe-跨域通信）" class="headerlink" title="5. window.postMessage（用于 iframe 跨域通信）"></a>5. <strong>window.postMessage（用于 iframe 跨域通信）</strong></h3><p>用于两个不同源的页面之间通过 iframe 或 window.open 传递消息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 子页面</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">parent</span>.<span class="title function_">postMessage</span>(<span class="string">&#x27;data from child&#x27;</span>, <span class="string">&#x27;https://parent.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 父页面监听</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">origin</span> === <span class="string">&#x27;https://child.com&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">data</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-总结推荐"><a href="#🧠-总结推荐" class="headerlink" title="🧠 总结推荐"></a>🧠 总结推荐</h2><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>是否安全</th>
+<th>支持请求类型</th>
+<th>是否需后端</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CORS</td>
+<td>推荐方式</td>
+<td>✅ 安全</td>
+<td>所有</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>JSONP</td>
+<td>老项目&#x2F;兼容需求</td>
+<td>❌ 不安全</td>
+<td>GET</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>本地代理</td>
+<td>本地开发</td>
+<td>✅ 安全</td>
+<td>所有</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>服务端代理</td>
+<td>所有场景</td>
+<td>✅ 安全</td>
+<td>所有</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>postMessage</td>
+<td>页面嵌套</td>
+<td>✅ 安全</td>
+<td>-</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<hr>
+<p>Nginx 也是一种 <strong>常见且强大</strong> 的跨域解决方案，适用于<strong>生产环境</strong>中通过 <strong>反向代理</strong> 来解决跨域问题，或者通过配置 <strong>CORS 响应头</strong> 来支持跨域访问。</p>
+<hr>
+<h2 id="🔁-一、Nginx-解决跨域的两种方式"><a href="#🔁-一、Nginx-解决跨域的两种方式" class="headerlink" title="🔁 一、Nginx 解决跨域的两种方式"></a>🔁 一、Nginx 解决跨域的两种方式</h2><hr>
+<h3 id="✅-方式一：反向代理跨域（推荐）"><a href="#✅-方式一：反向代理跨域（推荐）" class="headerlink" title="✅ 方式一：反向代理跨域（推荐）"></a>✅ 方式一：<strong>反向代理跨域（推荐）</strong></h3><p>通过 Nginx 把前端请求代理到后端服务器，<strong>前端请求的是同源地址</strong>，从而避免跨域。</p>
+<h4 id="📌-示例场景："><a href="#📌-示例场景：" class="headerlink" title="📌 示例场景："></a>📌 示例场景：</h4><ul>
+<li>前端页面：<code>https://www.my-site.com</code></li>
+<li>后端 API：<code>https://api.example.com</code></li>
+<li>Nginx 配置反向代理 <code>/api</code> 到 <code>https://api.example.com</code></li>
+</ul>
+<h4 id="🛠-Nginx-配置示例："><a href="#🛠-Nginx-配置示例：" class="headerlink" title="🛠 Nginx 配置示例："></a>🛠 Nginx 配置示例：</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">  <span class="attribute">server_name</span> www.my-site.com;</span><br><span class="line"></span><br><span class="line">  <span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="section">location</span> /api/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> https://api.example.com/;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>🔄 这样浏览器看到的是同一个源 <code>www.my-site.com</code>，跨域问题就不存在了。</p>
+</blockquote>
+<hr>
+<h3 id="✅-方式二：添加-CORS-响应头"><a href="#✅-方式二：添加-CORS-响应头" class="headerlink" title="✅ 方式二：添加 CORS 响应头"></a>✅ 方式二：<strong>添加 CORS 响应头</strong></h3><p>如果你控制的是 <strong>API 服务所在的 Nginx</strong>，可以直接配置 CORS 响应头，允许跨域访问。</p>
+<h4 id="🛠-Nginx-配置-CORS-示例："><a href="#🛠-Nginx-配置-CORS-示例：" class="headerlink" title="🛠 Nginx 配置 CORS 示例："></a>🛠 Nginx 配置 CORS 示例：</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /api/ &#123;</span><br><span class="line">  <span class="attribute">add_header</span> <span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span> <span class="string">&#x27;*&#x27;</span> always;</span><br><span class="line">  <span class="attribute">add_header</span> <span class="string">&#x27;Access-Control-Allow-Methods&#x27;</span> <span class="string">&#x27;GET, POST, OPTIONS&#x27;</span>;</span><br><span class="line">  <span class="attribute">add_header</span> <span class="string">&#x27;Access-Control-Allow-Headers&#x27;</span> <span class="string">&#x27;Content-Type, Authorization&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">if</span> (<span class="variable">$request_method</span> = <span class="string">&#x27;OPTIONS&#x27;</span>) &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">204</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">proxy_pass</span> http://backend_api;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="📌-说明："><a href="#📌-说明：" class="headerlink" title="📌 说明："></a>📌 说明：</h4><ul>
+<li><code>Access-Control-Allow-Origin: *</code> 允许所有域访问（可以换成具体域名）</li>
+<li><code>OPTIONS</code> 请求用于预检请求（preflight），所以要返回 204（No Content）</li>
+</ul>
+<hr>
+<h2 id="🧠-Nginx-配置总结对比"><a href="#🧠-Nginx-配置总结对比" class="headerlink" title="🧠 Nginx 配置总结对比"></a>🧠 Nginx 配置总结对比</h2><table>
+<thead>
+<tr>
+<th>跨域方式</th>
+<th>应用层</th>
+<th>是否需改动后端</th>
+<th>安全性</th>
+<th>复杂度</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ Nginx 反向代理</td>
+<td>服务器</td>
+<td>❌（只改 Nginx）</td>
+<td>高</td>
+<td>中</td>
+<td>高效、可控、生产可用</td>
+<td>需配置服务器、维护代理路径</td>
+</tr>
+<tr>
+<td>✅ CORS 响应头</td>
+<td>后端</td>
+<td>✅ 需要支持</td>
+<td>高</td>
+<td>低</td>
+<td>标准、安全</td>
+<td>后端需支持、预检可能耗性能</td>
+</tr>
+<tr>
+<td>⚠️ JSONP</td>
+<td>前端+后端</td>
+<td>✅ 需要接口支持</td>
+<td>低</td>
+<td>中</td>
+<td>简单、支持老浏览器</td>
+<td>仅支持 GET，存在 XSS 风险</td>
+</tr>
+<tr>
+<td>✅ 本地开发代理</td>
+<td>前端构建工具</td>
+<td>❌</td>
+<td>中</td>
+<td>低</td>
+<td>配置简单，开发方便</td>
+<td>仅限开发环境，生产不适用</td>
+</tr>
+<tr>
+<td>✅ 服务端代理</td>
+<td>后端</td>
+<td>✅（自己转发）</td>
+<td>高</td>
+<td>中高</td>
+<td>可控制安全与缓存</td>
+<td>增加服务压力，维护成本</td>
+</tr>
+<tr>
+<td>✅ postMessage</td>
+<td>前端</td>
+<td>❌</td>
+<td>高</td>
+<td>中</td>
+<td>跨窗口安全通信</td>
+<td>场景有限，仅适合 iframe</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#原生" >
+    <span class="tag-code">原生</span>
+  </a>
+
+  <a target="_blank" href="/tags#跨域" >
+    <span class="tag-code">跨域</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/21/bigdata_for_analyze/ai%E5%9B%BE%E7%89%87%E8%AF%86%E5%88%AB/">
+        <span class="nav-arrow">← </span>
+        
+          ai图片识别
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/25/front_skills/react/react%20ai%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
+        
+          reactjs ai大模型单元测试
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8C%90-%E4%BB%80%E4%B9%88%E6%98%AF%E8%B7%A8%E5%9F%9F%EF%BC%88CORS%EF%BC%89"><span class="toc-nav-text">🌐 什么是跨域（CORS）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%BE%E4%B8%AA%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="toc-nav-text">举个例子：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%92-%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5%E9%99%90%E5%88%B6%E5%86%85%E5%AE%B9"><span class="toc-nav-text">🔒 同源策略限制内容</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%B8%B8%E8%A7%81%E8%B7%A8%E5%9F%9F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-nav-text">✅ 常见跨域解决方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-CORS%EF%BC%88Cross-Origin-Resource-Sharing%EF%BC%89"><span class="toc-nav-text">1. CORS（Cross-Origin Resource Sharing）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%AE%BE%E7%BD%AE%E5%93%8D%E5%BA%94%E5%A4%B4%EF%BC%88%E7%A4%BA%E4%BE%8B%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">服务端设置响应头（示例）：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-JSONP%EF%BC%88%E4%BB%85%E6%94%AF%E6%8C%81-GET-%E8%AF%B7%E6%B1%82%EF%BC%89"><span class="toc-nav-text">2. JSONP（仅支持 GET 请求）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-nav-text">使用方式：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E4%BB%A3%E7%90%86%E8%BD%AC%E5%8F%91%EF%BC%88%E5%BC%80%E5%8F%91%E6%97%B6%E6%9C%80%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="toc-nav-text">3. 代理转发（开发时最常用）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Vite-%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">Vite 配置示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%AD%E9%97%B4%E5%B1%82%E4%BB%A3%E7%90%86%EF%BC%88%E5%90%8E%E7%AB%AF%E8%BD%AC%E5%8F%91%EF%BC%89"><span class="toc-nav-text">4. 服务器中间层代理（后端转发）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BE%EF%BC%9A"><span class="toc-nav-text">原理图：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-window-postMessage%EF%BC%88%E7%94%A8%E4%BA%8E-iframe-%E8%B7%A8%E5%9F%9F%E9%80%9A%E4%BF%A1%EF%BC%89"><span class="toc-nav-text">5. window.postMessage（用于 iframe 跨域通信）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E6%80%BB%E7%BB%93%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">🧠 总结推荐</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%81-%E4%B8%80%E3%80%81Nginx-%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">🔁 一、Nginx 解决跨域的两种方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9A%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E8%B7%A8%E5%9F%9F%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-nav-text">✅ 方式一：反向代理跨域（推荐）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E7%A4%BA%E4%BE%8B%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="toc-nav-text">📌 示例场景：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%9B%A0-Nginx-%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">🛠 Nginx 配置示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9A%E6%B7%BB%E5%8A%A0-CORS-%E5%93%8D%E5%BA%94%E5%A4%B4"><span class="toc-nav-text">✅ 方式二：添加 CORS 响应头</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%9B%A0-Nginx-%E9%85%8D%E7%BD%AE-CORS-%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">🛠 Nginx 配置 CORS 示例：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%93%8C-%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="toc-nav-text">📌 说明：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-Nginx-%E9%85%8D%E7%BD%AE%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">🧠 Nginx 配置总结对比</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/21/front_skills/js/前端跨域/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

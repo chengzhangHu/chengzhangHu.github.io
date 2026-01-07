@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《D3》- html5元素属性 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《D3》- html5元素属性</h2>
+  <p class="post-date">2021-07-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="html5-比xhtml-更简洁"><a href="#html5-比xhtml-更简洁" class="headerlink" title="html5 比xhtml 更简洁"></a>html5 比xhtml 更简洁</h3><p><img src="https://i.imgur.com/ZfP0cX5.png" alt="Imgur"></p>
+<blockquote>
+<p>async 属性规定一旦脚本可用，则会异步执行。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;demo_async.js&quot; async=&quot;async&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>download修改下载文件名</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;/images/myw3schoolimage.jpg&quot; download=&quot;w3logo&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当用户在 ismap 图像上单击了某处时，浏览器会自动把鼠标的 x、y 位置（相对于图像的左上角）发送到服务器端。特殊的服务器端软件（在本例中是 demo_form.asp 程序）可以根据这些坐标来做出响应。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;demo_form.asp&quot;&gt;</span><br><span class="line">&lt;img src=&quot;tulip.gif&quot; ismap /&gt;</span><br><span class="line">&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="html存在各种属性，是为何？"><a href="#html存在各种属性，是为何？" class="headerlink" title="html存在各种属性，是为何？"></a>html存在各种属性，是为何？</h3><blockquote>
+<p>js 对象之间的继承关系<br><img src="https://i.imgur.com/yT4blYI.png" alt="Imgur"></p>
+</blockquote>
+<h3 id="HTML5新的6个语义化标签"><a href="#HTML5新的6个语义化标签" class="headerlink" title="HTML5新的6个语义化标签"></a>HTML5新的6个语义化标签</h3><blockquote>
+<p>header , section ,article ,nav,aside,footer</p>
+</blockquote>
+<ul>
+<li>section : 一块带有header标题的区域</li>
+<li>article: 带有header和meta 等元数据的文章</li>
+<li>nav : 导航模块</li>
+<li>aside： 侧边栏</li>
+<li>footer: 页面或者文章底部，常用于版权、友链、域名备案、上一篇&#x2F;下一篇等</li>
+</ul>
+<h3 id="HTML5-input-浏览器内置验证submit触发不完善，怎么破？"><a href="#HTML5-input-浏览器内置验证submit触发不完善，怎么破？" class="headerlink" title="HTML5 input 浏览器内置验证submit触发不完善，怎么破？"></a>HTML5 input 浏览器内置验证submit触发不完善，怎么破？</h3><blockquote>
+<p>利用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLInputElement">input pattern</a>属性，配置正则等，但是 text, search, tel, url, email, or password 支持，其余无效。</p>
+</blockquote>
+<h3 id="其余html5标签"><a href="#其余html5标签" class="headerlink" title="其余html5标签"></a>其余html5标签</h3><blockquote>
+<p>标签</p>
+</blockquote>
+<ul>
+<li>output，form内部的输出</li>
+<li>progress,meter都展示进度，progress动态数据，meter静态数据</li>
+<li>datalist，通过id，可以为input，添加下拉框列表</li>
+<li>figture,figcaption，可以给图片，添加语义标注</li>
+<li>fieldset ,legend ，常用于制作登录form界面书签效果</li>
+</ul>
+<h3 id="async-defer有何区别"><a href="#async-defer有何区别" class="headerlink" title="async ,defer有何区别"></a>async ,defer有何区别</h3><blockquote>
+<p>defer异步加载js脚本，但是会等html文档加载完毕在执行</p>
+</blockquote>
+<ul>
+<li>async,异步加载完毕，就立刻执行脚本</li>
+<li>更偏向与defer</li>
+</ul>
+<h3 id="新增属性-hidden-draggable"><a href="#新增属性-hidden-draggable" class="headerlink" title="新增属性- hidden,draggable"></a>新增属性- hidden,draggable</h3><blockquote>
+<p>hidden,隐藏元素, 只有hidden&#x3D;”hidden” 或者简写hidden </p>
+</blockquote>
+<ul>
+<li>draggable，标记元素是否可以拖拽, true | false</li>
+<li>contenteditable ,标记元素内部内容是否可以编辑， true | false</li>
+</ul>
+<h3 id="input-autocomplete-autofocus"><a href="#input-autocomplete-autofocus" class="headerlink" title="input - autocomplete,autofocus"></a>input - autocomplete,autofocus</h3><blockquote>
+<p>autocomplete，自动提示，常结合datalist使用</p>
+</blockquote>
+<ul>
+<li>设置input，autofocus实现自动聚焦</li>
+</ul>
+<h3 id="form表单覆盖默认验证"><a href="#form表单覆盖默认验证" class="headerlink" title="form表单覆盖默认验证"></a>form表单覆盖默认验证</h3><blockquote>
+<p>email,url,tel，存在默认验证，不满足要求，如何覆盖？  </p>
+</blockquote>
+<ul>
+<li>form novalidate禁用form元素所有文本框内的验证功能</li>
+</ul>
+<h3 id="draggable具备拖动，但不能元素位置"><a href="#draggable具备拖动，但不能元素位置" class="headerlink" title="draggable具备拖动，但不能元素位置"></a>draggable具备拖动，但不能元素位置</h3><blockquote>
+<p>源元素： 被拖动的元素，有ondragstart,ondragend,ondrag</p>
+</blockquote>
+<ul>
+<li>目标元素： 最终在哪里释放元素, ondragenter,ondragover,ondragleave,ondrop</li>
+<li>ondragstart &gt; ondrag &gt; ondragenter &gt; ondragover &gt; ondrapleave &gt; ondrop &gt; ondragend</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#svg" >
+    <span class="tag-code">svg</span>
+  </a>
+
+  <a target="_blank" href="/tags#d3" >
+    <span class="tag-code">d3</span>
+  </a>
+
+  <a target="_blank" href="/tags#html5" >
+    <span class="tag-code">html5</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2021/06/28/front_skills/angular/%E3%80%8Aangular10%E3%80%8B-%20%E6%97%A5%E5%B8%B8%E6%A6%82%E5%BF%B5FAQ/">
+        <span class="nav-arrow">← </span>
+        
+          《angular10》- 日常概念FAQ
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2021/07/30/devops_skills/deploy/%E3%80%8ADevops%E3%80%8B%20-%20devops%E8%83%8C%E6%99%AF/">
+        
+          《Devops》 - devops背景
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html5-%E6%AF%94xhtml-%E6%9B%B4%E7%AE%80%E6%B4%81"><span class="toc-nav-text">html5 比xhtml 更简洁</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html%E5%AD%98%E5%9C%A8%E5%90%84%E7%A7%8D%E5%B1%9E%E6%80%A7%EF%BC%8C%E6%98%AF%E4%B8%BA%E4%BD%95%EF%BC%9F"><span class="toc-nav-text">html存在各种属性，是为何？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTML5%E6%96%B0%E7%9A%846%E4%B8%AA%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE"><span class="toc-nav-text">HTML5新的6个语义化标签</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTML5-input-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E7%BD%AE%E9%AA%8C%E8%AF%81submit%E8%A7%A6%E5%8F%91%E4%B8%8D%E5%AE%8C%E5%96%84%EF%BC%8C%E6%80%8E%E4%B9%88%E7%A0%B4%EF%BC%9F"><span class="toc-nav-text">HTML5 input 浏览器内置验证submit触发不完善，怎么破？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B6%E4%BD%99html5%E6%A0%87%E7%AD%BE"><span class="toc-nav-text">其余html5标签</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#async-defer%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">async ,defer有何区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%96%B0%E5%A2%9E%E5%B1%9E%E6%80%A7-hidden-draggable"><span class="toc-nav-text">新增属性- hidden,draggable</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#input-autocomplete-autofocus"><span class="toc-nav-text">input - autocomplete,autofocus</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#form%E8%A1%A8%E5%8D%95%E8%A6%86%E7%9B%96%E9%BB%98%E8%AE%A4%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">form表单覆盖默认验证</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#draggable%E5%85%B7%E5%A4%87%E6%8B%96%E5%8A%A8%EF%BC%8C%E4%BD%86%E4%B8%8D%E8%83%BD%E5%85%83%E7%B4%A0%E4%BD%8D%E7%BD%AE"><span class="toc-nav-text">draggable具备拖动，但不能元素位置</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2021/07/29/front_skills/d3/《D3》- html元素属性/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

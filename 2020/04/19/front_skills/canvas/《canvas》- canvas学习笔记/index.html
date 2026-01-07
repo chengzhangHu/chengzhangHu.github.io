@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《canvas》- canvas doc 学习笔记 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《canvas》- canvas doc 学习笔记</h2>
+  <p class="post-date">2020-04-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><h4 id="canvas-vs-svg"><a href="#canvas-vs-svg" class="headerlink" title="canvas vs svg"></a>canvas vs svg</h4><ul>
+<li>canvas 适用于动态创建的位图，缩放失真。</li>
+<li>svg 适用于静态描述的矢量图，缩放不失真。</li>
+<li>canvas 基于”状态”绘制图形，譬如，strokeStyle、fillStyle、lineWidth等</li>
+<li>svg基于dom，可以直接在html中展示</li>
+</ul>
+<h4 id="绘图四步骤"><a href="#绘图四步骤" class="headerlink" title="绘图四步骤"></a>绘图四步骤</h4><ul>
+<li>定义canvas,设置width,height属性，设置变形等特效</li>
+<li>获取canvas 2D context，绘制图形</li>
+<li>添加动画</li>
+<li>添加交互</li>
+</ul>
+<h4 id="canvas-w3c坐标系"><a href="#canvas-w3c坐标系" class="headerlink" title="canvas w3c坐标系"></a>canvas w3c坐标系</h4> <img src="https://s1.ax1x.com/2020/03/26/G9ZGr9.png" width="400" height="300">
+
+<h4 id="canvas-width-height设置"><a href="#canvas-width-height设置" class="headerlink" title="canvas width\height设置"></a>canvas width\height设置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const dom = document.getElementById(&#x27;canvas&#x27;);</span><br><span class="line">dom.width = window.innerWidth;</span><br><span class="line">dom.height = window.innerHeight;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;canvas id=&quot;canvas&quot; width=&quot;600&quot; height=&quot;700&quot;&gt;&lt;/canvas&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="canvas-绘线"><a href="#canvas-绘线" class="headerlink" title="canvas 绘线"></a>canvas 绘线</h3><ul>
+<li>moveTo</li>
+<li>lineTo</li>
+<li>arc – 曲线</li>
+<li>rect - 矩形 + store| fill </li>
+<li>strokeRect</li>
+<li>fillRect</li>
+</ul>
+<h3 id="canvas-绘图片"><a href="#canvas-绘图片" class="headerlink" title="canvas 绘图片"></a>canvas 绘图片</h3><ul>
+<li>createImageData</li>
+<li>getImageData</li>
+<li>putImageData</li>
+</ul>
+<h3 id="canvas-绘文字"><a href="#canvas-绘文字" class="headerlink" title="canvas 绘文字"></a>canvas 绘文字</h3><ul>
+<li>fillText</li>
+<li>strokeText</li>
+<li>measureText</li>
+</ul>
+<h3 id="canvas-路径、状态"><a href="#canvas-路径、状态" class="headerlink" title="canvas 路径、状态"></a>canvas 路径、状态</h3><ul>
+<li>beginPath</li>
+<li>closePath</li>
+</ul>
+<h3 id="canvas-位移、阴影等特效"><a href="#canvas-位移、阴影等特效" class="headerlink" title="canvas 位移、阴影等特效"></a>canvas 位移、阴影等特效</h3><ul>
+<li>createLinearGradient – 创建线性渐变对象<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">createLinearGradient(x1,y1,x2,y2) </span><br><span class="line"> -- x1,x2 相同，纵向渐变</span><br><span class="line"> -- y1,y2 相同，横向渐变</span><br></pre></td></tr></table></figure></li>
+<li>addColorStop – 给线性渐变对象依次颜色，形成渐变<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gnt.addColorStop(position,color) -- position 0 ~ 1  相当于百分比</span><br></pre></td></tr></table></figure></li>
+<li>径向渐变<br> createRadialGradient(x1,y1,r1,x2,y2,r2); – 从(x1,y1),半径r1 开始到点(x2,y2),半径r2 颜色渐变</li>
+<li>阴影– 文字阴影和图形阴影</li>
+<li>shadowOffsetX – 水平偏移，正向右，负数向左偏移；</li>
+<li>shadowOffsetY - 正向下偏移；负数，向上偏移；同时为0，实现两端都有阴影；</li>
+<li>shadowColor  - 阴影颜色，默认黑色</li>
+<li>shadowBlur – 模糊值</li>
+<li>需要在fillText,fillRect等绘制之前，设置</li>
+</ul>
+<h3 id="canvas-图片像素美化"><a href="#canvas-图片像素美化" class="headerlink" title="canvas 图片像素美化"></a>canvas 图片像素美化</h3><ul>
+<li>getImageData</li>
+<li>putImageData</li>
+<li>createImageData</li>
+</ul>
+<h3 id="canvas-事件、边界检测"><a href="#canvas-事件、边界检测" class="headerlink" title="canvas 事件、边界检测"></a>canvas 事件、边界检测</h3><ul>
+<li>鼠标事件</li>
+<li>mousedown</li>
+<li>mouseup</li>
+<li>mousemove</li>
+<li>键盘事件</li>
+<li>keydown</li>
+<li>keyup </li>
+<li>循环事件</li>
+<li>setInterval - 一定性能问题</li>
+<li>requestAnimationFrame ，不用设置间隔，自动设置</li>
+</ul>
+<h3 id="canvas-动画、碰撞检测"><a href="#canvas-动画、碰撞检测" class="headerlink" title="canvas 动画、碰撞检测"></a>canvas 动画、碰撞检测</h3><ul>
+<li>（1）三角函数<ul>
+<li>sin(Q)</li>
+<li>cos()</li>
+<li>tan()</li>
+<li>atan2(y,x) 根据值准确求角度; 注意顺序，y,x；而且都是带符号的；</li>
+</ul>
+</li>
+<li>（2）匀速运动 </li>
+<li>（3）加速运动</li>
+<li>（4）重力</li>
+<li>（5）摩擦力</li>
+</ul>
+<h3 id="canvas-交互、高级动画、粒子效果"><a href="#canvas-交互、高级动画、粒子效果" class="headerlink" title="canvas 交互、高级动画、粒子效果"></a>canvas 交互、高级动画、粒子效果</h3><ul>
+<li>碰撞检测</li>
+<li>碰撞边界</li>
+<li>碰撞环绕</li>
+</ul>
+<h3 id="canvas游戏开发、性能优化s"><a href="#canvas游戏开发、性能优化s" class="headerlink" title="canvas游戏开发、性能优化ß"></a>canvas游戏开发、性能优化ß</h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/04/19/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%BB%98%E7%BA%BF/">
+        <span class="nav-arrow">← </span>
+        
+          《canvas》- canvas doc 学习笔记之绘线
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/04/20/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E8%B7%AF%E5%BE%84%E5%92%8C%E7%8A%B6%E6%80%81/">
+        
+          《canvas》- canvas doc 学习笔记之路径和状态
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#canvas-vs-svg"><span class="toc-nav-text">canvas vs svg</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%98%E5%9B%BE%E5%9B%9B%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">绘图四步骤</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#canvas-w3c%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="toc-nav-text">canvas w3c坐标系</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#canvas-width-height%E8%AE%BE%E7%BD%AE"><span class="toc-nav-text">canvas width\height设置</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E7%BB%98%E7%BA%BF"><span class="toc-nav-text">canvas 绘线</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E7%BB%98%E5%9B%BE%E7%89%87"><span class="toc-nav-text">canvas 绘图片</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E7%BB%98%E6%96%87%E5%AD%97"><span class="toc-nav-text">canvas 绘文字</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E8%B7%AF%E5%BE%84%E3%80%81%E7%8A%B6%E6%80%81"><span class="toc-nav-text">canvas 路径、状态</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E4%BD%8D%E7%A7%BB%E3%80%81%E9%98%B4%E5%BD%B1%E7%AD%89%E7%89%B9%E6%95%88"><span class="toc-nav-text">canvas 位移、阴影等特效</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E5%9B%BE%E7%89%87%E5%83%8F%E7%B4%A0%E7%BE%8E%E5%8C%96"><span class="toc-nav-text">canvas 图片像素美化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E4%BA%8B%E4%BB%B6%E3%80%81%E8%BE%B9%E7%95%8C%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">canvas 事件、边界检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E5%8A%A8%E7%94%BB%E3%80%81%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">canvas 动画、碰撞检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas-%E4%BA%A4%E4%BA%92%E3%80%81%E9%AB%98%E7%BA%A7%E5%8A%A8%E7%94%BB%E3%80%81%E7%B2%92%E5%AD%90%E6%95%88%E6%9E%9C"><span class="toc-nav-text">canvas 交互、高级动画、粒子效果</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#canvas%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E3%80%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96s"><span class="toc-nav-text">canvas游戏开发、性能优化ß</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/04/19/front_skills/canvas/《canvas》- canvas学习笔记/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

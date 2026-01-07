@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      mcp和api的区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>mcp和api的区别</h2>
+  <p class="post-date">2025-10-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p><strong>MCP（Model Context Protocol） ≠ API</strong><br>但 MCP 是为“大模型”专门设计的一种 <strong>新一代协议层</strong>，<strong>包裹和协调 API 的安全调用、上下文共享与语义控制</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-一句话区别"><a href="#🧩-一句话区别" class="headerlink" title="🧩 一句话区别"></a>🧩 一句话区别</h2><table>
+<thead>
+<tr>
+<th>对比点</th>
+<th><strong>API</strong></th>
+<th><strong>MCP（Model Context Protocol）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>设计对象</strong></td>
+<td>给人类开发者或传统程序使用</td>
+<td>给 AI 模型 &#x2F; 智能体 使用</td>
+</tr>
+<tr>
+<td><strong>交互模式</strong></td>
+<td>命令式调用（request → response）</td>
+<td>语义式调用（context-aware）</td>
+</tr>
+<tr>
+<td><strong>核心目标</strong></td>
+<td>功能访问（执行操作）</td>
+<td><strong>语义对齐 + 权限控制 + 可解释执行</strong></td>
+</tr>
+<tr>
+<td><strong>接口形式</strong></td>
+<td>REST &#x2F; GraphQL &#x2F; RPC</td>
+<td><strong>标准化上下文桥 + 工具注册表 + 语义协议层</strong></td>
+</tr>
+<tr>
+<td><strong>调用粒度</strong></td>
+<td>每次手动指定 endpoint</td>
+<td>模型根据上下文自动选择 Tool</td>
+</tr>
+<tr>
+<td><strong>安全控制</strong></td>
+<td>靠 Auth &#x2F; Token &#x2F; Role</td>
+<td>加上「人机裁决」「沙箱」「审计」机制</td>
+</tr>
+<tr>
+<td><strong>返回数据</strong></td>
+<td>一次返回完整结果</td>
+<td>支持结构化、分片、流式上下文响应</td>
+</tr>
+<tr>
+<td><strong>用途</strong></td>
+<td>面向程序逻辑</td>
+<td>面向 AI 决策与多步推理链</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-二、MCP-与-API-的关系"><a href="#🧠-二、MCP-与-API-的关系" class="headerlink" title="🧠 二、MCP 与 API 的关系"></a>🧠 二、MCP 与 API 的关系</h2><p>可以理解成：</p>
+<blockquote>
+<p><strong>MCP 是 AI 世界的“应用层协议”</strong>，<br>它 <strong>包装并协调底层 API 的调用</strong>，让大模型能理解、推理、授权地使用它们。</p>
+</blockquote>
+<hr>
+<h3 id="🔹传统-API-流程"><a href="#🔹传统-API-流程" class="headerlink" title="🔹传统 API 流程"></a>🔹传统 API 流程</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端 → 调用接口 /api/v1/data → 返回 JSON</span><br></pre></td></tr></table></figure>
+
+<p>开发者要写清楚：</p>
+<ul>
+<li>URL、参数格式、认证方式</li>
+<li>处理异常、分页、结构等</li>
+</ul>
+<p>AI 模型很难“理解”或“自发使用”这些 API，因为它没有固定 schema 绑定或上下文。</p>
+<hr>
+<h3 id="🔹MCP-流程（AI-调用场景）"><a href="#🔹MCP-流程（AI-调用场景）" class="headerlink" title="🔹MCP 流程（AI 调用场景）"></a>🔹MCP 流程（AI 调用场景）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">大模型 (AI Client)</span><br><span class="line">   ↓</span><br><span class="line">MCP 协议层（Context Protocol）</span><br><span class="line">   ↓</span><br><span class="line">调用注册好的 Tool（内部封装 API / DB / OS）</span><br><span class="line">   ↓</span><br><span class="line">返回语义化结果（可解释 JSON）</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点：</strong></p>
+<ul>
+<li><p>模型只需说：“获取最近 10 个错误日志”</p>
+</li>
+<li><p>MCP Adapter 会：</p>
+<ul>
+<li>选择正确的 API（&#x2F;logs?type&#x3D;error&amp;limit&#x3D;10）</li>
+<li>验证安全范围</li>
+<li>格式化结果为模型易解析的结构</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>✅ 这样模型可以在“自然语言 → 行为执行”之间无缝切换。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-三、MCP-的核心组成（对比-API-架构）"><a href="#🧩-三、MCP-的核心组成（对比-API-架构）" class="headerlink" title="🧩 三、MCP 的核心组成（对比 API 架构）"></a>🧩 三、MCP 的核心组成（对比 API 架构）</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>在 API 中的对应</th>
+<th>在 MCP 中的扩展</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Endpoint</strong></td>
+<td>URL endpoint</td>
+<td>Tool &#x2F; Capability（语义注册）</td>
+</tr>
+<tr>
+<td><strong>Request</strong></td>
+<td>HTTP Request</td>
+<td>MCP Message（含 context &#x2F; intent）</td>
+</tr>
+<tr>
+<td><strong>Response</strong></td>
+<td>JSON &#x2F; XML</td>
+<td>Structured semantic result（含元信息）</td>
+</tr>
+<tr>
+<td><strong>Auth</strong></td>
+<td>Token &#x2F; OAuth</td>
+<td>除 Auth 外还有人类确认（high-risk gating）</td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td>Access log</td>
+<td>审计日志 + 行为追踪（Audit Trail）</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td>OpenAPI &#x2F; GraphQL SDL</td>
+<td>Tool manifest + permission schema</td>
+</tr>
+<tr>
+<td><strong>Execution Context</strong></td>
+<td>无状态</td>
+<td>有状态（会话上下文、记忆、意图链）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧰-四、类比理解"><a href="#🧰-四、类比理解" class="headerlink" title="🧰 四、类比理解"></a>🧰 四、类比理解</h2><table>
+<thead>
+<tr>
+<th>类比角度</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🧩 <strong>API 是函数</strong></td>
+<td>提供一个函数库（你得手动调用）</td>
+</tr>
+<tr>
+<td>🧩 <strong>MCP 是操作系统</strong></td>
+<td>它帮模型决定该用哪个函数、以什么参数、安全执行</td>
+</tr>
+<tr>
+<td>🧩 <strong>API 是数据库查询接口</strong></td>
+<td>直接返回数据</td>
+</tr>
+<tr>
+<td>🧩 <strong>MCP 是 ORM + ACL + AI语义层</strong></td>
+<td>让模型“知道”数据代表什么、能否访问、如何安全执行</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-五、可视化结构（简化）"><a href="#⚙️-五、可视化结构（简化）" class="headerlink" title="⚙️ 五、可视化结构（简化）"></a>⚙️ 五、可视化结构（简化）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">                ┌──────────────────────────────┐</span><br><span class="line">                │         大模型 (LLM)          │</span><br><span class="line">                │   &quot;分析系统性能瓶颈&quot;          │</span><br><span class="line">                └────────────┬─────────────────┘</span><br><span class="line">                             │</span><br><span class="line">                      [MCP Context Layer]</span><br><span class="line">                             │</span><br><span class="line">                             ▼</span><br><span class="line">┌────────────────────────────────────────────┐</span><br><span class="line">│ 注册的工具（Tools）                        │</span><br><span class="line">│ ├─ monitor.cpu (封装 REST API)             │</span><br><span class="line">│ ├─ system.logs (封装 GraphQL 查询)          │</span><br><span class="line">│ └─ deploy.container (封装 Docker API)       │</span><br><span class="line">└────────────────────────────────────────────┘</span><br><span class="line">                             │</span><br><span class="line">                             ▼</span><br><span class="line">┌────────────────────────────────────────────┐</span><br><span class="line">│ 底层资源 / API / 命令 / 数据库              │</span><br><span class="line">└────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>MCP 让大模型“语义上”访问这些资源，而不是靠 prompt 胡乱猜 API。</p>
+<hr>
+<h2 id="🔒-六、安全与治理层（MCP-独有）"><a href="#🔒-六、安全与治理层（MCP-独有）" class="headerlink" title="🔒 六、安全与治理层（MCP 独有）"></a>🔒 六、安全与治理层（MCP 独有）</h2><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>API 有吗</th>
+<th>MCP 改进点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>权限认证</td>
+<td>✅</td>
+<td>✅ + 语义级别访问限制</td>
+</tr>
+<tr>
+<td>人类确认</td>
+<td>❌</td>
+<td>✅（高风险操作确认）</td>
+</tr>
+<tr>
+<td>执行沙箱</td>
+<td>❌</td>
+<td>✅（限制资源访问范围）</td>
+</tr>
+<tr>
+<td>行为审计</td>
+<td>部分</td>
+<td>✅（模型请求全链记录）</td>
+</tr>
+<tr>
+<td>自动解释一致性</td>
+<td>❌</td>
+<td>✅（防止模型偷换概念）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-七、总结核心区别一句话"><a href="#🧩-七、总结核心区别一句话" class="headerlink" title="🧩 七、总结核心区别一句话"></a>🧩 七、总结核心区别一句话</h2><blockquote>
+<p><strong>API 是命令接口，MCP 是语义协议。</strong><br>API 告诉你“做什么”；<br>MCP 确保“模型为什么要做、能不能做、如何安全地做”。</p>
+</blockquote>
+<h1 id="非常精准的问题-⚡"><a href="#非常精准的问题-⚡" class="headerlink" title="非常精准的问题 ⚡"></a>非常精准的问题 ⚡</h1><blockquote>
+<p>“MCP 为何附带了上下文（context）？”</p>
+</blockquote>
+<p>这个其实是 <strong>Model Context Protocol 的根本设计哲学所在</strong>，<br>也是它区别于传统 API、RPC、GraphQL 的<strong>灵魂部分</strong>。</p>
+<hr>
+<h2 id="🧩-一句话回答"><a href="#🧩-一句话回答" class="headerlink" title="🧩 一句话回答"></a>🧩 一句话回答</h2><blockquote>
+<p>因为 <strong>AI 模型的行为不是“单次请求”，而是“连续推理”</strong>。</p>
+<p>MCP 附带上下文，是为了让模型在多轮对话、工具调用、任务链中——<br><strong>保持语义连续性、安全边界与决策可解释性。</strong></p>
+</blockquote>
+<hr>
+<h2 id="🧠-一、为什么传统-API-没有“上下文”"><a href="#🧠-一、为什么传统-API-没有“上下文”" class="headerlink" title="🧠 一、为什么传统 API 没有“上下文”"></a>🧠 一、为什么传统 API 没有“上下文”</h2><table>
+<thead>
+<tr>
+<th>特点</th>
+<th>传统 API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设计对象</td>
+<td>程序员 &#x2F; 服务调用</td>
+</tr>
+<tr>
+<td>调用方式</td>
+<td><strong>无状态（stateless）</strong></td>
+</tr>
+<tr>
+<td>每次请求</td>
+<td>完全独立（不依赖之前对话）</td>
+</tr>
+<tr>
+<td>控制方式</td>
+<td>依靠显式参数和 Token</td>
+</tr>
+<tr>
+<td>执行逻辑</td>
+<td>“一次请求 → 一次响应”</td>
+</tr>
+</tbody></table>
+<p>传统 API 假设：</p>
+<blockquote>
+<p>“调用者知道自己要什么，也能准确描述参数。”</p>
+</blockquote>
+<p>但大模型不同：</p>
+<ul>
+<li>它在<strong>推理中逐步形成意图</strong>；</li>
+<li>可能会调用多个工具；</li>
+<li>它的“目标”与“中间动作”是动态生成的；</li>
+<li>而且模型没有持续的“内部记忆”。</li>
+</ul>
+<p>所以，如果没有“上下文”，模型就会迷失在自己的调用里。</p>
+<hr>
+<h2 id="🧬-二、MCP-附带上下文的核心原因（3个层面）"><a href="#🧬-二、MCP-附带上下文的核心原因（3个层面）" class="headerlink" title="🧬 二、MCP 附带上下文的核心原因（3个层面）"></a>🧬 二、MCP 附带上下文的核心原因（3个层面）</h2><h3 id="1️⃣-语义连续性"><a href="#1️⃣-语义连续性" class="headerlink" title="1️⃣ 语义连续性"></a>1️⃣ <strong>语义连续性</strong></h3><p>模型每一步调用，都建立在之前理解、用户目标、工具反馈之上。<br>MCP 通过上下文字段让每次调用都能继承这条语义链。</p>
+<p>例如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;context&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;conversation_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;abc123&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;user_goal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;分析系统性能瓶颈&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;previous_tool&quot;</span><span class="punctuation">:</span> <span class="string">&quot;monitor.cpu&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;prior_results&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;cpu_usage&quot;</span><span class="punctuation">:</span> <span class="number">95</span> <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;operation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;analyze_memory&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>→ MCP Server 能理解：这是一次“同一任务链的下一步”，不是新的随机请求。</p>
+<hr>
+<h3 id="2️⃣-安全与权限跟踪"><a href="#2️⃣-安全与权限跟踪" class="headerlink" title="2️⃣ 安全与权限跟踪"></a>2️⃣ <strong>安全与权限跟踪</strong></h3><p>MCP 的上下文不仅包括语义，也包括：</p>
+<ul>
+<li>用户身份 &#x2F; 授权</li>
+<li>当前会话风险等级</li>
+<li>操作范围限制（scope）</li>
+</ul>
+<p>这样可以做到：</p>
+<ul>
+<li>“AI 调用文件系统”时，知道当前是谁授权的；</li>
+<li>“上一步批准删除 temp 文件”，本步不能突然删除 <code>/root</code>；</li>
+<li>“任务处于高风险态”，需要再次确认。</li>
+</ul>
+<p>→ 即 <strong>上下文 &#x3D; 安全护栏</strong>。</p>
+<hr>
+<h3 id="3️⃣-可解释性与审计"><a href="#3️⃣-可解释性与审计" class="headerlink" title="3️⃣ 可解释性与审计"></a>3️⃣ <strong>可解释性与审计</strong></h3><p>上下文让整个推理-执行链可追溯：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User Intent → AI Reasoning → MCP Tool Calls → Responses → Final Action</span><br></pre></td></tr></table></figure>
+
+<p>每个环节都记录在 context trace 里，<br>你可以事后回溯模型当时的想法、调用理由、执行内容。<br>这在 AI 安全和可信执行中极其重要。</p>
+<hr>
+<h2 id="⚙️-三、MCP-上下文的结构（示例）"><a href="#⚙️-三、MCP-上下文的结构（示例）" class="headerlink" title="⚙️ 三、MCP 上下文的结构（示例）"></a>⚙️ 三、MCP 上下文的结构（示例）</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;context&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;session_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;chat_0721&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;user_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;u_1209&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;intent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;debug webapp error&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;history&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span><span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;why is my app crashing?&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span><span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;model&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;checking logs&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span><span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tool&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;found error 500 at /auth&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;read_logs&quot;</span><span class="punctuation">,</span> <span class="string">&quot;query_db&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sandbox&quot;</span><span class="punctuation">:</span> <span class="string">&quot;container_01&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;risk_level&quot;</span><span class="punctuation">:</span> <span class="string">&quot;medium&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;operation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;query_db&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;table&quot;</span><span class="punctuation">:</span> <span class="string">&quot;errors&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;limit&quot;</span><span class="punctuation">:</span> <span class="number">10</span> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>MCP Server 收到这个请求，可以：</p>
+<ul>
+<li>判断是否越权；</li>
+<li>在正确容器中执行；</li>
+<li>返回结果并带上审计信息。</li>
+</ul>
+<hr>
+<h2 id="🔄-四、上下文如何影响模型行为（实际效果）"><a href="#🔄-四、上下文如何影响模型行为（实际效果）" class="headerlink" title="🔄 四、上下文如何影响模型行为（实际效果）"></a>🔄 四、上下文如何影响模型行为（实际效果）</h2><table>
+<thead>
+<tr>
+<th>没有上下文</th>
+<th>有上下文 (MCP)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型调用一次 API 后忘记目标</td>
+<td>模型能连续执行多步推理</td>
+</tr>
+<tr>
+<td>无法记住用户的授权范围</td>
+<td>每步调用自动继承 scope</td>
+</tr>
+<tr>
+<td>容易重复或冲突执行</td>
+<td>能自我协调、跳过已执行步骤</td>
+</tr>
+<tr>
+<td>无法审计模型意图链</td>
+<td>审计清晰，可解释与回溯</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧰-五、上下文的三大类型（在-MCP-中）"><a href="#🧰-五、上下文的三大类型（在-MCP-中）" class="headerlink" title="🧰 五、上下文的三大类型（在 MCP 中）"></a>🧰 五、上下文的三大类型（在 MCP 中）</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>内容</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>语义上下文 (Semantic Context)</strong></td>
+<td>用户意图、对话历史、前序工具调用</td>
+<td>保证推理连续性</td>
+</tr>
+<tr>
+<td><strong>安全上下文 (Security Context)</strong></td>
+<td>授权信息、风险等级、操作范围</td>
+<td>防止越权、误操作</td>
+</tr>
+<tr>
+<td><strong>执行上下文 (Execution Context)</strong></td>
+<td>工具状态、运行容器、缓存、锁</td>
+<td>保证正确执行与复现性</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-六、类比帮助理解"><a href="#🧩-六、类比帮助理解" class="headerlink" title="🧩 六、类比帮助理解"></a>🧩 六、类比帮助理解</h2><table>
+<thead>
+<tr>
+<th>类比</th>
+<th>MCP 上下文的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🧠 大脑记忆</td>
+<td>让 AI 知道自己在干什么</td>
+</tr>
+<tr>
+<td>🔒 权限令牌</td>
+<td>限制 AI 行为的边界</td>
+</tr>
+<tr>
+<td>📜 行动日志</td>
+<td>保证后续步骤能被审计与解释</td>
+</tr>
+<tr>
+<td>🧭 工作流上下文</td>
+<td>让任务链能继续执行下去</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-七、总结一句话"><a href="#🧠-七、总结一句话" class="headerlink" title="🧠 七、总结一句话"></a>🧠 七、总结一句话</h2><blockquote>
+<p><strong>MCP 附带上下文，是因为 AI 的调用不是一次请求，而是一次“语义任务链”</strong>。</p>
+<p>上下文让 MCP 能做到：</p>
+<ul>
+<li>让模型知道自己在哪个任务阶段（连续性）；</li>
+<li>让系统知道模型能做什么（安全性）；</li>
+<li>让开发者知道模型为何这样做（可解释性）。</li>
+</ul>
+</blockquote>
+<h1 id="“为了安全，可以考虑在-MCP-里支持-schema”"><a href="#“为了安全，可以考虑在-MCP-里支持-schema”" class="headerlink" title="“为了安全，可以考虑在 MCP 里支持 schema”"></a>“为了安全，可以考虑在 MCP 里支持 <strong>schema</strong>”</h1><p>正是目前 MCP（Model Context Protocol）未来演进的关键方向之一。<br>我们可以这样理解：</p>
+<blockquote>
+<p><strong>Schema 是 MCP 安全与可信语义的“宪法”</strong>。<br>它不仅描述“能调用什么”，还定义“能怎么调用”“返回什么”“谁能调用”。</p>
+</blockquote>
+<hr>
+<h2 id="🧩-一、为什么-MCP-必须支持-Schema"><a href="#🧩-一、为什么-MCP-必须支持-Schema" class="headerlink" title="🧩 一、为什么 MCP 必须支持 Schema"></a>🧩 一、为什么 MCP 必须支持 Schema</h2><p>传统 API 通过 OpenAPI &#x2F; GraphQL SDL 等 schema<br>→ 约束人类开发者的调用方式。</p>
+<p>但在 MCP 中，调用者是 <strong>AI 模型</strong>。<br>模型不会“遵守约定”，它会：</p>
+<ul>
+<li>自动生成参数；</li>
+<li>推理目标；</li>
+<li>有时理解错误（或恶意提示攻击被诱导执行高危操作）。</li>
+</ul>
+<p>👉 因此，我们不能只靠接口签名约束，而要靠 <strong>schema 层面的强验证</strong> 来：</p>
+<ol>
+<li>防止模型生成不合规请求；</li>
+<li>限定高风险字段、参数范围；</li>
+<li>让主机能语义验证调用是否匹配意图。</li>
+</ol>
+<hr>
+<h2 id="🧠-二、MCP-Schema-的三重作用"><a href="#🧠-二、MCP-Schema-的三重作用" class="headerlink" title="🧠 二、MCP Schema 的三重作用"></a>🧠 二、MCP Schema 的三重作用</h2><table>
+<thead>
+<tr>
+<th>作用层</th>
+<th>目的</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>① 接口定义层</strong></td>
+<td>规范工具的输入输出结构</td>
+<td>类似 OpenAPI &#x2F; JSON Schema</td>
+</tr>
+<tr>
+<td><strong>② 安全策略层</strong></td>
+<td>声明权限、风险等级、校验规则</td>
+<td>限制模型可用参数范围</td>
+</tr>
+<tr>
+<td><strong>③ 语义绑定层</strong></td>
+<td>绑定自然语言意图 ↔ 操作定义</td>
+<td>防止“偷换概念”式欺骗</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-三、MCP-Schema-的可能结构设计（示例）"><a href="#⚙️-三、MCP-Schema-的可能结构设计（示例）" class="headerlink" title="⚙️ 三、MCP Schema 的可能结构设计（示例）"></a>⚙️ 三、MCP Schema 的可能结构设计（示例）</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tool:</span> <span class="string">delete_files</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&quot;Delete temporary files safely&quot;</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">schema:</span></span><br><span class="line">  <span class="attr">input:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">object</span></span><br><span class="line">    <span class="attr">properties:</span></span><br><span class="line">      <span class="attr">path:</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">string</span></span><br><span class="line">        <span class="attr">pattern:</span> <span class="string">&quot;^/tmp/&quot;</span></span><br><span class="line">        <span class="attr">description:</span> <span class="string">&quot;File path (must be under /tmp)&quot;</span></span><br><span class="line">      <span class="attr">recursive:</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">boolean</span></span><br><span class="line">        <span class="attr">default:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">required:</span> [<span class="string">path</span>]</span><br><span class="line"></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">object</span></span><br><span class="line">    <span class="attr">properties:</span></span><br><span class="line">      <span class="attr">deleted_count:</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">integer</span></span><br><span class="line">      <span class="attr">status:</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">string</span></span><br><span class="line">        <span class="attr">enum:</span> [<span class="string">&quot;ok&quot;</span>, <span class="string">&quot;error&quot;</span>]</span><br><span class="line"></span><br><span class="line">  <span class="attr">security:</span></span><br><span class="line">    <span class="attr">risk_level:</span> <span class="string">&quot;high&quot;</span></span><br><span class="line">    <span class="attr">confirm_required:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">sandbox:</span> <span class="string">&quot;filesystem&quot;</span></span><br><span class="line">    <span class="attr">permissions:</span> [<span class="string">&quot;delete_temp_files&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>📍 功能说明：</p>
+<ul>
+<li><code>schema.input</code>：定义输入参数格式与正则约束。</li>
+<li><code>schema.output</code>：定义返回值结构。</li>
+<li><code>schema.security</code>：描述安全策略与执行条件。</li>
+</ul>
+<hr>
+<h2 id="🧰-四、在执行流程中的作用"><a href="#🧰-四、在执行流程中的作用" class="headerlink" title="🧰 四、在执行流程中的作用"></a>🧰 四、在执行流程中的作用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">大模型 → 生成 MCP 请求</span><br><span class="line">   ↓</span><br><span class="line">MCP Adapter → 校验请求 against Schema</span><br><span class="line">   ↓</span><br><span class="line">[ 通过 ] → 发送至 MCP Server</span><br><span class="line">[ 拒绝 ] → 触发安全提示 / 人类确认</span><br></pre></td></tr></table></figure>
+
+<p>这一步是 <strong>“语义级防火墙”</strong>：</p>
+<ul>
+<li>模型说“删除无用文件”，系统检查路径 <code>/home/user</code> ❌ 不在 <code>/tmp/</code> 内 → 拒绝执行。</li>
+<li>模型参数不匹配 schema → 拒绝。</li>
+</ul>
+<hr>
+<h2 id="🔒-五、MCP-Schema-的安全增益"><a href="#🔒-五、MCP-Schema-的安全增益" class="headerlink" title="🔒 五、MCP Schema 的安全增益"></a>🔒 五、MCP Schema 的安全增益</h2><table>
+<thead>
+<tr>
+<th>风险类型</th>
+<th>Schema 防护方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数注入 &#x2F; 越权</td>
+<td>字段约束 + 正则匹配</td>
+</tr>
+<tr>
+<td>高风险操作伪装</td>
+<td>风险级别标签 + 人类确认机制</td>
+</tr>
+<tr>
+<td>语义欺骗</td>
+<td>意图 → 操作映射验证</td>
+</tr>
+<tr>
+<td>数据泄露</td>
+<td>输出字段过滤</td>
+</tr>
+<tr>
+<td>Prompt 注入</td>
+<td>仅接受 schema 合规字段</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-六、MCP-Schema-≠-OpenAPI"><a href="#🧩-六、MCP-Schema-≠-OpenAPI" class="headerlink" title="🧩 六、MCP Schema ≠ OpenAPI"></a>🧩 六、MCP Schema ≠ OpenAPI</h2><p>区别如下：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>OpenAPI &#x2F; REST</th>
+<th>MCP Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>使用者</td>
+<td>人类开发者</td>
+<td>AI 模型</td>
+</tr>
+<tr>
+<td>验证目标</td>
+<td>语法合法性</td>
+<td><strong>语义与安全一致性</strong></td>
+</tr>
+<tr>
+<td>安全模型</td>
+<td>Token &#x2F; OAuth</td>
+<td><strong>语义约束 + 风险控制 + 审计</strong></td>
+</tr>
+<tr>
+<td>表达能力</td>
+<td>HTTP 请求结构</td>
+<td>工具意图、权限、执行沙箱等</td>
+</tr>
+<tr>
+<td>调用上下文</td>
+<td>无状态</td>
+<td>继承上下文（Conversation + Intent）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-七、MCP-Schema-与上下文结合"><a href="#🧠-七、MCP-Schema-与上下文结合" class="headerlink" title="🧠 七、MCP Schema 与上下文结合"></a>🧠 七、MCP Schema 与上下文结合</h2><p>Schema 可以与 <strong>context</strong> 配合使用：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;context&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;user_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;U123&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;session_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;S456&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sandbox&quot;</span><span class="punctuation">:</span> <span class="string">&quot;container_01&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;operation&quot;</span><span class="punctuation">:</span> <span class="string">&quot;delete_files&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/tmp/logs/&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;recursive&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;schema_ref&quot;</span><span class="punctuation">:</span> <span class="string">&quot;delete_files@1.0&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>系统自动：</p>
+<ul>
+<li>依据上下文检查权限；</li>
+<li>依据 schema 校验参数；</li>
+<li>审计执行。</li>
+</ul>
+<p>最终 → 形成 <strong>安全上下文 + schema 双约束机制</strong>。</p>
+<hr>
+<h2 id="🧭-八、类比理解"><a href="#🧭-八、类比理解" class="headerlink" title="🧭 八、类比理解"></a>🧭 八、类比理解</h2><table>
+<thead>
+<tr>
+<th>类比</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🧩 Schema 是“合同”</td>
+<td>定义 AI 工具能干什么、怎么干</td>
+</tr>
+<tr>
+<td>🔒 Context 是“执行现场”</td>
+<td>记录当时谁、为什么、在什么环境下执行</td>
+</tr>
+<tr>
+<td>🧠 MCP 是“智能中枢”</td>
+<td>让模型基于这两者安全地调用外部世界</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="💡-九、可视化结构（逻辑层）"><a href="#💡-九、可视化结构（逻辑层）" class="headerlink" title="💡 九、可视化结构（逻辑层）"></a>💡 九、可视化结构（逻辑层）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│  大模型 / MCP Client               │</span><br><span class="line">│  - 自然语言意图                    │</span><br><span class="line">│  - 生成调用请求                    │</span><br><span class="line">└──────────────┬──────────────────────┘</span><br><span class="line">               │</span><br><span class="line">         [Schema Validator]</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│  MCP Protocol Layer                 │</span><br><span class="line">│  - Context 绑定                     │</span><br><span class="line">│  - 权限控制 / 审计                  │</span><br><span class="line">└──────────────┬──────────────────────┘</span><br><span class="line">               │</span><br><span class="line">               ▼</span><br><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│  MCP Server / Tool                  │</span><br><span class="line">│  - 执行已验证操作                   │</span><br><span class="line">│  - 产出结构化输出                   │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-十、总结一句话"><a href="#🧠-十、总结一句话" class="headerlink" title="🧠 十、总结一句话"></a>🧠 十、总结一句话</h2><blockquote>
+<p><strong>Schema 是让 MCP 可验证、可控、可解释的关键机制。</strong></p>
+<p>它让大模型的“语义自由”<br>→ 被约束在安全、透明、可审计的框架之中。</p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#api" >
+    <span class="tag-code">api</span>
+  </a>
+
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#copilot" >
+    <span class="tag-code">copilot</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/10/23/ai_tools/mcp%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E5%AE%89%E5%85%A8%E7%96%91%E9%97%AE/">
+        <span class="nav-arrow">← </span>
+        
+          mcp调用过程和安全疑问
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/10/24/ai_tools/mcp%20schema%E4%B8%AD%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
+        
+          mcp schema中性能问题
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">🧩 一句话区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%8C%E3%80%81MCP-%E4%B8%8E-API-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-nav-text">🧠 二、MCP 与 API 的关系</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9%E4%BC%A0%E7%BB%9F-API-%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">🔹传统 API 流程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%94%B9MCP-%E6%B5%81%E7%A8%8B%EF%BC%88AI-%E8%B0%83%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-nav-text">🔹MCP 流程（AI 调用场景）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%89%E3%80%81MCP-%E7%9A%84%E6%A0%B8%E5%BF%83%E7%BB%84%E6%88%90%EF%BC%88%E5%AF%B9%E6%AF%94-API-%E6%9E%B6%E6%9E%84%EF%BC%89"><span class="toc-nav-text">🧩 三、MCP 的核心组成（对比 API 架构）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B0-%E5%9B%9B%E3%80%81%E7%B1%BB%E6%AF%94%E7%90%86%E8%A7%A3"><span class="toc-nav-text">🧰 四、类比理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%94%E3%80%81%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%84%EF%BC%88%E7%AE%80%E5%8C%96%EF%BC%89"><span class="toc-nav-text">⚙️ 五、可视化结构（简化）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%92-%E5%85%AD%E3%80%81%E5%AE%89%E5%85%A8%E4%B8%8E%E6%B2%BB%E7%90%86%E5%B1%82%EF%BC%88MCP-%E7%8B%AC%E6%9C%89%EF%BC%89"><span class="toc-nav-text">🔒 六、安全与治理层（MCP 独有）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">🧩 七、总结核心区别一句话</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%9D%9E%E5%B8%B8%E7%B2%BE%E5%87%86%E7%9A%84%E9%97%AE%E9%A2%98-%E2%9A%A1"><span class="toc-nav-text">非常精准的问题 ⚡</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%9B%9E%E7%AD%94"><span class="toc-nav-text">🧩 一句话回答</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%A0%E7%BB%9F-API-%E6%B2%A1%E6%9C%89%E2%80%9C%E4%B8%8A%E4%B8%8B%E6%96%87%E2%80%9D"><span class="toc-nav-text">🧠 一、为什么传统 API 没有“上下文”</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AC-%E4%BA%8C%E3%80%81MCP-%E9%99%84%E5%B8%A6%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%9B%A0%EF%BC%883%E4%B8%AA%E5%B1%82%E9%9D%A2%EF%BC%89"><span class="toc-nav-text">🧬 二、MCP 附带上下文的核心原因（3个层面）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-%E8%AF%AD%E4%B9%89%E8%BF%9E%E7%BB%AD%E6%80%A7"><span class="toc-nav-text">1️⃣ 语义连续性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-%E5%AE%89%E5%85%A8%E4%B8%8E%E6%9D%83%E9%99%90%E8%B7%9F%E8%B8%AA"><span class="toc-nav-text">2️⃣ 安全与权限跟踪</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E4%B8%8E%E5%AE%A1%E8%AE%A1"><span class="toc-nav-text">3️⃣ 可解释性与审计</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%B8%89%E3%80%81MCP-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9A%84%E7%BB%93%E6%9E%84%EF%BC%88%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="toc-nav-text">⚙️ 三、MCP 上下文的结构（示例）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%84-%E5%9B%9B%E3%80%81%E4%B8%8A%E4%B8%8B%E6%96%87%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E6%A8%A1%E5%9E%8B%E8%A1%8C%E4%B8%BA%EF%BC%88%E5%AE%9E%E9%99%85%E6%95%88%E6%9E%9C%EF%BC%89"><span class="toc-nav-text">🔄 四、上下文如何影响模型行为（实际效果）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B0-%E4%BA%94%E3%80%81%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9A%84%E4%B8%89%E5%A4%A7%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%9C%A8-MCP-%E4%B8%AD%EF%BC%89"><span class="toc-nav-text">🧰 五、上下文的三大类型（在 MCP 中）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E5%85%AD%E3%80%81%E7%B1%BB%E6%AF%94%E5%B8%AE%E5%8A%A9%E7%90%86%E8%A7%A3"><span class="toc-nav-text">🧩 六、类比帮助理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">🧠 七、总结一句话</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%80%9C%E4%B8%BA%E4%BA%86%E5%AE%89%E5%85%A8%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%80%83%E8%99%91%E5%9C%A8-MCP-%E9%87%8C%E6%94%AF%E6%8C%81-schema%E2%80%9D"><span class="toc-nav-text">“为了安全，可以考虑在 MCP 里支持 schema”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88-MCP-%E5%BF%85%E9%A1%BB%E6%94%AF%E6%8C%81-Schema"><span class="toc-nav-text">🧩 一、为什么 MCP 必须支持 Schema</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%8C%E3%80%81MCP-Schema-%E7%9A%84%E4%B8%89%E9%87%8D%E4%BD%9C%E7%94%A8"><span class="toc-nav-text">🧠 二、MCP Schema 的三重作用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%B8%89%E3%80%81MCP-Schema-%E7%9A%84%E5%8F%AF%E8%83%BD%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%88%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="toc-nav-text">⚙️ 三、MCP Schema 的可能结构设计（示例）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B0-%E5%9B%9B%E3%80%81%E5%9C%A8%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-nav-text">🧰 四、在执行流程中的作用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%92-%E4%BA%94%E3%80%81MCP-Schema-%E7%9A%84%E5%AE%89%E5%85%A8%E5%A2%9E%E7%9B%8A"><span class="toc-nav-text">🔒 五、MCP Schema 的安全增益</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E5%85%AD%E3%80%81MCP-Schema-%E2%89%A0-OpenAPI"><span class="toc-nav-text">🧩 六、MCP Schema ≠ OpenAPI</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%83%E3%80%81MCP-Schema-%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E7%BB%93%E5%90%88"><span class="toc-nav-text">🧠 七、MCP Schema 与上下文结合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E5%85%AB%E3%80%81%E7%B1%BB%E6%AF%94%E7%90%86%E8%A7%A3"><span class="toc-nav-text">🧭 八、类比理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%B9%9D%E3%80%81%E5%8F%AF%E8%A7%86%E5%8C%96%E7%BB%93%E6%9E%84%EF%BC%88%E9%80%BB%E8%BE%91%E5%B1%82%EF%BC%89"><span class="toc-nav-text">💡 九、可视化结构（逻辑层）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E5%8D%81%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-nav-text">🧠 十、总结一句话</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/10/23/ai_tools/mcp和api的区别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

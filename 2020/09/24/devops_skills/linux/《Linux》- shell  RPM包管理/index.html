@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- shell RPM包管理 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- shell RPM包管理</h2>
+  <p class="post-date">2020-09-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="linux-源码包"><a href="#linux-源码包" class="headerlink" title="linux 源码包"></a>linux 源码包</h3><blockquote>
+<p>编译源码包，安装速度很慢，尽可能采用二进制包，<br>编译源码包，需要gcc编译器二进制安装包；编译器是c c++编写的。<br>rpm包，安装速度快，但看不到源码，存在固定的依赖性</p>
+</blockquote>
+<ul>
+<li>通过<a href="www.rpmfind.net">www.rpmfind.net</a> 查看依赖文件所在包名称</li>
+</ul>
+<h3 id="rpm包全名"><a href="#rpm包全名" class="headerlink" title="rpm包全名"></a>rpm包全名</h3><blockquote>
+<p>httpd-2.2.15-15.el6.centos.1.i686.rpm</p>
+</blockquote>
+<ul>
+<li>httpd 包名</li>
+<li>2.2.15 版本号</li>
+<li>15 发行次数</li>
+<li>el6 发行商。代表red Hat</li>
+<li>i686 适合的平台</li>
+</ul>
+<h3 id="rpm包安装"><a href="#rpm包安装" class="headerlink" title="rpm包安装"></a>rpm包安装</h3><blockquote>
+<p>源码包和rpm包安装路径不同，同一个服务器可以安装，但是只能启动一个，服务占用的端口互斥<br>rpm采用系统默认安装路径；源码包，采用指定路径，默认&#x2F;usr&#x2F;local</p>
+</blockquote>
+<ul>
+<li>rpm默认路径也可以指定，但是这样会影响启动，找默认路径，找不到，调用失败<br><img src="https://s1.ax1x.com/2020/09/25/09SW8I.md.png"></li>
+</ul>
+<blockquote>
+<p>安装格式</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># install verbose hash# </span><br><span class="line">rpm -ivh [包全名1] [包全名2] ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>–nodeps：不检测依赖性安装。软件安装时会检测依赖性，确定所需的底层软件是否安装，如果没有安装则会报错。如果不管依赖性，想强制安装，则可以使用这个选项。注意：这样不检测依赖性安装的软件基本上是不能使用的，所以不建议这样做。</li>
+<li>–replacefiles：替换文件安装。如果要安装软件包，但是包中的部分文件已经存在，那么在正常安装时会报“某个文件已经存在”的错误，从而导致软件无法安装。使用这个选项可以忽视这个报错而覆盖安装。</li>
+<li>–replacepkgs：替换软件包安装。如果软件包已经安装，那么此选项可以把软件包重复安装一遍。</li>
+<li>–force：强制安装。不管是否已经安装，都重新安装。也就是–replacefiles和–replacepkgs的综合。</li>
+<li>–test：测试安装。不会实际安装，只是检测一下依赖性。</li>
+<li>–prefix：指定安装路径。为安装软件指定安装路径，而不使用默认安装路径。注意：如果指定了安装路径，软件没有安装到系统默认路径中，那么系统会找不到这些安装的软件，需要进行手工配置才能被系统识别。所以，我们一般采用默认路径安装RPM包</li>
+</ul>
+<blockquote>
+<p>升级更新</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#如果没有安装，则自动安装</span><br><span class="line">rpm -Uvh 包全名</span><br><span class="line"></span><br><span class="line">#必须先安装低版本，才能安装高版本</span><br><span class="line">rpm -Fvh 包全名</span><br></pre></td></tr></table></figure>
+
+<h3 id="rpm命令"><a href="#rpm命令" class="headerlink" title="rpm命令"></a>rpm命令</h3><blockquote>
+<p>rpm包搜索，搜索&#x2F;var&#x2F;lib&#x2F;rpm下二进制文件</p>
+</blockquote>
+<blockquote>
+<p>rpm包文件校验, 已经安装的文件和&#x2F;var&#x2F;lib&#x2F;rpm&#x2F;目录下的数据库内容进行比较，以确定是否有文件被修改</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -V httpd</span><br><span class="line"></span><br><span class="line">#校验所有已安装的</span><br><span class="line">rpm -Va</span><br></pre></td></tr></table></figure>
+<ul>
+<li>S：文件大小是否改变。</li>
+<li>M ：文件的类型或文件的权限（rwx）是否改变。</li>
+<li>5：文件MD5校验和是否改变（可以看成文件内容是否改变）。</li>
+<li>D：设备的主从代码是否改变。* L：文件路径是否改变。</li>
+<li>U：文件的属主（所有者）是否改变。</li>
+<li>G：文件的属组是否改变。</li>
+<li>T：文件的修改时间是否改变。apache配置文件的文件类型是c，那么，还有哪些文件类型呢？</li>
+<li>c：配置文件（configuration file）。</li>
+<li>d：普通文档（documentation）。</li>
+<li>g:“鬼”文件（ghost file），很少见，就是该文件不应该被这个RPM包包含。</li>
+<li>l：授权文件（license file）。</li>
+<li>r：描述文件（read me）。</li>
+</ul>
+<h4 id="已安装包"><a href="#已安装包" class="headerlink" title="已安装包"></a>已安装包</h4><blockquote>
+<p>是否安装包名</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -q httpd </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查看所有已安装包</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep httpd </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查看包详情</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qi httpd </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查看包文件列表</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ql httpd </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看系统文件属于哪个安装包</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qf /bin/ls</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看系统中特定包的依赖关系</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qR httpd</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>卸载, 必须按照依赖关系，逐个卸载，否在其他软件无法使用<br> –nodeps 忽略依赖，直接卸载</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e（erase） httpd</span><br></pre></td></tr></table></figure>
+
+<h4 id="未安装包"><a href="#未安装包" class="headerlink" title="未安装包"></a>未安装包</h4><blockquote>
+<p>查看包信息</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qip 包全名</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查看包文件列表</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qlp 包全名 </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看包的依赖关系</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qRp httpd</span><br></pre></td></tr></table></figure>
+
+<h3 id="cpio"><a href="#cpio" class="headerlink" title="cpio"></a>cpio</h3><h4 id="文件备份"><a href="#文件备份" class="headerlink" title="文件备份"></a>文件备份</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 备份到文件库</span><br><span class="line">cpio -ocvB &gt; xxx.cpio</span><br><span class="line">-o 输出</span><br><span class="line">-c 新portable format格式 </span><br><span class="line">-v 显示详情</span><br><span class="line">-B 块形式</span><br><span class="line"></span><br><span class="line">find . -print | cpio -ocvB &gt; tt.cpio</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="文件提取"><a href="#文件提取" class="headerlink" title="文件提取"></a>文件提取</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cpio -icvdu &lt; tt.cpio</span><br><span class="line">-i 提取</span><br><span class="line">-c </span><br><span class="line">-d 自动创建文件夹</span><br><span class="line">-u 新的文件覆盖旧文件</span><br><span class="line">-v 显示过程</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件夹备份"><a href="#文件夹备份" class="headerlink" title="文件夹备份"></a>文件夹备份</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -print | cpio -p /temp/test </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>文件提取</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm2cpio 包全名 | cpio -ivduc 路径</span><br></pre></td></tr></table></figure>
+
+<h3 id="服务启动"><a href="#服务启动" class="headerlink" title="服务启动"></a>服务启动</h3> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">service 服务名 start | restart | stop | status </span><br><span class="line"></span><br><span class="line">service httpd restart </span><br><span class="line"></span><br><span class="line">netstat -tlun | grep 80 </span><br></pre></td></tr></table></figure>
+
+<h3 id="SRPM包"><a href="#SRPM包" class="headerlink" title="SRPM包"></a>SRPM包</h3><blockquote>
+<p>源码形式封装成rpm包发布</p>
+</blockquote>
+<h4 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h4><ul>
+<li><p>利用rpmbuild –需要手动安装</p>
+<blockquote>
+<p>rpmbuild命令就是先把SRPM包解开，得到源码包；然后进行编译，生成二进制文件；最后把二进制文件重新打包生成RPM包</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#--rebuild只编译，不安装 </span><br><span class="line">#--recompile编译且安装</span><br><span class="line">rpmbuild --rebuild xxx.src.rpm </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用*.spec</p>
+</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/20/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20vim/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell vim
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/09/25/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%20rpm%20yum%E7%AE%A1%E7%90%86/">
+        
+          《Linux》- shell rpm yum管理
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#linux-%E6%BA%90%E7%A0%81%E5%8C%85"><span class="toc-nav-text">linux 源码包</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rpm%E5%8C%85%E5%85%A8%E5%90%8D"><span class="toc-nav-text">rpm包全名</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rpm%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-nav-text">rpm包安装</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rpm%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">rpm命令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B7%B2%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-nav-text">已安装包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%AA%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-nav-text">未安装包</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#cpio"><span class="toc-nav-text">cpio</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%87%E4%BB%BD"><span class="toc-nav-text">文件备份</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E6%8F%90%E5%8F%96"><span class="toc-nav-text">文件提取</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B9%E5%A4%87%E4%BB%BD"><span class="toc-nav-text">文件夹备份</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">服务启动</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#SRPM%E5%8C%85"><span class="toc-nav-text">SRPM包</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">安装方式</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/24/devops_skills/linux/《Linux》- shell  RPM包管理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

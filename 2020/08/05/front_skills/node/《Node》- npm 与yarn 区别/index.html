@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Node》- npm 与yarn 区别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Node》- npm 与yarn 区别</h2>
+  <p class="post-date">2020-08-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-node-安装"><a href="#1-node-安装" class="headerlink" title="1.node 安装"></a>1.node 安装</h3><blockquote>
+<p>npm是node安装包中默认自带的，推荐使用<a target="_blank" rel="noopener" href="https://juejin.im/post/6844904033187004430">nvm</a>等node版本管理工具安装，避免可能的权限问题</p>
+</blockquote>
+<h4 id="npm-版本验证"><a href="#npm-版本验证" class="headerlink" title="npm 版本验证"></a>npm 版本验证</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">v10.19.0</span><br><span class="line">$ npm -v</span><br><span class="line">6.14.2</span><br></pre></td></tr></table></figure>
+<h4 id="npm-更新"><a href="#npm-更新" class="headerlink" title="npm 更新"></a>npm 更新</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[sudo] npm install npm -g</span><br></pre></td></tr></table></figure>
+<h4 id="npm-latest安装"><a href="#npm-latest安装" class="headerlink" title="npm latest安装"></a><a target="_blank" rel="noopener" href="https://docs.npmjs.com/about-npm-versions">npm latest安装</a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install npm@latest -g</span><br></pre></td></tr></table></figure>
+<h4 id="npm-next安装"><a href="#npm-next安装" class="headerlink" title="npm next安装"></a>npm next安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install npm@next -g</span><br></pre></td></tr></table></figure>
+
+<h4 id="npm-debug-log定位失败原因"><a href="#npm-debug-log定位失败原因" class="headerlink" title="npm-debug.log定位失败原因"></a>npm-debug.log定位失败原因</h4><blockquote>
+<p>npm install or npm publish 失败时候，通常.npm文件夹下会产生日志npm-debug.log</p>
+</blockquote>
+<blockquote>
+<p>cli构建或者npm Enterprise用户，不适用此方法，<a target="_blank" rel="noopener" href="https://docs.npmjs.com/generating-and-locating-npm-debug-log-files">可参考</a></p>
+</blockquote>
+<h5 id="确定日志文件所在路径"><a href="#确定日志文件所在路径" class="headerlink" title="确定日志文件所在路径"></a>确定日志文件所在路径</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm config get cache</span><br><span class="line">/Users/hu/.npm</span><br></pre></td></tr></table></figure>
+<h5 id="开启日志"><a href="#开启日志" class="headerlink" title="开启日志"></a>开启日志</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># install </span><br><span class="line">npm install --timing</span><br><span class="line"># publish </span><br><span class="line">npm publish --timing</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-yarn-安装"><a href="#2-yarn-安装" class="headerlink" title="2.yarn 安装"></a>2.yarn 安装</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><blockquote>
+<p>全局安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g yarn</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Home Brew</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install yarn</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>script脚本安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -o- -L https://yarnpkg.com/install.sh | bash</span><br><span class="line"># 指定版本</span><br><span class="line">curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version [version]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>tar包安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /opt</span><br><span class="line">wget https://yarnpkg.com/latest.tar.gz</span><br><span class="line">tar zvxf latest.tar.gz</span><br></pre></td></tr></table></figure>
+<h4 id="yarn-版本验证"><a href="#yarn-版本验证" class="headerlink" title="yarn 版本验证"></a>yarn 版本验证</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ yarn --version</span><br><span class="line">1.22.0 </span><br><span class="line">#如果不成功，可能需要添加path</span><br><span class="line">export PATH=&quot;$PATH:/opt/yarn-[version]/bin&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="yarn-版本升级"><a href="#yarn-版本升级" class="headerlink" title="yarn 版本升级"></a>yarn 版本升级</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew upgrade yarn</span><br></pre></td></tr></table></figure>
+<h4 id="安装失败-yarn-error-log"><a href="#安装失败-yarn-error-log" class="headerlink" title="安装失败 yarn-error.log"></a>安装失败 yarn-error.log</h4><blockquote>
+<p>查看路径</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm config get cache</span><br><span class="line">/Users/hu/.npm</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>查看日志yarn-error.log</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/hu/.npm/yarn-error.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-npm-cli-与-yarn-cli-常用命令类比"><a href="#3-npm-cli-与-yarn-cli-常用命令类比" class="headerlink" title="3.npm cli 与 yarn cli 常用命令类比"></a>3.npm cli 与 yarn cli 常用命令类比</h3><table>
+<thead>
+<tr>
+<th>内容</th>
+<th>npm</th>
+<th>yarn</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>初始化工程</td>
+<td><a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli-commands/init.html">npm init</a> [-y]</td>
+<td>yarn init</td>
+</tr>
+<tr>
+<td>添加依赖</td>
+<td>npm install [package]</td>
+<td>yarn add [package]</td>
+</tr>
+<tr>
+<td>添加特定版本依赖</td>
+<td>npm install [package]@[version]</td>
+<td>yarn add [package]@[version]</td>
+</tr>
+<tr>
+<td>添加特定tag依赖</td>
+<td>npm install [package]@[tag]</td>
+<td>yarn add [package]@[tag]</td>
+</tr>
+<tr>
+<td>开发依赖</td>
+<td>npm install [pageckage] - -save-dev(-D)</td>
+<td>yarn add [package] - -dev</td>
+</tr>
+<tr>
+<td>运行时依赖</td>
+<td>npm install [package] - -save（-P）</td>
+<td>yarn add [package]</td>
+</tr>
+<tr>
+<td>optionalDependencies</td>
+<td>npm install [package] - -save-optional</td>
+<td>yarn add [package] –optional</td>
+</tr>
+<tr>
+<td>更新依赖</td>
+<td>npm upgrade [pageckage]</td>
+<td>yarn upgrade [package]</td>
+</tr>
+<tr>
+<td>更新特定版本依赖</td>
+<td>npm upgrade [pageckage]@[version]</td>
+<td>yarn upgrade [package]@[version]</td>
+</tr>
+<tr>
+<td>更新特定tag依赖</td>
+<td>npm upgrade [pageckage]@[tag]</td>
+<td>yarn upgrade [package]@[tag]</td>
+</tr>
+<tr>
+<td>删除依赖</td>
+<td>npm remove [pageckage]</td>
+<td>yarn remove [package]</td>
+</tr>
+<tr>
+<td>整体安装</td>
+<td>npm install</td>
+<td>yarn</td>
+</tr>
+</tbody></table>
+<h3 id="4-npm-cli-与-yarn-cli命令列表区别"><a href="#4-npm-cli-与-yarn-cli命令列表区别" class="headerlink" title="4. npm cli 与 yarn cli命令列表区别"></a>4. <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli-documentation/">npm cli</a> 与 <a target="_blank" rel="noopener" href="https://classic.yarnpkg.com/en/docs/cli/">yarn cli</a>命令列表区别</h3><table>
+<thead>
+<tr>
+<th>npm</th>
+<th>yarn</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>npm install [package]</td>
+<td>yarn add [package]</td>
+<td>添加单个依赖</td>
+</tr>
+<tr>
+<td>npm audit</td>
+<td>yarn audit</td>
+<td>安全性校验</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn autoclean</td>
+<td>自我移除不需要的依赖</td>
+</tr>
+<tr>
+<td>npm bin</td>
+<td>yarn bin</td>
+<td></td>
+</tr>
+<tr>
+<td>npm build</td>
+<td>&#x2F;</td>
+<td>包构建</td>
+</tr>
+<tr>
+<td>npm cache</td>
+<td>yarn cache</td>
+<td>本地缓存相关管理</td>
+</tr>
+<tr>
+<td>npm doctor 与 npm outdated</td>
+<td>yarn check</td>
+<td>两者不同，npm是判断环境和是否过期，yarn 是check依赖是否正确</td>
+</tr>
+<tr>
+<td>npm config</td>
+<td>yarn config</td>
+<td>配置信息</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn create</td>
+<td>yarn create 利用create-*模板创建项目</td>
+</tr>
+<tr>
+<td>npm install -g</td>
+<td>yarn global</td>
+<td>全局安装</td>
+</tr>
+<tr>
+<td>npm help</td>
+<td>yarn help</td>
+<td>帮助信息</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn import</td>
+<td>从package-lock.json 得到yarn.lock</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn info [package]</td>
+<td>展示package 信息</td>
+</tr>
+<tr>
+<td>npm init</td>
+<td>yarn init</td>
+<td>创建package.json</td>
+</tr>
+<tr>
+<td>npm install</td>
+<td>yarn install</td>
+<td>根据package.json配置，添加整体依赖</td>
+</tr>
+<tr>
+<td>npm ci</td>
+<td>&#x2F;</td>
+<td>根据package-lock.json配置，添加依赖，没有package-lock.json，报错退出</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn licenses</td>
+<td>列出所有安装包的licenses</td>
+</tr>
+<tr>
+<td>npm link</td>
+<td>yarn link</td>
+<td>创建符号链接</td>
+</tr>
+<tr>
+<td>npm ls</td>
+<td>yarn list</td>
+<td>列表已经安装的依赖</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn login</td>
+<td>保存npm 注册填写username,email</td>
+</tr>
+<tr>
+<td>npm logout</td>
+<td>yarn logout</td>
+<td>清空保存的username,email</td>
+</tr>
+<tr>
+<td>npm outdated</td>
+<td>yarn outdated</td>
+<td>check 版本是否过期</td>
+</tr>
+<tr>
+<td>npm owner</td>
+<td>yarn owner</td>
+<td>包管理者相关概念</td>
+</tr>
+<tr>
+<td>npm pack</td>
+<td>yarn pack</td>
+<td>创建压缩包</td>
+</tr>
+<tr>
+<td>npm publish</td>
+<td>yarn publish</td>
+<td>发布包</td>
+</tr>
+<tr>
+<td>npm uninstall</td>
+<td>yarn remove</td>
+<td>删除包依赖</td>
+</tr>
+<tr>
+<td>npm run</td>
+<td>yarn run</td>
+<td>运行scripts脚本命令</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn self-update</td>
+<td>yarn更新到最新</td>
+</tr>
+<tr>
+<td>npm dist-tag</td>
+<td>yarn tag</td>
+<td>依赖tag管理</td>
+</tr>
+<tr>
+<td>npm team</td>
+<td>yarn team</td>
+<td>team信息维护</td>
+</tr>
+<tr>
+<td>npm test</td>
+<td>yarn test</td>
+<td>包测试</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn unlink</td>
+<td>删除符号链接</td>
+</tr>
+<tr>
+<td>npm upgrade</td>
+<td>yarn upgrade</td>
+<td>更新依赖</td>
+</tr>
+<tr>
+<td>npm version</td>
+<td>yarn version</td>
+<td>版本验证</td>
+</tr>
+<tr>
+<td>&#x2F;</td>
+<td>yarn versions</td>
+<td>展示安装的node,yarn，依赖版本信息</td>
+</tr>
+</tbody></table>
+<h3 id="5-npm-安装常见18错误"><a href="#5-npm-安装常见18错误" class="headerlink" title="5.npm 安装常见18错误"></a>5.npm 安装常见18错误</h3><h4 id="1-Broken-npm-installation"><a href="#1-Broken-npm-installation" class="headerlink" title="1.Broken npm installation"></a>1.Broken npm installation</h4><blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<ul>
+<li>Mac or Linux，重新安装</li>
+<li>Windows，从<a target="_blank" rel="noopener" href="https://nodejs.org/en/">官网下载</a>node安装包，重新安装</li>
+</ul>
+<h4 id="2-Random-errors"><a href="#2-Random-errors" class="headerlink" title="2.Random errors"></a>2.Random errors</h4><blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<ul>
+<li>运行如下命令 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 清楚缓存</span><br><span class="line">npm cache clean</span><br></pre></td></tr></table></figure></li>
+<li>查看具体的错误,分析原因 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx -verbose </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-No-compatible-version-found"><a href="#3-No-compatible-version-found" class="headerlink" title="3.No compatible version found"></a>3.No compatible version found</h4><blockquote>
+<p>npm版本过低，需要升级</p>
+</blockquote>
+<blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm@latest</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-Permissions-errors"><a href="#4-Permissions-errors" class="headerlink" title="4.Permissions errors"></a>4.Permissions errors</h4><blockquote>
+<p>权限问题，安装路径拥有的权限有关，推荐使用nvm等包管理工具安装</p>
+</blockquote>
+<h4 id="5-Error-ENOENT-…"><a href="#5-Error-ENOENT-…" class="headerlink" title="5.Error: ENOENT,…"></a>5.Error: ENOENT,…</h4><blockquote>
+<p>Error: ENOENT, stat ‘C:\Users&lt;user&gt;\AppData\Roaming\npm’ on Windows 7</p>
+</blockquote>
+<blockquote>
+<p>需要确保路径存在且可写入</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\&lt;user&gt;\AppData\Roaming\npm</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-No-space"><a href="#6-No-space" class="headerlink" title="6.No space"></a>6.No space</h4><blockquote>
+<p>npm ERR! Error: ENOSPC, write。原因在于没有空间，或者权限不足，</p>
+</blockquote>
+<blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<ul>
+<li>释放磁盘空间</li>
+<li>修改路径 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config set tmp /path/to/big/drive/tmp</span><br></pre></td></tr></table></figure></li>
+<li>最终跟换有空间的服务器安装</li>
+</ul>
+<h4 id="7-No-git"><a href="#7-No-git" class="headerlink" title="7.No git"></a>7.No git</h4><blockquote>
+<p>npm ERR! not found: git ENOGIT 。</p>
+</blockquote>
+<blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://git-scm.com/book/en/Getting-Started-Installing-Git">安装git</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.npmjs.com/managing-your-profile-settings">配置git信息</a></li>
+</ul>
+<h4 id="8-Running-a-Vagrant-box…"><a href="#8-Running-a-Vagrant-box…" class="headerlink" title="8.Running a Vagrant box…"></a>8.Running a Vagrant box…</h4><h4 id="9-npm-only-uses-git…"><a href="#9-npm-only-uses-git…" class="headerlink" title="9.npm only uses git…"></a>9.npm only uses git…</h4><blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global url.&quot;https://github.com/&quot;.insteadOf git@github.com:</span><br><span class="line">git config --global url.&quot;https://&quot;.insteadOf git://</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-SSL-error"><a href="#10-SSL-error" class="headerlink" title="10.SSL error"></a>10.SSL error</h4><blockquote>
+<p>解决方法如下： </p>
+</blockquote>
+<ul>
+<li><ol>
+<li>禁用 strict-ssl <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># or </span><br><span class="line">npm config set strict-ssl false</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>查看node版本，过低，先升级node</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>更新npm <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install npm -g --ca=&quot;&quot;</span><br><span class="line">npm config set ca &quot;&quot; </span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><ol start="4">
+<li><a target="_blank" rel="noopener" href="https://github.com/npm/npm/issues/7439#issuecomment-76024878">参考proxy 相关fix</a></li>
+</ol>
+</li>
+</ul>
+<h4 id="12-Not-found-Server-error"><a href="#12-Not-found-Server-error" class="headerlink" title="12.Not found &#x2F; Server error"></a>12.Not found &#x2F; Server error</h4><blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<ul>
+<li>确保安装包存在</li>
+<li>检查网络</li>
+</ul>
+<h4 id="13-Invalid-JSON"><a href="#13-Invalid-JSON" class="headerlink" title="13.Invalid JSON"></a>13.Invalid JSON</h4><blockquote>
+<p>解放方法如下：</p>
+</blockquote>
+<ul>
+<li>清除缓存 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm cache clean</span><br></pre></td></tr></table></figure></li>
+<li>检查<a target="_blank" rel="noopener" href="https://docs.npmjs.com/misc/config">proxy配置</a></li>
+</ul>
+<h4 id="14-Many-ENOENT-ENOTEMPTY-errors-in-output"><a href="#14-Many-ENOENT-ENOTEMPTY-errors-in-output" class="headerlink" title="14.Many ENOENT &#x2F; ENOTEMPTY errors in output"></a>14.Many ENOENT &#x2F; ENOTEMPTY errors in output</h4><blockquote>
+<p>解决方法如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 升级</span><br><span class="line">npm install -g npm@latest</span><br></pre></td></tr></table></figure>
+
+<h4 id="15-cb-never-called"><a href="#15-cb-never-called" class="headerlink" title="15.cb() never called!"></a>15.cb() never called!</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 升级</span><br><span class="line">npm install -g npm@latest</span><br></pre></td></tr></table></figure>
+
+<h4 id="16-npm-login-errors"><a href="#16-npm-login-errors" class="headerlink" title="16.npm login errors"></a>16.npm login errors</h4><blockquote>
+<p>解决步骤如下：</p>
+</blockquote>
+<ul>
+<li>登录<a target="_blank" rel="noopener" href="https://npmjs.com/">npmjs.com</a></li>
+<li>修改密码</li>
+<li>清除相关文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -ie &#x27;/registry.npmjs.org/d&#x27; ~/.npmrc</span><br></pre></td></tr></table></figure></li>
+<li>重新登录</li>
+</ul>
+<h4 id="17-npm-hangs-on-Windows…"><a href="#17-npm-hangs-on-Windows…" class="headerlink" title="17.npm hangs on Windows…"></a>17.npm hangs on Windows…</h4><blockquote>
+<p>解决步骤如下：</p>
+</blockquote>
+<ul>
+<li>查看tmp文件夹<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config ls -l</span><br></pre></td></tr></table></figure></li>
+<li>删除多余的一个</li>
+</ul>
+<h4 id="18-npm-not-running-the-latest-version…"><a href="#18-npm-not-running-the-latest-version…" class="headerlink" title="18.npm not running the latest version…"></a>18.npm not running the latest version…</h4><blockquote>
+<p>解决方法，<a target="_blank" rel="noopener" href="https://docs.npmjs.com/try-the-latest-stable-version-of-npm">请移步</a></p>
+</blockquote>
+<h3 id="npm-ci"><a href="#npm-ci" class="headerlink" title="npm ci"></a>npm ci</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="Npm-Doc"><a href="#Npm-Doc" class="headerlink" title="Npm Doc"></a><a target="_blank" rel="noopener" href="https://docs.npmjs.com/getting-started/">Npm Doc</a></h4><h4 id="Yarn-Doc"><a href="#Yarn-Doc" class="headerlink" title="Yarn Doc"></a><a target="_blank" rel="noopener" href="https://yarnpkg.com/getting-started">Yarn Doc</a></h4><h4 id="npm-cli"><a href="#npm-cli" class="headerlink" title="npm cli"></a><a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli-documentation/">npm cli</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#npm" >
+    <span class="tag-code">npm</span>
+  </a>
+
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#yarn" >
+    <span class="tag-code">yarn</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/08/04/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-Angular8%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">
+        <span class="nav-arrow">← </span>
+        
+          《angular8》-Angular8多场景下单元测试实践指南
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85/">
+        
+          《Css3》- 如何成为一名前端开发者
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-node-%E5%AE%89%E8%A3%85"><span class="toc-nav-text">1.node 安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-%E7%89%88%E6%9C%AC%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">npm 版本验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-%E6%9B%B4%E6%96%B0"><span class="toc-nav-text">npm 更新</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-latest%E5%AE%89%E8%A3%85"><span class="toc-nav-text">npm latest安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-next%E5%AE%89%E8%A3%85"><span class="toc-nav-text">npm next安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-debug-log%E5%AE%9A%E4%BD%8D%E5%A4%B1%E8%B4%A5%E5%8E%9F%E5%9B%A0"><span class="toc-nav-text">npm-debug.log定位失败原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%A1%AE%E5%AE%9A%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8%E8%B7%AF%E5%BE%84"><span class="toc-nav-text">确定日志文件所在路径</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BC%80%E5%90%AF%E6%97%A5%E5%BF%97"><span class="toc-nav-text">开启日志</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-yarn-%E5%AE%89%E8%A3%85"><span class="toc-nav-text">2.yarn 安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn-%E7%89%88%E6%9C%AC%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">yarn 版本验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn-%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7"><span class="toc-nav-text">yarn 版本升级</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%89%E8%A3%85%E5%A4%B1%E8%B4%A5-yarn-error-log"><span class="toc-nav-text">安装失败 yarn-error.log</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-npm-cli-%E4%B8%8E-yarn-cli-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%B1%BB%E6%AF%94"><span class="toc-nav-text">3.npm cli 与 yarn cli 常用命令类比</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-npm-cli-%E4%B8%8E-yarn-cli%E5%91%BD%E4%BB%A4%E5%88%97%E8%A1%A8%E5%8C%BA%E5%88%AB"><span class="toc-nav-text">4. npm cli 与 yarn cli命令列表区别</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-npm-%E5%AE%89%E8%A3%85%E5%B8%B8%E8%A7%8118%E9%94%99%E8%AF%AF"><span class="toc-nav-text">5.npm 安装常见18错误</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-Broken-npm-installation"><span class="toc-nav-text">1.Broken npm installation</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-Random-errors"><span class="toc-nav-text">2.Random errors</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-No-compatible-version-found"><span class="toc-nav-text">3.No compatible version found</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-Permissions-errors"><span class="toc-nav-text">4.Permissions errors</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-Error-ENOENT-%E2%80%A6"><span class="toc-nav-text">5.Error: ENOENT,…</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-No-space"><span class="toc-nav-text">6.No space</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-No-git"><span class="toc-nav-text">7.No git</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-Running-a-Vagrant-box%E2%80%A6"><span class="toc-nav-text">8.Running a Vagrant box…</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-npm-only-uses-git%E2%80%A6"><span class="toc-nav-text">9.npm only uses git…</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#10-SSL-error"><span class="toc-nav-text">10.SSL error</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12-Not-found-Server-error"><span class="toc-nav-text">12.Not found &#x2F; Server error</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#13-Invalid-JSON"><span class="toc-nav-text">13.Invalid JSON</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#14-Many-ENOENT-ENOTEMPTY-errors-in-output"><span class="toc-nav-text">14.Many ENOENT &#x2F; ENOTEMPTY errors in output</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#15-cb-never-called"><span class="toc-nav-text">15.cb() never called!</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#16-npm-login-errors"><span class="toc-nav-text">16.npm login errors</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#17-npm-hangs-on-Windows%E2%80%A6"><span class="toc-nav-text">17.npm hangs on Windows…</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#18-npm-not-running-the-latest-version%E2%80%A6"><span class="toc-nav-text">18.npm not running the latest version…</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#npm-ci"><span class="toc-nav-text">npm ci</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Npm-Doc"><span class="toc-nav-text">Npm Doc</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Yarn-Doc"><span class="toc-nav-text">Yarn Doc</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#npm-cli"><span class="toc-nav-text">npm cli</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/05/front_skills/node/《Node》- npm 与yarn 区别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

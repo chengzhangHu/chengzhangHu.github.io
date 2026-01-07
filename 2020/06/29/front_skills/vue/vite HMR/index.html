@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      vite 文件路径 + mtime | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>vite 文件路径 + mtime</h2>
+  <p class="post-date">2020-06-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="缓存判断机制：文件路径-mtime（文件修改时间）"><a href="#缓存判断机制：文件路径-mtime（文件修改时间）" class="headerlink" title="缓存判断机制：文件路径 + mtime（文件修改时间）"></a>缓存判断机制：文件路径 + mtime（文件修改时间）</h2><p>✔️ 缓存依赖的组件：<br>ModuleGraph：Vite 内部维护的模块依赖图（在 vite&#x2F;src&#x2F;node&#x2F;server&#x2F;moduleGraph.ts 中实现）。</p>
+<p>每个模块都有：<br>url &#x2F; id：模块的唯一标识（通常是文件路径）<br>lastHMRTimestamp：用于判断该模块是否需要更新<br>transformResult：缓存上一次的编译结果（插件 transform 之后的产物）</p>
+<h3 id="⚙️-更新流程："><a href="#⚙️-更新流程：" class="headerlink" title="⚙️ 更新流程："></a>⚙️ 更新流程：</h3><p>启动时：首次访问某模块，Vite 执行插件的 transform()，然后将结果缓存。<br>变更时（通过 chokidar 文件监听）：</p>
+<p>比较文件当前的 mtime 与上次缓存时间。<br>如果不同，清除缓存并重新执行 transform()。<br>并且触发相关模块的 HMR 更新。</p>
+<p>✅ 优点：<br>精准依赖追踪。<br>避免无效编译，极大提升热更新速度。</p>
+<p>✅ 2. .vue 文件被拆分的模块路径说明：<br>当浏览器访问 &#x2F;src&#x2F;App.vue，你看到的这些路径是 Vue SFC 的拆解与模块化处理结果。</p>
+<table>
+<thead>
+<tr>
+<th>请求路径</th>
+<th>说明</th>
+<th>编译方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;src&#x2F;App.vue</td>
+<td>主模块，组合 template + script + styles</td>
+<td>JS（聚合模块）</td>
+</tr>
+<tr>
+<td>&#x2F;src&#x2F;App.vue?type&#x3D;script</td>
+<td>提取 <script> 标签内容</td>
+<td>使用 esbuild 处理 TS/JS</td>
+</tr>
+<tr>
+<td>/src/App.vue?type=template</td>
+<td>提取 <template> 模板</td>
+<td>使用 Vue compiler 编译为 render 函数</td>
+</tr>
+<tr>
+<td>/src/App.vue?type=style&index=0</td>
+<td>提取第 1 个 <style> 样式</td>
+<td>使用 PostCSS / CSS Modules / SASS 等插件处理</td>
+</tr>
+<tr>
+<td>/src/App.vue?vue&type=style&scoped=true</td>
+<td>表示带有 scoped 的样式，需要生成 scopeId 并作用于元素</td>
+<td>插件做 hash 计算作用域</td>
+</tr>
+</tbody></table>
+<p>👀 示例：你访问 /src/App.vue 实际响应内容如下：<br>import script from "/src/App.vue?type=script"<br>import { render } from "/src/App.vue?type=template"<br>script.render = render<br>export default script</p>
+<p>🔨 编译细节：<br>@vitejs/plugin-vue 使用的是 @vue/compiler-sfc。<br>它会调用 parse()、compileScript()、compileTemplate()，然后生成 JS 模块片段。<br>每个部分都是一个独立的 ES 模块，因此浏览器可以逐一请求、缓存和 HMR。</p>
+<p>📌 总结（最终版）</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>缓存机制</td>
+<td>Vite 通过文件路径 + mtime 来判断是否使用缓存编译结果</td>
+</tr>
+<tr>
+<td>Vue SFC 拆分</td>
+<td>.vue 文件被拆解为多个模块（script、template、style），分别处理，分别响应</td>
+</tr>
+<tr>
+<td>性能优势</td>
+<td>只编译必要部分，缓存智能，HMR 快速，开发体验极佳</td>
+</tr>
+</tbody></table>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#vue3" >
+    <span class="tag-code">vue3</span>
+  </a>
+
+  <a target="_blank" href="/tags#vite" >
+    <span class="tag-code">vite</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/06/29/front_skills/vue/%E3%80%8Avue%E3%80%8Bvue-cli%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E6%95%B4%E7%90%86/">
+        <span class="nav-arrow">← </span>
+        
+          《 vue 》 - vue-cli核心概念整理
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/07/02/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20Git%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/">
+        
+          《 Git 》 - Git日常开发命令从入门到精通
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BC%93%E5%AD%98%E5%88%A4%E6%96%AD%E6%9C%BA%E5%88%B6%EF%BC%9A%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84-mtime%EF%BC%88%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9%E6%97%B6%E9%97%B4%EF%BC%89"><span class="toc-nav-text">缓存判断机制：文件路径 + mtime（文件修改时间）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E6%9B%B4%E6%96%B0%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="toc-nav-text">⚙️ 更新流程：</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/06/29/front_skills/vue/vite HMR/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

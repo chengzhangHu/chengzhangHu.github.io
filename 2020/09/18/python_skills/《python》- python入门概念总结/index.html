@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《python》- python入门概念总结 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《python》- python入门概念总结</h2>
+  <p class="post-date">2020-09-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="python-介绍"><a href="#python-介绍" class="headerlink" title="python 介绍"></a>python 介绍</h3><blockquote>
+<p>2.x 与 3.x 版本不兼容, 存在以下主要不同，本问介绍基于Mac下Python3.x版本：</p>
+</blockquote>
+<h4 id="1-使用-future-模块"><a href="#1-使用-future-模块" class="headerlink" title="1. 使用__future__模块"></a>1. 使用__future__模块</h4><h4 id="2-print函数"><a href="#2-print函数" class="headerlink" title="2. print函数"></a>2. print函数</h4><h4 id="3-整数除法"><a href="#3-整数除法" class="headerlink" title="3. 整数除法"></a>3. 整数除法</h4><h4 id="4-Unicode"><a href="#4-Unicode" class="headerlink" title="4. Unicode"></a>4. Unicode</h4><h4 id="5-xrange"><a href="#5-xrange" class="headerlink" title="5. xrange"></a>5. xrange</h4><h4 id="6-触发异常"><a href="#6-触发异常" class="headerlink" title="6. 触发异常"></a>6. 触发异常</h4><h4 id="7-处理异常"><a href="#7-处理异常" class="headerlink" title="7. 处理异常"></a>7. 处理异常</h4><h4 id="8-next-函数和-next-方法"><a href="#8-next-函数和-next-方法" class="headerlink" title="8. next()函数和.next()方法"></a>8. next()函数和.next()方法</h4><h4 id="9-for循环变量与全局命名空间泄漏"><a href="#9-for循环变量与全局命名空间泄漏" class="headerlink" title="9. for循环变量与全局命名空间泄漏"></a>9. for循环变量与全局命名空间泄漏</h4><h4 id="10-比较无序类型"><a href="#10-比较无序类型" class="headerlink" title="10. 比较无序类型"></a>10. 比较无序类型</h4><h4 id="11-使用input-解析输入内容"><a href="#11-使用input-解析输入内容" class="headerlink" title="11. 使用input()解析输入内容"></a>11. 使用input()解析输入内容</h4><h4 id="12-返回可迭代对象，而不是列表"><a href="#12-返回可迭代对象，而不是列表" class="headerlink" title="12. 返回可迭代对象，而不是列表"></a>12. 返回可迭代对象，而不是列表</h4><h3 id="Python安装"><a href="#Python安装" class="headerlink" title="Python安装"></a>Python安装</h3><h4 id="官网下载安装包"><a href="#官网下载安装包" class="headerlink" title="官网下载安装包"></a><a target="_blank" rel="noopener" href="https://www.python.org/downloads/release/python-385/">官网下载安装包</a></h4><h4 id="HomeBrew"><a href="#HomeBrew" class="headerlink" title="HomeBrew"></a>HomeBrew</h4><pre><code> # 安装brew 默认安装python 3.7 
+ brew search python 
+</code></pre>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><blockquote>
+<p>6种标准对象类型：</p>
+</blockquote>
+<ul>
+<li>Number（数字）</li>
+<li>String（字符串）</li>
+<li>List（列表）</li>
+<li>Tuple（元组）</li>
+<li>Sets（集合）</li>
+<li>Dictionary（字典）</li>
+</ul>
+<h4 id="3种数值类型"><a href="#3种数值类型" class="headerlink" title="3种数值类型"></a>3种数值类型</h4><ul>
+<li>int 整型  - 正、负整数，不带小数点<blockquote>
+<p>Python3.7中，整除，需要使用&#x2F;&#x2F;， &#x2F;得到的是浮点数</p>
+</blockquote>
+</li>
+<li>float 浮点型 - 整数部分与小数部</li>
+<li>complex 复数 - 实数部分和虚数部分 <blockquote>
+<p>a+bj或complex(a,b) 表示</p>
+</blockquote>
+</li>
+<li>常量： PI</li>
+</ul>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><blockquote>
+<p>没有显示的var这类的声明，第一次默认就是变量，使用前，必须先赋值。<br>可以type(), 类似js typeof 判定类型 </p>
+</blockquote>
+<h4 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h4><blockquote>
+<p>值 + 变量 + 操作符的组合，
+ </p>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#python" >
+    <span class="tag-code">python</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/17/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%E6%90%9C%E7%B4%A2%E5%91%BD%E4%BB%A4/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell 搜索命令
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/09/18/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4/">
+        
+          《Linux》- shell 压缩命令
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#python-%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">python 介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E4%BD%BF%E7%94%A8-future-%E6%A8%A1%E5%9D%97"><span class="toc-nav-text">1. 使用__future__模块</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-print%E5%87%BD%E6%95%B0"><span class="toc-nav-text">2. print函数</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E6%95%B4%E6%95%B0%E9%99%A4%E6%B3%95"><span class="toc-nav-text">3. 整数除法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-Unicode"><span class="toc-nav-text">4. Unicode</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-xrange"><span class="toc-nav-text">5. xrange</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6-%E8%A7%A6%E5%8F%91%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">6. 触发异常</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7-%E5%A4%84%E7%90%86%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">7. 处理异常</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8-next-%E5%87%BD%E6%95%B0%E5%92%8C-next-%E6%96%B9%E6%B3%95"><span class="toc-nav-text">8. next()函数和.next()方法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9-for%E5%BE%AA%E7%8E%AF%E5%8F%98%E9%87%8F%E4%B8%8E%E5%85%A8%E5%B1%80%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E6%B3%84%E6%BC%8F"><span class="toc-nav-text">9. for循环变量与全局命名空间泄漏</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#10-%E6%AF%94%E8%BE%83%E6%97%A0%E5%BA%8F%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">10. 比较无序类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#11-%E4%BD%BF%E7%94%A8input-%E8%A7%A3%E6%9E%90%E8%BE%93%E5%85%A5%E5%86%85%E5%AE%B9"><span class="toc-nav-text">11. 使用input()解析输入内容</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12-%E8%BF%94%E5%9B%9E%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%88%97%E8%A1%A8"><span class="toc-nav-text">12. 返回可迭代对象，而不是列表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Python%E5%AE%89%E8%A3%85"><span class="toc-nav-text">Python安装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%98%E7%BD%91%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-nav-text">官网下载安装包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HomeBrew"><span class="toc-nav-text">HomeBrew</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">数据类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3%E7%A7%8D%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">3种数值类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-nav-text">变量</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">表达式</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/18/python_skills/《python》- python入门概念总结/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

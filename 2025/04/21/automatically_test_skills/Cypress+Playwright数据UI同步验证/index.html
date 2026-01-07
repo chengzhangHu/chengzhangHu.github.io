@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Cypress+Playwright数据UI同步验证 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Cypress+Playwright数据UI同步验证</h2>
+  <p class="post-date">2025-04-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>UI 数据同步验证</strong> 是确保两个或多个数据中心（DC）在展示给用户的界面数据上一致性的重要过程。UI 层的数据通常包括页面上展示的文本、表单字段、按钮状态、图片等，而这类数据会受到前端与后端交互的影响，因此在不同数据中心之间确保 UI 数据一致性需要经过仔细的验证。</p>
+<p>以下是实现 <strong>UI 数据同步验证</strong> 和 <strong>确保两个数据中心的数据一致性</strong> 的几个关键步骤：</p>
+<h3 id="1-定义同步验证标准"><a href="#1-定义同步验证标准" class="headerlink" title="1. 定义同步验证标准"></a>1. <strong>定义同步验证标准</strong></h3><p>首先，需要明确在 UI 层面，哪些数据需要同步。通常包括：</p>
+<ul>
+<li><strong>页面内容</strong>：包括文本、标题、按钮标签、表单内容等。</li>
+<li><strong>数据表格和列表</strong>：例如用户列表、产品列表等。</li>
+<li><strong>日期和时间戳</strong>：尤其是在时区不同的情况下，时间相关数据可能需要特别处理。</li>
+<li><strong>用户交互元素状态</strong>：如按钮的启用&#x2F;禁用状态、复选框的选中状态等。</li>
+</ul>
+<p>定义好验证标准后，可以为每个 UI 元素确定预期值，进而进行对比。</p>
+<h3 id="2-选择测试工具与框架"><a href="#2-选择测试工具与框架" class="headerlink" title="2. 选择测试工具与框架"></a>2. <strong>选择测试工具与框架</strong></h3><p>选择合适的自动化测试工具来执行 UI 数据同步验证。<strong>Cypress</strong> 和 <strong>Playwright</strong> 都是常用的前端自动化测试工具，可以帮助进行 UI 层的验证：</p>
+<ul>
+<li><strong>Cypress</strong>：侧重于易用性和集成，适合进行功能性 UI 测试和快速验证。</li>
+<li><strong>Playwright</strong>：支持更广泛的浏览器和设备，适合进行更复杂的 UI 测试，支持多浏览器的并行执行。</li>
+</ul>
+<h3 id="3-通过-UI-层面抓取数据"><a href="#3-通过-UI-层面抓取数据" class="headerlink" title="3. 通过 UI 层面抓取数据"></a>3. <strong>通过 UI 层面抓取数据</strong></h3><p>你可以使用 Cypress 或 Playwright 来抓取两个数据中心的 UI 元素数据，并进行对比。</p>
+<h4 id="Cypress-示例：抓取数据并对比-UI-数据"><a href="#Cypress-示例：抓取数据并对比-UI-数据" class="headerlink" title="Cypress 示例：抓取数据并对比 UI 数据"></a>Cypress 示例：抓取数据并对比 UI 数据</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;Data Center UI Sync Comparison&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;should compare UI data between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 访问数据中心1</span></span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc1List</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> dc1Data = $dc1List.<span class="title function_">map</span>(<span class="function">(<span class="params">index, element</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Cypress</span>.$(element).<span class="title function_">text</span>(); <span class="comment">// 提取文本内容</span></span><br><span class="line">      &#125;).<span class="title function_">get</span>();</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 访问数据中心2</span></span><br><span class="line">      cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc2List</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> dc2Data = $dc2List.<span class="title function_">map</span>(<span class="function">(<span class="params">index, element</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="title class_">Cypress</span>.$(element).<span class="title function_">text</span>();</span><br><span class="line">        &#125;).<span class="title function_">get</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 对比两个数据中心的 UI 数据</span></span><br><span class="line">        <span class="title function_">expect</span>(dc1Data).<span class="property">to</span>.<span class="property">deep</span>.<span class="title function_">equal</span>(dc2Data);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在上述示例中，我们访问了两个数据中心的相同页面，并抓取了 <code>.user-list</code> 这个 UI 元素的文本内容，最后进行了深度比较。</p>
+<h4 id="Playwright-示例：抓取数据并对比-UI-数据"><a href="#Playwright-示例：抓取数据并对比-UI-数据" class="headerlink" title="Playwright 示例：抓取数据并对比 UI 数据"></a>Playwright 示例：抓取数据并对比 UI 数据</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; test, expect &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@playwright/test&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;Compare UI data between DC1 and DC2&#x27;</span>, <span class="keyword">async</span> (&#123; page &#125;) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 访问数据中心1</span></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc1Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">allTextContents</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 访问数据中心2</span></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc2Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">allTextContents</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对比两个数据中心的 UI 数据</span></span><br><span class="line">  <span class="title function_">expect</span>(dc1Data).<span class="title function_">toEqual</span>(dc2Data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这个 Playwright 示例展示了如何抓取 UI 数据并进行对比。我们使用 <code>locator</code> 来选择页面中的 UI 元素并提取它们的文本内容。</p>
+<h3 id="4-处理异步数据加载"><a href="#4-处理异步数据加载" class="headerlink" title="4. 处理异步数据加载"></a>4. <strong>处理异步数据加载</strong></h3><p>UI 数据通常是异步加载的，特别是在现代单页应用（SPA）中。因此，需要确保在执行 UI 数据抓取时，数据已完全加载并渲染。</p>
+<p>在 <strong>Cypress</strong> 中，可以通过 <code>cy.wait()</code> 或监听网络请求来确保数据加载完成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">intercept</span>(<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;/api/user-data&#x27;</span>).<span class="title function_">as</span>(<span class="string">&#x27;getUserData&#x27;</span>);</span><br><span class="line">cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">cy.<span class="title function_">wait</span>(<span class="string">&#x27;@getUserData&#x27;</span>);  <span class="comment">// 等待 API 请求完成</span></span><br><span class="line">cy.<span class="title function_">get</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$list</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> dc1Data = $list.<span class="title function_">text</span>();</span><br><span class="line">  <span class="comment">// 比较数据...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>Playwright</strong> 中，你可以使用 <code>page.waitForResponse()</code> 或 <code>page.waitForSelector()</code> 来等待数据加载完成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">waitForResponse</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">url</span>().<span class="title function_">includes</span>(<span class="string">&#x27;/api/user-data&#x27;</span>) &amp;&amp; response.<span class="title function_">status</span>() === <span class="number">200</span>);</span><br><span class="line"><span class="keyword">const</span> dc1Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.user-list&#x27;</span>).<span class="title function_">allTextContents</span>();</span><br><span class="line"><span class="comment">// 比较数据...</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-处理数据格式和时间差异"><a href="#5-处理数据格式和时间差异" class="headerlink" title="5. 处理数据格式和时间差异"></a>5. <strong>处理数据格式和时间差异</strong></h3><p>如果 UI 数据包括时间戳、日期等需要按时区处理的内容，确保两个数据中心的时区一致，或者在验证时加入合理的时间容忍度。对于不同地区的用户，日期和时间可能不同，因此需要在验证时排除时区和时间差的影响。</p>
+<p>例如，比较两个数据中心中的 <strong>日期</strong> 字段时，可以使用以下策略：</p>
+<ul>
+<li><strong>统一时区</strong>：转换为 UTC 或统一时区后再进行比较。</li>
+<li><strong>时间容忍度</strong>：如果时间差异较小（如几秒钟或几分钟），可以设定时间容忍度来允许这些轻微差异。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dc1Date = <span class="keyword">new</span> <span class="title class_">Date</span>(dc1Data.<span class="property">date</span>); <span class="comment">// 假设我们获取到的时间是字符串格式</span></span><br><span class="line"><span class="keyword">const</span> dc2Date = <span class="keyword">new</span> <span class="title class_">Date</span>(dc2Data.<span class="property">date</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">expect</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(dc1Date - dc2Date)).<span class="title function_">toBeLessThan</span>(<span class="number">60000</span>); <span class="comment">// 容忍差异不超过1分钟</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-报告和异常处理"><a href="#6-报告和异常处理" class="headerlink" title="6. 报告和异常处理"></a>6. <strong>报告和异常处理</strong></h3><p>最后，生成比较报告并处理异常。你可以在测试失败时记录详细信息，例如：</p>
+<ul>
+<li><strong>数据不一致的元素</strong>：记录哪些 UI 元素的数据不一致。</li>
+<li><strong>错误日志</strong>：生成错误日志，包括请求响应时间、状态码等，以便进一步调查。</li>
+</ul>
+<p>在 <strong>Cypress</strong> 中，你可以使用 <code>cy.screenshot()</code> 截图，或者使用 <code>cy.task()</code> 将错误信息发送到外部日志系统：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">screenshot</span>(<span class="string">&#x27;data-mismatch-screenshot&#x27;</span>);</span><br><span class="line">cy.<span class="title function_">task</span>(<span class="string">&#x27;logError&#x27;</span>, &#123; <span class="attr">message</span>: <span class="string">&#x27;UI data mismatch&#x27;</span>, dc1Data, dc2Data &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>Playwright</strong> 中，你可以通过 <code>page.screenshot()</code> 截图并输出详细的错误日志：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.<span class="title function_">screenshot</span>(&#123; <span class="attr">path</span>: <span class="string">&#x27;data-mismatch-screenshot.png&#x27;</span> &#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;Data mismatch between DC1 and DC2&#x27;</span>, &#123; dc1Data, dc2Data &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-自动化与定期验证"><a href="#7-自动化与定期验证" class="headerlink" title="7. 自动化与定期验证"></a>7. <strong>自动化与定期验证</strong></h3><p>由于数据中心的 UI 数据可能随时发生变化，建议设置定期的自动化测试，确保数据同步性。在 CI&#x2F;CD 流程中加入这类测试，能够在每次部署后及时发现数据差异，保障用户体验。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>要进行 <strong>UI 数据同步验证</strong> 并确保两个数据中心的数据一致性，关键步骤包括：</p>
+<ol>
+<li><strong>抓取 UI 数据</strong>：使用 Cypress 或 Playwright 抓取 UI 元素并提取数据。</li>
+<li><strong>确保数据加载完毕</strong>：通过等待异步加载数据，确保数据完全渲染。</li>
+<li><strong>处理时区和数据格式差异</strong>：合理处理时间和格式差异，避免误判。</li>
+<li><strong>生成报告和异常处理</strong>：记录并报告数据不一致的情况，便于快速修复。</li>
+<li><strong>定期验证</strong>：将此类测试集成到 CI&#x2F;CD 流程中，确保持续的 UI 数据一致性。</li>
+</ol>
+<p>通过上述方法，你可以确保不同数据中心的 UI 数据在用户界面上的一致性，保障跨地域用户的良好体验。 但是这种方式，仅限于不同url，同时可获取到。如果url中数据，不可同时获取，该如何？</p>
+<p> 如果 URL 中的数据不可同时获取（即无法在同一时刻从两个数据中心获取数据进行对比），可以采取 <strong>异步获取和比对的策略</strong>。这种情况通常出现在以下几种场景中：</p>
+<ol>
+<li><strong>数据延迟加载</strong>：页面中的某些数据依赖于后台请求或异步操作，需要等待一定时间才能加载完成。</li>
+<li><strong>动态数据生成</strong>：不同数据中心可能有不同的处理方式，导致同一请求返回的数据顺序或格式不同。</li>
+<li><strong>不对等数据访问</strong>：由于网络延迟、API 请求限制或数据隐私，不能直接在同一时刻获取两个数据中心的数据。</li>
+</ol>
+<p>为了处理这种情况，可以采取以下几种方法：</p>
+<h3 id="1-分阶段获取数据并保存"><a href="#1-分阶段获取数据并保存" class="headerlink" title="1. 分阶段获取数据并保存"></a>1. <strong>分阶段获取数据并保存</strong></h3><p>可以在 <strong>Cypress</strong> 或 <strong>Playwright</strong> 中通过多次请求、分别抓取数据，并在后续步骤中比较。这种方法适用于通过异步请求或不同步骤加载的数据。</p>
+<h4 id="方案：步骤化请求和比对"><a href="#方案：步骤化请求和比对" class="headerlink" title="方案：步骤化请求和比对"></a>方案：步骤化请求和比对</h4><ol>
+<li><strong>分别请求两个数据中心</strong>：首先分别访问两个数据中心，获取它们的UI或API数据。</li>
+<li><strong>缓存数据</strong>：在获取数据时，先将每个数据中心的数据缓存下来（例如在本地变量或文件中），然后再执行比较。</li>
+<li><strong>比较存储的数据</strong>：等待所有数据加载完毕后再进行对比。</li>
+</ol>
+<h5 id="Cypress-示例："><a href="#Cypress-示例：" class="headerlink" title="Cypress 示例："></a>Cypress 示例：</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;UI Data Comparison between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;should compare data from two different data centers&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取数据中心1的UI数据</span></span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc1Data</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> dc1Text = $dc1Data.<span class="title function_">text</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 获取数据中心2的UI数据</span></span><br><span class="line">      cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc2Data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> dc2Text = $dc2Data.<span class="title function_">text</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 比较两个数据中心的数据</span></span><br><span class="line">        <span class="title function_">expect</span>(dc1Text).<span class="property">to</span>.<span class="title function_">equal</span>(dc2Text);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Playwright-示例："><a href="#Playwright-示例：" class="headerlink" title="Playwright 示例："></a>Playwright 示例：</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; test, expect &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@playwright/test&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;Compare data between two data centers asynchronously&#x27;</span>, <span class="keyword">async</span> (&#123; page &#125;) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 获取数据中心1的UI数据</span></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc1Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">textContent</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取数据中心2的UI数据</span></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc2Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">textContent</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 比较两个数据中心的数据</span></span><br><span class="line">  <span class="title function_">expect</span>(dc1Data).<span class="title function_">toBe</span>(dc2Data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-延迟等待和超时处理"><a href="#2-延迟等待和超时处理" class="headerlink" title="2. 延迟等待和超时处理"></a>2. <strong>延迟等待和超时处理</strong></h3><p>有时数据加载可能需要额外的时间，尤其是在处理动态加载的内容时。你可以为每个数据中心设置 <strong>延迟等待机制</strong>，确保数据完全加载后再进行比较。</p>
+<h4 id="Cypress-延迟等待："><a href="#Cypress-延迟等待：" class="headerlink" title="Cypress 延迟等待："></a>Cypress 延迟等待：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line">cy.<span class="title function_">wait</span>(<span class="number">5000</span>); <span class="comment">// 等待5秒，确保数据加载完成</span></span><br><span class="line">cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc1Data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> dc1Text = $dc1Data.<span class="title function_">text</span>();</span><br><span class="line">  cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line">  cy.<span class="title function_">wait</span>(<span class="number">5000</span>); <span class="comment">// 等待5秒，确保数据加载完成</span></span><br><span class="line">  cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc2Data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> dc2Text = $dc2Data.<span class="title function_">text</span>();</span><br><span class="line">    <span class="title function_">expect</span>(dc1Text).<span class="property">to</span>.<span class="title function_">equal</span>(dc2Text);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Playwright-延迟等待："><a href="#Playwright-延迟等待：" class="headerlink" title="Playwright 延迟等待："></a>Playwright 延迟等待：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc1.your-app.com&#x27;</span>);</span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">waitForTimeout</span>(<span class="number">5000</span>);  <span class="comment">// 等待5秒</span></span><br><span class="line"><span class="keyword">const</span> dc1Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">textContent</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://dc2.your-app.com&#x27;</span>);</span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">waitForTimeout</span>(<span class="number">5000</span>);  <span class="comment">// 等待5秒</span></span><br><span class="line"><span class="keyword">const</span> dc2Data = <span class="keyword">await</span> page.<span class="title function_">locator</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">textContent</span>();</span><br><span class="line"></span><br><span class="line"><span class="title function_">expect</span>(dc1Data).<span class="title function_">toBe</span>(dc2Data);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：尽管延迟等待可作为解决方案之一，但使用 <code>waitForTimeout()</code> 不是最佳实践，应该尽可能依赖于更精确的等待条件（例如：<code>cy.get()</code>、<code>page.locator().waitFor()</code> 等），避免长时间的静态等待。</p>
+</blockquote>
+<h3 id="3-API-数据同步"><a href="#3-API-数据同步" class="headerlink" title="3. API 数据同步"></a>3. <strong>API 数据同步</strong></h3><p>如果两个数据中心的数据是通过 <strong>API</strong> 获取的，你可以并行请求 API，等待两边的请求完成后再进行数据比较。比如，可以通过 <code>Promise.all</code>（Playwright）或 <code>cy.request()</code>（Cypress）并行发起两个请求，获取并比较返回的数据。</p>
+<h4 id="Cypress-API-同步请求："><a href="#Cypress-API-同步请求：" class="headerlink" title="Cypress API 同步请求："></a>Cypress API 同步请求：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;API Data Comparison between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;should compare API responses between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 请求数据中心1的API</span></span><br><span class="line">    cy.<span class="title function_">request</span>(<span class="string">&#x27;https://dc1.your-app.com/api/data&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">response1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> dc1Data = response1.<span class="property">body</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 请求数据中心2的API</span></span><br><span class="line">      cy.<span class="title function_">request</span>(<span class="string">&#x27;https://dc2.your-app.com/api/data&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">response2</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> dc2Data = response2.<span class="property">body</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 比较两个数据中心的API返回数据</span></span><br><span class="line">        <span class="title function_">expect</span>(dc1Data).<span class="property">to</span>.<span class="property">deep</span>.<span class="title function_">equal</span>(dc2Data);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Playwright-API-同步请求："><a href="#Playwright-API-同步请求：" class="headerlink" title="Playwright API 同步请求："></a>Playwright API 同步请求：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; test, expect &#125; = <span class="built_in">require</span>(<span class="string">&#x27;@playwright/test&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;Compare API data between two data centers&#x27;</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 请求数据中心1的API</span></span><br><span class="line">  <span class="keyword">const</span> response1 = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;https://dc1.your-app.com/api/data&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc1Data = <span class="keyword">await</span> response1.<span class="title function_">json</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 请求数据中心2的API</span></span><br><span class="line">  <span class="keyword">const</span> response2 = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;https://dc2.your-app.com/api/data&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> dc2Data = <span class="keyword">await</span> response2.<span class="title function_">json</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 比较两个数据中心的API返回数据</span></span><br><span class="line">  <span class="title function_">expect</span>(dc1Data).<span class="title function_">toEqual</span>(dc2Data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-数据分批次同步"><a href="#4-数据分批次同步" class="headerlink" title="4. 数据分批次同步"></a>4. <strong>数据分批次同步</strong></h3><p>在某些情况下，UI 数据可能是分批加载的（例如分页或无限滚动）。你可以在测试中模拟分页操作或滚动操作，分别获取每一批次的数据，然后进行对比。一般来说，这种情况下需要使用 <strong>递归</strong> 或 <strong>循环</strong> 来加载所有数据，确保在对比之前所有数据都已经获取。</p>
+<h4 id="Cypress-分批加载数据（模拟分页）："><a href="#Cypress-分批加载数据（模拟分页）：" class="headerlink" title="Cypress 分批加载数据（模拟分页）："></a>Cypress 分批加载数据（模拟分页）：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;Paginated UI Data Comparison between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;should compare paginated data between DC1 and DC2&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取第1页数据中心1的数据</span></span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com?page=1&#x27;</span>);</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc1DataPage1</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> dc1Page1Data = $dc1DataPage1.<span class="title function_">text</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 获取第1页数据中心2的数据</span></span><br><span class="line">      cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc2.your-app.com?page=1&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc2DataPage1</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> dc2Page1Data = $dc2DataPage1.<span class="title function_">text</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 对比第1页数据</span></span><br><span class="line">        <span class="title function_">expect</span>(dc1Page1Data).<span class="property">to</span>.<span class="title function_">equal</span>(dc2Page1Data);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果有更多页，继续分页对比</span></span><br><span class="line">        cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc1.your-app.com?page=2&#x27;</span>);</span><br><span class="line">        cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc1DataPage2</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> dc1Page2Data = $dc1DataPage2.<span class="title function_">text</span>();</span><br><span class="line">          cy.<span class="title function_">visit</span>(<span class="string">&#x27;https://dc2.your-app.com?page=2&#x27;</span>);</span><br><span class="line">          cy.<span class="title function_">get</span>(<span class="string">&#x27;.data-container&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">$dc2DataPage2</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> dc2Page2Data = $dc2DataPage2.<span class="title function_">text</span>();</span><br><span class="line">            <span class="title function_">expect</span>(dc1Page2Data).<span class="property">to</span>.<span class="title function_">equal</span>(dc2Page2Data);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-断言和容忍度"><a href="#5-断言和容忍度" class="headerlink" title="5. 断言和容忍度"></a>5. <strong>断言和容忍度</strong></h3><p>在比较数据时，可能存在轻微的差异（例如，响应时间不同或数据同步的延迟）。在这种情况下，你可以使用 <strong>容忍度（tolerance）</strong> 来容忍某些差异，避免错误判断。</p>
+<p>例如，对于数字数据，你可以设定一个最大容忍误差：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">expect</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(dc1Data - dc2Data)).<span class="title function_">toBeLessThan</span>(<span class="number">10</span>);  <span class="comment">// 允许的误差为10</span></span><br></pre></td></tr></table></figure>
+
+<p>对于时间数据，可以允许一定的时差：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dc1Date = <span class="keyword">new</span> <span class="title class_">Date</span>(dc1Data);</span><br><span class="line"><span class="keyword">const</span> dc2Date = <span class="keyword">new</span> <span class="title class_">Date</span>(dc2Data);</span><br><span class="line"><span class="title function_">expect</span>(<span class="title class_">Math</span>.<span class="title function_">abs</span>(dc1Date - dc2Date)).<span class="title function_">toBeLessThan</span>(<span class="number">60000</span>);  <span class="comment">// 允许误差不超过1分钟</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>当 <strong>URL 中数据不可同时获取</strong> 时，你可以通过以下策略进行数据比较：</p>
+<ol>
+<li><strong>分阶段获取数据</strong>：分别访问不同的数据中心，抓取数据后再进行对比。</li>
+<li><strong>延迟等待和超时处理</strong>：确保数据完全加载后再进行验证，避免因数据加载延迟导致比较失败。</li>
+<li>**</li>
+</ol>
+<p>这样也不一定最优？ 你有什么更好的建议吗？欢迎在评论区分享你的想法和经验。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#selenium" >
+    <span class="tag-code">selenium</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/04/19/automatically_test_skills/cypress%20AI%E4%BC%98%E5%8C%96/">
+        <span class="nav-arrow">← </span>
+        
+          Cypress升级路线
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/04/22/automatically_test_skills/Prometheus+grafana%E6%95%B0%E6%8D%AE%20Ui%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81/">
+        
+          Prometheus+grafana数据 Ui同步验证
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%AE%9A%E4%B9%89%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81%E6%A0%87%E5%87%86"><span class="toc-nav-text">1. 定义同步验证标准</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E9%80%89%E6%8B%A9%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%A1%86%E6%9E%B6"><span class="toc-nav-text">2. 选择测试工具与框架</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E9%80%9A%E8%BF%87-UI-%E5%B1%82%E9%9D%A2%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-nav-text">3. 通过 UI 层面抓取数据</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Cypress-%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE%E5%B9%B6%E5%AF%B9%E6%AF%94-UI-%E6%95%B0%E6%8D%AE"><span class="toc-nav-text">Cypress 示例：抓取数据并对比 UI 数据</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Playwright-%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%8A%93%E5%8F%96%E6%95%B0%E6%8D%AE%E5%B9%B6%E5%AF%B9%E6%AF%94-UI-%E6%95%B0%E6%8D%AE"><span class="toc-nav-text">Playwright 示例：抓取数据并对比 UI 数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E5%A4%84%E7%90%86%E5%BC%82%E6%AD%A5%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="toc-nav-text">4. 处理异步数据加载</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E5%92%8C%E6%97%B6%E9%97%B4%E5%B7%AE%E5%BC%82"><span class="toc-nav-text">5. 处理数据格式和时间差异</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-%E6%8A%A5%E5%91%8A%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-nav-text">6. 报告和异常处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-%E8%87%AA%E5%8A%A8%E5%8C%96%E4%B8%8E%E5%AE%9A%E6%9C%9F%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">7. 自动化与定期验证</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E5%88%86%E9%98%B6%E6%AE%B5%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%B9%B6%E4%BF%9D%E5%AD%98"><span class="toc-nav-text">1. 分阶段获取数据并保存</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%B9%E6%A1%88%EF%BC%9A%E6%AD%A5%E9%AA%A4%E5%8C%96%E8%AF%B7%E6%B1%82%E5%92%8C%E6%AF%94%E5%AF%B9"><span class="toc-nav-text">方案：步骤化请求和比对</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Cypress-%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">Cypress 示例：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Playwright-%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">Playwright 示例：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%BB%B6%E8%BF%9F%E7%AD%89%E5%BE%85%E5%92%8C%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86"><span class="toc-nav-text">2. 延迟等待和超时处理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Cypress-%E5%BB%B6%E8%BF%9F%E7%AD%89%E5%BE%85%EF%BC%9A"><span class="toc-nav-text">Cypress 延迟等待：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Playwright-%E5%BB%B6%E8%BF%9F%E7%AD%89%E5%BE%85%EF%BC%9A"><span class="toc-nav-text">Playwright 延迟等待：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-API-%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">3. API 数据同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Cypress-API-%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82%EF%BC%9A"><span class="toc-nav-text">Cypress API 同步请求：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Playwright-API-%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82%EF%BC%9A"><span class="toc-nav-text">Playwright API 同步请求：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E6%95%B0%E6%8D%AE%E5%88%86%E6%89%B9%E6%AC%A1%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4. 数据分批次同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Cypress-%E5%88%86%E6%89%B9%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%EF%BC%88%E6%A8%A1%E6%8B%9F%E5%88%86%E9%A1%B5%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">Cypress 分批加载数据（模拟分页）：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-%E6%96%AD%E8%A8%80%E5%92%8C%E5%AE%B9%E5%BF%8D%E5%BA%A6"><span class="toc-nav-text">5. 断言和容忍度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/04/21/automatically_test_skills/Cypress+Playwright数据UI同步验证/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

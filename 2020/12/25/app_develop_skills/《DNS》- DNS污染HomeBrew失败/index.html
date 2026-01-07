@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《DNS》- DNS污染HomeBrew失败 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《DNS》- DNS污染HomeBrew失败</h2>
+  <p class="post-date">2020-12-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Installing Homebrew...</span><br><span class="line">curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101908711">DNS污染</a><br>Dns 解析ip失败</p>
+</blockquote>
+<h4 id="怎么验证是否遭遇DNS污染？"><a href="#怎么验证是否遭遇DNS污染？" class="headerlink" title="怎么验证是否遭遇DNS污染？"></a>怎么验证是否遭遇DNS污染？</h4><p>1.点“开始”-“运行”-输入CMD，再输入 ipconfig &#x2F;all ，在下“DNS SERVER”里找到你使用的DNS服务器地址。</p>
+<p>2.再输入 nslookup <a target="_blank" rel="noopener" href="http://idcbest.com(你的域名)/">http://idcbest.com（你的域名）</a> 你的DNS服务器IP ，来查看是否能解析。</p>
+<p>3.再输入 nslookup <a target="_blank" rel="noopener" href="http://idcbest.com/">http://idcbest.com</a> 8.8.8.8 使用Google的DNS服务器验证。</p>
+<h4 id="域名遭遇DNS污染怎么解决？"><a href="#域名遭遇DNS污染怎么解决？" class="headerlink" title="域名遭遇DNS污染怎么解决？"></a>域名遭遇DNS污染怎么解决？</h4><p>1.更换DNS解析服务器。一般来说，域名注册商家都是提供免费的DNS解析服务的，以我所实用的新之洲数据为例，就提供了许多免费的DNS解析服务，而且解析速度很快，比之前实用的什么万网之流要快得多，不可能全部被污染，所以更换两个DNS服务器即可。</p>
+<p>2.使用第三方DNS解析服务。目前有很多第三方网站提供DNS解析服务，不少都是免费的，国内也有免费提供DNS解析服务的，使用第三方DNS服务可以部分解决问题，比如新之洲数据正在使用的DNSpod服务，就是国内还算比较稳定的DNS解析服务。</p>
+<p>注意事项一：在换用第三方解析服务的时候，应该先到DNSPOD之类的解析服务商那里将域名解析，过几个小时再到新之洲数据之类的域名注册商那里去修改DNS服务器，这样可以避免博客出现因解析时间造成的空白期。</p>
+<p>注意事项二：Godaddy目前本身域名就被DNS污染了，即使挂VPN也访问不了，只有更改自己电脑的DNS（比如改成google的8.8.8.8）才能访问。</p>
+<p>3.搭建自己的DNS服务器。这样子最保险，当然也最是费时废财，有条件的朋友可以尝试。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.ipaddress.com/">https://www.ipaddress.com/</a> 查看ip</p>
+</blockquote>
+<h4 id="配置host"><a href="#配置host" class="headerlink" title="配置host"></a>配置host</h4><blockquote>
+<p>在本机的 host 文件中添加，建议使用 <a target="_blank" rel="noopener" href="https://github.com/oldj/SwitchHosts/releases">switchhosts</a> 方便 host 管理</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">199.232.68.133 raw.githubusercontent.com</span><br><span class="line">199.232.68.133 user-images.githubusercontent.com</span><br><span class="line">199.232.68.133 avatars2.githubusercontent.com</span><br><span class="line">199.232.68.133 avatars1.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>添加以上几条 host 配置，页面的图片展示就正常了，homebrew 也能装了，nvm 也行动灵活了。</p>
+<h3 id="HomeBrew"><a href="#HomeBrew" class="headerlink" title="HomeBrew"></a>HomeBrew</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 安装 </span><br><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br><span class="line"></span><br><span class="line"># 卸载</span><br><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="shallow-Clone"><a href="#shallow-Clone" class="headerlink" title="shallow Clone"></a>shallow Clone</h4><blockquote>
+<p>clone 仅仅拉取最新的commits，</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone -–depth [depth] [remote-url]</span><br><span class="line"></span><br><span class="line">git clone [remote-url] --branch [name] --single-branch [folder]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="ssl问题"><a href="#ssl问题" class="headerlink" title="ssl问题"></a>ssl问题</h4><blockquote>
+<p>解决方案</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#latest</span><br><span class="line">brew install curl-openssl</span><br><span class="line"></span><br><span class="line">#older</span><br><span class="line">brew reinstall curl --with-openssl</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">If you need to have python@3.9 first in your PATH run:</span><br><span class="line">  echo &#x27;export PATH=&quot;/usr/local/opt/python@3.9/bin:$PATH&quot;&#x27; &gt;&gt; ~/.zshrc</span><br><span class="line"></span><br><span class="line">For compilers to find python@3.9 you may need to set:</span><br><span class="line">  export LDFLAGS=&quot;-L/usr/local/opt/python@3.9/lib&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="mac-cli展示颜色"><a href="#mac-cli展示颜色" class="headerlink" title="mac cli展示颜色"></a>mac cli展示颜色</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export CLICOLOR=1</span><br><span class="line">export LSCOLORS=ExGxFxdaCxDaDahbadeche</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><h4 id="raw-githubusercontent-com"><a href="#raw-githubusercontent-com" class="headerlink" title="raw.githubusercontent.com"></a><a target="_blank" rel="noopener" href="https://github.com/hawtim/blog/issues/10">raw.githubusercontent.com</a></h4></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#java" >
+    <span class="tag-code">java</span>
+  </a>
+
+  <a target="_blank" href="/tags#DNS污染" >
+    <span class="tag-code">DNS污染</span>
+  </a>
+
+  <a target="_blank" href="/tags#HomeBrew" >
+    <span class="tag-code">HomeBrew</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/12/25/app_develop_skills/%E3%80%8ANativeScript%E3%80%8B-%20nativescript%E5%85%A5%E9%97%A8/">
+        <span class="nav-arrow">← </span>
+        
+          《NativeScript》- nativescript入门
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/12/27/app_develop_skills/%E3%80%8AFlutter%E3%80%8B-%20flutter%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        
+          《Flutter》- flutter环境搭建
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-nav-text">背景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E9%81%AD%E9%81%87DNS%E6%B1%A1%E6%9F%93%EF%BC%9F"><span class="toc-nav-text">怎么验证是否遭遇DNS污染？</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9F%9F%E5%90%8D%E9%81%AD%E9%81%87DNS%E6%B1%A1%E6%9F%93%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-nav-text">域名遭遇DNS污染怎么解决？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-nav-text">解决方案</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AEhost"><span class="toc-nav-text">配置host</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HomeBrew"><span class="toc-nav-text">HomeBrew</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#shallow-Clone"><span class="toc-nav-text">shallow Clone</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ssl%E9%97%AE%E9%A2%98"><span class="toc-nav-text">ssl问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mac-cli%E5%B1%95%E7%A4%BA%E9%A2%9C%E8%89%B2"><span class="toc-nav-text">mac cli展示颜色</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#raw-githubusercontent-com"><span class="toc-nav-text">raw.githubusercontent.com</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/12/25/app_develop_skills/《DNS》- DNS污染HomeBrew失败/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/09/12/dev_tool_skills/powershell/powershell%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">powershell数据类型</a>
+      </h2>
+      <p class="article-date">September 12, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#powershell" >
+    <span class="tag-code">powershell</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语  最近在学习Powershell，提升下windows下前端开发效率。记录下powershell要点。PowerShell中，一切皆对象。
+简介查看所有支持的快捷输入
+支持Tab进行命令补充
+
+1&gt; get-alias 
+
+
+powershell命令分类
+cmdlet: 通常使用 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/09/12/dev_tool_skills/powershell/powershell%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/08/16/bigdata_for_analyze/%E5%81%A5%E5%BA%B7%E7%A0%81%E7%9A%84%E8%83%8C%E5%90%8E/">健康码的背后</a>
+      </h2>
+      <p class="article-date">August 16, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#疫情" >
+    <span class="tag-code">疫情</span>
+  </a>
+
+  <a target="_blank" href="/tags#健康码" >
+    <span class="tag-code">健康码</span>
+  </a>
+
+  <a target="_blank" href="/tags#信令" >
+    <span class="tag-code">信令</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语：  防疫的背后，需要科技+协同的力量，更需要高精的算法、软硬件算力系统支持。
+颜色会根据数据的不同，将居民判定为五种状态，在健康码展示中分为红、橙、绿三种颜色，其中红色需要集中隔离观察，橙色需要居家隔离，定期做核酸检测自我观察，绿色则为无风险
+内容介绍
+健康码的后台服务器是永不停歇的大 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/08/16/bigdata_for_analyze/%E5%81%A5%E5%BA%B7%E7%A0%81%E7%9A%84%E8%83%8C%E5%90%8E/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/08/09/python_skills/python%E5%AD%A6%E4%B9%A0%E5%A2%9E%E5%BC%BA%E7%AC%94%E8%AE%B0/">python学习增强笔记</a>
+      </h2>
+      <p class="article-date">August 9, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#python" >
+    <span class="tag-code">python</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语 python 学了忘了，忘了学的过程。没有实战，终究会忘记。
+python 版本问题如何快速的切换python 版本123456789101112# 查看有哪些可用版本C:\Users\cheohu&gt;py --listInstalled Pythons found by py L ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/08/09/python_skills/python%E5%AD%A6%E4%B9%A0%E5%A2%9E%E5%BC%BA%E7%AC%94%E8%AE%B0/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/08/09/devops_skills/linux/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8F%98%E9%87%8F%E3%80%81%E5%BC%95%E7%94%A8/">linux 学习笔记一</a>
+      </h2>
+      <p class="article-date">August 9, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#linux" >
+    <span class="tag-code">linux</span>
+  </a>
+
+  <a target="_blank" href="/tags#引用" >
+    <span class="tag-code">引用</span>
+  </a>
+
+  <a target="_blank" href="/tags#变量" >
+    <span class="tag-code">变量</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语 Linux命令，前端是反复的学习，通过不停的使用，才能掌握的。
+内容正则
+
+
+符号
+描述
+
+
+
+*
+标识0个或者多个字符
+
+
+?
+标识可有可无
+
+
++
+1个或者多个
+
+
+^
+表示以什么开头
+
+
+&amp;
+表示以什么结尾
+
+
+\
+用来转义特殊字符
+
+
+&lt;&gt;
+用来做精确匹配
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/08/09/devops_skills/linux/Linux%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8F%98%E9%87%8F%E3%80%81%E5%BC%95%E7%94%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/08/09/data_base_skills/mysql/mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80/">mysql学习笔记一</a>
+      </h2>
+      <p class="article-date">August 9, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#mysql" >
+    <span class="tag-code">mysql</span>
+  </a>
+
+  <a target="_blank" href="/tags#学习笔记" >
+    <span class="tag-code">学习笔记</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语进程
+进程都有一个唯一的编号，称为进程ID，英文名叫PID，进程名称可以自定义
+PID, 是与OS进行分配，并保证唯一性。那么OS分配算法是怎样的呢？
+
+ 12//TODO 
+常用的进程
+mysqld  - 会直接启动一个服务器进程
+mysqld_safe - 提供一个针对mysqld进 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/08/09/data_base_skills/mysql/mysql%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B8%80/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2022/08/04/devops_skills/deploy/%E5%9F%BA%E4%BA%8ENode%E7%9A%84Devops/">基于Node的Devops</a>
+      </h2>
+      <p class="article-date">August 4, 2022</p>
+      
+        
+  <a target="_blank" href="/tags#ansible" >
+    <span class="tag-code">ansible</span>
+  </a>
+
+  <a target="_blank" href="/tags#配置管理" >
+    <span class="tag-code">配置管理</span>
+  </a>
+
+  <a target="_blank" href="/tags#滚动更新" >
+    <span class="tag-code">滚动更新</span>
+  </a>
+
+  <a target="_blank" href="/tags#devops" >
+    <span class="tag-code">devops</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          导语：  基于node的Devops
+工具环境
+
+
+工具
+框架作用
+
+
+
+CentOS DVD版本
+构建服务器系统
+
+
+Egg
+后台开发框架
+
+
+React + Ant Design + UmiJS
+前端管理界面开发
+
+
+Mysql
+数据库
+
+
+Jenkins &amp;&amp; GitL ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2022/08/04/devops_skills/deploy/%E5%9F%BA%E4%BA%8ENode%E7%9A%84Devops/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/14/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/16/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

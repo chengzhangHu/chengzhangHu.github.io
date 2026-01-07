@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Go 与 java | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Go 与 java</h2>
+  <p class="post-date">2025-07-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Go 语言确实提供了<strong>屏蔽底层系统差异</strong>的能力，但与 Java JVM 的机制<strong>截然不同</strong>。它采用的是 <strong>原生编译 + 标准库抽象</strong> 的方式，而不是依赖一个虚拟机。</p>
+<p>Go（Golang）没有像 Java 那样的 JVM（Java Virtual Machine）机制，但它通过 <strong>自己的运行时系统（runtime）</strong> 实现了一部分类似的跨平台能力和系统差异屏蔽功能。不过，它的设计理念和 Java 有本质不同。下面详细对比：</p>
+<hr>
+<h2 id="🔍-Go-是否屏蔽底层系统差异？"><a href="#🔍-Go-是否屏蔽底层系统差异？" class="headerlink" title="🔍 Go 是否屏蔽底层系统差异？"></a>🔍 Go 是否屏蔽底层系统差异？</h2><h3 id="✅-是的，部分屏蔽。"><a href="#✅-是的，部分屏蔽。" class="headerlink" title="✅ 是的，部分屏蔽。"></a>✅ 是的，部分屏蔽。</h3><p>Go 的运行时系统包含了：</p>
+<ul>
+<li>内存管理（GC 垃圾回收）</li>
+<li>协程调度（goroutine 和调度器）</li>
+<li>网络 poller（I&#x2F;O 多路复用，自动适配 epoll&#x2F;kqueue）</li>
+<li>抽象的标准库 API（如 <code>net</code>, <code>os</code>, <code>time</code> 等，屏蔽平台差异）</li>
+</ul>
+<p>这些特性让你在编写 Go 代码时大多数情况下不用关心底层系统细节。</p>
+<hr>
+<h2 id="❌-但-Go-没有-JVM-那样的虚拟机机制"><a href="#❌-但-Go-没有-JVM-那样的虚拟机机制" class="headerlink" title="❌ 但 Go 没有 JVM 那样的虚拟机机制"></a>❌ 但 Go <strong>没有 JVM 那样的虚拟机机制</strong></h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Java (JVM)</th>
+<th>Go</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>虚拟机机制</strong></td>
+<td>有 JVM，字节码运行在虚拟机中</td>
+<td>无虚拟机，直接编译为本地机器码</td>
+</tr>
+<tr>
+<td><strong>运行时抽象程度</strong></td>
+<td>高，完全脱离平台架构</td>
+<td>中等，运行时依赖底层系统 API</td>
+</tr>
+<tr>
+<td><strong>跨平台性</strong></td>
+<td>编译一次，任何平台的 JVM 都能跑</td>
+<td>每个平台单独编译一次（静态编译）</td>
+</tr>
+<tr>
+<td><strong>执行效率</strong></td>
+<td>热点优化后较高</td>
+<td>编译成本地代码，启动快、运行快</td>
+</tr>
+<tr>
+<td><strong>部署复杂度</strong></td>
+<td>需要安装 JVM</td>
+<td>直接生成单一可执行文件</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-Go-的运行时做了哪些“平台屏蔽”？"><a href="#🧠-Go-的运行时做了哪些“平台屏蔽”？" class="headerlink" title="🧠 Go 的运行时做了哪些“平台屏蔽”？"></a>🧠 Go 的运行时做了哪些“平台屏蔽”？</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>runtime</code> 包</td>
+<td>管理 goroutine 调度、GC、栈扩容、panic 恢复等</td>
+</tr>
+<tr>
+<td><code>net</code> 包</td>
+<td>对 TCP&#x2F;UDP&#x2F;Unix Socket 抽象，自动适配系统调用</td>
+</tr>
+<tr>
+<td><code>os</code> 包</td>
+<td>抽象文件系统、信号、进程操作等，内部对 Linux&#x2F;Windows&#x2F;macOS 区分处理</td>
+</tr>
+<tr>
+<td><code>syscall</code> 包</td>
+<td>更底层的系统调用封装，不推荐直接使用，但提供了统一接口</td>
+</tr>
+<tr>
+<td><code>cgo</code></td>
+<td>跨平台地调用 C 库，提供兼容机制</td>
+</tr>
+</tbody></table>
+<p>例如：</p>
+<ul>
+<li>在 Linux 上使用 <code>epoll</code>，在 macOS 上用 <code>kqueue</code>，但对开发者来说只是调用 <code>net.Listen</code>。</li>
+<li>goroutine 自动调度并映射到底层线程，开发者无需关心线程数。</li>
+</ul>
+<hr>
+<h2 id="📦-编译层-vs-JVM"><a href="#📦-编译层-vs-JVM" class="headerlink" title="📦 编译层 vs JVM"></a>📦 编译层 vs JVM</h2><p>Go 采用静态编译，生成平台专属的机器码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GOOS=linux GOARCH=amd64 go build -o app-linux</span><br><span class="line">GOOS=windows GOARCH=amd64 go build -o app.exe</span><br></pre></td></tr></table></figure>
+
+<p>而 Java 写一次，编译成字节码 <code>.class</code>，由 JVM 解释或 JIT 执行。</p>
+<hr>
+<p>Go 实现跨平台和屏蔽系统差异的关键机制：</p>
+<ol>
+<li><p><strong>原生编译（Native Compilation）</strong>：</p>
+<ul>
+<li>Go 编译器 (<code>gc</code>) 是核心。它将 Go 源代码<strong>直接编译</strong>成目标操作系统和 CPU 架构（如 <code>linux/amd64</code>, <code>windows/386</code>, <code>darwin/arm64</code>）的<strong>原生机器码</strong>。</li>
+<li>编译后的结果是一个<strong>静态链接</strong>（默认行为）或动态链接的<strong>独立的可执行文件</strong>。这个文件包含了运行程序所需的所有代码（除了极少数的系统级动态库，如 <code>libc</code>，但静态链接可以消除这个依赖）。</li>
+<li><strong>与 JVM 的区别：</strong> JVM 将 Java 源代码编译成<strong>字节码</strong>（<code>.class</code> 文件），这个字节码是平台无关的。然后在目标机器上，由特定于该平台的 <strong>JVM 实例</strong> 在运行时将字节码解释执行或即时编译（JIT）成本地机器码执行。Go 没有这个“运行时解释&#x2F;编译”的中间层，它的二进制文件是直接可执行的机器码。</li>
+</ul>
+</li>
+<li><p><strong>强大的标准库（Standard Library Abstraction）</strong>：</p>
+<ul>
+<li>Go 拥有一个设计精良、功能丰富的<strong>标准库</strong>。这是屏蔽系统差异的关键所在。</li>
+<li>标准库对操作系统提供的底层功能（如文件操作、网络 I&#x2F;O、进程管理、时间、环境变量、系统信号、并发原语等）提供了<strong>高度抽象且一致的接口</strong>。</li>
+<li><strong>实现方式：</strong> Go 标准库的实现在内部会针对不同的操作系统（<code>GOOS</code>）使用不同的代码路径（通常是利用 Go 的构建标签 <code>//go:build</code> 或文件后缀如 <code>_linux.go</code>, <code>_windows.go</code>）。当你调用 <code>os.Open()</code> 打开一个文件时：<ul>
+<li>在 Windows 上，标准库内部会调用 <code>CreateFileW</code> 等 Win32 API。</li>
+<li>在 Linux 上，内部会调用 <code>open</code> 系统调用。</li>
+<li>在 macOS 上，内部会调用 <code>open</code> 或相关的 Darwin 系统调用。</li>
+</ul>
+</li>
+<li><strong>开发者视角：</strong> 作为 Go 开发者，你<strong>只使用 <code>os.Open</code> 这个统一的函数</strong>。标准库内部负责处理不同操作系统的具体实现细节。你不需要为不同平台写不同的代码（除非你需要使用非常特定于平台的高级特性）。</li>
+</ul>
+</li>
+<li><p><strong><code>GOOS</code> 和 <code>GOARCH</code> 环境变量（交叉编译）</strong>：</p>
+<ul>
+<li>Go 工具链原生支持<strong>交叉编译</strong>。通过设置环境变量 <code>GOOS</code>（目标操作系统，如 <code>linux</code>, <code>windows</code>, <code>darwin</code>）和 <code>GOARCH</code>（目标 CPU 架构，如 <code>amd64</code>, <code>arm</code>, <code>arm64</code>），你可以在一台机器上（例如你的 macOS 开发机）轻松编译出运行在其他平台（例如 Linux 服务器或 Windows 桌面）上的可执行文件。</li>
+<li>这极大地简化了为多个平台构建和分发软件的过程，是实现“一次编写，到处编译运行”（Write Once, Compile Anywhere）的核心。</li>
+</ul>
+</li>
+<li><p><strong>运行时（Runtime）</strong>：</p>
+<ul>
+<li>Go 程序包含一个轻量级的<strong>运行时</strong> (<code>runtime</code>)，它链接在每个 Go 二进制文件中。这个运行时负责一些核心任务：<ul>
+<li><strong>垃圾回收 (GC)</strong></li>
+<li>**协程调度 (Goroutine Scheduler)**：管理轻量级线程 Goroutines。</li>
+<li><strong>内存分配</strong></li>
+<li>**底层系统交互 (部分)**：例如，网络轮询器 (<code>netpoller</code>) 的实现会根据操作系统选择最高效的方式（如 Linux 的 <code>epoll</code>, BSD&#x2F;macOS 的 <code>kqueue</code>, Windows 的 <code>IOCP</code>）。</li>
+</ul>
+</li>
+<li><strong>与 JVM 的区别：</strong> Go 的运行时是<strong>编译时链接</strong>到每个程序中的，是程序的一部分。JVM 是一个<strong>独立的、庞大的、预先安装在目标机器上的</strong>软件环境，所有 Java 程序都运行在它的实例之上。Go 运行时比整个 JVM 小得多、集成度更高。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结 Go 如何屏蔽底层差异：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">Go 的方式</th>
+<th align="left">Java&#x2F;JVM 的方式</th>
+<th align="left">目标效果 (屏蔽差异)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>执行单元</strong></td>
+<td align="left"><strong>直接编译为目标平台原生机器码</strong></td>
+<td align="left">编译为平台无关字节码，由 JVM 解释&#x2F;JIT</td>
+<td align="left">✅ 程序能在目标平台运行</td>
+</tr>
+<tr>
+<td align="left"><strong>抽象层</strong></td>
+<td align="left"><strong>标准库提供统一 API，内部处理平台差异</strong></td>
+<td align="left">标准库&#x2F;JVM 提供统一 API，内部处理差异</td>
+<td align="left">✅ 开发者使用统一接口</td>
+</tr>
+<tr>
+<td align="left"><strong>部署</strong></td>
+<td align="left"><strong>生成独立的可执行文件 (通常静态链接)</strong></td>
+<td align="left">需要目标平台预装匹配的 JRE&#x2F;JVM</td>
+<td align="left">✅ 程序易于分发和运行</td>
+</tr>
+<tr>
+<td align="left"><strong>交叉编译</strong></td>
+<td align="left"><strong>原生支持 (<code>GOOS</code>&#x2F;<code>GOARCH</code>)</strong></td>
+<td align="left">字节码天然跨平台，但需目标平台有 JVM</td>
+<td align="left">✅ 能轻松为不同平台构建程序</td>
+</tr>
+<tr>
+<td align="left"><strong>运行时</strong></td>
+<td align="left"><strong>轻量级运行时链接到每个二进制文件中</strong></td>
+<td align="left"><strong>庞大独立的 JVM 预先安装在目标机器上</strong></td>
+<td align="left">✅ 提供内存管理、并发等基础服务</td>
+</tr>
+</tbody></table>
+<p><strong>结论：</strong></p>
+<ul>
+<li><strong>是的，Go 语言非常有效地屏蔽了底层系统差异。</strong> 开发者可以专注于业务逻辑，使用 Go 标准库的统一 API 进行开发，而无需关心代码在哪个操作系统（Windows, Linux, macOS）或架构（x86, ARM）上运行。</li>
+<li><strong>Go 实现这一目标的机制与 Java&#x2F;JVM 完全不同。</strong> Go 通过<strong>强大的编译器生成原生可执行文件</strong>和<strong>精心设计的标准库进行内部抽象</strong>来实现跨平台。它<strong>不需要</strong>一个独立的、安装在目标机器上的虚拟机（如 JVM）。Go 程序是自包含的二进制文件。</li>
+<li><strong>优势：</strong> 部署简单（单个文件）、启动速度快、资源消耗（内存）通常更低、没有 JVM 安装和版本管理的依赖。</li>
+<li><strong>潜在限制：</strong> 如果需要直接调用大量特定平台的底层 API（超出标准库范围），可能需要使用 CGo（这会引入复杂性并可能破坏跨平台性）。但对于绝大多数应用开发，Go 标准库的抽象已经足够强大。</li>
+</ul>
+<p>简单来说：<strong>Go 用“一次编译，到处运行”（编译成特定平台的独立二进制）的方式，实现了和 Java “一次编写，到处运行”（依赖 JVM 运行字节码）类似的屏蔽系统差异的效果，但实现原理和部署模型完全不同，且通常更轻量和直接。</strong></p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#java" >
+    <span class="tag-code">java</span>
+  </a>
+
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#jvm" >
+    <span class="tag-code">jvm</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
+        <span class="nav-arrow">← </span>
+        
+          Angular rxjs 性能问题
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">
+        
+          Flutter Windows 开发环境搭建指南
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-Go-%E6%98%AF%E5%90%A6%E5%B1%8F%E8%94%BD%E5%BA%95%E5%B1%82%E7%B3%BB%E7%BB%9F%E5%B7%AE%E5%BC%82%EF%BC%9F"><span class="toc-nav-text">🔍 Go 是否屏蔽底层系统差异？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%98%AF%E7%9A%84%EF%BC%8C%E9%83%A8%E5%88%86%E5%B1%8F%E8%94%BD%E3%80%82"><span class="toc-nav-text">✅ 是的，部分屏蔽。</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9D%8C-%E4%BD%86-Go-%E6%B2%A1%E6%9C%89-JVM-%E9%82%A3%E6%A0%B7%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">❌ 但 Go 没有 JVM 那样的虚拟机机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-Go-%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E5%81%9A%E4%BA%86%E5%93%AA%E4%BA%9B%E2%80%9C%E5%B9%B3%E5%8F%B0%E5%B1%8F%E8%94%BD%E2%80%9D%EF%BC%9F"><span class="toc-nav-text">🧠 Go 的运行时做了哪些“平台屏蔽”？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%A6-%E7%BC%96%E8%AF%91%E5%B1%82-vs-JVM"><span class="toc-nav-text">📦 编译层 vs JVM</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/06/backend_skills/go/go vs java/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

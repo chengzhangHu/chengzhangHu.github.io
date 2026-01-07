@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Performance》- 博客性能优化到90分+实践 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Performance》- 博客性能优化到90分+实践</h2>
+  <p class="post-date">2020-07-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="lighthouse"><a href="#lighthouse" class="headerlink" title="lighthouse"></a>lighthouse</h2><h3 id="优化前打分"><a href="#优化前打分" class="headerlink" title="优化前打分"></a>优化前打分</h3><p>  <img src="https://s1.ax1x.com/2020/07/31/aMflZV.png"></p>
+<ul>
+<li>从中我们可以看到具体的优化建议</li>
+<li>移除不用的code</li>
+<li>图片改用压缩率高的JPEG 2000, JPEG XR, and WebP</li>
+<li>减少css，js对界面渲染的影响</li>
+<li>避免使用 document.write()</li>
+<li>静态资源，使用有效的缓存策略，譬如CDN</li>
+<li>避免重量级请求链式调用</li>
+<li>减少请求数、请求大小</li>
+<li>避免长的主线程任务，可适当交给webwork完成</li>
+</ul>
+<h2 id="具体优化"><a href="#具体优化" class="headerlink" title="具体优化"></a>具体优化</h2><h3 id="减少阻塞渲染的文件资源"><a href="#减少阻塞渲染的文件资源" class="headerlink" title="减少阻塞渲染的文件资源"></a>减少阻塞渲染的文件资源</h3><blockquote>
+<p>如何识别哪些会产生阻塞的资源文件呢？</p>
+</blockquote>
+<blockquote>
+<p>我们使用Chrome Coverage tab 判定,green 表示需要加载，red表示不依赖，可延迟加载<br><img src="https://s1.ax1x.com/2020/07/31/aMWPNF.png"></p>
+</blockquote>
+<h4 id="js"><a href="#js" class="headerlink" title="js"></a>js</h4><ul>
+<li>必须的js，可以综合考虑，放入script内部，与html一同下载</li>
+<li>script 标签，添加 async or defer</li>
+<li>移除不用的老代码，注释</li>
+<li>修改cdn源，采用国内cdn.bootcdn.net</li>
+</ul>
+<h4 id="css"><a href="#css" class="headerlink" title="css"></a>css</h4><ul>
+<li>必须的code，写入link标签内容，与html一同下载</li>
+</ul>
+<h4 id="html"><a href="#html" class="headerlink" title="html"></a>html</h4><ul>
+<li>非必须的，改用下方写法<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;import&quot; href=&quot;myfile.html&quot; async&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="img"><a href="#img" class="headerlink" title="img"></a>img</h4><ul>
+<li>chrome 支持 loading&#x3D;”lazy”</li>
+</ul>
+<blockquote>
+<p>优化后，covarage<br><img src="https://s1.ax1x.com/2020/07/31/aMW4C4.png"> </p>
+</blockquote>
+<h3 id="缩小、优化CSS"><a href="#缩小、优化CSS" class="headerlink" title="缩小、优化CSS"></a>缩小、优化CSS</h3><h4 id="webpack等工具压缩"><a href="#webpack等工具压缩" class="headerlink" title="webpack等工具压缩"></a>webpack等工具压缩</h4><h4 id="文件拆分，添加media查询，加载不同文件"><a href="#文件拆分，添加media查询，加载不同文件" class="headerlink" title="文件拆分，添加media查询，加载不同文件"></a>文件拆分，添加media查询，加载不同文件</h4><h4 id="删除未使用的CSS"><a href="#删除未使用的CSS" class="headerlink" title="删除未使用的CSS"></a>删除未使用的CSS</h4><h4 id="减少空白行的存在"><a href="#减少空白行的存在" class="headerlink" title="减少空白行的存在"></a>减少空白行的存在</h4><h3 id="减少服务器响应时间（TTFB）"><a href="#减少服务器响应时间（TTFB）" class="headerlink" title="减少服务器响应时间（TTFB）"></a>减少服务器响应时间（TTFB）</h3><h3 id="避免多次页面重定向"><a href="#避免多次页面重定向" class="headerlink" title="避免多次页面重定向"></a>避免多次页面重定向</h3><ul>
+<li>域名重定向，会增大展示时间，譬如<br><a target="_blank" rel="noopener" href="http://test.com/">http://test.com</a> → 重定向到 htts:&#x2F;&#x2F;test.com</li>
+</ul>
+<h3 id="preload-请求"><a href="#preload-请求" class="headerlink" title="preload 请求"></a>preload 请求</h3><h4 id="preload-css"><a href="#preload-css" class="headerlink" title="preload css"></a>preload css</h4><p>可以<a target="_blank" rel="noopener" href="https://github.com/addyosmani/critical/blob/master/README.md">参考,使用下方critical插件</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rel=&quot;preload&quot; as=&quot;style&quot;</span><br><span class="line"></span><br><span class="line"># 使用工具批量修改</span><br><span class="line">npm i -D critical</span><br></pre></td></tr></table></figure>
+
+<h3 id="async处理js"><a href="#async处理js" class="headerlink" title="async处理js"></a>async处理js</h3><ul>
+<li>js添加async 处理</li>
+<li>耗时大的inline code延迟<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.write()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="避免巨大的网络负载"><a href="#避免巨大的网络负载" class="headerlink" title="避免巨大的网络负载"></a>避免巨大的网络负载</h3><h3 id="缓存静态资产"><a href="#缓存静态资产" class="headerlink" title="缓存静态资产"></a>缓存静态资产</h3><h4 id="服务器返回过期时间"><a href="#服务器返回过期时间" class="headerlink" title="服务器返回过期时间"></a>服务器返回过期时间</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: max-age=31536000</span><br></pre></td></tr></table></figure>
+
+<h3 id="避免DOM太大"><a href="#避免DOM太大" class="headerlink" title="避免DOM太大"></a>避免DOM太大</h3><h3 id="最小化关键请求深度"><a href="#最小化关键请求深度" class="headerlink" title="最小化关键请求深度"></a>最小化关键请求深度</h3><h3 id="避免展示font字体文件"><a href="#避免展示font字体文件" class="headerlink" title="避免展示font字体文件"></a>避免展示font字体文件</h3><h4 id="css添加display"><a href="#css添加display" class="headerlink" title="css添加display"></a>css添加display</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@font-face &#123;</span><br><span class="line">  font-family: &#x27;Pacifico&#x27;;</span><br><span class="line">  font-style: normal;</span><br><span class="line">  font-weight: 400;</span><br><span class="line">  src: local(&#x27;Pacifico Regular&#x27;), local(&#x27;Pacifico-Regular&#x27;), url(https://fonts.gstatic.com/s/pacifico/v12/FwZY7-Qmy14u9lezJ-6H6MmBp0u-.woff2) format(&#x27;woff2&#x27;);</span><br><span class="line">  font-display: swap; # 告知浏览器，先展示系统字体，等自定义font加载完毕，在替换</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="link添加preload"><a href="#link添加preload" class="headerlink" title="link添加preload"></a>link添加preload</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;preload&quot;&gt; # 开启预加载</span><br></pre></td></tr></table></figure>
+
+<h4 id="最终方法，fontfaceobserver动态展示css样式"><a href="#最终方法，fontfaceobserver动态展示css样式" class="headerlink" title="最终方法，fontfaceobserver动态展示css样式"></a>最终方法，fontfaceobserver动态展示css样式</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/bramstein/fontfaceobserver">fontfaceobserver</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 引入 fontfaceobserver</span><br><span class="line">&lt;script src=&quot;fontfaceobserver.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"># 根据css font-family设置</span><br><span class="line">const pacificoObserver = new FontFaceObserver(&#x27;Pacifico&#x27;);</span><br><span class="line">const robotoObserver = new FontFaceObserver(&#x27;Roboto&#x27;);</span><br><span class="line"></span><br><span class="line"># 字体加载完毕，设置css</span><br><span class="line">Promise.all([</span><br><span class="line">  pacificoObserver.load(),</span><br><span class="line">  robotoObserver.load()</span><br><span class="line">]).then(function()&#123;</span><br><span class="line">  document.documentElement.className += &quot; fonts-loaded&quot;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"># 更新css</span><br><span class="line">.header &#123;</span><br><span class="line">html.fonts-loaded .header &#123;</span><br><span class="line">  font-family: &#x27;Pacifico&#x27;, cursive;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.text</span><br><span class="line">html.fonts-loaded .text &#123;</span><br><span class="line">  font-family: &#x27;Roboto&#x27;, sans-serif;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="保持低请求数量和小传输大小"><a href="#保持低请求数量和小传输大小" class="headerlink" title="保持低请求数量和小传输大小"></a>保持低请求数量和小传输大小</h3><h3 id="优化后打分"><a href="#优化后打分" class="headerlink" title="优化后打分"></a>优化后打分</h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#performance" >
+    <span class="tag-code">performance</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能优化" >
+    <span class="tag-code">性能优化</span>
+  </a>
+
+  <a target="_blank" href="/tags#lighthouse" >
+    <span class="tag-code">lighthouse</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/07/26/performace_detect_skills/concepts/%E3%80%8APerformance%E3%80%8B-%20%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E6%B5%8B%E9%87%8F%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">
+        <span class="nav-arrow">← </span>
+        
+          《Performance》- 前端界面性能指标和测量优化方法
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/04/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-Angular8%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">
+        
+          《angular8》-Angular8多场景下单元测试实践指南
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#lighthouse"><span class="toc-nav-text">lighthouse</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BC%98%E5%8C%96%E5%89%8D%E6%89%93%E5%88%86"><span class="toc-nav-text">优化前打分</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%85%B7%E4%BD%93%E4%BC%98%E5%8C%96"><span class="toc-nav-text">具体优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%87%8F%E5%B0%91%E9%98%BB%E5%A1%9E%E6%B8%B2%E6%9F%93%E7%9A%84%E6%96%87%E4%BB%B6%E8%B5%84%E6%BA%90"><span class="toc-nav-text">减少阻塞渲染的文件资源</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#js"><span class="toc-nav-text">js</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#css"><span class="toc-nav-text">css</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html"><span class="toc-nav-text">html</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#img"><span class="toc-nav-text">img</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BC%A9%E5%B0%8F%E3%80%81%E4%BC%98%E5%8C%96CSS"><span class="toc-nav-text">缩小、优化CSS</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#webpack%E7%AD%89%E5%B7%A5%E5%85%B7%E5%8E%8B%E7%BC%A9"><span class="toc-nav-text">webpack等工具压缩</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E6%8B%86%E5%88%86%EF%BC%8C%E6%B7%BB%E5%8A%A0media%E6%9F%A5%E8%AF%A2%EF%BC%8C%E5%8A%A0%E8%BD%BD%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6"><span class="toc-nav-text">文件拆分，添加media查询，加载不同文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%9A%84CSS"><span class="toc-nav-text">删除未使用的CSS</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%87%8F%E5%B0%91%E7%A9%BA%E7%99%BD%E8%A1%8C%E7%9A%84%E5%AD%98%E5%9C%A8"><span class="toc-nav-text">减少空白行的存在</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%87%8F%E5%B0%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%EF%BC%88TTFB%EF%BC%89"><span class="toc-nav-text">减少服务器响应时间（TTFB）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%81%BF%E5%85%8D%E5%A4%9A%E6%AC%A1%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-nav-text">避免多次页面重定向</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#preload-%E8%AF%B7%E6%B1%82"><span class="toc-nav-text">preload 请求</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#preload-css"><span class="toc-nav-text">preload css</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#async%E5%A4%84%E7%90%86js"><span class="toc-nav-text">async处理js</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%81%BF%E5%85%8D%E5%B7%A8%E5%A4%A7%E7%9A%84%E7%BD%91%E7%BB%9C%E8%B4%9F%E8%BD%BD"><span class="toc-nav-text">避免巨大的网络负载</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BC%93%E5%AD%98%E9%9D%99%E6%80%81%E8%B5%84%E4%BA%A7"><span class="toc-nav-text">缓存静态资产</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%94%E5%9B%9E%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="toc-nav-text">服务器返回过期时间</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%81%BF%E5%85%8DDOM%E5%A4%AA%E5%A4%A7"><span class="toc-nav-text">避免DOM太大</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E5%85%B3%E9%94%AE%E8%AF%B7%E6%B1%82%E6%B7%B1%E5%BA%A6"><span class="toc-nav-text">最小化关键请求深度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%81%BF%E5%85%8D%E5%B1%95%E7%A4%BAfont%E5%AD%97%E4%BD%93%E6%96%87%E4%BB%B6"><span class="toc-nav-text">避免展示font字体文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#css%E6%B7%BB%E5%8A%A0display"><span class="toc-nav-text">css添加display</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#link%E6%B7%BB%E5%8A%A0preload"><span class="toc-nav-text">link添加preload</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%80%E7%BB%88%E6%96%B9%E6%B3%95%EF%BC%8Cfontfaceobserver%E5%8A%A8%E6%80%81%E5%B1%95%E7%A4%BAcss%E6%A0%B7%E5%BC%8F"><span class="toc-nav-text">最终方法，fontfaceobserver动态展示css样式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BF%9D%E6%8C%81%E4%BD%8E%E8%AF%B7%E6%B1%82%E6%95%B0%E9%87%8F%E5%92%8C%E5%B0%8F%E4%BC%A0%E8%BE%93%E5%A4%A7%E5%B0%8F"><span class="toc-nav-text">保持低请求数量和小传输大小</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%93%E5%88%86"><span class="toc-nav-text">优化后打分</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/07/28/performace_detect_skills/concepts/《Performance》- 博客性能优化到90分+实践/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

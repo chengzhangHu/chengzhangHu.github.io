@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Css3》- CSS进阶之媒介查询 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Css3》- CSS进阶之媒介查询</h2>
+  <p class="post-date">2020-08-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>这节内容，紧接着上一篇<a target="_blank" rel="noopener" href="https://juejin.im/post/6858822065164648456/">HTML入门</a>,我们介绍Css进阶相关知识点</p>
+<h3 id="Css是什么？"><a href="#Css是什么？" class="headerlink" title="Css是什么？"></a>Css是什么？</h3><blockquote>
+<p>css为了美化页面的一套浏览器语法规则，</p>
+</blockquote>
+<blockquote>
+<p>Css是由CSS Working Group负责制定的. 这个工作组有不同浏览器厂商代表、其他公司中对css感兴趣的人以及一些受邀请的专家组成。</p>
+</blockquote>
+<blockquote>
+<p>由此，我们就可以看出，css需要浏览器厂商去实现。这样就存在时间差、实现差，进而存在了兼容性问题</p>
+</blockquote>
+<h3 id="Css为何要出现？"><a href="#Css为何要出现？" class="headerlink" title="Css为何要出现？"></a>Css为何要出现？</h3><blockquote>
+<p>浏览器渲染Html元素，展示的内容都是黑色、固定大小，不能做到丰富多彩，我们希望的是，可以跟印刷一样，多彩好看。</p>
+</blockquote>
+<h3 id="Css结构"><a href="#Css结构" class="headerlink" title="Css结构"></a>Css结构</h3><blockquote>
+<p>优先级，从高到底</p>
+</blockquote>
+<h4 id="行内样式"><a href="#行内样式" class="headerlink" title="行内样式"></a>行内样式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;My CSS experiment&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1 style=&quot;color: blue;background-color: yellow;border: 1px solid black;&quot;&gt;Hello World!&lt;/h1&gt;</span><br><span class="line">    &lt;p style=&quot;color:red;&quot;&gt;This is my first CSS example&lt;/p&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="html内css"><a href="#html内css" class="headerlink" title="html内css"></a>html内css</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;My CSS experiment&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      h1 &#123;</span><br><span class="line">        color: blue;</span><br><span class="line">        background-color: yellow;</span><br><span class="line">        border: 1px solid black;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      p &#123;</span><br><span class="line">        color: red;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Hello World!&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;This is my first CSS example&lt;/p&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="外部文件css"><a href="#外部文件css" class="headerlink" title="外部文件css"></a>外部文件css</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#html </span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;My CSS experiment&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Hello World!&lt;/h1&gt;</span><br><span class="line">    &lt;p&gt;This is my first CSS example&lt;/p&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">h1 &#123;</span><br><span class="line">  color: blue;</span><br><span class="line">  background-color: yellow;</span><br><span class="line">  border: 1px solid black;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">p &#123;</span><br><span class="line">  color: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Css开发要点"><a href="#Css开发要点" class="headerlink" title="Css开发要点"></a>Css开发要点</h3><h4 id="内置函数的调用"><a href="#内置函数的调用" class="headerlink" title="内置函数的调用"></a>内置函数的调用</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.box &#123;</span><br><span class="line">  margin: 30px;</span><br><span class="line">  width: 100px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  background-color: rebeccapurple;</span><br><span class="line">  transform: rotate(0.8turn)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="媒介查询"><a href="#媒介查询" class="headerlink" title="媒介查询"></a>媒介查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@media (min-width: 30em) &#123;</span><br><span class="line">  body &#123;</span><br><span class="line">    background-color: blue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* Handle specific elements nested in the DOM  */</span><br><span class="line">/* -------------------------------------------------------------------------------------------- */</span><br><span class="line">div p, #id:first-line &#123;</span><br><span class="line">  background-color: red; </span><br><span class="line">  border-radius: 3px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="缩写"><a href="#缩写" class="headerlink" title="缩写"></a>缩写</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">padding: 10px 15px 15px 5px;</span><br><span class="line">等效于</span><br><span class="line">padding-top: 10px;</span><br><span class="line">padding-right: 15px;</span><br><span class="line">padding-bottom: 15px;</span><br><span class="line">padding-left: 5px;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CSS-RULE"><a href="#CSS-RULE" class="headerlink" title="CSS @RULE"></a>CSS @RULE</h4><blockquote>
+<p>charset, 标识css文件采用的编码</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 只能用于css文件，style属性、标签均无效</span><br><span class="line">@charset &quot;utf-8&quot;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>引用其他css文件</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@import &#x27;styles2.css&#x27;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>设置命名空间</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@namespace url(http://www.w3.org/1999/xhtml);</span><br><span class="line">@namespace svg url(http://www.w3.org/2000/svg);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>support 与 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media">media</a><br>media 可能的值： all，print,screen,speech</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@supports (display: flex) &#123;</span><br><span class="line">  @media screen and (min-width: 900px) &#123;</span><br><span class="line">    article &#123;</span><br><span class="line">      display: flex;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>document，限定到特定的url.</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 仅仅firefox支持</span><br><span class="line">@document url(&quot;https://www.example.com/&quot;) &#123;</span><br><span class="line">  h1 &#123;</span><br><span class="line">    color: green;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>page，打印的时候，修改部分css样式</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@page &#123;</span><br><span class="line">  margin: 1cm;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@page :first &#123;</span><br><span class="line">  margin: 2cm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/09/aTuPe0.png"></p>
+<blockquote>
+<p>使用特定字体</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@font-face &#123;</span><br><span class="line">  font-family: &quot;Open Sans&quot;;</span><br><span class="line">  src: url(&quot;/fonts/OpenSans-Regular-webfont.woff2&quot;) format(&quot;woff2&quot;),</span><br><span class="line">       url(&quot;/fonts/OpenSans-Regular-webfont.woff&quot;) format(&quot;woff&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>定义css动画帧</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@keyframes slidein &#123;</span><br><span class="line">  from &#123;</span><br><span class="line">    transform: translateX(0%);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  to &#123;</span><br><span class="line">    transform: translateX(100%);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>viewport</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#已废弃</span><br><span class="line">@viewport &#123;</span><br><span class="line">  width: 100vw; /*Sets the width of the actual viewport to the device width*/</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 改用html中</span><br><span class="line">&lt;meta name=&quot;viewport&quot;&gt; </span><br></pre></td></tr></table></figure>
+
+<h3 id="Css-Media"><a href="#Css-Media" class="headerlink" title="Css Media"></a>Css Media</h3><h4 id="any-hover"><a href="#any-hover" class="headerlink" title="any-hover"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/any-hover">any-hover</a></h4><blockquote>
+<p>统一修改hover效果<br><img src="https://s1.ax1x.com/2020/08/09/aTNDAJ.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">&lt;a href=&quot;#&quot;&gt;Try hovering over me!&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">@media (any-hover: hover) &#123;</span><br><span class="line">  a:hover &#123;</span><br><span class="line">    background: yellow;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 类似hover</span><br><span class="line">@media (hover: hover) &#123;</span><br><span class="line">  a:hover &#123;</span><br><span class="line">    background: yellow;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/09/aTN9OO.gif"></p>
+<h4 id="any-pointer"><a href="#any-pointer" class="headerlink" title="any-pointer"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/any-pointer">any-pointer</a></h4><blockquote>
+<p>设置鼠标操作效果<br><img src="https://s1.ax1x.com/2020/08/09/aTrCo8.md.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># html</span><br><span class="line">&lt;input id=&quot;test&quot; type=&quot;checkbox&quot; /&gt;</span><br><span class="line">&lt;label for=&quot;test&quot;&gt;Look at me!&lt;/label&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">input[type=&quot;checkbox&quot;]:checked &#123;</span><br><span class="line">  background: gray;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (any-pointer: fine) &#123;</span><br><span class="line">  input[type=&quot;checkbox&quot;] &#123;</span><br><span class="line">    -moz-appearance: none;</span><br><span class="line">    -webkit-appearance: none;</span><br><span class="line">    appearance: none;</span><br><span class="line">    width: 15px;</span><br><span class="line">    height: 15px;</span><br><span class="line">    border: 1px solid blue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (any-pointer: coarse) &#123;</span><br><span class="line">  input[type=&quot;checkbox&quot;] &#123;</span><br><span class="line">    -moz-appearance: none;</span><br><span class="line">    -webkit-appearance: none;</span><br><span class="line">    appearance: none;</span><br><span class="line">    width: 30px;</span><br><span class="line">    height: 30px;</span><br><span class="line">    border: 2px solid red;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/09/aTwvMq.gif"></p>
+<h4 id="aspect-ratio"><a href="#aspect-ratio" class="headerlink" title="aspect-ratio"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/aspect-ratio">aspect-ratio</a></h4><blockquote>
+<p>根据viewpoint宽高比，设置不同css<br><img src="https://s1.ax1x.com/2020/08/09/aTDd2j.md.png"><br>常见的宽高比如下：<br><img src="https://s1.ax1x.com/2020/08/09/aTsF76.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">&lt;div id=&#x27;inner&#x27;&gt;</span><br><span class="line">  Watch this element as you resize your viewport&#x27;s width and height.</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">@media (min-aspect-ratio: 8/5) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    background: #9af; /* blue */</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (max-aspect-ratio: 3/2) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    background: #9ff;  /* cyan */</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (aspect-ratio: 1/1) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    background: #f9a; /* red */</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/08/09/aTD9C4.gif" width="600" height="200">
+
+<h4 id="height"><a href="#height" class="headerlink" title="height"></a>height</h4><blockquote>
+<p>根据高度设置不同css</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">div&gt;Watch this element as you resize your viewport&#x27;s height.&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">html&#123;</span><br><span class="line">  font-size:16px;</span><br><span class="line">&#125;</span><br><span class="line">@media (min-height: 20rem) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">      background:  yellow;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@media (max-height: 30rem) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">      background:  red;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="orientation"><a href="#orientation" class="headerlink" title="orientation"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/orientation">orientation</a></h4><blockquote>
+<p>横屏、竖屏样式设置<br><img src="https://s1.ax1x.com/2020/08/09/aT4Hoj.md.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">&lt;div&gt;Box 1&lt;/div&gt;</span><br><span class="line">&lt;div&gt;Box 2&lt;/div&gt;</span><br><span class="line">&lt;div&gt;Box 3&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">body &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div &#123;</span><br><span class="line">  background: yellow;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (orientation: landscape) &#123;</span><br><span class="line">  body &#123;</span><br><span class="line">    flex-direction: row;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (orientation: portrait) &#123;</span><br><span class="line">  body &#123;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="prefers-color-scheme"><a href="#prefers-color-scheme" class="headerlink" title="prefers-color-scheme"></a>prefers-color-scheme</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">暗黑模式</a>, 利用chrome的模拟功能触发change，加载不同的css样式<br><img src="https://s1.ax1x.com/2020/08/09/aT7FHO.png"></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line"> &lt;div class=&quot;night&quot;&gt;Night (initial)&lt;/div&gt;</span><br><span class="line"> &lt;div class=&quot;night night-scheme&quot;&gt;Night (changes in scheme)&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line"> .night &#123; background: black; color: #eee; &#125;</span><br><span class="line">  @media (prefers-color-scheme: dark) &#123;</span><br><span class="line">  .night.night-scheme &#123; background: black; color:  #eee; &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @media (prefers-color-scheme: light) &#123;</span><br><span class="line">  .night.night-scheme &#123; background:  #eee; color: black; &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  .night &#123;</span><br><span class="line">      display: inline-block;</span><br><span class="line">      padding: 1em;</span><br><span class="line">      width: 7em;</span><br><span class="line">      height: 2em;</span><br><span class="line">      vertical-align: middle;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/08/09/aTTqBT.gif"></p>
+<h4 id="width"><a href="#width" class="headerlink" title="width"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/width">width</a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#html</span><br><span class="line">&lt;div&gt;Watch this element as you resize your viewport&#x27;s width.&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#css</span><br><span class="line">@media (width: 360px) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    color: red;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (min-width: 35rem) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    background: yellow;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media (max-width: 50rem) &#123;</span><br><span class="line">  div &#123;</span><br><span class="line">    border: 2px solid blue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Css如何生效的"><a href="#Css如何生效的" class="headerlink" title="Css如何生效的"></a>Css如何生效的</h3><p><img src="https://s1.ax1x.com/2020/08/09/aTHizn.md.png"></p>
+<blockquote>
+<p>1.HTML解析为对应的DOM</p>
+</blockquote>
+<blockquote>
+<p>2.浏览器解析Css，并根据选择器，使用优先级、继承等规则，决定选择器应该设置哪些样式</p>
+</blockquote>
+<blockquote>
+<p>3.然后把对应整合后的css样式，设置到Dom对象上</p>
+</blockquote>
+<blockquote>
+<p>4.交给浏览器绘制渲染展示</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><h3 id="web-develop"><a href="#web-develop" class="headerlink" title="web-develop"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer">web-develop</a></h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8BHTML%E5%85%A5%E9%97%A8/">
+        <span class="nav-arrow">← </span>
+        
+          《HTML》- 如何成为一名前端开发之HTML入门
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%B9%8BCrossTest%E5%85%A5%E9%97%A8/">
+        
+          《Css3》- 如何成为一名前端开发者之CrossTest入门
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-nav-text">Css是什么？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css%E4%B8%BA%E4%BD%95%E8%A6%81%E5%87%BA%E7%8E%B0%EF%BC%9F"><span class="toc-nav-text">Css为何要出现？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css%E7%BB%93%E6%9E%84"><span class="toc-nav-text">Css结构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A1%8C%E5%86%85%E6%A0%B7%E5%BC%8F"><span class="toc-nav-text">行内样式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#html%E5%86%85css"><span class="toc-nav-text">html内css</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A4%96%E9%83%A8%E6%96%87%E4%BB%B6css"><span class="toc-nav-text">外部文件css</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css%E5%BC%80%E5%8F%91%E8%A6%81%E7%82%B9"><span class="toc-nav-text">Css开发要点</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-nav-text">内置函数的调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AA%92%E4%BB%8B%E6%9F%A5%E8%AF%A2"><span class="toc-nav-text">媒介查询</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%B3%A8%E9%87%8A"><span class="toc-nav-text">添加注释</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%A9%E5%86%99"><span class="toc-nav-text">缩写</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CSS-RULE"><span class="toc-nav-text">CSS @RULE</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css-Media"><span class="toc-nav-text">Css Media</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#any-hover"><span class="toc-nav-text">any-hover</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#any-pointer"><span class="toc-nav-text">any-pointer</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#aspect-ratio"><span class="toc-nav-text">aspect-ratio</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#height"><span class="toc-nav-text">height</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#orientation"><span class="toc-nav-text">orientation</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#prefers-color-scheme"><span class="toc-nav-text">prefers-color-scheme</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#width"><span class="toc-nav-text">width</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Css%E5%A6%82%E4%BD%95%E7%94%9F%E6%95%88%E7%9A%84"><span class="toc-nav-text">Css如何生效的</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#web-develop"><span class="toc-nav-text">web-develop</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/09/front_skills/css3/《Css3》- CSS进阶之媒介查询/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

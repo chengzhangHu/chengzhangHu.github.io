@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      postMessage vs NgRx | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>postMessage vs NgRx</h2>
+  <p class="post-date">2025-06-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="📌-postMessage-vs-NgRx-——-技术选型与场景分析"><a href="#📌-postMessage-vs-NgRx-——-技术选型与场景分析" class="headerlink" title="📌 postMessage vs NgRx —— 技术选型与场景分析"></a>📌 postMessage vs NgRx —— 技术选型与场景分析</h1><hr>
+<h2 id="🧭-两种方案的典型使用场景"><a href="#🧭-两种方案的典型使用场景" class="headerlink" title="🧭 两种方案的典型使用场景"></a>🧭 两种方案的典型使用场景</h2><h3 id="✅-NgRx-的典型场景"><a href="#✅-NgRx-的典型场景" class="headerlink" title="✅ NgRx 的典型场景"></a>✅ NgRx 的典型场景</h3><ul>
+<li>应用运行在 <strong>同一个 Angular 应用上下文内</strong></li>
+<li>需要<strong>集中式状态管理</strong>、统一逻辑流（例如全局用户状态、表单状态）</li>
+<li>组件之间是<strong>父子、兄弟</strong>关系，或通过服务可以注入连接</li>
+</ul>
+<h4 id="🟢-优点："><a href="#🟢-优点：" class="headerlink" title="🟢 优点："></a>🟢 优点：</h4><ul>
+<li>类型安全、结构清晰</li>
+<li>可调试、可追踪</li>
+<li>遵循 Angular 哲学</li>
+</ul>
+<hr>
+<h3 id="✅-postMessage-的典型场景"><a href="#✅-postMessage-的典型场景" class="headerlink" title="✅ postMessage 的典型场景"></a>✅ postMessage 的典型场景</h3><ul>
+<li>页面包含 <strong>跨 iframe</strong>、嵌入第三方页面，或与<strong>非 Angular 应用交互</strong></li>
+<li>Angular 无法直接访问或控制通信目标窗口（如嵌入别的系统、老旧页面、跨域）</li>
+<li>需要在<strong>不同浏览上下文</strong>（标签页 &#x2F; 窗口）之间通信</li>
+</ul>
+<h4 id="🟡-优点："><a href="#🟡-优点：" class="headerlink" title="🟡 优点："></a>🟡 优点：</h4><ul>
+<li>不依赖 Angular，<strong>浏览器原生通信能力</strong></li>
+<li>适用于任何 HTML 环境</li>
+<li>支持跨域</li>
+</ul>
+<hr>
+<h2 id="✅-所以该不该用-postMessage？"><a href="#✅-所以该不该用-postMessage？" class="headerlink" title="✅ 所以该不该用 postMessage？"></a>✅ 所以该不该用 postMessage？</h2><h3 id="👇-以下情况-必须用-postMessage"><a href="#👇-以下情况-必须用-postMessage" class="headerlink" title="👇 以下情况 必须用 postMessage"></a>👇 以下情况 <strong>必须用 postMessage</strong></h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Angular 页面嵌入到一个父页面（iframe）</td>
+<td>Angular 没法用 NgRx 和外部通信，只能 <code>postMessage</code></td>
+</tr>
+<tr>
+<td>跨域系统通信（如 SSO 回调、不同子系统协作）</td>
+<td>跨域只能用浏览器原生 API</td>
+</tr>
+<tr>
+<td>与非 Angular 系统交互（老系统、JS 插件）</td>
+<td>无法共享 NgRx store</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="👇-以下情况-不应该用-postMessage"><a href="#👇-以下情况-不应该用-postMessage" class="headerlink" title="👇 以下情况 不应该用 postMessage"></a>👇 以下情况 <strong>不应该用 postMessage</strong></h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>组件之间通信（兄弟组件、父子组件、跨模块）</td>
+<td>用 <code>@Input/@Output</code>、服务共享、NgRx 更合适</td>
+</tr>
+<tr>
+<td>所有组件都在 Angular 项目中，能访问公共服务</td>
+<td><code>postMessage</code> 是不必要的复杂化</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-建议如何回应同事"><a href="#✅-建议如何回应同事" class="headerlink" title="✅ 建议如何回应同事"></a>✅ 建议如何回应同事</h2><p>可以这样说：</p>
+<blockquote>
+<p>“确实，在 Angular 内部组件通信我们首选 NgRx。但我们这部分通信涉及到 **[嵌套 iframe &#x2F; 第三方系统 &#x2F; 跨域应用]**，这些场景 NgRx 是无能为力的，我们只能使用浏览器的 <code>postMessage</code> API 来传递信息。”</p>
+</blockquote>
+<p>或者更技术一点：</p>
+<blockquote>
+<p>“NgRx 是状态管理工具，不是跨窗口通信方案。我们这里是在 DOM 层级结构之间通信，<code>postMessage</code> 是唯一通用、安全、浏览器支持的机制。”</p>
+</blockquote>
+<hr>
+<h2 id="🧩-总结"><a href="#🧩-总结" class="headerlink" title="🧩 总结"></a>🧩 总结</h2><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>推荐技术</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Angular 内部状态管理</td>
+<td>✅ NgRx</td>
+</tr>
+<tr>
+<td>Angular 内部组件通信</td>
+<td>✅ <code>@Input/@Output</code>、服务、NgRx</td>
+</tr>
+<tr>
+<td>跨 iframe &#x2F; 跨窗口通信</td>
+<td>✅ <code>postMessage</code></td>
+</tr>
+<tr>
+<td>与非 Angular 系统通信</td>
+<td>✅ <code>postMessage</code></td>
+</tr>
+</tbody></table>
+<hr>
+<hr>
+<h1 id="❓不同浏览器窗口之间能不能使用-postMessage？"><a href="#❓不同浏览器窗口之间能不能使用-postMessage？" class="headerlink" title="❓不同浏览器窗口之间能不能使用 postMessage？"></a>❓不同浏览器窗口之间能不能使用 <code>postMessage</code>？</h1><p>✅ <strong>简洁回答：可以，但前提是你必须“持有”目标窗口的引用。</strong></p>
+<hr>
+<h2 id="🔑-什么是“持有引用”？"><a href="#🔑-什么是“持有引用”？" class="headerlink" title="🔑 什么是“持有引用”？"></a>🔑 什么是“持有引用”？</h2><p>在浏览器中，<code>postMessage</code> 的前提是：你<strong>必须能访问目标窗口的 <code>window</code> 对象</strong>，包括以下几种典型场景。</p>
+<hr>
+<h2 id="✅-可通信的“不同窗口”场景"><a href="#✅-可通信的“不同窗口”场景" class="headerlink" title="✅ 可通信的“不同窗口”场景"></a>✅ 可通信的“不同窗口”场景</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否支持 <code>postMessage</code></th>
+<th>如何引用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前页打开的 <code>window.open()</code> 弹窗</td>
+<td>✅ 支持</td>
+<td><code>window.open()</code> 的返回值就是子窗口引用</td>
+</tr>
+<tr>
+<td>弹窗访问其父窗口 (<code>opener</code>)</td>
+<td>✅ 支持</td>
+<td><code>window.opener</code> 是父窗口的引用</td>
+</tr>
+<tr>
+<td><code>iframe</code> 与其父窗口之间</td>
+<td>✅ 支持</td>
+<td><code>window.parent</code> 或 <code>iframe.contentWindow</code></td>
+</tr>
+<tr>
+<td>同源标签页之间</td>
+<td>❌ 不支持直接使用 <code>postMessage</code></td>
+<td>可以使用 <code>BroadcastChannel</code> 替代</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="❌-不支持的场景（你没引用到目标窗口）"><a href="#❌-不支持的场景（你没引用到目标窗口）" class="headerlink" title="❌ 不支持的场景（你没引用到目标窗口）"></a>❌ 不支持的场景（你没引用到目标窗口）</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否支持</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>页面 A 和 页面 B 是手动打开的两个标签页</td>
+<td>❌ 不支持</td>
+<td>没有相互 window 引用，无法通信</td>
+</tr>
+<tr>
+<td>浏览器两个独立 tab</td>
+<td>❌ 不支持</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>通过 <code>window.name</code> 找另一个窗口</td>
+<td>❌ 不支持</td>
+<td><code>window.name</code> 只是标识，不是引用</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-正确示例：两个窗口互发消息"><a href="#✅-正确示例：两个窗口互发消息" class="headerlink" title="✅ 正确示例：两个窗口互发消息"></a>✅ 正确示例：两个窗口互发消息</h2><p><strong>父窗口：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> childWindow = <span class="variable language_">window</span>.<span class="title function_">open</span>(<span class="string">&#x27;child.html&#x27;</span>, <span class="string">&#x27;_blank&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送消息到子窗口</span></span><br><span class="line">childWindow.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;HELLO&#x27;</span> &#125;, <span class="string">&#x27;https://child-domain.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>子窗口：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到父窗口消息:&#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 回复父窗口</span></span><br><span class="line">  event.<span class="property">source</span>.<span class="title function_">postMessage</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;RECEIVED&#x27;</span> &#125;, event.<span class="property">origin</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="❌-错误示例：没有引用就不能发"><a href="#❌-错误示例：没有引用就不能发" class="headerlink" title="❌ 错误示例：没有引用就不能发"></a>❌ 错误示例：没有引用就不能发</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 页面 A</span></span><br><span class="line"><span class="comment">// 想给用户手动打开的页面 B 发消息</span></span><br><span class="line"><span class="comment">// ❌ 没有任何引用 -&gt; 无法获取 B 的 window -&gt; 不能 postMessage</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-如果确实需要“跨标签页通信”怎么办？"><a href="#🧠-如果确实需要“跨标签页通信”怎么办？" class="headerlink" title="🧠 如果确实需要“跨标签页通信”怎么办？"></a>🧠 如果确实需要“跨标签页通信”怎么办？</h2><p>✅ 推荐方案：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 BroadcastChannel（同源）</span></span><br><span class="line"><span class="keyword">const</span> channel = <span class="keyword">new</span> <span class="title class_">BroadcastChannel</span>(<span class="string">&#x27;my_channel&#x27;</span>);</span><br><span class="line">channel.<span class="title function_">postMessage</span>(&#123; <span class="attr">action</span>: <span class="string">&#x27;refresh&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line">channel.<span class="property">onmessage</span> = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;其他 tab 发来消息:&#x27;</span>, e.<span class="property">data</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔐-安全提醒"><a href="#🔐-安全提醒" class="headerlink" title="🔐 安全提醒"></a>🔐 安全提醒</h2><p>无论使用哪种方式：</p>
+<ul>
+<li>✅ **验证 <code>event.origin</code>**：确保只接收可信来源的信息</li>
+<li>❌ **不要盲目信任 <code>event.data</code>**：加上结构校验、类型判断</li>
+<li>❌ <strong>避免使用 <code>&#39;*&#39;</code> 作为目标 origin</strong>，除非你完全了解并能控制风险</li>
+</ul>
+<hr>
+<h2 id="✅-总结表"><a href="#✅-总结表" class="headerlink" title="✅ 总结表"></a>✅ 总结表</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否可以 <code>postMessage</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iframe ↔ parent &#x2F; child</td>
+<td>✅ 支持</td>
+</tr>
+<tr>
+<td>当前页打开的弹窗（<code>window.open</code>）</td>
+<td>✅ 支持</td>
+</tr>
+<tr>
+<td>弹窗访问其 opener</td>
+<td>✅ 支持</td>
+</tr>
+<tr>
+<td>手动打开的两个标签页</td>
+<td>❌ 不支持（请用 <code>BroadcastChannel</code>）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-替代方案（实现类似跨-tab-通信）"><a href="#🚀-替代方案（实现类似跨-tab-通信）" class="headerlink" title="🚀 替代方案（实现类似跨 tab 通信）"></a>🚀 替代方案（实现类似跨 tab 通信）</h2><ul>
+<li><code>BroadcastChannel</code> ✅（同源最推荐）</li>
+<li><code>localStorage + storage</code> 事件 ✅（兼容性好）</li>
+<li><code>IndexedDB + SharedWorker</code> ✅（适合复杂共享）</li>
+</ul>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#postMessage" >
+    <span class="tag-code">postMessage</span>
+  </a>
+
+  <a target="_blank" href="/tags#NgRx" >
+    <span class="tag-code">NgRx</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/06/02/bigdata_for_analyze/ai%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%89%8D%E7%AB%AF/">
+        <span class="nav-arrow">← </span>
+        
+          AI大模型的前端架构
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/06/03/devops_skills/linux/amllinux%20fapolicy/">
+        
+          AlmaLinux  fapolicy
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%93%8C-postMessage-vs-NgRx-%E2%80%94%E2%80%94-%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E4%B8%8E%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90"><span class="toc-nav-text">📌 postMessage vs NgRx —— 技术选型与场景分析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%A1%88%E7%9A%84%E5%85%B8%E5%9E%8B%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">🧭 两种方案的典型使用场景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-NgRx-%E7%9A%84%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">✅ NgRx 的典型场景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%9F%A2-%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-nav-text">🟢 优点：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-postMessage-%E7%9A%84%E5%85%B8%E5%9E%8B%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">✅ postMessage 的典型场景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%9F%A1-%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-nav-text">🟡 优点：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%89%80%E4%BB%A5%E8%AF%A5%E4%B8%8D%E8%AF%A5%E7%94%A8-postMessage%EF%BC%9F"><span class="toc-nav-text">✅ 所以该不该用 postMessage？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%91%87-%E4%BB%A5%E4%B8%8B%E6%83%85%E5%86%B5-%E5%BF%85%E9%A1%BB%E7%94%A8-postMessage"><span class="toc-nav-text">👇 以下情况 必须用 postMessage</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%91%87-%E4%BB%A5%E4%B8%8B%E6%83%85%E5%86%B5-%E4%B8%8D%E5%BA%94%E8%AF%A5%E7%94%A8-postMessage"><span class="toc-nav-text">👇 以下情况 不应该用 postMessage</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%BB%BA%E8%AE%AE%E5%A6%82%E4%BD%95%E5%9B%9E%E5%BA%94%E5%90%8C%E4%BA%8B"><span class="toc-nav-text">✅ 建议如何回应同事</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🧩 总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E2%9D%93%E4%B8%8D%E5%90%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AA%97%E5%8F%A3%E4%B9%8B%E9%97%B4%E8%83%BD%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8-postMessage%EF%BC%9F"><span class="toc-nav-text">❓不同浏览器窗口之间能不能使用 postMessage？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%91-%E4%BB%80%E4%B9%88%E6%98%AF%E2%80%9C%E6%8C%81%E6%9C%89%E5%BC%95%E7%94%A8%E2%80%9D%EF%BC%9F"><span class="toc-nav-text">🔑 什么是“持有引用”？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8F%AF%E9%80%9A%E4%BF%A1%E7%9A%84%E2%80%9C%E4%B8%8D%E5%90%8C%E7%AA%97%E5%8F%A3%E2%80%9D%E5%9C%BA%E6%99%AF"><span class="toc-nav-text">✅ 可通信的“不同窗口”场景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9D%8C-%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%88%E4%BD%A0%E6%B2%A1%E5%BC%95%E7%94%A8%E5%88%B0%E7%9B%AE%E6%A0%87%E7%AA%97%E5%8F%A3%EF%BC%89"><span class="toc-nav-text">❌ 不支持的场景（你没引用到目标窗口）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A3%E7%A1%AE%E7%A4%BA%E4%BE%8B%EF%BC%9A%E4%B8%A4%E4%B8%AA%E7%AA%97%E5%8F%A3%E4%BA%92%E5%8F%91%E6%B6%88%E6%81%AF"><span class="toc-nav-text">✅ 正确示例：两个窗口互发消息</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9D%8C-%E9%94%99%E8%AF%AF%E7%A4%BA%E4%BE%8B%EF%BC%9A%E6%B2%A1%E6%9C%89%E5%BC%95%E7%94%A8%E5%B0%B1%E4%B8%8D%E8%83%BD%E5%8F%91"><span class="toc-nav-text">❌ 错误示例：没有引用就不能发</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E5%A6%82%E6%9E%9C%E7%A1%AE%E5%AE%9E%E9%9C%80%E8%A6%81%E2%80%9C%E8%B7%A8%E6%A0%87%E7%AD%BE%E9%A1%B5%E9%80%9A%E4%BF%A1%E2%80%9D%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-nav-text">🧠 如果确实需要“跨标签页通信”怎么办？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%90-%E5%AE%89%E5%85%A8%E6%8F%90%E9%86%92"><span class="toc-nav-text">🔐 安全提醒</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%E8%A1%A8"><span class="toc-nav-text">✅ 总结表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88%EF%BC%88%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BC%E8%B7%A8-tab-%E9%80%9A%E4%BF%A1%EF%BC%89"><span class="toc-nav-text">🚀 替代方案（实现类似跨 tab 通信）</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/06/02/front_skills/angular/postmessage与ngrx的选择/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

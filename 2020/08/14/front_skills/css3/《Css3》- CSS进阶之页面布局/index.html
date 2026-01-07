@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Css3》- CSS进阶之页面布局 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Css3》- CSS进阶之页面布局</h2>
+  <p class="post-date">2020-08-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="页面布局"><a href="#页面布局" class="headerlink" title="页面布局"></a>页面布局</h3><blockquote>
+<p>页面布局，说的浅显点，就是页面排版。如何利用已知的div,table,tr,article,section等html5元素，解决用哪些、怎么放、放多少的问题。</p>
+</blockquote>
+<blockquote>
+<p>好的排版，在css样式文件，没有生效的情况下，也能理解界面整体轮廓。</p>
+</blockquote>
+<blockquote>
+<p>不会因css生效后，元素位置大调整。否则，界面性能差且体验不友好。</p>
+</blockquote>
+<h3 id="布局方式"><a href="#布局方式" class="headerlink" title="布局方式"></a>布局方式</h3><blockquote>
+<p>正常文档流 或者说，采用浏览器默认行为， 元素按照出现位置，进行排列。块元素，独占一行；行内元素，先后排列。<br>快级别元素，譬如div，默认只设置宽度，不设置高度的。</p>
+</blockquote>
+<h4 id="display"><a href="#display" class="headerlink" title="display"></a>display</h4><blockquote>
+<p>block, inline or inline-block 正常文档流中生效<br>grid ,flex 决定是子元素 <strong>(直接子元素)</strong> 如何布局的</p>
+</blockquote>
+<h5 id="flex-为何会出现呢？"><a href="#flex-为何会出现呢？" class="headerlink" title="flex 为何会出现呢？"></a>flex 为何会出现呢？</h5><blockquote>
+<p>当然是为了在一个方向上，布局更简单. display:flex ;</p>
+</blockquote>
+<ul>
+<li>flex-direction 默认row</li>
+<li>align-items  默认 stretch ，按照最高的元素拉伸</li>
+</ul>
+  <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="selector-class">.wrapper</span> &#123;</span><br><span class="line">   <span class="attribute">display</span>: flex;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="selector-class">.wrapper</span> &gt; <span class="selector-tag">div</span> &#123;</span><br><span class="line">       <span class="attribute">flex</span>: <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> &lt;<span class="selector-tag">div</span> class=&quot;wrapper&quot;&gt;</span><br><span class="line">   &lt;<span class="selector-tag">div</span> class=&quot;box1&quot;&gt;One&lt;/<span class="selector-tag">div</span>&gt;</span><br><span class="line">   &lt;<span class="selector-tag">div</span> class=&quot;box2&quot;&gt;Two&lt;/<span class="selector-tag">div</span>&gt;</span><br><span class="line">   &lt;<span class="selector-tag">div</span> class=&quot;box3&quot;&gt;Three&lt;/<span class="selector-tag">div</span>&gt;</span><br><span class="line">&lt;/<span class="selector-tag">div</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="grid为何要出现呢？"><a href="#grid为何要出现呢？" class="headerlink" title="grid为何要出现呢？"></a>grid为何要出现呢？</h5><blockquote>
+<p>一个方向布局，怎么够呢？得两个方向呀。 display: <a target="_blank" rel="noopener" href="https://css-tricks.com/snippets/css/complete-guide-grid/">grid </a></p>
+</blockquote>
+<ul>
+<li>grid-template-row 控制水平</li>
+<li>grid-template-column 控制垂直</li>
+<li>父节点，设置完毕, 自动分配子元素到对应的位置;或者grid-row,grid-column设置子元素</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  // can be a length, a percentage, or a fraction of the free space in the grid (using the fr unit)</span><br><span class="line">  grid-template-columns:  ... |   ...; </span><br><span class="line">  grid-template-rows:  ... |   ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>语法规则<br>直接定义row、column宽度</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  grid-template-columns: 40px 50px auto 50px 40px;</span><br><span class="line">  grid-template-rows: 25% 100px auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/08/21/dYFljg.png" height="300" width="400">
+
+<blockquote>
+<p>利用自定义名称+数值，设置布局</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">  grid-template-columns: [first] 40px [line2] 50px [line3] auto [col4-start] 50px [five] 40px [end];</span><br><span class="line">  grid-template-rows: [row1-start] 25% [row1-end] 100px [third-line] auto [last-line];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/08/21/dYF6ER.png" width="400" height="300">
+
+<ul>
+<li><p>子元素布局</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.item-a &#123;</span><br><span class="line">  grid-column-start: 2;</span><br><span class="line">  grid-column-end: five;</span><br><span class="line">  grid-row-start: row1-start;</span><br><span class="line">  grid-row-end: 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/08/21/dYF5Ke.png" height="200" width="300">
+</li>
+<li><p>span 扩展</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.item-b &#123;</span><br><span class="line">  grid-column-start: 1;</span><br><span class="line">  grid-column-end: span col4-start;</span><br><span class="line">  grid-row-start: 2;</span><br><span class="line">  grid-row-end: span 2; #默认span 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/08/21/dYkP5q.png" height="200" width="300"></li>
+</ul>
+<blockquote>
+<p>其余简写语法</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#简写</span><br><span class="line">.container &#123;</span><br><span class="line">  grid-template-columns: repeat(3, 20px [col-start]);</span><br><span class="line">&#125;</span><br><span class="line"># 等效于</span><br><span class="line">.container &#123;</span><br><span class="line">  grid-template-columns: 20px [col-start] 20px [col-start] 20px [col-start];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 百分比</span><br><span class="line">.container &#123;</span><br><span class="line">  #除去50px，之后的1/3</span><br><span class="line">  grid-template-columns: 1fr 50px 1fr 1fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="float"><a href="#float" class="headerlink" title="float"></a>float</h4><blockquote>
+<p>元素浮动，左右摆放，脱离正常文档流</p>
+</blockquote>
+<ul>
+<li>left</li>
+<li>right</li>
+<li>none (不浮动，采用默认值)</li>
+<li>inherit（采用父容器规则）</li>
+</ul>
+<h4 id="position"><a href="#position" class="headerlink" title="position"></a>position</h4><blockquote>
+<p>精确的把元素控制在盒子模型中，盒子套盒子等,主要运用于界面局部布局，而非界面整体布局。</p>
+</blockquote>
+<ul>
+<li>static （不做任何改动）</li>
+<li>relative (相对于之前出现的位置进行x轴或者y轴移动）</li>
+<li>absolute （脱离文档流,相对于最近的非static定位的祖先节点）</li>
+<li>fixed (也脱离文档流，相对于浏览器定位)</li>
+<li>sticky (offset 类似fixed,没有则什么也不做，类似static)</li>
+</ul>
+<h4 id="table"><a href="#table" class="headerlink" title="table"></a>table</h4><blockquote>
+<p>固定的宽高布局，还能自适应，</p>
+</blockquote>
+<ul>
+<li>table ,th,tr,td元素标签布局</li>
+<li>css table <blockquote>
+<p>用来兼容不支持display: flex,grid，版本早的浏览器</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">html &#123;</span><br><span class="line">  font-family: sans-serif;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form &#123;</span><br><span class="line">  display: table;</span><br><span class="line">  margin: 0 auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form div &#123;</span><br><span class="line">  display: table-row;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form label, form input &#123;</span><br><span class="line">  display: table-cell;</span><br><span class="line">  margin-bottom: 10px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form label &#123;</span><br><span class="line">  width: 200px;</span><br><span class="line">  padding-right: 5%;</span><br><span class="line">  text-align: right;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form input &#123;</span><br><span class="line">  width: 300px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">form p &#123;</span><br><span class="line">  display: table-caption;</span><br><span class="line">  caption-side: bottom;</span><br><span class="line">  width: 300px;</span><br><span class="line">  color: #999;</span><br><span class="line">  font-style: italic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Multi-column-布局"><a href="#Multi-column-布局" class="headerlink" title="Multi-column 布局"></a>Multi-column 布局</h4><blockquote>
+<p>按照column-width，column-count，从左到有，从上到下顺序，展示内容</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;h1&gt;Multi-column layout&lt;/h1&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;p&gt;Paragraph 1.&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Paragraph 2.&lt;/p&gt;</span><br><span class="line"></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.container &#123;</span><br><span class="line">        column-width: 200px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="元素默认样式"><a href="#元素默认样式" class="headerlink" title="元素默认样式"></a>元素默认样式</h3><table>
+<thead>
+<tr>
+<th>元素</th>
+<th>style</th>
+</tr>
+</thead>
+</table>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><h3 id="web-develop"><a href="#web-develop" class="headerlink" title="web-develop"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer">web-develop</a></h3></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%B9%8BCrossTest%E5%85%A5%E9%97%A8/">
+        <span class="nav-arrow">← </span>
+        
+          《Css3》- 如何成为一名前端开发者之CrossTest入门
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/08/14/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20Linux%E5%8F%91%E5%B1%95%E7%AE%80%E5%8F%B2/">
+        
+          《Linux》- Linux发展简史
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80"><span class="toc-nav-text">页面布局</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%83%E5%B1%80%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">布局方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#display"><span class="toc-nav-text">display</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#flex-%E4%B8%BA%E4%BD%95%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%91%A2%EF%BC%9F"><span class="toc-nav-text">flex 为何会出现呢？</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#grid%E4%B8%BA%E4%BD%95%E8%A6%81%E5%87%BA%E7%8E%B0%E5%91%A2%EF%BC%9F"><span class="toc-nav-text">grid为何要出现呢？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#float"><span class="toc-nav-text">float</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#position"><span class="toc-nav-text">position</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#table"><span class="toc-nav-text">table</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Multi-column-%E5%B8%83%E5%B1%80"><span class="toc-nav-text">Multi-column 布局</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%83%E7%B4%A0%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F"><span class="toc-nav-text">元素默认样式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#web-develop"><span class="toc-nav-text">web-develop</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/08/14/front_skills/css3/《Css3》- CSS进阶之页面布局/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

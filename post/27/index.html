@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%B9%8BCrossTest%E5%85%A5%E9%97%A8/">《Css3》- 如何成为一名前端开发者之CrossTest入门</a>
+      </h2>
+      <p class="article-date">August 9, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          CSSJavascriptWeb FormsCross-browser testingAccessibilityModern tooling参考web-develop
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E4%B9%8BCrossTest%E5%85%A5%E9%97%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AA%92%E4%BB%8B%E6%9F%A5%E8%AF%A2/">《Css3》- CSS进阶之媒介查询</a>
+      </h2>
+      <p class="article-date">August 9, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          这节内容，紧接着上一篇HTML入门,我们介绍Css进阶相关知识点
+Css是什么？
+css为了美化页面的一套浏览器语法规则，
+
+
+Css是由CSS Working Group负责制定的. 这个工作组有不同浏览器厂商代表、其他公司中对css感兴趣的人以及一些受邀请的专家组成。
+
+
+由此，我们就可 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8B%E5%AA%92%E4%BB%8B%E6%9F%A5%E8%AF%A2/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8BHTML%E5%85%A5%E9%97%A8/">《HTML》- 如何成为一名前端开发之HTML入门</a>
+      </h2>
+      <p class="article-date">August 9, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前端开发，入门简单，有一台可以运行多款浏览器的电脑，能联网查询资料即可。深入的部分，需要更多的理论知识、肯钻研的精神。前端开发，需要入门了解的屈指可数，主要就是如下几个大方面：
+背景知识软件安装文本编辑器
+vscode(推荐使用，功能强大)
+Sublime Text
+NodePad++
+
+浏 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B9%8BHTML%E5%85%A5%E9%97%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85/">《Css3》- 如何成为一名前端开发者</a>
+      </h2>
+      <p class="article-date">August 9, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          CSSJavascriptWeb FormsCross-browser testingAccessibilityModern tooling参考web-develop
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/09/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8D%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/05/front_skills/node/%E3%80%8ANode%E3%80%8B-%20npm%20%E4%B8%8Eyarn%20%E5%8C%BA%E5%88%AB/">《Node》- npm 与yarn 区别</a>
+      </h2>
+      <p class="article-date">August 5, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#npm" >
+    <span class="tag-code">npm</span>
+  </a>
+
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#yarn" >
+    <span class="tag-code">yarn</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.node 安装
+npm是node安装包中默认自带的，推荐使用nvm等node版本管理工具安装，避免可能的权限问题
+
+npm 版本验证1234$ node -vv10.19.0$ npm -v6.14.2
+npm 更新1[sudo] npm install npm -g
+npm lates ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/05/front_skills/node/%E3%80%8ANode%E3%80%8B-%20npm%20%E4%B8%8Eyarn%20%E5%8C%BA%E5%88%AB/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/08/04/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-Angular8%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">《angular8》-Angular8多场景下单元测试实践指南</a>
+      </h2>
+      <p class="article-date">August 5, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#测试用例" >
+    <span class="tag-code">测试用例</span>
+  </a>
+
+  <a target="_blank" href="/tags#UT" >
+    <span class="tag-code">UT</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          开篇三问：
+为何要进行单元测试？
+
+
+单元测试有什么好处？
+
+
+如何编写angular单元测试？
+
+没有单元测试会如何？
+或者换句话说，为何要开发编写单元测试？在业务开发紧张的情况下，往往会忽略单元测试，直接采用，然后开启下方的难忘人生回忆~
+
+单元测试有啥好处？
+我们在开发完毕，加入单元测 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/08/04/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-Angular8%E5%A4%9A%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/26/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/28/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

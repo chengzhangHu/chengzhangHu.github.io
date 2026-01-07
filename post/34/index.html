@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/21/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20%E7%94%A8shell%E5%90%91%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%89%8D%E8%BF%9B%E4%B8%80%E6%AD%A5/">《Linux》- 用shell向自动部署前进一步</a>
+      </h2>
+      <p class="article-date">April 21, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+  <a target="_blank" href="/tags#tar" >
+    <span class="tag-code">tar</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          上传tar包1$ scp xxx.tar.gz &lt;user&gt;@xx.xx.xx.xx:/home/data
+移动包路径123echo &quot;1.mv tar.gz to data/www&quot;mv ./$tarDir /data/www	echo -e &quot;m ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/21/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20%E7%94%A8shell%E5%90%91%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%89%8D%E8%BF%9B%E4%B8%80%E6%AD%A5/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/20/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E8%B7%AF%E5%BE%84%E5%92%8C%E7%8A%B6%E6%80%81/">《canvas》- canvas doc 学习笔记之路径和状态</a>
+      </h2>
+      <p class="article-date">April 20, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          介绍canvas vs svg
+canvas 适用于动态创建的位图，缩放失真。
+svg 适用于静态描述的矢量图，缩放不失真。
+canvas 基于”状态”绘制图形，譬如，strokeStyle、fillStyle、lineWidth等
+svg基于dom，可以直接在html中展示
+
+绘图四步骤
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/20/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E8%B7%AF%E5%BE%84%E5%92%8C%E7%8A%B6%E6%80%81/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/19/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">《canvas》- canvas doc 学习笔记</a>
+      </h2>
+      <p class="article-date">April 20, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#canvas" >
+    <span class="tag-code">canvas</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          介绍canvas vs svg
+canvas 适用于动态创建的位图，缩放失真。
+svg 适用于静态描述的矢量图，缩放不失真。
+canvas 基于”状态”绘制图形，譬如，strokeStyle、fillStyle、lineWidth等
+svg基于dom，可以直接在html中展示
+
+绘图四步骤
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/19/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/19/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%BB%98%E7%BA%BF/">《canvas》- canvas doc 学习笔记之绘线</a>
+      </h2>
+      <p class="article-date">April 20, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#anvas" >
+    <span class="tag-code">anvas</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          介绍canvas vs svg
+canvas 适用于动态创建的位图，缩放失真。
+svg 适用于静态描述的矢量图，缩放不失真。
+canvas 基于”状态”绘制图形，譬如，strokeStyle、fillStyle、lineWidth等
+svg基于dom，可以直接在html中展示
+
+绘图四步骤
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/19/front_skills/canvas/%E3%80%8Acanvas%E3%80%8B-%20canvas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%BB%98%E7%BA%BF/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/19/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%E5%AE%9A%E6%97%B6shell%E5%8F%91%E8%B5%B7http%E8%AF%B7%E6%B1%82/">《Linux》-定时shell发起http请求</a>
+      </h2>
+      <p class="article-date">April 19, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+  <a target="_blank" href="/tags#定时" >
+    <span class="tag-code">定时</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          发起http请求1234567891011121314151617181920212223242526#!/bin/shfile=log.txtecho &#x27;start refresh crontab ....&#x27; &gt;&gt; $fileecho  $(date &qu ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/19/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%E5%AE%9A%E6%97%B6shell%E5%8F%91%E8%B5%B7http%E8%AF%B7%E6%B1%82/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/04/13/front_package_build_skills/rollup/%E3%80%8Arollup%E3%80%8B-%20rollup%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">《rollup》- rollup实践总结</a>
+      </h2>
+      <p class="article-date">April 14, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#rollup" >
+    <span class="tag-code">rollup</span>
+  </a>
+
+  <a target="_blank" href="/tags#工程化" >
+    <span class="tag-code">工程化</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          特色介绍
+Rollup 是一个 JavaScript 模块打包器，可以将小块代码编译成大块复杂的代码
+支持ES6
+支持Tree Shaking
+可打包js库，也可管理App code
+代码拆分和运行时态的动态导入，存在不足，推荐webpack
+通过插件CommonJS 和 node-reso ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/04/13/front_package_build_skills/rollup/%E3%80%8Arollup%E3%80%8B-%20rollup%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/33/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/35/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

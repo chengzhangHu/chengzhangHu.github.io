@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ai图片识别 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ai图片识别</h2>
+  <p class="post-date">2025-05-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>你说的“AI识别图片文字，并编辑，保持样式一样，然后保存后下载”，这个需求比普通OCR文字识别复杂不少，因为要<strong>保证文字样式（字体、大小、颜色、排版）完全一致</strong>，而且能编辑和保存，下载最终效果。<br>这背后涉及的关键技术和原理，可以分成几个重点模块：</p>
+<hr>
+<h2 id="1-文字识别（OCR）-样式识别"><a href="#1-文字识别（OCR）-样式识别" class="headerlink" title="1. 文字识别（OCR） + 样式识别"></a>1. <strong>文字识别（OCR） + 样式识别</strong></h2><ul>
+<li><p><strong>文字识别（OCR）</strong></p>
+<ul>
+<li>利用深度学习模型识别图片中的文字内容。</li>
+<li>典型技术：CNN+RNN+CTC，或者基于Transformer的OCR模型。</li>
+</ul>
+</li>
+<li><p><strong>样式识别（字体、字号、颜色、排版）</strong></p>
+<ul>
+<li><p>除了文字内容，还需要检测文字的字体类型、字号、颜色、粗细、斜体、下划线、文字间距等样式信息。</p>
+</li>
+<li><p>技术难点：</p>
+<ul>
+<li>文字样式识别通常结合视觉特征提取（如文字区域颜色直方图、纹理特征）</li>
+<li>或者使用基于深度学习的图像分割与分类模型，来估计字体类型和文字属性</li>
+</ul>
+</li>
+<li><p>可能结合字体库匹配技术（通过字体渲染对比），识别最接近的字体。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-版面分析与文字定位"><a href="#2-版面分析与文字定位" class="headerlink" title="2. 版面分析与文字定位"></a>2. <strong>版面分析与文字定位</strong></h2><ul>
+<li>识别文字的精确位置、行间距、段落间距，保持排版结构不变。</li>
+<li>通过图像分割和布局分析（如基于深度学习的版面分析模型、传统投影分析方法）得到文字块的边界框。</li>
+<li>保持文本对齐、换行、缩进、文字旋转角度等信息。</li>
+</ul>
+<hr>
+<h2 id="3-文字编辑交互"><a href="#3-文字编辑交互" class="headerlink" title="3. 文字编辑交互"></a>3. <strong>文字编辑交互</strong></h2><ul>
+<li>用户界面（UI）技术：支持对识别出的文字内容和样式进行修改。</li>
+<li>文本编辑组件需要支持富文本格式，保留字体、字号、颜色等属性。</li>
+<li>编辑时实时同步样式和排版。</li>
+</ul>
+<hr>
+<h2 id="4-图像重绘与样式还原"><a href="#4-图像重绘与样式还原" class="headerlink" title="4. 图像重绘与样式还原"></a>4. <strong>图像重绘与样式还原</strong></h2><ul>
+<li><p><strong>将编辑后的文字重新渲染回图片</strong>，保持原有的视觉效果。</p>
+</li>
+<li><p>关键技术：</p>
+<ul>
+<li>精准定位原文字区域，进行背景覆盖（擦除原文字）</li>
+<li>使用与原文字相同字体、颜色、大小，重新绘制编辑后的文字</li>
+<li>字体渲染技术（基于FreeType等字体渲染库）</li>
+<li>对齐排版：行间距、字间距、对齐方式需要精准匹配</li>
+<li>有时还需处理阴影、描边、渐变等复杂样式。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-文件保存与下载"><a href="#5-文件保存与下载" class="headerlink" title="5. 文件保存与下载"></a>5. <strong>文件保存与下载</strong></h2><ul>
+<li>将编辑并重绘后的图像保存为合适格式（PNG、JPEG、PDF等），保持图像质量。</li>
+<li>通过浏览器或应用端提供文件下载接口。</li>
+</ul>
+<hr>
+<h2 id="技术总结表"><a href="#技术总结表" class="headerlink" title="技术总结表"></a>技术总结表</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>关键技术&#x2F;工具</th>
+<th>技术要点及难点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文字识别</td>
+<td>OCR（CNN+RNN+CTC，Transformer等）</td>
+<td>高准确率文字识别，支持多语言</td>
+</tr>
+<tr>
+<td>样式识别</td>
+<td>字体匹配，图像分割，深度学习视觉模型</td>
+<td>字体、颜色、字号、粗细、斜体等样式精确提取</td>
+</tr>
+<tr>
+<td>版面分析</td>
+<td>版面布局分析，文本定位</td>
+<td>保持文字间距、行距、对齐、旋转角度不变</td>
+</tr>
+<tr>
+<td>文字编辑</td>
+<td>富文本编辑组件（Web端如Draft.js等）</td>
+<td>支持样式同步编辑</td>
+</tr>
+<tr>
+<td>图像重绘</td>
+<td>字体渲染库（FreeType、Pillow等）</td>
+<td>背景擦除 + 文字重绘，保证视觉效果一致</td>
+</tr>
+<tr>
+<td>文件保存&#x2F;下载</td>
+<td>图像编码（PNG&#x2F;JPEG）、浏览器文件API</td>
+<td>保持高质量图像，方便用户下载</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>这个功能的核心难点就在于**“识别+保持样式+还原样式”**的闭环，尤其是字体和排版的精准还原。</p>
+</blockquote>
+<p>这是一个非常成熟且现实可行的商业策略，类似于 <strong>“Freemium（免费+增值）模式”</strong>，在 SaaS、设计类工具、AI 应用等行业广泛采用。下面是详细分析：</p>
+<hr>
+<h2 id="🎯-模式核心理念"><a href="#🎯-模式核心理念" class="headerlink" title="🎯 模式核心理念"></a>🎯 模式核心理念</h2><blockquote>
+<p><strong>基础离线功能免费（或一次性低价）+ 高级云端功能通过订阅收费</strong>。</p>
+</blockquote>
+<p>这样既能吸引用户试用和留存，又能通过高价值服务实现持续营收。</p>
+<hr>
+<h2 id="✅-离线功能（免费或买断）建议内容"><a href="#✅-离线功能（免费或买断）建议内容" class="headerlink" title="✅ 离线功能（免费或买断）建议内容"></a>✅ 离线功能（免费或买断）建议内容</h2><p>这些功能不依赖服务器，可以本地运行，提供“够用”的体验：</p>
+<h3 id="📦-离线功能列表（免费-一次性买断）："><a href="#📦-离线功能列表（免费-一次性买断）：" class="headerlink" title="📦 离线功能列表（免费&#x2F;一次性买断）："></a>📦 离线功能列表（免费&#x2F;一次性买断）：</h3><ul>
+<li>本地图片导入和导出</li>
+<li>基础OCR识别（基于轻量模型）</li>
+<li>简单字体识别和保留（仅支持常用字体）</li>
+<li>基础图像编辑（裁剪、旋转、替换文字）</li>
+<li>简单排版和拖拽式布局</li>
+<li>快捷键、批量处理（轻量版）</li>
+<li>本地保存编辑历史、草稿</li>
+</ul>
+<p>✅ <strong>适用场景</strong>：设计初稿、在无网环境下编辑、隐私敏感任务等。</p>
+<hr>
+<h2 id="💡-云端订阅功能（高级功能）"><a href="#💡-云端订阅功能（高级功能）" class="headerlink" title="💡 云端订阅功能（高级功能）"></a>💡 云端订阅功能（高级功能）</h2><p>这些功能依赖高算力、实时更新和联网协作，适合作为收费亮点：</p>
+<h3 id="🌐-云端订阅服务（按月-年订阅）："><a href="#🌐-云端订阅服务（按月-年订阅）：" class="headerlink" title="🌐 云端订阅服务（按月&#x2F;年订阅）："></a>🌐 云端订阅服务（按月&#x2F;年订阅）：</h3><ul>
+<li>高精度OCR（云端大模型）</li>
+<li>字体风格智能识别与匹配（包括稀有字体）</li>
+<li>自动布局优化（智能网格&#x2F;黄金比例等）</li>
+<li>云端AI图片修复、背景替换、风格迁移</li>
+<li>跨设备同步（桌面+移动端）</li>
+<li>云端字体和模板资源库（每月新增）</li>
+<li>团队协作、共享项目、版本控制</li>
+<li>企业客户支持（私有部署&#x2F;API接入）</li>
+</ul>
+<p>📈 <strong>高级用户价值</strong>：提升效率、风格保持更一致、实现跨团队编辑工作流。</p>
+<hr>
+<h2 id="💰-收费模式建议"><a href="#💰-收费模式建议" class="headerlink" title="💰 收费模式建议"></a>💰 收费模式建议</h2><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>内容</th>
+<th>收费策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>免费版</td>
+<td>基础离线功能</td>
+<td>免费，鼓励下载试用</td>
+</tr>
+<tr>
+<td>专业买断版</td>
+<td>解锁全部离线编辑功能</td>
+<td>一次性付费（如 ¥198）</td>
+</tr>
+<tr>
+<td>云端订阅 Pro</td>
+<td>解锁全部AI服务+云协作功能</td>
+<td>月付 ¥39 &#x2F; 年付 ¥299</td>
+</tr>
+<tr>
+<td>团队&#x2F;企业版</td>
+<td>多人协作+私有部署+API接口</td>
+<td>自定义定价（企业谈判）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-优势与盈利路径"><a href="#🚀-优势与盈利路径" class="headerlink" title="🚀 优势与盈利路径"></a>🚀 优势与盈利路径</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>低门槛引流</strong></td>
+<td>免费离线版可吸引大量用户安装和尝试</td>
+</tr>
+<tr>
+<td><strong>用户转化率提升</strong></td>
+<td>有需求的用户会自然升级为订阅用户</td>
+</tr>
+<tr>
+<td><strong>收入稳定可预测</strong></td>
+<td>订阅制可带来持续现金流（ARR &#x2F; MRR）</td>
+</tr>
+<tr>
+<td><strong>差异化定位</strong></td>
+<td>结合隐私保护 + 云智能，区别于全在线工具</td>
+</tr>
+<tr>
+<td><strong>企业市场拓展</strong></td>
+<td>离线+私有云部署可适配B端安全合规需求</td>
+</tr>
+</tbody></table>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#图片" >
+    <span class="tag-code">图片</span>
+  </a>
+
+  <a target="_blank" href="/tags#识别" >
+    <span class="tag-code">识别</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/20/backend_skills/tomcat/tomcat%20webapps/">
+        <span class="nav-arrow">← </span>
+        
+          tomcat webapps 和 target
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/21/front_skills/js/%E5%89%8D%E7%AB%AF%E8%B7%A8%E5%9F%9F/">
+        
+          前端跨域
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB%EF%BC%88OCR%EF%BC%89-%E6%A0%B7%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="toc-nav-text">1. 文字识别（OCR） + 样式识别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-%E7%89%88%E9%9D%A2%E5%88%86%E6%9E%90%E4%B8%8E%E6%96%87%E5%AD%97%E5%AE%9A%E4%BD%8D"><span class="toc-nav-text">2. 版面分析与文字定位</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-%E6%96%87%E5%AD%97%E7%BC%96%E8%BE%91%E4%BA%A4%E4%BA%92"><span class="toc-nav-text">3. 文字编辑交互</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-%E5%9B%BE%E5%83%8F%E9%87%8D%E7%BB%98%E4%B8%8E%E6%A0%B7%E5%BC%8F%E8%BF%98%E5%8E%9F"><span class="toc-nav-text">4. 图像重绘与样式还原</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E4%B8%8E%E4%B8%8B%E8%BD%BD"><span class="toc-nav-text">5. 文件保存与下载</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%8A%80%E6%9C%AF%E6%80%BB%E7%BB%93%E8%A1%A8"><span class="toc-nav-text">技术总结表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E6%A8%A1%E5%BC%8F%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5"><span class="toc-nav-text">🎯 模式核心理念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E7%A6%BB%E7%BA%BF%E5%8A%9F%E8%83%BD%EF%BC%88%E5%85%8D%E8%B4%B9%E6%88%96%E4%B9%B0%E6%96%AD%EF%BC%89%E5%BB%BA%E8%AE%AE%E5%86%85%E5%AE%B9"><span class="toc-nav-text">✅ 离线功能（免费或买断）建议内容</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%93%A6-%E7%A6%BB%E7%BA%BF%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8%EF%BC%88%E5%85%8D%E8%B4%B9-%E4%B8%80%E6%AC%A1%E6%80%A7%E4%B9%B0%E6%96%AD%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">📦 离线功能列表（免费&#x2F;一次性买断）：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%92%A1-%E4%BA%91%E7%AB%AF%E8%AE%A2%E9%98%85%E5%8A%9F%E8%83%BD%EF%BC%88%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%EF%BC%89"><span class="toc-nav-text">💡 云端订阅功能（高级功能）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%8C%90-%E4%BA%91%E7%AB%AF%E8%AE%A2%E9%98%85%E6%9C%8D%E5%8A%A1%EF%BC%88%E6%8C%89%E6%9C%88-%E5%B9%B4%E8%AE%A2%E9%98%85%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">🌐 云端订阅服务（按月&#x2F;年订阅）：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%92%B0-%E6%94%B6%E8%B4%B9%E6%A8%A1%E5%BC%8F%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">💰 收费模式建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E4%BC%98%E5%8A%BF%E4%B8%8E%E7%9B%88%E5%88%A9%E8%B7%AF%E5%BE%84"><span class="toc-nav-text">🚀 优势与盈利路径</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/21/bigdata_for_analyze/ai图片识别/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

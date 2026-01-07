@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前后端通信协议全景手册 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>前后端通信协议全景手册</h2>
+  <p class="post-date">2025-06-04</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><hr>
+<h1 id="📘-前后端通信协议全景手册（完整版）"><a href="#📘-前后端通信协议全景手册（完整版）" class="headerlink" title="📘 前后端通信协议全景手册（完整版）"></a>📘 前后端通信协议全景手册（完整版）</h1><hr>
+<h2 id="🧱-协议类型总览"><a href="#🧱-协议类型总览" class="headerlink" title="🧱 协议类型总览"></a>🧱 协议类型总览</h2><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>协议</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP 请求响应</td>
+<td>REST、GraphQL、gRPC-Web、JSON-RPC</td>
+<td>前端发起请求，后端返回响应</td>
+</tr>
+<tr>
+<td>实时通信</td>
+<td>WebSocket、SSE、MQTT</td>
+<td>后端主动推送消息</td>
+</tr>
+<tr>
+<td>远程调用协议</td>
+<td>gRPC、JSON-RPC</td>
+<td>更偏后端间通信，但部分适用于前后端</td>
+</tr>
+<tr>
+<td>事件驱动通信</td>
+<td>SSE、WebSocket、MQTT</td>
+<td>面向事件的异步处理模型</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1️⃣-RESTful-API"><a href="#1️⃣-RESTful-API" class="headerlink" title="1️⃣ RESTful API"></a>1️⃣ RESTful API</h2><ul>
+<li><strong>模型</strong>：请求-响应（基于 HTTP 标准）</li>
+<li><strong>数据格式</strong>：JSON（最常用）</li>
+<li><strong>特点</strong>：资源为中心、URL 语义清晰</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>简单直观，浏览器天然支持</li>
+<li>支持缓存机制（如 GET 请求）</li>
+<li>社区支持与工具丰富（如 Swagger）</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>接口冗余（过多 endpoint）</li>
+<li>不擅长复杂嵌套数据聚合</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>各类 Web &#x2F; App 系统</li>
+<li>中后台业务管理平台</li>
+</ul>
+<hr>
+<h2 id="2️⃣-GraphQL"><a href="#2️⃣-GraphQL" class="headerlink" title="2️⃣ GraphQL"></a>2️⃣ GraphQL</h2><ul>
+<li><strong>模型</strong>：请求-响应（单入口 POST）</li>
+<li><strong>数据格式</strong>：JSON</li>
+<li><strong>特点</strong>：前端定义所需数据结构</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>单请求获取嵌套数据，避免多接口调用</li>
+<li>类型系统完善，可自动生成文档</li>
+<li>强前后端解耦能力</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>性能优化较复杂（N+1 查询等）</li>
+<li>缓存机制较弱，依赖客户端或中间层处理</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>需要灵活数据结构、定制字段的系统</li>
+<li>多端接入（Web &#x2F; App &#x2F; 小程序）</li>
+</ul>
+<hr>
+<h2 id="3️⃣-gRPC-gRPC-Web"><a href="#3️⃣-gRPC-gRPC-Web" class="headerlink" title="3️⃣ gRPC &#x2F; gRPC-Web"></a>3️⃣ gRPC &#x2F; gRPC-Web</h2><ul>
+<li><strong>模型</strong>：请求-响应 &#x2F; 流式（双向或单向）</li>
+<li><strong>数据格式</strong>：Protobuf（二进制）</li>
+<li><strong>特点</strong>：高性能、强类型、适合微服务</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>二进制更高效，节省带宽</li>
+<li>强类型、自动代码生成（Proto）</li>
+<li>支持客户端流 &#x2F; 服务端流 &#x2F; 双向流</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>浏览器不直接支持（需 gRPC-Web + 网关）</li>
+<li>前端调试相对复杂</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>微服务架构内部通信</li>
+<li>需要高吞吐量、高性能的数据接口</li>
+</ul>
+<hr>
+<h2 id="4️⃣-JSON-RPC"><a href="#4️⃣-JSON-RPC" class="headerlink" title="4️⃣ JSON-RPC"></a>4️⃣ JSON-RPC</h2><ul>
+<li><strong>模型</strong>：请求-响应（可支持双向）</li>
+<li><strong>数据格式</strong>：JSON</li>
+<li><strong>特点</strong>：轻量、函数式调用结构</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>抽象为远程函数调用</li>
+<li>结构规范，解析简洁</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>缺乏广泛标准化支持</li>
+<li>不适合复杂数据聚合或大型系统接口</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>控制类指令、远程操作</li>
+<li>使用 WebSocket 做结构化消息封装</li>
+</ul>
+<hr>
+<h2 id="5️⃣-WebSocket"><a href="#5️⃣-WebSocket" class="headerlink" title="5️⃣ WebSocket"></a>5️⃣ WebSocket</h2><ul>
+<li><strong>模型</strong>：全双工持久连接</li>
+<li><strong>数据格式</strong>：任意（JSON、二进制）</li>
+<li><strong>特点</strong>：实时通信，客户端可收也可发</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>实时双向通信</li>
+<li>适合订阅、聊天室、多人互动等场景</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>实现复杂（心跳、断线重连、状态管理）</li>
+<li>无缓存机制</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>聊天系统、在线协同编辑</li>
+<li>多人游戏、金融&#x2F;监控数据推送</li>
+</ul>
+<hr>
+<h2 id="6️⃣-Server-Sent-Events（SSE）"><a href="#6️⃣-Server-Sent-Events（SSE）" class="headerlink" title="6️⃣ Server-Sent Events（SSE）"></a>6️⃣ Server-Sent Events（SSE）</h2><ul>
+<li><strong>模型</strong>：服务器 → 客户端单向推送（HTTP 流）</li>
+<li><strong>数据格式</strong>：EventStream（纯文本）</li>
+<li><strong>特点</strong>：浏览器原生支持，轻量推送</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>实现简单，浏览器兼容好</li>
+<li>自动重连机制</li>
+<li>基于 HTTP，部署简单</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>单向推送，不支持客户端主动发消息</li>
+<li>不支持二进制</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>实时进度条、状态更新</li>
+<li>系统提示、轻量消息推送</li>
+</ul>
+<hr>
+<h2 id="7️⃣-MQTT（前端少用，但可集成）"><a href="#7️⃣-MQTT（前端少用，但可集成）" class="headerlink" title="7️⃣ MQTT（前端少用，但可集成）"></a>7️⃣ MQTT（前端少用，但可集成）</h2><ul>
+<li><strong>模型</strong>：发布&#x2F;订阅（Broker 中心）</li>
+<li><strong>数据格式</strong>：小型二进制消息</li>
+<li><strong>特点</strong>：极低带宽，嵌入式友好</li>
+</ul>
+<p>✅ <strong>优势</strong>：</p>
+<ul>
+<li>消息可靠、有序、可持久</li>
+<li>非常适合 IoT 和低功耗设备</li>
+<li>可通过 WebSocket 网关让前端使用</li>
+</ul>
+<p>❌ <strong>劣势</strong>：</p>
+<ul>
+<li>需要专门 Broker 服务</li>
+<li>前端使用需额外适配（如 Paho&#x2F;MQTT.js）</li>
+</ul>
+<p>🛠 <strong>使用场景</strong>：</p>
+<ul>
+<li>设备控制面板</li>
+<li>IoT 设备管理与数据同步</li>
+</ul>
+<hr>
+<h2 id="🧩-协议对比总览表"><a href="#🧩-协议对比总览表" class="headerlink" title="🧩 协议对比总览表"></a>🧩 协议对比总览表</h2><table>
+<thead>
+<tr>
+<th>协议</th>
+<th>通信模型</th>
+<th>格式</th>
+<th>实时性</th>
+<th>双向</th>
+<th>易实现</th>
+<th>推荐使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REST</td>
+<td>请求-响应</td>
+<td>JSON</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅✅✅</td>
+<td>通用 Web 系统、后台 API</td>
+</tr>
+<tr>
+<td>GraphQL</td>
+<td>请求-响应</td>
+<td>JSON</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅✅</td>
+<td>多端数据聚合、前端定制接口</td>
+</tr>
+<tr>
+<td>gRPC-Web</td>
+<td>请求 &#x2F; 流</td>
+<td>Protobuf</td>
+<td>✅✅✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>高性能微服务、内部通信</td>
+</tr>
+<tr>
+<td>JSON-RPC</td>
+<td>请求-响应</td>
+<td>JSON</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>远程控制、命令式通信</td>
+</tr>
+<tr>
+<td>WebSocket</td>
+<td>持久双向连接</td>
+<td>任意</td>
+<td>✅✅✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>实时协作、推送、互动系统</td>
+</tr>
+<tr>
+<td>SSE</td>
+<td>服务端单向推送</td>
+<td>文本流</td>
+<td>✅✅</td>
+<td>❌</td>
+<td>✅✅✅</td>
+<td>通知、轻量状态更新</td>
+</tr>
+<tr>
+<td>MQTT</td>
+<td>发布&#x2F;订阅</td>
+<td>二进制</td>
+<td>✅✅</td>
+<td>✅</td>
+<td>⚠️</td>
+<td>IoT、设备通信、仪表面板</td>
+</tr>
+</tbody></table>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#原生" >
+    <span class="tag-code">原生</span>
+  </a>
+
+  <a target="_blank" href="/tags#REST" >
+    <span class="tag-code">REST</span>
+  </a>
+
+  <a target="_blank" href="/tags#GraphQL" >
+    <span class="tag-code">GraphQL</span>
+  </a>
+
+  <a target="_blank" href="/tags#gRPC" >
+    <span class="tag-code">gRPC</span>
+  </a>
+
+  <a target="_blank" href="/tags#JSON-RPC" >
+    <span class="tag-code">JSON-RPC</span>
+  </a>
+
+  <a target="_blank" href="/tags#SSE" >
+    <span class="tag-code">SSE</span>
+  </a>
+
+  <a target="_blank" href="/tags#WebSocket" >
+    <span class="tag-code">WebSocket</span>
+  </a>
+
+  <a target="_blank" href="/tags#MQTT" >
+    <span class="tag-code">MQTT</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/06/03/devops_skills/linux/amllinux%20fapolicy/">
+        <span class="nav-arrow">← </span>
+        
+          AlmaLinux  fapolicy
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/06/05/front_skills/js/js%20%E6%95%B0%E7%BB%84%E8%BF%AD%E4%BB%A3%E5%BE%AA%E7%8E%AF/">
+        
+          js- 数组累计迭代循环
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%F0%9F%93%98-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE%E5%85%A8%E6%99%AF%E6%89%8B%E5%86%8C%EF%BC%88%E5%AE%8C%E6%95%B4%E7%89%88%EF%BC%89"><span class="toc-nav-text">📘 前后端通信协议全景手册（完整版）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B1-%E5%8D%8F%E8%AE%AE%E7%B1%BB%E5%9E%8B%E6%80%BB%E8%A7%88"><span class="toc-nav-text">🧱 协议类型总览</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-RESTful-API"><span class="toc-nav-text">1️⃣ RESTful API</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-GraphQL"><span class="toc-nav-text">2️⃣ GraphQL</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-gRPC-gRPC-Web"><span class="toc-nav-text">3️⃣ gRPC &#x2F; gRPC-Web</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4%EF%B8%8F%E2%83%A3-JSON-RPC"><span class="toc-nav-text">4️⃣ JSON-RPC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5%EF%B8%8F%E2%83%A3-WebSocket"><span class="toc-nav-text">5️⃣ WebSocket</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6%EF%B8%8F%E2%83%A3-Server-Sent-Events%EF%BC%88SSE%EF%BC%89"><span class="toc-nav-text">6️⃣ Server-Sent Events（SSE）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7%EF%B8%8F%E2%83%A3-MQTT%EF%BC%88%E5%89%8D%E7%AB%AF%E5%B0%91%E7%94%A8%EF%BC%8C%E4%BD%86%E5%8F%AF%E9%9B%86%E6%88%90%EF%BC%89"><span class="toc-nav-text">7️⃣ MQTT（前端少用，但可集成）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E5%8D%8F%E8%AE%AE%E5%AF%B9%E6%AF%94%E6%80%BB%E8%A7%88%E8%A1%A8"><span class="toc-nav-text">🧩 协议对比总览表</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/06/04/front_skills/js/浏览器前后端通信/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

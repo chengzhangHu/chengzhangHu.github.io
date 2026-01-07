@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      js v8内存空间 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>js v8内存空间</h2>
+  <p class="post-date">2025-07-03</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="v8内存空间"><a href="#v8内存空间" class="headerlink" title="v8内存空间"></a>v8内存空间</h1><p>在 JavaScript 的 V8 引擎中（如 Chrome、Node.js 所使用的引擎），<strong>内存空间</strong>管理是高性能运行的关键之一。<br> V8 将内存划分为多个不同的空间（space），每个空间用于不同类型的数据存储和垃圾回收策略。</p>
+<hr>
+<h2 id="V8-的主要内存空间结构"><a href="#V8-的主要内存空间结构" class="headerlink" title="V8 的主要内存空间结构"></a>V8 的主要内存空间结构</h2><p>V8 将内存分为两个大类：</p>
+<ul>
+<li><strong>堆内存（Heap Space）</strong>：用于存储 JavaScript 对象。</li>
+<li><strong>非堆内存（Non-Heap Space）</strong>：如代码空间、句柄表、内部对象等。</li>
+</ul>
+<p>下面是主要的堆内存空间：</p>
+<h3 id="1-新生代（New-Space）"><a href="#1-新生代（New-Space）" class="headerlink" title="1. 新生代（New Space）"></a>1. <strong>新生代（New Space）</strong></h3><ul>
+<li>存放短生命周期的对象。</li>
+<li>非常小，通常几 MB。</li>
+<li>分为两个半空间（semispace）：<code>from</code> 和 <code>to</code>。</li>
+<li>使用 <strong>Scavenge（复制）算法</strong> 进行垃圾回收：从 from 复制活跃对象到 to，交换空间。</li>
+</ul>
+<h3 id="2-老生代（Old-Space）"><a href="#2-老生代（Old-Space）" class="headerlink" title="2. 老生代（Old Space）"></a>2. <strong>老生代（Old Space）</strong></h3><ul>
+<li><p>存放生命周期较长的对象（从新生代晋升）。</p>
+</li>
+<li><p>内存更大。</p>
+</li>
+<li><p>使用 <strong>标记-清除、标记-整理和增量压缩算法</strong>。</p>
+</li>
+<li><p>分为两部分：</p>
+<ul>
+<li><strong>Old Pointer Space</strong>：包含指向其他对象的对象。</li>
+<li><strong>Old Data Space</strong>：只包含没有指针的数据（如字符串、数字数组）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-大对象空间（Large-Object-Space-LOS）"><a href="#3-大对象空间（Large-Object-Space-LOS）" class="headerlink" title="3. 大对象空间（Large Object Space &#x2F; LOS）"></a>3. <strong>大对象空间（Large Object Space &#x2F; LOS）</strong></h3><ul>
+<li>用于分配大于特定阈值的对象（如大型数组）。</li>
+<li>不复制，只做标记清除，避免复制的成本。</li>
+</ul>
+<hr>
+<h2 id="🧩-其他特殊空间（部分属于非堆内存）"><a href="#🧩-其他特殊空间（部分属于非堆内存）" class="headerlink" title="🧩 其他特殊空间（部分属于非堆内存）"></a>🧩 其他特殊空间（部分属于非堆内存）</h2><h3 id="4-代码空间（Code-Space）"><a href="#4-代码空间（Code-Space）" class="headerlink" title="4. 代码空间（Code Space）"></a>4. <strong>代码空间（Code Space）</strong></h3><ul>
+<li>存放编译后的机器码（函数体、字节码）。</li>
+<li>需要可执行权限，结构安全要求高。</li>
+</ul>
+<h3 id="5-Map-Space"><a href="#5-Map-Space" class="headerlink" title="5. Map Space"></a>5. <strong>Map Space</strong></h3><ul>
+<li>存储对象的“形状描述”（hidden class、对象结构描述）。</li>
+</ul>
+<h3 id="6-Cell-Property-Cell-Space"><a href="#6-Cell-Property-Cell-Space" class="headerlink" title="6. Cell&#x2F;Property Cell Space"></a>6. <strong>Cell&#x2F;Property Cell Space</strong></h3><ul>
+<li>用于存储全局变量的引用值（尤其是不可变的）。</li>
+</ul>
+<h3 id="7-Read-Only-Space"><a href="#7-Read-Only-Space" class="headerlink" title="7. Read-Only Space"></a>7. <strong>Read-Only Space</strong></h3><ul>
+<li>存储不可变对象，如共享常量。</li>
+<li>新增于较新版本的 V8，优化 GC。</li>
+</ul>
+<hr>
+<h2 id="🔧-常用内存限制参数（Node-js）"><a href="#🔧-常用内存限制参数（Node-js）" class="headerlink" title="🔧 常用内存限制参数（Node.js）"></a>🔧 常用内存限制参数（Node.js）</h2><p>在 Node.js 中，你可以通过命令行参数设置内存大小，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node --max-old-space-size=4096 app.js</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>--max-old-space-size</code>：设置老生代最大内存（单位：MB）。</p>
+</li>
+<li><p>默认最大内存约为：</p>
+<ul>
+<li>32 位系统：~700 MB</li>
+<li>64 位系统：<del>1400 MB</del>2048 MB（V8 版本不同）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🧹-垃圾回收与空间迁移示意图"><a href="#🧹-垃圾回收与空间迁移示意图" class="headerlink" title="🧹 垃圾回收与空间迁移示意图"></a>🧹 垃圾回收与空间迁移示意图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+------------------+          +-------------------+</span><br><span class="line">|   New Space      |  GC后 -&gt; |   Old Space        |</span><br><span class="line">| (from + to 半区) |   晋升   | (活得久的对象)     |</span><br><span class="line">+------------------+          +-------------------+</span><br><span class="line">       ↓                                   ↓</span><br><span class="line">+------------------+          +-------------------+</span><br><span class="line">| Large Object Space|         |   Code Space       |</span><br><span class="line">| (&gt; threshold obj) |         | (函数字节码等)     |</span><br><span class="line">+------------------+          +-------------------+</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-总结一览表"><a href="#✅-总结一览表" class="headerlink" title="✅ 总结一览表"></a>✅ 总结一览表</h2><table>
+<thead>
+<tr>
+<th>内存空间</th>
+<th>作用</th>
+<th>GC方式</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>New Space</td>
+<td>短生命周期对象</td>
+<td>Scavenge</td>
+<td>快速复制回收</td>
+</tr>
+<tr>
+<td>Old Space</td>
+<td>长生命周期对象</td>
+<td>Mark-Sweep &#x2F; Compact</td>
+<td>空间大，回收慢</td>
+</tr>
+<tr>
+<td>Large Object Space</td>
+<td>大型对象</td>
+<td>Mark-Sweep</td>
+<td>不复制，直接分配</td>
+</tr>
+<tr>
+<td>Code Space</td>
+<td>存放编译后代码</td>
+<td>特殊策略</td>
+<td>可执行权限</td>
+</tr>
+<tr>
+<td>Map Space</td>
+<td>对象结构定义</td>
+<td>特殊策略</td>
+<td>小型优化区域</td>
+</tr>
+<tr>
+<td>Read-Only Space</td>
+<td>不可变数据</td>
+<td>几乎不 GC</td>
+<td>安全共享</td>
+</tr>
+</tbody></table>
+<hr>
+<p>在 JavaScript 中，内存空间的概念主要体现在<strong>变量的数据存储方式</strong>和<strong>垃圾回收机制</strong>，而底层实现（如 V8 引擎）则通过划分多个内存空间进行优化。以下是从 JS 开发者视角到 V8 实现层的全面解释：</p>
+<hr>
+<h2 id="🧠-一、JavaScript-开发者角度的内存空间"><a href="#🧠-一、JavaScript-开发者角度的内存空间" class="headerlink" title="🧠 一、JavaScript 开发者角度的内存空间"></a>🧠 一、JavaScript 开发者角度的内存空间</h2><h3 id="1-栈内存（Stack）"><a href="#1-栈内存（Stack）" class="headerlink" title="1. 栈内存（Stack）"></a>1. <strong>栈内存（Stack）</strong></h3><ul>
+<li><p>用于存储<strong>原始类型的值</strong>（primitive types）：</p>
+<ul>
+<li><code>Number</code>, <code>String</code>, <code>Boolean</code>, <code>undefined</code>, <code>null</code>, <code>Symbol</code>, <code>BigInt</code></li>
+</ul>
+</li>
+<li><p>还包括函数调用帧（call stack）、作用域上下文等。</p>
+</li>
+<li><p><strong>特点</strong>：</p>
+<ul>
+<li>内存分配快</li>
+<li>生命周期短（函数调用完就清除）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">10</span>; <span class="comment">// 存储在栈中</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-堆内存（Heap）"><a href="#2-堆内存（Heap）" class="headerlink" title="2. 堆内存（Heap）"></a>2. <strong>堆内存（Heap）</strong></h3><ul>
+<li><p>用于存储<strong>引用类型的值</strong>（对象、数组、函数等）。</p>
+</li>
+<li><p>数据实际存储在堆中，栈中保存一个引用地址。</p>
+</li>
+<li><p><strong>特点</strong>：</p>
+<ul>
+<li>内存分配慢</li>
+<li>生命周期不定（取决于引用计数和 GC）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">&quot;JS&quot;</span> &#125;; <span class="comment">// 对象实际在堆中</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧹-二、JavaScript-的内存管理机制"><a href="#🧹-二、JavaScript-的内存管理机制" class="headerlink" title="🧹 二、JavaScript 的内存管理机制"></a>🧹 二、JavaScript 的内存管理机制</h2><p>JS 具有<strong>自动垃圾回收机制（GC）</strong>，不需要手动释放内存，但仍需注意内存泄漏问题。</p>
+<h3 id="常用-GC-策略（由引擎如-V8-执行）："><a href="#常用-GC-策略（由引擎如-V8-执行）：" class="headerlink" title="常用 GC 策略（由引擎如 V8 执行）："></a>常用 GC 策略（由引擎如 V8 执行）：</h3><ul>
+<li><strong>标记-清除</strong>（Mark and Sweep）</li>
+<li><strong>引用计数</strong>（有缺陷，现代引擎不用）</li>
+<li><strong>增量收集 &#x2F; 并发收集 &#x2F; 分代 GC</strong></li>
+</ul>
+<hr>
+<h2 id="🏗️-三、V8-引擎下的内存空间结构（进阶）"><a href="#🏗️-三、V8-引擎下的内存空间结构（进阶）" class="headerlink" title="🏗️ 三、V8 引擎下的内存空间结构（进阶）"></a>🏗️ 三、V8 引擎下的内存空间结构（进阶）</h2><p>这是 JS 引擎（如 Node.js 或 Chrome）层面更底层的内存划分：</p>
+<table>
+<thead>
+<tr>
+<th>空间名</th>
+<th>用途</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>New Space</td>
+<td>存短生命周期对象（年轻代）</td>
+<td>几毫秒到秒</td>
+</tr>
+<tr>
+<td>Old Space</td>
+<td>存长生命周期对象（老年代）</td>
+<td>长时间</td>
+</tr>
+<tr>
+<td>Large Object Space</td>
+<td>存大型对象</td>
+<td>与页面一致</td>
+</tr>
+<tr>
+<td>Code Space</td>
+<td>存放 JS 编译后的机器码</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>Map Space</td>
+<td>存对象结构</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>Read-Only Space</td>
+<td>存不可变数据</td>
+<td>非常稳定</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔍-四、内存分配示意图（开发者视角）"><a href="#🔍-四、内存分配示意图（开发者视角）" class="headerlink" title="🔍 四、内存分配示意图（开发者视角）"></a>🔍 四、内存分配示意图（开发者视角）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function demo() &#123;</span><br><span class="line">  let x = 42;                   // 栈</span><br><span class="line">  let y = &#123; name: &quot;V8&quot; &#125;;       // y: 栈存引用，堆中有对象</span><br><span class="line">  let z = [1, 2, 3];            // z: 栈存引用，堆中有数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="⚠️-五、常见内存问题"><a href="#⚠️-五、常见内存问题" class="headerlink" title="⚠️ 五、常见内存问题"></a>⚠️ 五、常见内存问题</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内存泄漏</td>
+<td>无用对象仍被引用，GC 无法释放</td>
+</tr>
+<tr>
+<td>闭包持有无用变量</td>
+<td>函数作用域引用了外部变量，长时间未释放</td>
+</tr>
+<tr>
+<td>全局变量未释放</td>
+<td>全局作用域变量生命周期太长</td>
+</tr>
+<tr>
+<td>DOM 引用未清理</td>
+<td>JS 持有 DOM 节点，导致页面卸载也不释放</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✅-六、内存优化建议"><a href="#✅-六、内存优化建议" class="headerlink" title="✅ 六、内存优化建议"></a>✅ 六、内存优化建议</h2><ol>
+<li><p><strong>及时解除引用</strong>：如 DOM 元素、Timer、Closure</p>
+</li>
+<li><p><strong>使用弱引用（<code>WeakMap</code>, <code>WeakSet</code>）</strong></p>
+</li>
+<li><p><strong>避免全局变量</strong></p>
+</li>
+<li><p><strong>性能监控工具</strong>：</p>
+<ul>
+<li>Chrome DevTools → Memory 面板</li>
+<li>Node.js → <code>--inspect</code>、heapdump</li>
+</ul>
+</li>
+</ol>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#内存空间" >
+    <span class="tag-code">内存空间</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/07/03/front_skills/js/js%20%E5%A0%86%E6%A0%88/">
+        <span class="nav-arrow">← </span>
+        
+          js 堆栈
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">
+        
+          Angular rxjs 性能问题
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="toc-nav-text">v8内存空间</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#V8-%E7%9A%84%E4%B8%BB%E8%A6%81%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%BB%93%E6%9E%84"><span class="toc-nav-text">V8 的主要内存空间结构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%88New-Space%EF%BC%89"><span class="toc-nav-text">1. 新生代（New Space）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E8%80%81%E7%94%9F%E4%BB%A3%EF%BC%88Old-Space%EF%BC%89"><span class="toc-nav-text">2. 老生代（Old Space）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%A9%BA%E9%97%B4%EF%BC%88Large-Object-Space-LOS%EF%BC%89"><span class="toc-nav-text">3. 大对象空间（Large Object Space &#x2F; LOS）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E5%85%B6%E4%BB%96%E7%89%B9%E6%AE%8A%E7%A9%BA%E9%97%B4%EF%BC%88%E9%83%A8%E5%88%86%E5%B1%9E%E4%BA%8E%E9%9D%9E%E5%A0%86%E5%86%85%E5%AD%98%EF%BC%89"><span class="toc-nav-text">🧩 其他特殊空间（部分属于非堆内存）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-%E4%BB%A3%E7%A0%81%E7%A9%BA%E9%97%B4%EF%BC%88Code-Space%EF%BC%89"><span class="toc-nav-text">4. 代码空间（Code Space）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-Map-Space"><span class="toc-nav-text">5. Map Space</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6-Cell-Property-Cell-Space"><span class="toc-nav-text">6. Cell&#x2F;Property Cell Space</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7-Read-Only-Space"><span class="toc-nav-text">7. Read-Only Space</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%A7-%E5%B8%B8%E7%94%A8%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6%E5%8F%82%E6%95%B0%EF%BC%88Node-js%EF%BC%89"><span class="toc-nav-text">🔧 常用内存限制参数（Node.js）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B9-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B8%8E%E7%A9%BA%E9%97%B4%E8%BF%81%E7%A7%BB%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="toc-nav-text">🧹 垃圾回收与空间迁移示意图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E7%BB%93%E4%B8%80%E8%A7%88%E8%A1%A8"><span class="toc-nav-text">✅ 总结一览表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%80%E3%80%81JavaScript-%E5%BC%80%E5%8F%91%E8%80%85%E8%A7%92%E5%BA%A6%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="toc-nav-text">🧠 一、JavaScript 开发者角度的内存空间</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E6%A0%88%E5%86%85%E5%AD%98%EF%BC%88Stack%EF%BC%89"><span class="toc-nav-text">1. 栈内存（Stack）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%E5%A0%86%E5%86%85%E5%AD%98%EF%BC%88Heap%EF%BC%89"><span class="toc-nav-text">2. 堆内存（Heap）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%B9-%E4%BA%8C%E3%80%81JavaScript-%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">🧹 二、JavaScript 的内存管理机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B8%B8%E7%94%A8-GC-%E7%AD%96%E7%95%A5%EF%BC%88%E7%94%B1%E5%BC%95%E6%93%8E%E5%A6%82-V8-%E6%89%A7%E8%A1%8C%EF%BC%89%EF%BC%9A"><span class="toc-nav-text">常用 GC 策略（由引擎如 V8 执行）：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8F%97%EF%B8%8F-%E4%B8%89%E3%80%81V8-%E5%BC%95%E6%93%8E%E4%B8%8B%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%BB%93%E6%9E%84%EF%BC%88%E8%BF%9B%E9%98%B6%EF%BC%89"><span class="toc-nav-text">🏗️ 三、V8 引擎下的内存空间结构（进阶）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E5%9B%9B%E3%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%A4%BA%E6%84%8F%E5%9B%BE%EF%BC%88%E5%BC%80%E5%8F%91%E8%80%85%E8%A7%86%E8%A7%92%EF%BC%89"><span class="toc-nav-text">🔍 四、内存分配示意图（开发者视角）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%A0%EF%B8%8F-%E4%BA%94%E3%80%81%E5%B8%B8%E8%A7%81%E5%86%85%E5%AD%98%E9%97%AE%E9%A2%98"><span class="toc-nav-text">⚠️ 五、常见内存问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%85%AD%E3%80%81%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">✅ 六、内存优化建议</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/07/03/front_skills/js/js v8内存空间/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

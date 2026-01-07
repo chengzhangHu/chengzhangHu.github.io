@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ai自动化测试用例生成 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ai自动化测试用例生成</h2>
+  <p class="post-date">2025-05-26</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="🧠-1-输入信息收集（Prompt-Design）"><a href="#🧠-1-输入信息收集（Prompt-Design）" class="headerlink" title="🧠 1. 输入信息收集（Prompt Design）"></a>🧠 1. <strong>输入信息收集（Prompt Design）</strong></h2><p>AI 生成测试用例的前提是了解你系统的以下信息：</p>
+<ul>
+<li><strong>用户故事&#x2F;业务流程</strong>：例如，“用户可以登录、搜索产品并加入购物车”。</li>
+<li><strong>页面结构或 UI 元素信息</strong>：可以是 HTML、组件树或页面截图。</li>
+<li><strong>可用的测试框架</strong>：如 Playwright、Cypress、Puppeteer、Selenium 等。</li>
+<li><strong>测试语言偏好</strong>：JavaScript&#x2F;TypeScript、Python、Java 等。</li>
+<li><strong>API 文档&#x2F;接口规范（如 Swagger）</strong>：用于后端集成测试。</li>
+</ul>
+<hr>
+<h2 id="⚙️-2-大模型生成测试用例的方式"><a href="#⚙️-2-大模型生成测试用例的方式" class="headerlink" title="⚙️ 2. 大模型生成测试用例的方式"></a>⚙️ 2. <strong>大模型生成测试用例的方式</strong></h2><p>大模型主要扮演 <strong>自然语言转代码</strong> 的角色，以下是具体流程：</p>
+<h3 id="✅-示例-Prompt（面向-ChatGPT-或-API）"><a href="#✅-示例-Prompt（面向-ChatGPT-或-API）" class="headerlink" title="✅ 示例 Prompt（面向 ChatGPT 或 API）"></a>✅ 示例 Prompt（面向 ChatGPT 或 API）</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">你是一个经验丰富的测试工程师。请根据以下用户流程生成一份基于 Playwright 的 E2E 测试脚本，使用 TypeScript：</span><br><span class="line"></span><br><span class="line">用户流程：</span><br><span class="line">1. 用户访问首页 https://myshop.com</span><br><span class="line">2. 点击“登录”</span><br><span class="line">3. 输入邮箱和密码（email: test@example.com, password: 123456）</span><br><span class="line">4. 登录成功后，搜索“iPhone 15”</span><br><span class="line">5. 在搜索结果中点击第一个商品</span><br><span class="line">6. 点击“加入购物车”</span><br><span class="line">7. 验证购物车中包含此商品</span><br><span class="line"></span><br><span class="line">要求：</span><br><span class="line">- 使用 async/await</span><br><span class="line">- 包含断言检查</span><br></pre></td></tr></table></figure>
+
+<h3 id="🧪-模型输出示例（Playwright）"><a href="#🧪-模型输出示例（Playwright）" class="headerlink" title="🧪 模型输出示例（Playwright）"></a>🧪 模型输出示例（Playwright）</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; test, expect &#125; <span class="keyword">from</span> <span class="string">&#x27;@playwright/test&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;用户登录并添加商品到购物车&#x27;</span>, <span class="keyword">async</span> (&#123; page &#125;) =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://myshop.com&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;text=登录&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">fill</span>(<span class="string">&#x27;input[name=&quot;email&quot;]&#x27;</span>, <span class="string">&#x27;test@example.com&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">fill</span>(<span class="string">&#x27;input[name=&quot;password&quot;]&#x27;</span>, <span class="string">&#x27;123456&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;button:has-text(&quot;登录&quot;)&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">expect</span>(page).<span class="title function_">toHaveURL</span>(<span class="regexp">/dashboard/</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">fill</span>(<span class="string">&#x27;input[placeholder=&quot;搜索&quot;]&#x27;</span>, <span class="string">&#x27;iPhone 15&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;button:has-text(&quot;搜索&quot;)&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;.product-list .product-item:first-child&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;button:has-text(&quot;加入购物车&quot;)&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;a:has-text(&quot;购物车&quot;)&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">expect</span>(page.<span class="title function_">locator</span>(<span class="string">&#x27;.cart-items&#x27;</span>)).<span class="title function_">toContainText</span>(<span class="string">&#x27;iPhone 15&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🤖-3-AI-自动化集成的方式"><a href="#🤖-3-AI-自动化集成的方式" class="headerlink" title="🤖 3. AI 自动化集成的方式"></a>🤖 3. <strong>AI 自动化集成的方式</strong></h2><h3 id="✅-可嵌入工作流的方式有："><a href="#✅-可嵌入工作流的方式有：" class="headerlink" title="✅ 可嵌入工作流的方式有："></a>✅ 可嵌入工作流的方式有：</h3><ul>
+<li><strong>CI&#x2F;CD 流程中自动生成回归测试脚本</strong></li>
+<li><strong>结合低代码工具（如 Retool、Internal.io）可视化测试步骤</strong></li>
+<li><strong>结合页面爬虫 + GPT 自动构造页面交互路径</strong></li>
+<li><strong>AI agent（如 AutoGPT）逐页探索 UI 并生成测试用例</strong></li>
+</ul>
+<hr>
+<h2 id="🧩-4-与其他工具的集成建议"><a href="#🧩-4-与其他工具的集成建议" class="headerlink" title="🧩 4. 与其他工具的集成建议"></a>🧩 4. <strong>与其他工具的集成建议</strong></h2><table>
+<thead>
+<tr>
+<th>工具&#x2F;平台</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Playwright&#x2F;Cypress</td>
+<td>执行生成的测试脚本</td>
+</tr>
+<tr>
+<td>LangChain + GPT</td>
+<td>实现测试步骤的规划与脚本生成</td>
+</tr>
+<tr>
+<td>Puppeteer + GPT Vision（图像识别）</td>
+<td>基于 UI 屏幕截图自动生成测试</td>
+</tr>
+<tr>
+<td>Postman + AI</td>
+<td>自动生成 API 层 E2E 测试用例</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🛠️-5-最佳实践建议"><a href="#🛠️-5-最佳实践建议" class="headerlink" title="🛠️ 5. 最佳实践建议"></a>🛠️ 5. <strong>最佳实践建议</strong></h2><ul>
+<li>优先从**常见用户流程（happy path）**生成测试</li>
+<li>用 <strong>mock 数据或 test account</strong> 避免破坏生产环境</li>
+<li>每次部署后用 GPT 自动对比 UI 改动并生成差异测试</li>
+<li>若产品设计采用 Figma，可通过 Figma plugin 提取页面结构生成测试脚本</li>
+</ul>
+<hr>
+<p>在比较 <strong>React 组件测试</strong> 和 <strong>E2E 自动化测试</strong> 的自动生成难度时，有以下几个关键维度可以帮助你理解：</p>
+<hr>
+<h2 id="✅-总体结论："><a href="#✅-总体结论：" class="headerlink" title="✅ 总体结论："></a>✅ 总体结论：</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>哪个更简单生成？</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>自动生成 React 单元&#x2F;集成测试</strong></td>
+<td>✅ <strong>更简单</strong></td>
+</tr>
+<tr>
+<td><strong>自动生成 E2E 测试（端到端）</strong></td>
+<td>🚫 相对复杂</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔍-原因详解："><a href="#🔍-原因详解：" class="headerlink" title="🔍 原因详解："></a>🔍 原因详解：</h2><h3 id="一、React-单元-集成测试（通常使用-Jest-Testing-Library）"><a href="#一、React-单元-集成测试（通常使用-Jest-Testing-Library）" class="headerlink" title="一、React 单元&#x2F;集成测试（通常使用 Jest + Testing Library）"></a>一、React 单元&#x2F;集成测试（通常使用 Jest + Testing Library）</h3><h4 id="✔️-更容易自动化的原因："><a href="#✔️-更容易自动化的原因：" class="headerlink" title="✔️ 更容易自动化的原因："></a>✔️ 更容易自动化的原因：</h4><ul>
+<li>输入输出明确（props、state）</li>
+<li>通常只涉及一个组件，不依赖后端或完整页面流程</li>
+<li>DOM结构清晰、可预测（模型能通过 JSX 推理测试）</li>
+<li>更容易 mock 外部依赖（如 API、context）</li>
+</ul>
+<h4 id="🧠-示例："><a href="#🧠-示例：" class="headerlink" title="🧠 示例："></a>🧠 示例：</h4><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Button.tsx</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">Button</span>(<span class="params">&#123; onClick &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;onClick&#125;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GPT 很容易生成测试：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; render, screen, fireEvent &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Button</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./Button&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;点击按钮触发事件&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> handleClick = jest.<span class="title function_">fn</span>();</span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleClick&#125;</span> /&gt;</span></span>);</span><br><span class="line">  fireEvent.<span class="title function_">click</span>(screen.<span class="title function_">getByText</span>(<span class="string">&#x27;Click me&#x27;</span>));</span><br><span class="line">  <span class="title function_">expect</span>(handleClick).<span class="title function_">toHaveBeenCalled</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="二、E2E-测试（使用-Playwright-Cypress-等）"><a href="#二、E2E-测试（使用-Playwright-Cypress-等）" class="headerlink" title="二、E2E 测试（使用 Playwright &#x2F; Cypress 等）"></a>二、E2E 测试（使用 Playwright &#x2F; Cypress 等）</h3><h4 id="🚫-更复杂的原因："><a href="#🚫-更复杂的原因：" class="headerlink" title="🚫 更复杂的原因："></a>🚫 更复杂的原因：</h4><ul>
+<li>需要理解多个页面之间的<strong>业务流程</strong></li>
+<li>涉及<strong>异步网络请求、认证、环境配置</strong></li>
+<li>页面元素可能是动态加载、难以定位</li>
+<li>UI 样式或布局变化可能导致测试失败</li>
+<li>更依赖完整的运行系统或 mock 服务</li>
+</ul>
+<hr>
+<h2 id="📊-总结对比"><a href="#📊-总结对比" class="headerlink" title="📊 总结对比"></a>📊 总结对比</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>React 单元测试</th>
+<th>E2E 测试</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>场景范围</td>
+<td>单一组件</td>
+<td>整个用户操作流程</td>
+</tr>
+<tr>
+<td>依赖复杂度</td>
+<td>低（仅组件内部逻辑）</td>
+<td>高（页面跳转、后端接口）</td>
+</tr>
+<tr>
+<td>模型理解成本</td>
+<td>低（JSX结构清晰）</td>
+<td>高（需理解整个业务流程）</td>
+</tr>
+<tr>
+<td>自动生成准确性</td>
+<td>✅ 高</td>
+<td>🚫 可能需大量人工干预</td>
+</tr>
+<tr>
+<td>易于本地运行验证</td>
+<td>✅ 易（无需环境）</td>
+<td>🚫 难（需后端、数据库等）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="✨-实战建议："><a href="#✨-实战建议：" class="headerlink" title="✨ 实战建议："></a>✨ 实战建议：</h2><ul>
+<li><strong>先用 AI 自动生成 React 测试</strong>（快速提升覆盖率）</li>
+<li>然后手动 + AI 辅助生成核心的 E2E 流程测试（如登录、下单等）</li>
+<li>E2E 生成可结合低代码 UI 抽象或页面爬虫辅助结构分析</li>
+</ul>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/05/25/front_skills/react/react%20ai%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
+        <span class="nav-arrow">← </span>
+        
+          reactjs ai大模型单元测试
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/05/26/game/moon/Cocos%20Creator%203.x/">
+        
+          Cocos Creator 3.x
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-1-%E8%BE%93%E5%85%A5%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%EF%BC%88Prompt-Design%EF%BC%89"><span class="toc-nav-text">🧠 1. 输入信息收集（Prompt Design）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-2-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">⚙️ 2. 大模型生成测试用例的方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E7%A4%BA%E4%BE%8B-Prompt%EF%BC%88%E9%9D%A2%E5%90%91-ChatGPT-%E6%88%96-API%EF%BC%89"><span class="toc-nav-text">✅ 示例 Prompt（面向 ChatGPT 或 API）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%F0%9F%A7%AA-%E6%A8%A1%E5%9E%8B%E8%BE%93%E5%87%BA%E7%A4%BA%E4%BE%8B%EF%BC%88Playwright%EF%BC%89"><span class="toc-nav-text">🧪 模型输出示例（Playwright）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A4%96-3-AI-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%9B%86%E6%88%90%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">🤖 3. AI 自动化集成的方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8F%AF%E5%B5%8C%E5%85%A5%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%EF%BC%9A"><span class="toc-nav-text">✅ 可嵌入工作流的方式有：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-4-%E4%B8%8E%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7%E7%9A%84%E9%9B%86%E6%88%90%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">🧩 4. 与其他工具的集成建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9B%A0%EF%B8%8F-5-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">🛠️ 5. 最佳实践建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E6%80%BB%E4%BD%93%E7%BB%93%E8%AE%BA%EF%BC%9A"><span class="toc-nav-text">✅ 总体结论：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%8D-%E5%8E%9F%E5%9B%A0%E8%AF%A6%E8%A7%A3%EF%BC%9A"><span class="toc-nav-text">🔍 原因详解：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81React-%E5%8D%95%E5%85%83-%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%EF%BC%88%E9%80%9A%E5%B8%B8%E4%BD%BF%E7%94%A8-Jest-Testing-Library%EF%BC%89"><span class="toc-nav-text">一、React 单元&#x2F;集成测试（通常使用 Jest + Testing Library）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E2%9C%94%EF%B8%8F-%E6%9B%B4%E5%AE%B9%E6%98%93%E8%87%AA%E5%8A%A8%E5%8C%96%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-nav-text">✔️ 更容易自动化的原因：</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-nav-text">🧠 示例：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81E2E-%E6%B5%8B%E8%AF%95%EF%BC%88%E4%BD%BF%E7%94%A8-Playwright-Cypress-%E7%AD%89%EF%BC%89"><span class="toc-nav-text">二、E2E 测试（使用 Playwright &#x2F; Cypress 等）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%F0%9F%9A%AB-%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-nav-text">🚫 更复杂的原因：</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%93%8A-%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">📊 总结对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%A8-%E5%AE%9E%E6%88%98%E5%BB%BA%E8%AE%AE%EF%BC%9A"><span class="toc-nav-text">✨ 实战建议：</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/05/26/automatically_test_skills/ai自动化测试用例生成/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

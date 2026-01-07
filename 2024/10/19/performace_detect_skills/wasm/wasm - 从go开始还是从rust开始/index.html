@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      wasm - 从go开始还是从rust开始 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>wasm - 从go开始还是从rust开始</h2>
+  <p class="post-date">2024-10-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="以下是针对前端开发者选择WASM入门语言的详细建议，结合技术特性和学习曲线分析："><a href="#以下是针对前端开发者选择WASM入门语言的详细建议，结合技术特性和学习曲线分析：" class="headerlink" title="以下是针对前端开发者选择WASM入门语言的详细建议，结合技术特性和学习曲线分析："></a>以下是针对前端开发者选择WASM入门语言的详细建议，结合技术特性和学习曲线分析：</h2><h3 id="前端开发者选择WASM入门语言的详细建议"><a href="#前端开发者选择WASM入门语言的详细建议" class="headerlink" title="前端开发者选择WASM入门语言的详细建议"></a><strong>前端开发者选择WASM入门语言的详细建议</strong></h3><hr>
+<h3 id="决策矩阵：Go-vs-Rust-for-WASM前端开发"><a href="#决策矩阵：Go-vs-Rust-for-WASM前端开发" class="headerlink" title="决策矩阵：Go vs Rust for WASM前端开发"></a><strong>决策矩阵：Go vs Rust for WASM前端开发</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[前端开发者] --&gt; B&#123;选择标准&#125;</span><br><span class="line">    B --&gt; C[开发效率]</span><br><span class="line">    B --&gt; D[性能需求]</span><br><span class="line">    B --&gt; E[生态整合]</span><br><span class="line">    </span><br><span class="line">    C --&gt;|快速产出| C1(Go)</span><br><span class="line">    D --&gt;|极致性能| D1(Rust)</span><br><span class="line">    E --&gt;|JS互操作| E1(Rust)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="分阶段建议"><a href="#分阶段建议" class="headerlink" title="分阶段建议"></a><strong>分阶段建议</strong></h3><h4 id="1-快速原型阶段（推荐Go）"><a href="#1-快速原型阶段（推荐Go）" class="headerlink" title="1. 快速原型阶段（推荐Go）"></a><strong>1. 快速原型阶段（推荐Go）</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// go.mod</span></span><br><span class="line">require github.com/tinygo-org/tinygo v0<span class="number">.25</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// main.go</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;syscall/js&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">greet</span><span class="params">(this js.Value, args []js.Value)</span></span> <span class="keyword">interface</span>&#123;&#125; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello from Go WASM!&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    js.Global().Set(<span class="string">&quot;goGreet&quot;</span>, js.FuncOf(greet))</span><br><span class="line">    &lt;-<span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">bool</span>) <span class="comment">// 保持运行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>优势：</strong></p>
+<ul>
+<li>类似JavaScript的事件循环模型</li>
+<li>内置GC减少内存管理负担</li>
+<li>编译速度极快（TinyGo仅2-3秒）</li>
+</ul>
+<h4 id="2-性能关键阶段（必须Rust）"><a href="#2-性能关键阶段（必须Rust）" class="headerlink" title="2. 性能关键阶段（必须Rust）"></a><strong>2. 性能关键阶段（必须Rust）</strong></h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Cargo.toml</span></span><br><span class="line">[package]</span><br><span class="line">name = <span class="string">&quot;wasm-demo&quot;</span></span><br><span class="line">version = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line">edition = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line">[lib]</span><br><span class="line"><span class="keyword">crate</span>-<span class="keyword">type</span> = [<span class="string">&quot;cdylib&quot;</span>]</span><br><span class="line"></span><br><span class="line">[dependencies]</span><br><span class="line">wasm-bindgen = <span class="string">&quot;0.2&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// lib.rs</span></span><br><span class="line"><span class="keyword">use</span> wasm_bindgen::prelude::*;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[wasm_bindgen]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">fibonacci</span>(n: <span class="type">i32</span>) <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> n &#123;</span><br><span class="line">        <span class="number">0</span> | <span class="number">1</span> =&gt; n,</span><br><span class="line">        _ =&gt; <span class="title function_ invoke__">fibonacci</span>(n-<span class="number">1</span>) + <span class="title function_ invoke__">fibonacci</span>(n-<span class="number">2</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>优势：</strong></p>
+<ul>
+<li>零成本抽象（性能接近原生）</li>
+<li>wasm-bindgen提供顶级JS互操作</li>
+<li>完善的WASI支持</li>
+</ul>
+<hr>
+<h3 id="关键对比维度"><a href="#关键对比维度" class="headerlink" title="关键对比维度"></a><strong>关键对比维度</strong></h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Go（TinyGo）</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>编译产物大小</strong></td>
+<td>1MB~2MB</td>
+<td>100KB~500KB</td>
+</tr>
+<tr>
+<td><strong>JS互操作复杂度</strong></td>
+<td>需手动类型转换</td>
+<td>wasm-bindgen自动生成胶水代码</td>
+</tr>
+<tr>
+<td><strong>线程支持</strong></td>
+<td>实验性</td>
+<td>稳定(Worker + SharedArrayBuffer)</td>
+</tr>
+<tr>
+<td><strong>典型应用场景</strong></td>
+<td>业务逻辑封装</td>
+<td>图形计算&#x2F;密码学等高性能领域</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="前端友好度专项评估"><a href="#前端友好度专项评估" class="headerlink" title="前端友好度专项评估"></a><strong>前端友好度专项评估</strong></h3><h4 id="1-工具链体验"><a href="#1-工具链体验" class="headerlink" title="1. 工具链体验"></a><strong>1. 工具链体验</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Go流程</span></span><br><span class="line">tinygo build -o main.wasm -target wasm ./main.go</span><br><span class="line"></span><br><span class="line"><span class="comment"># Rust流程</span></span><br><span class="line">wasm-pack build --target web</span><br></pre></td></tr></table></figure>
+<p><strong>胜出：Rust</strong>  </p>
+<ul>
+<li>wasm-pack自动生成：<ul>
+<li>可直接import的JS包装</li>
+<li>TypeScript类型定义</li>
+<li>优化的Webpack集成</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-调试支持"><a href="#2-调试支持" class="headerlink" title="2. 调试支持"></a><strong>2. 调试支持</strong></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Chrome DevTools可直接调试Rust源码</span></span><br><span class="line"><span class="keyword">import</span> init, &#123;fibonacci&#125; <span class="keyword">from</span> <span class="string">&#x27;./pkg/wasm_demo.js&#x27;</span>;</span><br><span class="line"><span class="keyword">await</span> <span class="title function_">init</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">fibonacci</span>(<span class="number">10</span>)); <span class="comment">// 可断点进入Rust代码</span></span><br></pre></td></tr></table></figure>
+<p><strong>胜出：Rust</strong>  </p>
+<ul>
+<li>完整的sourcemap支持</li>
+<li>更好的panic错误信息</li>
+</ul>
+<h4 id="3-学习曲线"><a href="#3-学习曲线" class="headerlink" title="3. 学习曲线"></a><strong>3. 学习曲线</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pie</span><br><span class="line">    title 概念掌握难度</span><br><span class="line">    &quot;Go&quot; : 35</span><br><span class="line">    &quot;Rust&quot; : 65</span><br></pre></td></tr></table></figure>
+<p><strong>胜出：Go</strong>  </p>
+<ul>
+<li>无需理解所有权&#x2F;生命周期</li>
+<li>更接近动态语言的写法</li>
+</ul>
+<hr>
+<h3 id="渐进式学习路径建议"><a href="#渐进式学习路径建议" class="headerlink" title="渐进式学习路径建议"></a><strong>渐进式学习路径建议</strong></h3><h4 id="阶段1：Go快速入门（1-2周）"><a href="#阶段1：Go快速入门（1-2周）" class="headerlink" title="阶段1：Go快速入门（1-2周）"></a><strong>阶段1：Go快速入门（1-2周）</strong></h4><ol>
+<li>用TinyGo编译简单函数到WASM</li>
+<li>实践DOM操作（通过js.Value类型）</li>
+<li>集成到现有Webpack项目</li>
+</ol>
+<h4 id="阶段2：Rust深度掌握（4-8周）"><a href="#阶段2：Rust深度掌握（4-8周）" class="headerlink" title="阶段2：Rust深度掌握（4-8周）"></a><strong>阶段2：Rust深度掌握（4-8周）</strong></h4><ol>
+<li>学习所有权基础</li>
+<li>掌握wasm-bindgen高级特性：<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[wasm_bindgen]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">CanvasRenderer</span> &#123;</span><br><span class="line">    ctx: web_sys::CanvasRenderingContext2d</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>优化WASM内存管理：<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[global_allocator]</span></span><br><span class="line"><span class="keyword">static</span> ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="阶段3：混合开发（长期）"><a href="#阶段3：混合开发（长期）" class="headerlink" title="阶段3：混合开发（长期）"></a><strong>阶段3：混合开发（长期）</strong></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 动态加载不同语言的WASM模块</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">loadWasm</span> = <span class="keyword">async</span> (<span class="params">lang</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(lang === <span class="string">&#x27;go&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> go = <span class="keyword">new</span> <span class="title class_">Go</span>();</span><br><span class="line">    <span class="keyword">const</span> &#123; instance &#125; = <span class="keyword">await</span> <span class="title class_">WebAssembly</span>.<span class="title function_">instantiateStreaming</span>(</span><br><span class="line">      <span class="title function_">fetch</span>(<span class="string">&#x27;go.wasm&#x27;</span>), go.<span class="property">importObject</span></span><br><span class="line">    );</span><br><span class="line">    go.<span class="title function_">run</span>(instance);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> rust = <span class="keyword">await</span> <span class="keyword">import</span>(<span class="string">&#x27;./pkg/rust_module.js&#x27;</span>);</span><br><span class="line">    <span class="keyword">await</span> rust.<span class="title function_">default</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="决策流程图"><a href="#决策流程图" class="headerlink" title="决策流程图"></a><strong>决策流程图</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[项目需求] --&gt; B&#123;需要高性能?&#125;</span><br><span class="line">    B --&gt;|Yes| C[选择Rust]</span><br><span class="line">    B --&gt;|No| D&#123;快速上线?&#125;</span><br><span class="line">    D --&gt;|Yes| E[选择Go]</span><br><span class="line">    D --&gt;|No| F[从Go过渡到Rust]</span><br></pre></td></tr></table></figure>
+
+<p><strong>最终建议：</strong>  </p>
+<ul>
+<li>如果是<strong>可视化&#x2F;游戏等重计算场景</strong>，直接学习Rust</li>
+<li>如果是<strong>普通业务逻辑封装</strong>，先用Go验证再逐步迁移</li>
+<li>推荐优先掌握Rust，虽然学习曲线陡峭但长期收益更高</li>
+</ul>
+<p>前端开发者可先用Go体验WASM开发模式，再通过<a target="_blank" rel="noopener" href="https://github.com/rust-lang/rustlings">Rustlings</a>小练习系统学习Rust，最终形成完整的WASM开发生态认知。</p>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#wasm" >
+    <span class="tag-code">wasm</span>
+  </a>
+
+  <a target="_blank" href="/tags#rust" >
+    <span class="tag-code">rust</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2024/06/21/dev_tool_skills/git/git%E5%88%86%E6%94%AFmaster%20rename/">
+        <span class="nav-arrow">← </span>
+        
+          《GitHub》-git分支master rename
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/04/01/devops_skills/docker-compose%E8%BF%81%E7%A7%BB%E5%88%B0k8s%E9%9B%86%E7%BE%A4/">
+        
+          多机独立Docker Compose到K8s集群动态调度
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E9%92%88%E5%AF%B9%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E9%80%89%E6%8B%A9WASM%E5%85%A5%E9%97%A8%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BB%BA%E8%AE%AE%EF%BC%8C%E7%BB%93%E5%90%88%E6%8A%80%E6%9C%AF%E7%89%B9%E6%80%A7%E5%92%8C%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF%E5%88%86%E6%9E%90%EF%BC%9A"><span class="toc-nav-text">以下是针对前端开发者选择WASM入门语言的详细建议，结合技术特性和学习曲线分析：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E8%80%85%E9%80%89%E6%8B%A9WASM%E5%85%A5%E9%97%A8%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">前端开发者选择WASM入门语言的详细建议</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%86%B3%E7%AD%96%E7%9F%A9%E9%98%B5%EF%BC%9AGo-vs-Rust-for-WASM%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91"><span class="toc-nav-text">决策矩阵：Go vs Rust for WASM前端开发</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%86%E9%98%B6%E6%AE%B5%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">分阶段建议</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%BF%AB%E9%80%9F%E5%8E%9F%E5%9E%8B%E9%98%B6%E6%AE%B5%EF%BC%88%E6%8E%A8%E8%8D%90Go%EF%BC%89"><span class="toc-nav-text">1. 快速原型阶段（推荐Go）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E6%80%A7%E8%83%BD%E5%85%B3%E9%94%AE%E9%98%B6%E6%AE%B5%EF%BC%88%E5%BF%85%E9%A1%BBRust%EF%BC%89"><span class="toc-nav-text">2. 性能关键阶段（必须Rust）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B3%E9%94%AE%E5%AF%B9%E6%AF%94%E7%BB%B4%E5%BA%A6"><span class="toc-nav-text">关键对比维度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%89%8D%E7%AB%AF%E5%8F%8B%E5%A5%BD%E5%BA%A6%E4%B8%93%E9%A1%B9%E8%AF%84%E4%BC%B0"><span class="toc-nav-text">前端友好度专项评估</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-%E5%B7%A5%E5%85%B7%E9%93%BE%E4%BD%93%E9%AA%8C"><span class="toc-nav-text">1. 工具链体验</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-%E8%B0%83%E8%AF%95%E6%94%AF%E6%8C%81"><span class="toc-nav-text">2. 调试支持</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="toc-nav-text">3. 学习曲线</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E5%BB%BA%E8%AE%AE"><span class="toc-nav-text">渐进式学习路径建议</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%98%B6%E6%AE%B51%EF%BC%9AGo%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%881-2%E5%91%A8%EF%BC%89"><span class="toc-nav-text">阶段1：Go快速入门（1-2周）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%98%B6%E6%AE%B52%EF%BC%9ARust%E6%B7%B1%E5%BA%A6%E6%8E%8C%E6%8F%A1%EF%BC%884-8%E5%91%A8%EF%BC%89"><span class="toc-nav-text">阶段2：Rust深度掌握（4-8周）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%98%B6%E6%AE%B53%EF%BC%9A%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%EF%BC%88%E9%95%BF%E6%9C%9F%EF%BC%89"><span class="toc-nav-text">阶段3：混合开发（长期）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%86%B3%E7%AD%96%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-nav-text">决策流程图</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2024/10/19/performace_detect_skills/wasm/wasm - 从go开始还是从rust开始/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

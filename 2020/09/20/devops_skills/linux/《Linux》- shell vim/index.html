@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Linux》- shell vim | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Linux》- shell vim</h2>
+  <p class="post-date">2020-09-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="linux-vim"><a href="#linux-vim" class="headerlink" title="linux vim"></a>linux vim</h3><blockquote>
+<p>vi早起版本的改进，vi improved, 支持高亮，自动缩进等<br>vim 存在三种模式： 命令模式，输入模式，编辑模式<br> <img src="https://s1.ax1x.com/2020/09/21/w7T2pF.png"> </p>
+</blockquote>
+<h3 id="vim操作"><a href="#vim操作" class="headerlink" title="vim操作"></a>vim操作</h3><h4 id="文件概览"><a href="#文件概览" class="headerlink" title="文件概览"></a>文件概览</h4><blockquote>
+<p>vim编辑文件，初次打开，左下方显示,文件名、总行数、总字符数<br> <img src="https://s1.ax1x.com/2020/09/21/w7TRl4.png"> </p>
+</blockquote>
+<h4 id="直接定位到指定行"><a href="#直接定位到指定行" class="headerlink" title="直接定位到指定行"></a>直接定位到指定行</h4> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#定位行</span><br><span class="line">vim +20 test.v1</span><br><span class="line"></span><br><span class="line">#定位字符</span><br><span class="line">vim +/nobody test.v1 </span><br></pre></td></tr></table></figure>
+<h4 id="进入输入模式"><a href="#进入输入模式" class="headerlink" title="进入输入模式"></a>进入输入模式</h4><blockquote>
+<p>按下I、i、O、o、A、a等键来完成 </p>
+</blockquote>
+<ul>
+<li>i   ——在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动￼   </li>
+<li>I   ——在光标所在行的行首插入随后输入的文本，行首是该行的第一个非空白字符，相当于光标移动到行首再执行i命令￼    </li>
+<li>a   ——在当前光标所在位置之后插入随后输入的文本￼    </li>
+<li>A   ——在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令￼    </li>
+<li>o   ——在光标所在行的下面插入新的一行。光标停在空行的行首，等待输入文本￼    </li>
+<li>O   ——在光标所在行的上面插入新的一行。光标停在空行的行首，等待输入文本</li>
+</ul>
+<blockquote>
+<p>在Linux纯字符界面中，默认是不支持中文输入的。如果想要输入中文，则有三种方法。<br> （1）安装中文语言支持和图形界面，在图形界面下输入中文，使用gVim（Vim的图形前端）。<br> （2）安装中文语言支持，使用远程连接工具（如PuTTY），在远程连接工具中调整中文编码，进行中文输入。<br> （3）倘若非要在Linux纯字符界面中输入中文，则可以安装中文插件，如zhcon</p>
+</blockquote>
+<h4 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h4><blockquote>
+<p>字符级别移动 - 箭头，hjkl </p>
+</blockquote>
+<blockquote>
+<p>单词级别移动 - w b e </p>
+</blockquote>
+<blockquote>
+<p>行首、行尾级别移动 - 0 $</p>
+</blockquote>
+<h4 id="待验证"><a href="#待验证" class="headerlink" title="待验证"></a>待验证</h4><blockquote>
+<p>移动到一行指定字符位置 fp</p>
+</blockquote>
+<blockquote>
+<p>移动到匹配的括号处 %</p>
+</blockquote>
+<blockquote>
+<p>移动到指定的行nG</p>
+</blockquote>
+<h4 id="查找指定字符"><a href="#查找指定字符" class="headerlink" title="查找指定字符"></a>查找指定字符</h4><blockquote>
+<p>&#x2F; 向下查找</p>
+</blockquote>
+<blockquote>
+<p>? 向上查找</p>
+</blockquote>
+<blockquote>
+<p>:set ic 忽略大小写 </p>
+</blockquote>
+<blockquote>
+<p>&#x2F;^root 开始， &#x2F;root$结尾的行</p>
+</blockquote>
+<h4 id="删除与copy"><a href="#删除与copy" class="headerlink" title="删除与copy"></a>删除与copy</h4><blockquote>
+<p>命令行模式下</p>
+</blockquote>
+<ul>
+<li><p>x 删除光标后，单个字符</p>
+</li>
+<li><p>3x ，删除光标后，3个字符</p>
+</li>
+<li><p>D ，删除光标后面的整行字符</p>
+</li>
+<li><p>dd 删除光标所在行</p>
+</li>
+<li><p>4dd, 删除光标所在行以及后面的3行</p>
+</li>
+<li><p>:1,5d 删除第一行~第五行 </p>
+</li>
+<li><p>dG, 删除光标后，所有内容</p>
+</li>
+<li><p>y，复制光标所在行，并下移</p>
+</li>
+<li><p>ny,复制光标所在行多次，</p>
+</li>
+<li><p>p，粘贴内容到光标所在位置后面</p>
+</li>
+<li><p>P，粘贴内容到光标所在位置前面</p>
+</li>
+<li><p>u 撤销所做内容，多次撤销操作多次即可</p>
+</li>
+<li><p>j 2行并在一行</p>
+</li>
+</ul>
+<h4 id="文件保存"><a href="#文件保存" class="headerlink" title="文件保存"></a>文件保存</h4><blockquote>
+<p>w 保存不退出<br>q 不保存退出<br>! 强制执行</p>
+</blockquote>
+<ul>
+<li>wq 保存且退出</li>
+<li>w &#x2F;tmp&#x2F;ss.txt 另存为</li>
+<li>shift+z 两次，也会退出 ，q!强制退出</li>
+</ul>
+<h4 id="文件编辑"><a href="#文件编辑" class="headerlink" title="文件编辑"></a>文件编辑</h4><blockquote>
+<p>:set nu ,显示行号<br>可以在当前登录用户目录下，添加配置~&#x2F;.vimrc，配置默认显示行号<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set nu </span><br><span class="line"># 命令行模式，忽略大小写</span><br><span class="line">set ic </span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="条件判定"><a href="#条件判定" class="headerlink" title="条件判定"></a>条件判定</h4><blockquote>
+<p>命令行取值</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./deploy_tar.sh xx.tar.gz </span><br><span class="line">$0 - 文件名</span><br><span class="line">$1 - 包名称</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>命令行默认值</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distDir=$&#123;2:-&quot;build&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>服务器ip<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOST_IP = $&#123;ip addr | grep &#x27;state UP&#x27; -A2 | tail -n1 | awk &#x27;&#123;print $2&#125; &#x27;| cut -f1 -d &#x27;/&#x27; &#125; </span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>时间格式化<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dateTime = $(date +%Y-%m-%d-%s)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>正则判定<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if [[ $packageName == *.tar ]];then</span><br><span class="line"> //do something</span><br><span class="line">elif [[$packageName == *.tar.gz ]];then </span><br><span class="line"> //</span><br><span class="line">elif [[$packageName == *.zip ]] ; then </span><br><span class="line"> //</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>获取curl结果</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = $(curl -X GET url)</span><br></pre></td></tr></table></figure>
+
+<h4 id="多窗口编辑"><a href="#多窗口编辑" class="headerlink" title="多窗口编辑"></a>多窗口编辑</h4><blockquote>
+<p>逐个打开<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#先打开</span><br><span class="line">vim test.sh</span><br><span class="line"> </span><br><span class="line">#命令模式输入,水平共享屏幕：</span><br><span class="line">sp ./demo.sh</span><br><span class="line">vp ./demo.sh </span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>同时打开,Ctrl+ww切换</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim -o demo.sh test.sh </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编辑过程中，查看命令结果</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#命令行模式</span><br><span class="line">:! ls -a </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编辑一个文件时，r命令导入另一个文件内容</p>
+</blockquote>
+<h4 id="连续行注释"><a href="#连续行注释" class="headerlink" title="连续行注释"></a>连续行注释</h4><blockquote>
+<p>利用正则区域替换</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#命令行模式,开启注释</span><br><span class="line">:1，10s/^/#/g</span><br><span class="line"></span><br><span class="line">:1，10s/#//g</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当然也可以map|unmap自定义快捷键，实现</p>
+</blockquote>
+<blockquote>
+<p>宏命令处理,当然也可用与不连续行处理</p>
+</blockquote>
+<ul>
+<li>命令行模式，输入q&lt;宏名称&gt;,开始recording</li>
+<li>然后进入编辑模式，进行编辑，然后退出到命令行模式，按下q退出宏记录，</li>
+<li>在其余的行，命令行模式，调用@&lt;宏&gt;即可</li>
+</ul>
+<h4 id="unix2dos-dos2unix"><a href="#unix2dos-dos2unix" class="headerlink" title="unix2dos | dos2unix"></a>unix2dos | dos2unix</h4><blockquote>
+<p>需要手动安装 </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dos2unix file.txt</span><br><span class="line"></span><br><span class="line">unix2dos test.sh </span><br></pre></td></tr></table></figure></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#shell" >
+    <span class="tag-code">shell</span>
+  </a>
+
+  <a target="_blank" href="/tags#脚本" >
+    <span class="tag-code">脚本</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/19/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/">
+        <span class="nav-arrow">← </span>
+        
+          《Linux》- shell 网络命令
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/09/24/devops_skills/linux/%E3%80%8ALinux%E3%80%8B-%20shell%20%20RPM%E5%8C%85%E7%AE%A1%E7%90%86/">
+        
+          《Linux》- shell RPM包管理
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#linux-vim"><span class="toc-nav-text">linux vim</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#vim%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">vim操作</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E6%A6%82%E8%A7%88"><span class="toc-nav-text">文件概览</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%AE%9A%E4%BD%8D%E5%88%B0%E6%8C%87%E5%AE%9A%E8%A1%8C"><span class="toc-nav-text">直接定位到指定行</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%9B%E5%85%A5%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">进入输入模式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8"><span class="toc-nav-text">光标移动</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%BE%85%E9%AA%8C%E8%AF%81"><span class="toc-nav-text">待验证</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9F%A5%E6%89%BE%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6"><span class="toc-nav-text">查找指定字符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%A0%E9%99%A4%E4%B8%8Ecopy"><span class="toc-nav-text">删除与copy</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98"><span class="toc-nav-text">文件保存</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91"><span class="toc-nav-text">文件编辑</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E5%AE%9A"><span class="toc-nav-text">条件判定</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A4%9A%E7%AA%97%E5%8F%A3%E7%BC%96%E8%BE%91"><span class="toc-nav-text">多窗口编辑</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%9E%E7%BB%AD%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="toc-nav-text">连续行注释</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#unix2dos-dos2unix"><span class="toc-nav-text">unix2dos | dos2unix</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/20/devops_skills/linux/《Linux》- shell vim/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

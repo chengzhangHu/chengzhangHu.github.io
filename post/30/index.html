@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/07/11/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%8C%87%E4%BB%A4/">《 Angular8 》 -  angular8深入了解指令</a>
+      </h2>
+      <p class="article-date">July 11, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#directive" >
+    <span class="tag-code">directive</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+           angular指令，目的在于影响Dom布局，或者修改Dom属性。
+Directive分类Component
+an extension of @Directive()
+
+Demo123456789101112131415import &#123; Component, OnInit &#12 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/07/11/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E6%8C%87%E4%BB%A4/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/07/10/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-angular.json%E6%96%87%E4%BB%B6%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">《 Angular8 》 - angular.json文件你了解多少？</a>
+      </h2>
+      <p class="article-date">July 10, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#angular.json" >
+    <span class="tag-code">angular.json</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          angular.json
+相对于项目root 路径配置
+有关workspace和项目的配置
+angular-cli自动生成的
+
+文件结构1234567891011121314&#123;  &quot;$schema&quot;: &quot;./node_modules/@angular/ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/07/10/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-angular.json%E6%96%87%E4%BB%B6%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/07/10/front_skills/ts/%E3%80%8Atypescript%E3%80%8B-%20tsconfig.json%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">《typescript》- tsconfig.json你了解多少</a>
+      </h2>
+      <p class="article-date">July 10, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#ts" >
+    <span class="tag-code">ts</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/07/10/front_skills/ts/%E3%80%8Atypescript%E3%80%8B-%20tsconfig.json%E4%BD%A0%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/07/02/front_skills/angular/%E3%80%8A%20Angular8%20%E3%80%8B%20-%20Angular8%20Pipe%E7%9A%84%E9%82%A3%E4%BA%9B%E7%94%A8%E6%B3%95/">《 Angular8 》 - Angular8 Pipe的那些用法</a>
+      </h2>
+      <p class="article-date">July 2, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#pipe" >
+    <span class="tag-code">pipe</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Angular Pipe  Pipe的存在，目的在于进行数据的转换。前后端开发，后端提供的数据，不一定刚好就是要展示的数据，前端经常在拿到原始数据后，进行一次或者多次转换，才展示。
+内置PipeDatePipe
+根据时区格式化
+
+
+采用默认的格式   1&lt;p&gt;The hero&# ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/07/02/front_skills/angular/%E3%80%8A%20Angular8%20%E3%80%8B%20-%20Angular8%20Pipe%E7%9A%84%E9%82%A3%E4%BA%9B%E7%94%A8%E6%B3%95/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/07/02/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20Git%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/">《 Git 》 - Git日常开发命令从入门到精通</a>
+      </h2>
+      <p class="article-date">July 2, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Git 安装
+点击链接，下载不同的版本安装即可，这里不再赘述了。
+
+123456789 $ git  usage: git [--version] [--help] [-C &lt;path&gt;] [-c &lt;name&gt;=&lt;value&gt;]           [-- ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/07/02/dev_tool_skills/git/%E3%80%8AGit%E3%80%8B-%20Git%E6%97%A5%E5%B8%B8%E5%BC%80%E5%8F%91%E5%91%BD%E4%BB%A4%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/06/29/front_skills/vue/vite%20HMR/">vite 文件路径 + mtime</a>
+      </h2>
+      <p class="article-date">June 29, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#vue3" >
+    <span class="tag-code">vue3</span>
+  </a>
+
+  <a target="_blank" href="/tags#vite" >
+    <span class="tag-code">vite</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          缓存判断机制：文件路径 + mtime（文件修改时间）✔️ 缓存依赖的组件：ModuleGraph：Vite 内部维护的模块依赖图（在 vite&#x2F;src&#x2F;node&#x2F;server&#x2F;moduleGraph.ts 中实现）。
+每个模块都有：url &#x2F ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/06/29/front_skills/vue/vite%20HMR/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/29/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/31/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

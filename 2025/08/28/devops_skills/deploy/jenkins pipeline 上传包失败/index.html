@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      jenkins pipeline 上传包失败 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>jenkins pipeline 上传包失败</h2>
+  <p class="post-date">2025-08-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="1️⃣-生成并配置-SSH-密钥"><a href="#1️⃣-生成并配置-SSH-密钥" class="headerlink" title="1️⃣ 生成并配置 SSH 密钥"></a>1️⃣ 生成并配置 SSH 密钥</h2><ol>
+<li><p><strong>在 Jenkins 服务器上生成密钥</strong>（如果尚未有可用的）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -c 内容是注释，可读即可</span></span><br><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;jenkins@build&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>生成 <code>~/.ssh/id_ed25519</code> 和 <code>id_ed25519.pub</code>。</p>
+</li>
+<li><p><strong>将公钥添加到目标服务器</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/id_ed25519.pub user@target-server</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>测试是否免密登录, 这部分很重要，可以-vvv查看具体过程</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssh user@target-server <span class="string">&quot;echo OK&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># user必须是目标服务器用户名， 在.ssh目录下执行</span></span><br><span class="line">ssh -vvv -i ~/.ssh/id_ed25519 \</span><br><span class="line"> -o StrictHostKeyChecking=no \</span><br><span class="line"> -o UserKnownHostsFile=/dev/null \</span><br><span class="line"> user@host</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><strong>在 Jenkins 中配置凭据</strong></p>
+<ul>
+<li><p>Jenkins → <strong>Manage Jenkins → Credentials → Global credentials</strong></p>
+</li>
+<li><p>新建 <strong>SSH Username with private key</strong></p>
+</li>
+<li><p>填：</p>
+<ul>
+<li>ID：<code>deploy-key</code> (供 Pipeline 使用)</li>
+<li>Username：目标服务器用户名</li>
+<li>Private Key：直接粘贴 <code>id_ed25519</code> 内容或“从文件”读取</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2️⃣-Jenkinsfile-示例"><a href="#2️⃣-Jenkinsfile-示例" class="headerlink" title="2️⃣ Jenkinsfile 示例"></a>2️⃣ Jenkinsfile 示例</h2><p>使用 <strong>Declarative Pipeline</strong> 方式：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line"></span><br><span class="line">    environment &#123;</span><br><span class="line">        REMOTE_HOST = <span class="string">&#x27;your.server.com&#x27;</span></span><br><span class="line">        REMOTE_DIR  = <span class="string">&#x27;/opt/apps&#x27;</span></span><br><span class="line">        APP_NAME    = <span class="string">&#x27;myapp&#x27;</span></span><br><span class="line">        TAR_FILE    = <span class="string">&#x27;myapp.tar.gz&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">&#x27;Build&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                <span class="comment">// 假设已经有构建脚本生成 tar.gz</span></span><br><span class="line">                sh <span class="string">&#x27;tar -czf $&#123;TAR_FILE&#125; build_output/&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(<span class="string">&#x27;Upload&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sshagent(<span class="attr">credentials:</span> [<span class="string">&#x27;deploy-key&#x27;</span>]) &#123;</span><br><span class="line">                    sh <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                        scp -o StrictHostKeyChecking=no $&#123;TAR_FILE&#125; \</span></span><br><span class="line"><span class="string">                        $&#123;REMOTE_HOST&#125;:$&#123;REMOTE_DIR&#125;/</span></span><br><span class="line"><span class="string">                    &quot;&quot;&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(<span class="string">&#x27;Deploy&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sshagent(<span class="attr">credentials:</span> [<span class="string">&#x27;deploy-key&#x27;</span>]) &#123;</span><br><span class="line">                    sh <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                        ssh -o StrictHostKeyChecking=no $&#123;REMOTE_HOST&#125; &#x27;</span></span><br><span class="line"><span class="string">                            cd $&#123;REMOTE_DIR&#125; &amp;&amp;</span></span><br><span class="line"><span class="string">                            tar -xzf $&#123;TAR_FILE&#125; -C $&#123;REMOTE_DIR&#125;/$&#123;APP_NAME&#125; --strip-components=1 &amp;&amp;</span></span><br><span class="line"><span class="string">                            systemctl restart myapp.service</span></span><br><span class="line"><span class="string">                        &#x27;</span></span><br><span class="line"><span class="string">                    &quot;&quot;&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    post &#123;</span><br><span class="line">        success &#123;</span><br><span class="line">            echo <span class="string">&#x27;部署完成 🎉&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        failure &#123;</span><br><span class="line">            echo <span class="string">&#x27;部署失败，请检查日志。&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键点说明"><a href="#关键点说明" class="headerlink" title="关键点说明"></a>关键点说明</h3><ul>
+<li><strong>sshagent</strong>：Pipeline 插件 <code>SSH Agent</code> 提供的步骤，会自动加载配置好的私钥。</li>
+<li><code>StrictHostKeyChecking=no</code>：避免首次连接需人工确认指纹。</li>
+<li><code>--strip-components=1</code>：解压时去掉顶层目录。</li>
+<li><code>systemctl restart myapp.service</code>：根据实际服务名修改。</li>
+</ul>
+<hr>
+<h2 id="3️⃣-服务器端准备"><a href="#3️⃣-服务器端准备" class="headerlink" title="3️⃣ 服务器端准备"></a>3️⃣ 服务器端准备</h2><ul>
+<li>目标路径 <code>/opt/apps/myapp</code> 需存在并且 <code>user</code> 有写权限。</li>
+<li>如果用 <code>systemd</code> 管理应用，需要提前配置好 <code>myapp.service</code>。</li>
+</ul>
+<hr>
+<h2 id="4️⃣-常见问题排查"><a href="#4️⃣-常见问题排查" class="headerlink" title="4️⃣ 常见问题排查"></a>4️⃣ 常见问题排查</h2><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Jenkins 控制台提示 <code>Permission denied (publickey)</code></td>
+<td>检查私钥是否匹配、凭据 ID 是否正确、<code>sshagent</code> 插件是否安装</td>
+</tr>
+<tr>
+<td>第一次连接要求输入 <code>yes/no</code></td>
+<td>已用 <code>-o StrictHostKeyChecking=no</code></td>
+</tr>
+<tr>
+<td>部署后旧文件残留</td>
+<td>可在解压前执行 <code>rm -rf $&#123;APP_NAME&#125;/*</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5️⃣-总结流程"><a href="#5️⃣-总结流程" class="headerlink" title="5️⃣ 总结流程"></a>5️⃣ 总结流程</h2><ol>
+<li>Jenkins 节点生成并注册 SSH Key</li>
+<li>目标服务器加入公钥，实现免密</li>
+<li>Jenkinsfile：<strong>Build → Upload → Deploy</strong></li>
+<li>通过 <code>sshagent</code> 调用 <code>scp</code> &amp; <code>ssh</code> 完成自动化部署</li>
+</ol>
+<h2 id="withcredentail-vs-sshagent"><a href="#withcredentail-vs-sshagent" class="headerlink" title="withcredentail vs sshagent"></a>withcredentail vs sshagent</h2><ol>
+<li><p><strong>添加凭据</strong></p>
+<ul>
+<li><strong>类型</strong>：<code>SSH Username with private key</code></li>
+<li><strong>ID</strong>：<code>deploy-key</code>（示例 ID，后面 Pipeline 要用）</li>
+<li><strong>Username</strong>：目标服务器用户名</li>
+<li><strong>Private Key</strong>：粘贴私钥内容或选择文件</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2️⃣-Jenkinsfile-示例-1"><a href="#2️⃣-Jenkinsfile-示例-1" class="headerlink" title="2️⃣ Jenkinsfile 示例"></a>2️⃣ Jenkinsfile 示例</h2><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line"></span><br><span class="line">    environment &#123;</span><br><span class="line">        REMOTE_HOST = <span class="string">&#x27;your.server.com&#x27;</span></span><br><span class="line">        REMOTE_DIR  = <span class="string">&#x27;/opt/apps&#x27;</span></span><br><span class="line">        TAR_FILE    = <span class="string">&#x27;myapp.tar.gz&#x27;</span></span><br><span class="line">        APP_NAME    = <span class="string">&#x27;myapp&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">&#x27;Build&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh <span class="string">&#x27;tar -czf $&#123;TAR_FILE&#125; build_output/&#x27;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        stage(<span class="string">&#x27;Upload &amp; Deploy&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                <span class="comment">// 注入凭据</span></span><br><span class="line">                withCredentials([sshUserPrivateKey(<span class="attr">credentialsId:</span> <span class="string">&#x27;deploy-key&#x27;</span>,</span><br><span class="line">                                                  <span class="symbol">keyFileVariable:</span> <span class="string">&#x27;SSH_KEY&#x27;</span>,</span><br><span class="line">                                                  <span class="symbol">usernameVariable:</span> <span class="string">&#x27;SSH_USER&#x27;</span>)]) &#123;</span><br><span class="line">                    sh <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">                        # 上传文件</span></span><br><span class="line"><span class="string">                        scp -i $SSH_KEY -o StrictHostKeyChecking=no $&#123;TAR_FILE&#125; \</span></span><br><span class="line"><span class="string">                            $SSH_USER@$&#123;REMOTE_HOST&#125;:$&#123;REMOTE_DIR&#125;/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                        # 远程解压并重启</span></span><br><span class="line"><span class="string">                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \</span></span><br><span class="line"><span class="string">                            $SSH_USER@$&#123;REMOTE_HOST&#125; &#x27;</span></span><br><span class="line"><span class="string">                                mkdir -p $&#123;REMOTE_DIR&#125;/$&#123;APP_NAME&#125; &amp;&amp;</span></span><br><span class="line"><span class="string">                                tar -xzf $&#123;REMOTE_DIR&#125;/$&#123;TAR_FILE&#125; -C $&#123;REMOTE_DIR&#125;/$&#123;APP_NAME&#125; --strip-components=1 &amp;&amp;</span></span><br><span class="line"><span class="string">                                systemctl restart myapp.service</span></span><br><span class="line"><span class="string">                            &#x27;</span></span><br><span class="line"><span class="string">                    &quot;&quot;&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    post &#123;</span><br><span class="line">        success &#123; echo <span class="string">&#x27;部署完成 🎉&#x27;</span> &#125;</span><br><span class="line">        failure &#123; echo <span class="string">&#x27;部署失败，请检查日志。&#x27;</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><ul>
+<li><p><strong>withCredentials</strong></p>
+<ul>
+<li><code>credentialsId</code>：与 Jenkins 中创建的凭据 ID 对应。</li>
+<li><code>keyFileVariable</code>：在步骤内会生成一个临时文件，路径保存在 <code>$SSH_KEY</code> 变量中。</li>
+<li><code>usernameVariable</code>：注入远程用户名。</li>
+</ul>
+</li>
+<li><p><code>-i $SSH_KEY</code>：显式指定刚注入的私钥文件。</p>
+</li>
+<li><p><code>StrictHostKeyChecking=no</code>：避免首次连接交互。</p>
+</li>
+</ul>
+<hr>
+<h2 id="3️⃣-调试：结合-vvv"><a href="#3️⃣-调试：结合-vvv" class="headerlink" title="3️⃣ 调试：结合 -vvv"></a>3️⃣ 调试：结合 <code>-vvv</code></h2><p>如果需要排查连接问题，可以直接在 <code>sh</code> 命令里加 <code>-vvv</code>：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh <span class="string">&quot;ssh -vvv -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_USER@$&#123;REMOTE_HOST&#125; &#x27;echo OK&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样在 Jenkins 控制台日志里能看到完整握手与认证细节。</p>
+<hr>
+<h3 id="对比-sshagent"><a href="#对比-sshagent" class="headerlink" title="对比 sshagent"></a>对比 <code>sshagent</code></h3><ul>
+<li><p><code>sshagent</code> 会在整个 block 内自动加载密钥到 <code>ssh-agent</code>，不用 <code>-i</code>。</p>
+</li>
+<li><p><code>withCredentials</code> 则给你一个真实的密钥文件，更适合你需要 <code>scp</code>、<code>rsync</code> 等显式指定密钥的场景。</p>
+</li>
+<li><p>两者都安全，关键看团队习惯：</p>
+<ul>
+<li>频繁多处 <code>ssh</code> → <code>sshagent</code> 方便。</li>
+<li>只需一次 <code>scp</code>&#x2F;<code>ssh</code> → <code>withCredentials</code> 足够。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>总结</strong>：<br><code>withCredentials([sshUserPrivateKey(...)])</code> 让你在 Pipeline 里安全注入 SSH 私钥，并配合 <code>scp/ssh -i $SSH_KEY</code> 即可顺利上传 tar.gz 并远程部署，无需在 Jenkins 节点保存明文密钥文件。</p>
+<h2 id="QA-服务器忽略auth-keys"><a href="#QA-服务器忽略auth-keys" class="headerlink" title="QA 服务器忽略auth_keys"></a>QA 服务器忽略auth_keys</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls -ld /home/user /home/user/.ssh</span><br><span class="line">ls -l  /home/user/.ssh/authorized_keys</span><br><span class="line">ls -lZ  /home/user/.ssh/authorized_keys </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">getenforce</span><br><span class="line"># 如果是 Enforcing</span><br><span class="line">restorecon -Rv /home/user/.ssh</span><br><span class="line"></span><br></pre></td></tr></table></figure></section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#jenkins" >
+    <span class="tag-code">jenkins</span>
+  </a>
+
+  <a target="_blank" href="/tags#devops" >
+    <span class="tag-code">devops</span>
+  </a>
+
+  <a target="_blank" href="/tags#pipeline" >
+    <span class="tag-code">pipeline</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/08/16/automatically_test_skills/cypress%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A713.17.0-15.0%E9%97%AE%E9%A2%98/">
+        <span class="nav-arrow">← </span>
+        
+          cypress版本升级13.17.0-15.0问题
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/09/20/bigdata_for_analyze/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0vs%E7%BB%9F%E8%AE%A1%E5%AD%A6/">
+        
+          机器学习vs统计学
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1%EF%B8%8F%E2%83%A3-%E7%94%9F%E6%88%90%E5%B9%B6%E9%85%8D%E7%BD%AE-SSH-%E5%AF%86%E9%92%A5"><span class="toc-nav-text">1️⃣ 生成并配置 SSH 密钥</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-Jenkinsfile-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">2️⃣ Jenkinsfile 示例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">关键点说明</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%87%86%E5%A4%87"><span class="toc-nav-text">3️⃣ 服务器端准备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4%EF%B8%8F%E2%83%A3-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="toc-nav-text">4️⃣ 常见问题排查</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5%EF%B8%8F%E2%83%A3-%E6%80%BB%E7%BB%93%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">5️⃣ 总结流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#withcredentail-vs-sshagent"><span class="toc-nav-text">withcredentail vs sshagent</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2%EF%B8%8F%E2%83%A3-Jenkinsfile-%E7%A4%BA%E4%BE%8B-1"><span class="toc-nav-text">2️⃣ Jenkinsfile 示例</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-nav-text">关键点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3%EF%B8%8F%E2%83%A3-%E8%B0%83%E8%AF%95%EF%BC%9A%E7%BB%93%E5%90%88-vvv"><span class="toc-nav-text">3️⃣ 调试：结合 -vvv</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AF%B9%E6%AF%94-sshagent"><span class="toc-nav-text">对比 sshagent</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#QA-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BF%BD%E7%95%A5auth-keys"><span class="toc-nav-text">QA 服务器忽略auth_keys</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/08/28/devops_skills/deploy/jenkins pipeline 上传包失败/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

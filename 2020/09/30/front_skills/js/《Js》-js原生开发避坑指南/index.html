@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Js》- js原生开发避坑指南 | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Js》- js原生开发避坑指南</h2>
+  <p class="post-date">2020-09-30</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h3><h4 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a><a target="_blank" rel="noopener" href="http://web.mit.edu/jwalden/www/isArray.html">instanceof</a></h4><blockquote>
+<p>请问下，instanceof 一定能判断类型吗？</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var iframe = document.createElement(&#x27;iframe&#x27;);</span><br><span class="line">document.body.appendChild(iframe);</span><br><span class="line">xArray = window.frames[window.frames.length-1].Array;</span><br><span class="line">var arr = new xArray(1,2,3); // [1,2,3]</span><br><span class="line"></span><br><span class="line">arr instanceof Array; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/09/30/0uUMex.png"></p>
+<blockquote>
+<p>原因如下：<br>o instanceof Array works correctly only if o is an array created by that page’s original Array constructor（or, equivalently, by use of an array literal in that page）</p>
+</blockquote>
+<h4 id="isArray"><a href="#isArray" class="headerlink" title="isArray"></a>isArray</h4><blockquote>
+<p>请问，如下结果是true? false? </p>
+</blockquote>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array.isArray(new Uint8Array(32)) </span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://s1.ax1x.com/2020/09/30/0uUSQs.png"></p>
+<blockquote>
+<p>原因如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># [object Uint8Array]</span><br><span class="line">Array.isArray = function(arg) &#123;</span><br><span class="line">   return Object.prototype.toString.call(arg) === &#x27;[object Array]&#x27;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 请问，你想到结果是什么吗？是否会发生异常？</span><br><span class="line"></span><br><span class="line">const arr = [1,undefined,2,undefined,4,undefined];</span><br><span class="line">arr.sort((a,b) =&gt; &#123;</span><br><span class="line">   return a.name &gt; b.name</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/09/30/0uUItU.png"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">原因如下</a>：</p>
+</blockquote>
+<blockquote>
+<p>If compareFunction is supplied, all non-undefined array elements are sorted according to the return value of the compare function (all undefined elements are sorted to the end of the array, with no call to compareFunction)</p>
+</blockquote>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><h4 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h4><p><img src="https://s1.ax1x.com/2020/09/30/0mcCZ9.png"></p>
+<h3 id="Date"><a href="#Date" class="headerlink" title="Date"></a>Date</h3><h4 id="new-Date"><a href="#new-Date" class="headerlink" title="new Date"></a>new Date</h4><blockquote>
+<p>1.Date存在浏览器兼容问题,尤其在涉及startTime，endTime等时间排序，Chrome兼容性强，FF，Safari兼容性存在不足。</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date">MDN web docs介绍</a>如下：<br>  <img src="https://s1.ax1x.com/2020/09/30/0mcpqJ.md.png"></p>
+</blockquote>
+<blockquote>
+<p>code运行效果  </p>
+</blockquote>
+<ul>
+<li><p>chrome - 空格、T一样效果<br>  <img src="https://s1.ax1x.com/2020/09/30/0m60gO.png"></p>
+</li>
+<li><p>firefox - 空格、T一样效果<br>  <img src="https://s1.ax1x.com/2020/09/30/0m6w8K.png"></p>
+</li>
+<li><p>Safari - 空格、T不一样效果<br> <img src="https://s1.ax1x.com/2020/09/30/0m6ybd.png"></p>
+</li>
+</ul>
+<h4 id="Date字符串中的T"><a href="#Date字符串中的T" class="headerlink" title="Date字符串中的T"></a>Date字符串中的T</h4><blockquote>
+<p>2.Date值中，我们常常看到T ，那么T是干嘛的呢？</p>
+</blockquote>
+<ul>
+<li>针对chrome,ff而言，T跟空格都是一样的，标志着时间部分的开始的，但是在safari空格不能生效，上图即可表明。<br> <img src="https://s1.ax1x.com/2020/09/30/0m6U4x.png"></li>
+</ul>
+<h3 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h3><h4 id="new-Boolean"><a href="#new-Boolean" class="headerlink" title="new Boolean"></a>new Boolean</h4><blockquote>
+<p>请问如下结果是true? 还是false ? </p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var myFalse = new Boolean(false);   </span><br><span class="line">var g = new Boolean(myFalse); </span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/09/30/0ud6Ln.png"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Boolean">原因如下</a>：</p>
+</blockquote>
+<ul>
+<li>得到false值有如下方式： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var bNoParam = new Boolean();</span><br><span class="line">var bZero = new Boolean(0);</span><br><span class="line">var bNull = new Boolean(null);</span><br><span class="line">var bEmptyString = new Boolean(&#x27;&#x27;);</span><br><span class="line">var bfalse = new Boolean(false);</span><br></pre></td></tr></table></figure></li>
+<li>得到true，有如下方式： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var btrue = new Boolean(true);</span><br><span class="line">var btrueString = new Boolean(&#x27;true&#x27;);</span><br><span class="line">var bfalseString = new Boolean(&#x27;false&#x27;);</span><br><span class="line">var bSuLin = new Boolean(&#x27;Su Lin&#x27;);</span><br><span class="line">var bArrayProto = new Boolean([]);</span><br><span class="line">var bObjProto = new Boolean(&#123;&#125;); </span><br></pre></td></tr></table></figure></li>
+<li>从上，我们可以看出，myFalse是对象，那么我们得到的就是true.</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#避坑" >
+    <span class="tag-code">避坑</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#原生" >
+    <span class="tag-code">原生</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/09/28/do_at_workspace/%E3%80%8A%E6%8A%80%E6%9C%AF%E7%B4%A0%E5%85%BB%E3%80%8B-%20%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99/">
+        <span class="nav-arrow">← </span>
+        
+          《技术素养》- 编程原则
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/10/08/do_at_workspace/%E3%80%8A%E6%8A%80%E6%9C%AF%E7%B4%A0%E5%85%BB%E3%80%8B-%20Linux%E5%86%85%E6%A0%B8/">
+        
+          《技术素养》- Linux内核
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Array"><span class="toc-nav-text">Array</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#instanceof"><span class="toc-nav-text">instanceof</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#isArray"><span class="toc-nav-text">isArray</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sort"><span class="toc-nav-text">sort</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#String"><span class="toc-nav-text">String</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#substr"><span class="toc-nav-text">substr</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Date"><span class="toc-nav-text">Date</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#new-Date"><span class="toc-nav-text">new Date</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Date%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84T"><span class="toc-nav-text">Date字符串中的T</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Boolean"><span class="toc-nav-text">Boolean</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#new-Boolean"><span class="toc-nav-text">new Boolean</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/09/30/front_skills/js/《Js》-js原生开发避坑指南/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

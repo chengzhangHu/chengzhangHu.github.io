@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/01/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BA%91%E5%87%BD%E6%95%B0%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5%E4%B9%8BBMI%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/">《微信小程序》- 云函数开发实践之BMI体重管理</a>
+      </h2>
+      <p class="article-date">March 1, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#云函数" >
+    <span class="tag-code">云函数</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          效果图
+
+
+界面设计设计目的：BMI数据管理首页 - 如何实现：* BMI,是什么？-- 需要简单解释下
+* 必须有录入入口 -- 记录一下
+* 可视化展示录入的数据 -- 身高固定、体重可变
+* 可视化数据对不对  -- 历史记录进行比对展示
+
+录入页 - 如何实现：* 录入输入框 
+*  ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/01/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BA%91%E5%87%BD%E6%95%B0%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5%E4%B9%8BBMI%E4%BD%93%E9%87%8D%E7%AE%A1%E7%90%86/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/02/27/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-F2%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%AE%9E%E8%B7%B5%E9%81%87%E5%88%B0%E7%9A%84%E9%82%A3%E4%BA%9B%E5%8D%A1%E5%A3%B3/">《微信小程序》-F2图表组件实践遇到的那些卡壳</a>
+      </h2>
+      <p class="article-date">February 27, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#F2" >
+    <span class="tag-code">F2</span>
+  </a>
+
+  <a target="_blank" href="/tags#图表" >
+    <span class="tag-code">图表</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          效果图 
+卡壳一-自定义颜色，必定tooltip显示重复  123456789chart.tooltip(&#123;    showCrosshairs: true,    showTitle: false,    showItemMarker: false,    snap: true, ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/02/27/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-F2%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%AE%9E%E8%B7%B5%E9%81%87%E5%88%B0%E7%9A%84%E9%82%A3%E4%BA%9B%E5%8D%A1%E5%A3%B3/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/02/13/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E6%96%B9%E6%A1%88%E8%B0%83%E7%A0%94/">《微信小程序》-图表组件方案调研</a>
+      </h2>
+      <p class="article-date">February 13, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#微信小程序" >
+    <span class="tag-code">微信小程序</span>
+  </a>
+
+  <a target="_blank" href="/tags#F2" >
+    <span class="tag-code">F2</span>
+  </a>
+
+  <a target="_blank" href="/tags#图表" >
+    <span class="tag-code">图表</span>
+  </a>
+
+  <a target="_blank" href="/tags#wechat" >
+    <span class="tag-code">wechat</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          背景介绍* 目前不支持svg
+* 主要以canvas为主 
+
+echarts
+依赖包下载本地1git clone https://github.com/ecomfe/echarts-for-weixin.git
+
+复制ec-canvas,到小程序项目根路径下   
+
+引入组件
+   1234 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/02/13/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E6%96%B9%E6%A1%88%E8%B0%83%E7%A0%94/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/02/12/dev_tool_skills/git/%E3%80%8AGitHub%E3%80%8B-xxx-github-io%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/">《GitHub》-xxx.github.io自定义域名配置</a>
+      </h2>
+      <p class="article-date">February 12, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#git" >
+    <span class="tag-code">git</span>
+  </a>
+
+  <a target="_blank" href="/tags#GitHub" >
+    <span class="tag-code">GitHub</span>
+  </a>
+
+  <a target="_blank" href="/tags#自定义域名" >
+    <span class="tag-code">自定义域名</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          GitHub pages产品支持
+public 分支
+Pro 
+Team
+Enterprise Cloud
+Enterprise Server
+
+创建Public分支1chengzhangHu.github.io
+ 
+自定义域名分类
+直接使用顶级域名，example.com
+使用子域名，ww ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/02/12/dev_tool_skills/git/%E3%80%8AGitHub%E3%80%8B-xxx-github-io%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/02/08/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84js%E7%B1%BB%E5%9E%8B%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95/">《Lodash源码阅读笔记》- 需要了解的js类型判定方法</a>
+      </h2>
+      <p class="article-date">February 8, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#Lodash" >
+    <span class="tag-code">Lodash</span>
+  </a>
+
+  <a target="_blank" href="/tags#源码" >
+    <span class="tag-code">源码</span>
+  </a>
+
+  <a target="_blank" href="/tags#阅读笔记" >
+    <span class="tag-code">阅读笔记</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          前端开发，js是一个避开不了的一门技术。js的诞生为了美化交互。
+js类型
+null
+undefined
+boolean
+string
+number
+Object
+引用类型(object、array、function) 
+symbol
+
+js类型判定null
+值确定，直接比较123funct ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/02/08/front_skills/lodash/%E3%80%8ALodash%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E3%80%8B-%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84js%E7%B1%BB%E5%9E%8B%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/02/05/do_at_workspace/%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD%E3%80%8B-%20%E6%88%91%E7%9A%84%E5%9F%9F%E5%90%8D%E5%A4%87%E6%A1%88%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">《软技能》- 我的域名备案的那些事儿</a>
+      </h2>
+      <p class="article-date">February 5, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#软技能" >
+    <span class="tag-code">软技能</span>
+  </a>
+
+  <a target="_blank" href="/tags#域名备案" >
+    <span class="tag-code">域名备案</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          背景介绍
+备案大体分成两种：一是经营性备案，二是非经营性备案，通过互联网向用户无偿提供具有公开性、共享性信息服务活动的网站。
+针对有网站的域名；没有网站的域名不需要备案。
+为了防止在网上从事非法的网站经营活动，打击不良互联网信息的传播，如果网站不备案的话，很有可能被查处以后关停。
+其中最关键 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/02/05/do_at_workspace/%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD%E3%80%8B-%20%E6%88%91%E7%9A%84%E5%9F%9F%E5%90%8D%E5%A4%87%E6%A1%88%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/38/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/40/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

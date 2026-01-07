@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ai ops vs devops | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ai ops vs devops</h2>
+  <p class="post-date">2025-11-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="AIOps（Artificial-Intelligence-for-IT-Operations）-与-DevOps（Development-Operations）-的本质区别、联系与演进关系。"><a href="#AIOps（Artificial-Intelligence-for-IT-Operations）-与-DevOps（Development-Operations）-的本质区别、联系与演进关系。" class="headerlink" title="AIOps（Artificial Intelligence for IT Operations） 与 DevOps（Development + Operations） 的本质区别、联系与演进关系。"></a><strong>AIOps（Artificial Intelligence for IT Operations）</strong> 与 <strong>DevOps（Development + Operations）</strong> 的本质区别、联系与演进关系。</h1><hr>
+<h2 id="🧭-一、核心定义与目标"><a href="#🧭-一、核心定义与目标" class="headerlink" title="🧭 一、核心定义与目标"></a>🧭 一、核心定义与目标</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th><strong>DevOps</strong></th>
+<th><strong>AIOps</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>定义</strong></td>
+<td>一种文化与工程实践，将<strong>开发（Dev）与运维（Ops）</strong>协同整合，通过自动化、持续集成&#x2F;部署（CI&#x2F;CD）提升软件交付效率与质量。</td>
+<td>利用<strong>人工智能（AI）与机器学习（ML）</strong>技术来自动化、智能化地分析、决策和优化IT运维全过程。</td>
+</tr>
+<tr>
+<td><strong>核心目标</strong></td>
+<td>快速交付、持续集成、持续部署、缩短交付周期。</td>
+<td>智能监控、异常检测、根因分析、自动修复，降低MTTR（平均修复时间）。</td>
+</tr>
+<tr>
+<td><strong>关键词</strong></td>
+<td>CI&#x2F;CD、自动化流水线、协作、监控。</td>
+<td>日志分析、事件关联、异常检测、智能告警。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-二、技术焦点对比"><a href="#⚙️-二、技术焦点对比" class="headerlink" title="⚙️ 二、技术焦点对比"></a>⚙️ 二、技术焦点对比</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>DevOps</th>
+<th>AIOps</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>技术核心</strong></td>
+<td>自动化 + 协作 + CI&#x2F;CD 流程</td>
+<td>AI + 大数据分析 + 自动决策</td>
+</tr>
+<tr>
+<td><strong>数据来源</strong></td>
+<td>代码库、构建日志、测试结果、部署管道</td>
+<td>指标（metrics）、日志（logs）、追踪（traces）、告警（events）</td>
+</tr>
+<tr>
+<td><strong>实现手段</strong></td>
+<td>Jenkins &#x2F; GitLab CI &#x2F; Docker &#x2F; Kubernetes &#x2F; Terraform</td>
+<td>ELK &#x2F; Prometheus &#x2F; Datadog + ML 算法（聚类、异常检测、时间序列预测）</td>
+</tr>
+<tr>
+<td><strong>输出</strong></td>
+<td>自动部署成功率、发布频率提升</td>
+<td>智能事件压缩、根因预测、故障自愈</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-三、核心场景举例"><a href="#🧩-三、核心场景举例" class="headerlink" title="🧩 三、核心场景举例"></a>🧩 三、核心场景举例</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>DevOps 主要作用</th>
+<th>AIOps 主要作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>持续交付</strong></td>
+<td>自动化构建、测试、部署</td>
+<td>根据失败历史预测构建失败概率</td>
+</tr>
+<tr>
+<td><strong>系统监控</strong></td>
+<td>收集指标、告警规则配置</td>
+<td>智能关联日志与告警，发现潜在风险</td>
+</tr>
+<tr>
+<td><strong>故障响应</strong></td>
+<td>运维人员手动排查日志</td>
+<td>自动根因分析 + 自动修复（Self-healing）</td>
+</tr>
+<tr>
+<td><strong>容量规划</strong></td>
+<td>手动配置扩容策略</td>
+<td>利用预测模型优化资源调度</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔄-四、关系与演进路径"><a href="#🔄-四、关系与演进路径" class="headerlink" title="🔄 四、关系与演进路径"></a>🔄 四、关系与演进路径</h2><p>🧱 <strong>DevOps → DataOps → MLOps → AIOps</strong></p>
+<ul>
+<li><p><strong>DevOps</strong> 是自动化的基础，负责「高效交付」。</p>
+</li>
+<li><p><strong>AIOps</strong> 是智能化的延伸，负责「高效运维」。</p>
+</li>
+<li><p>二者可形成闭环：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">开发（Dev）→ 测试 → 部署（Ops） → 监控（AIOps） → 反馈 → 再开发</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>AIOps 可以视为 DevOps 的“智能中枢”，<br>它将 DevOps 产生的运维数据转化为「可预测、可决策」的洞察。</p>
+</blockquote>
+<hr>
+<h2 id="🧠-五、融合趋势：智能-DevOps（AI-Driven-DevOps）"><a href="#🧠-五、融合趋势：智能-DevOps（AI-Driven-DevOps）" class="headerlink" title="🧠 五、融合趋势：智能 DevOps（AI-Driven DevOps）"></a>🧠 五、融合趋势：智能 DevOps（AI-Driven DevOps）</h2><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>智能化方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CI&#x2F;CD 优化</strong></td>
+<td>AI预测代码提交的风险、自动触发测试集</td>
+</tr>
+<tr>
+<td><strong>测试智能化</strong></td>
+<td>智能选择最具覆盖率的测试用例</td>
+</tr>
+<tr>
+<td><strong>部署智能化</strong></td>
+<td>动态蓝绿部署策略、AI调度容器资源</td>
+</tr>
+<tr>
+<td><strong>运维智能化</strong></td>
+<td>AIOps 接管监控与告警，减少人工干预</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-六、总结对比表"><a href="#🚀-六、总结对比表" class="headerlink" title="🚀 六、总结对比表"></a>🚀 六、总结对比表</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>DevOps</th>
+<th>AIOps</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>关注点</strong></td>
+<td>软件交付流程</td>
+<td>IT 运维智能化</td>
+</tr>
+<tr>
+<td><strong>目标</strong></td>
+<td>提升交付效率</td>
+<td>降低运维复杂度</td>
+</tr>
+<tr>
+<td><strong>依赖基础</strong></td>
+<td>自动化工具链</td>
+<td>大数据 + AI 算法</td>
+</tr>
+<tr>
+<td><strong>价值产出</strong></td>
+<td>更快、更可靠的发布</td>
+<td>更稳、更智能的运行</td>
+</tr>
+<tr>
+<td><strong>典型工具</strong></td>
+<td>Jenkins、GitLab CI、K8s、Ansible</td>
+<td>Splunk、Moogsoft、Dynatrace、Datadog、Prometheus+ML</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧩-七、一句话总结"><a href="#🧩-七、一句话总结" class="headerlink" title="🧩 七、一句话总结"></a>🧩 七、一句话总结</h2><blockquote>
+<p><strong>DevOps 让系统跑得更快，AIOps 让系统跑得更聪明。</strong></p>
+</blockquote>
+<h1 id="传统的-DevOps-成熟度模型最初并不包含-AIOps"><a href="#传统的-DevOps-成熟度模型最初并不包含-AIOps" class="headerlink" title="传统的 DevOps 成熟度模型最初并不包含 AIOps"></a>传统的 DevOps 成熟度模型最初并不包含 AIOps</h1><blockquote>
+<p>但 <strong>在最新一代（2023–2025）的 DevOps 成熟度评估框架中，AIOps 已逐渐被纳入最高级阶段（“智能化运维”或 “Self-Healing DevOps”）</strong>，成为 DevOps 成熟度演进的 <strong>顶层智能阶段</strong>。</p>
+</blockquote>
+<p>下面我详细分层解释。</p>
+<hr>
+<h2 id="🧭-一、什么是-DevOps-成熟度模型（DevOps-Maturity-Model）"><a href="#🧭-一、什么是-DevOps-成熟度模型（DevOps-Maturity-Model）" class="headerlink" title="🧭 一、什么是 DevOps 成熟度模型（DevOps Maturity Model）"></a>🧭 一、什么是 DevOps 成熟度模型（DevOps Maturity Model）</h2><p>DevOps 成熟度模型是一种用来衡量团队在 <strong>自动化、协作、持续交付、监控与改进</strong> 等方面成熟程度的框架。<br>不同机构（Gartner、AWS、Atlassian、IBM）版本略有差异，但普遍包含以下阶段：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>名称</th>
+<th>关键特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Level 1</strong></td>
+<td>初始（Ad hoc）</td>
+<td>手工流程、开发与运维隔离、脚本零散。</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>自动化（Automation）</td>
+<td>引入CI&#x2F;CD、版本控制、基础自动化测试。</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>集成（Integration）</td>
+<td>Dev与Ops协作、自动部署、监控告警。</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>优化（Optimization）</td>
+<td>指标驱动改进、持续反馈闭环、基础可观测性。</td>
+</tr>
+<tr>
+<td><strong>Level 5</strong></td>
+<td><strong>智能化（Intelligent &#x2F; AIOps Stage）</strong></td>
+<td>引入AI&#x2F;ML进行异常检测、预测、自动修复。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-二、AIOps-在-DevOps-成熟度模型中的位置"><a href="#⚙️-二、AIOps-在-DevOps-成熟度模型中的位置" class="headerlink" title="⚙️ 二、AIOps 在 DevOps 成熟度模型中的位置"></a>⚙️ 二、AIOps 在 DevOps 成熟度模型中的位置</h2><table>
+<thead>
+<tr>
+<th>成熟阶段</th>
+<th>DevOps 能力</th>
+<th>是否涉及 AIOps</th>
+<th>典型特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Level 1–3</td>
+<td>以流水线和工具链自动化为主</td>
+<td>❌ 否</td>
+<td>重点是流程与协作</td>
+</tr>
+<tr>
+<td>Level 4</td>
+<td>数据驱动监控与优化</td>
+<td>⚙️ 部分</td>
+<td>可能使用基础数据分析，但非智能</td>
+</tr>
+<tr>
+<td><strong>Level 5</strong></td>
+<td><strong>智能化、自学习、自修复</strong></td>
+<td>✅ 是（AIOps 完全介入）</td>
+<td>AI监控、智能告警、根因分析、预测性维护</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🔹 换句话说：AIOps 是 DevOps 成熟度的「智能顶层」或「自动化的下一阶段」。<br>它代表 DevOps 从“自动化”走向“自学习与自决策”。</p>
+</blockquote>
+<hr>
+<h2 id="🧠-三、AI-驱动的-DevOps-成熟度五级模型（AI-Driven-DevOps-Maturity）"><a href="#🧠-三、AI-驱动的-DevOps-成熟度五级模型（AI-Driven-DevOps-Maturity）" class="headerlink" title="🧠 三、AI 驱动的 DevOps 成熟度五级模型（AI-Driven DevOps Maturity）"></a>🧠 三、AI 驱动的 DevOps 成熟度五级模型（AI-Driven DevOps Maturity）</h2><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>名称</th>
+<th>技术焦点</th>
+<th>示例工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. 手动阶段</strong></td>
+<td>Manual DevOps</td>
+<td>手动构建、人工部署</td>
+<td>Shell脚本、Jenkins触发</td>
+</tr>
+<tr>
+<td><strong>2. 自动化阶段</strong></td>
+<td>Automated CI&#x2F;CD</td>
+<td>自动构建与测试</td>
+<td>Jenkins、GitLab CI</td>
+</tr>
+<tr>
+<td><strong>3. 可观测阶段</strong></td>
+<td>Observability</td>
+<td>指标、日志、追踪统一</td>
+<td>Prometheus、Grafana</td>
+</tr>
+<tr>
+<td><strong>4. 数据驱动阶段</strong></td>
+<td>DataOps 集成</td>
+<td>数据分析与反馈</td>
+<td>ELK、Datadog、Splunk</td>
+</tr>
+<tr>
+<td><strong>5. 智能自愈阶段</strong></td>
+<td><strong>AIOps 集成</strong></td>
+<td>AI驱动根因分析、预测性扩容、自修复</td>
+<td>Moogsoft、Dynatrace、AI告警系统</td>
+</tr>
+</tbody></table>
+<p>在这一版本中，AIOps 不再是独立系统，而是被<strong>整合进 DevOps 的智能中枢</strong>：</p>
+<blockquote>
+<p>数据流：CI&#x2F;CD → Telemetry → AIOps → Insights → 改进 DevOps 流程。</p>
+</blockquote>
+<hr>
+<h2 id="🔄-四、Gartner-与-Forrester-的趋势观点"><a href="#🔄-四、Gartner-与-Forrester-的趋势观点" class="headerlink" title="🔄 四、Gartner 与 Forrester 的趋势观点"></a>🔄 四、Gartner 与 Forrester 的趋势观点</h2><ul>
+<li><p><strong>Gartner 2023 报告</strong> 明确提出：</p>
+<blockquote>
+<p>“AIOps is the cognitive layer of advanced DevOps maturity.”<br>意思是：AIOps 是高级 DevOps 成熟度中的“认知层”。</p>
+</blockquote>
+</li>
+<li><p><strong>Forrester 2024 报告</strong> 指出：</p>
+<blockquote>
+<p>“By 2025, 60% of DevOps teams will adopt AIOps as part of their observability strategy.”</p>
+</blockquote>
+</li>
+</ul>
+<p>也就是说，从 2024 起，AIOps 已被正式视为 DevOps 成熟度评估的组成部分。</p>
+<hr>
+<h2 id="🚀-五、总结图（文字版）"><a href="#🚀-五、总结图（文字版）" class="headerlink" title="🚀 五、总结图（文字版）"></a>🚀 五、总结图（文字版）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DevOps 成熟度演进路径</span><br><span class="line">┌────────────────────────────┐</span><br><span class="line">│ Level 1: 手工阶段 (Manual) │</span><br><span class="line">│ → Level 2: 自动化 (Automation) │</span><br><span class="line">│ → Level 3: 集成 (Integration) │</span><br><span class="line">│ → Level 4: 优化 (Optimization) │</span><br><span class="line">│ → Level 5: 智能化 (AIOps / Self-Healing) │</span><br><span class="line">└────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>✅ <strong>结论：</strong></p>
+<ul>
+<li>早期 DevOps 成熟度模型：❌ 不包含 AIOps。</li>
+<li>新一代 DevOps 成熟度模型（2023+）：✅ AIOps 已纳入最高级阶段。</li>
+<li>AIOps &#x3D; DevOps 智能化的顶层能力，是 DevOps 成熟的标志。</li>
+</ul>
+</blockquote>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#devops_skills" >
+    <span class="tag-code">devops_skills</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2025/11/04/ai_tools/vscode+agent+cypess%20monitor/">
+        <span class="nav-arrow">← </span>
+        
+          vscode+agent+cypess monitor
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2025/11/12/ai_tools/ai-agent%E5%92%8Cvscode%E9%9B%86%E6%88%90%E6%9C%80%E7%BB%88/">
+        
+          ai agent和vscode集成最终
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#AIOps%EF%BC%88Artificial-Intelligence-for-IT-Operations%EF%BC%89-%E4%B8%8E-DevOps%EF%BC%88Development-Operations%EF%BC%89-%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB%E3%80%81%E8%81%94%E7%B3%BB%E4%B8%8E%E6%BC%94%E8%BF%9B%E5%85%B3%E7%B3%BB%E3%80%82"><span class="toc-nav-text">AIOps（Artificial Intelligence for IT Operations） 与 DevOps（Development + Operations） 的本质区别、联系与演进关系。</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E5%AE%9A%E4%B9%89%E4%B8%8E%E7%9B%AE%E6%A0%87"><span class="toc-nav-text">🧭 一、核心定义与目标</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81%E6%8A%80%E6%9C%AF%E7%84%A6%E7%82%B9%E5%AF%B9%E6%AF%94"><span class="toc-nav-text">⚙️ 二、技术焦点对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E5%9C%BA%E6%99%AF%E4%B8%BE%E4%BE%8B"><span class="toc-nav-text">🧩 三、核心场景举例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%84-%E5%9B%9B%E3%80%81%E5%85%B3%E7%B3%BB%E4%B8%8E%E6%BC%94%E8%BF%9B%E8%B7%AF%E5%BE%84"><span class="toc-nav-text">🔄 四、关系与演进路径</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%BA%94%E3%80%81%E8%9E%8D%E5%90%88%E8%B6%8B%E5%8A%BF%EF%BC%9A%E6%99%BA%E8%83%BD-DevOps%EF%BC%88AI-Driven-DevOps%EF%BC%89"><span class="toc-nav-text">🧠 五、融合趋势：智能 DevOps（AI-Driven DevOps）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94%E8%A1%A8"><span class="toc-nav-text">🚀 六、总结对比表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A9-%E4%B8%83%E3%80%81%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93"><span class="toc-nav-text">🧩 七、一句话总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9A%84-DevOps-%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B%E6%9C%80%E5%88%9D%E5%B9%B6%E4%B8%8D%E5%8C%85%E5%90%AB-AIOps"><span class="toc-nav-text">传统的 DevOps 成熟度模型最初并不包含 AIOps</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%AD-%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF-DevOps-%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B%EF%BC%88DevOps-Maturity-Model%EF%BC%89"><span class="toc-nav-text">🧭 一、什么是 DevOps 成熟度模型（DevOps Maturity Model）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9A%99%EF%B8%8F-%E4%BA%8C%E3%80%81AIOps-%E5%9C%A8-DevOps-%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-nav-text">⚙️ 二、AIOps 在 DevOps 成熟度模型中的位置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%A7%A0-%E4%B8%89%E3%80%81AI-%E9%A9%B1%E5%8A%A8%E7%9A%84-DevOps-%E6%88%90%E7%86%9F%E5%BA%A6%E4%BA%94%E7%BA%A7%E6%A8%A1%E5%9E%8B%EF%BC%88AI-Driven-DevOps-Maturity%EF%BC%89"><span class="toc-nav-text">🧠 三、AI 驱动的 DevOps 成熟度五级模型（AI-Driven DevOps Maturity）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%94%84-%E5%9B%9B%E3%80%81Gartner-%E4%B8%8E-Forrester-%E7%9A%84%E8%B6%8B%E5%8A%BF%E8%A7%82%E7%82%B9"><span class="toc-nav-text">🔄 四、Gartner 与 Forrester 的趋势观点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%9A%80-%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93%E5%9B%BE%EF%BC%88%E6%96%87%E5%AD%97%E7%89%88%EF%BC%89"><span class="toc-nav-text">🚀 五、总结图（文字版）</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2025/11/12/devops_skills/ai-ops-vs-devops/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

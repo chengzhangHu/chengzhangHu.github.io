@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《Node》- 话说process.env的那些事儿.md | 前端analysis
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>前端analysis</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 知其所以然 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《Node》- 话说process.env的那些事儿.md</h2>
+  <p class="post-date">2020-04-13</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="node环境变量"><a href="#node环境变量" class="headerlink" title="node环境变量"></a>node环境变量</h3><ul>
+<li>process 是node的全局变量，类似浏览器的window</li>
+<li>env 是process的一个属性</li>
+</ul>
+<h3 id="process-env的用法"><a href="#process-env的用法" class="headerlink" title="process.env的用法"></a>process.env的用法</h3><h4 id="修改启动端口"><a href="#修改启动端口" class="headerlink" title="修改启动端口"></a>修改启动端口</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const http = require(&#x27;http&#x27;);</span><br><span class="line">const port = process.env.PORT || 3000;</span><br><span class="line">const server = http.createServer((req, res) =&gt; res.send(&#x27;Ahoy!&#x27;));</span><br><span class="line">server.listen(port,() =&gt; &#123;</span><br><span class="line">    console.log(`server start at $&#123;port&#125;`);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/04/13/GvWQxJ.md.png" width="600" height="300">
+
+<h4 id="dotenv"><a href="#dotenv" class="headerlink" title="dotenv"></a><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/dotenv">dotenv</a></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install dotenv --save</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>项目根路径添加，.env 文件</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PORT=3009</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解析.env文件，存放到process.env中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#x27;No value for PORT yet:&#x27;, process.env.PORT);</span><br><span class="line">if (process.env.NODE_ENV !== &#x27;production&#x27;) &#123;</span><br><span class="line">    require(&#x27;dotenv&#x27;).config(); # 这一步不可以省略</span><br><span class="line">&#125;</span><br><span class="line">const http = require(&#x27;http&#x27;);</span><br><span class="line">console.log(&#x27;Now the value for PORT is:&#x27;, process.env.PORT);</span><br><span class="line">const port = process.env.PORT || 3000;</span><br><span class="line">const server = http.createServer((req, res) =&gt; res.send(&#x27;HELLO!&#x27;));</span><br><span class="line">server.listen(port,() =&gt; &#123;</span><br><span class="line">    console.log(`server start at $&#123;port&#125;`);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://s1.ax1x.com/2020/04/13/Gv4BM4.md.png"></p>
+</li>
+<li><p>如果env不放在根路径下，怎么办？<br><img src="https://s1.ax1x.com/2020/04/13/Gv5Zy4.md.png"></p>
+</li>
+<li><p>很明显，配置没有生效</p>
+</li>
+<li><p>怎么才能生效？<br>  config配置path，指定到具体路径即可<br>  <img src="https://s1.ax1x.com/2020/04/13/GvIWKe.md.png"></p>
+</li>
+</ul>
+<h4 id="dotenv预加载"><a href="#dotenv预加载" class="headerlink" title="dotenv预加载"></a>dotenv预加载</h4><ul>
+<li>不需要再开始引入 require(‘dotenv’).config()<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -r dotenv/config example.js dotenv_config_path=&lt;yourpath&gt;/config/.env</span><br></pre></td></tr></table></figure>
+<img src="https://s1.ax1x.com/2020/04/13/GvTpeH.md.png"></li>
+</ul>
+<h4 id="不同环境如何创建文件"><a href="#不同环境如何创建文件" class="headerlink" title="不同环境如何创建文件"></a>不同环境如何创建文件</h4><ul>
+<li>推荐写法 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.env</span><br><span class="line">.env.dev</span><br><span class="line">.env.test</span><br><span class="line">.env.prod</span><br></pre></td></tr></table></figure></li>
+<li>不同环境的，fs读取覆盖生效 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const fs = require(&#x27;fs&#x27;)</span><br><span class="line">const dotenv = require(&#x27;dotenv&#x27;)</span><br><span class="line">const envConfig = dotenv.parse(fs.readFileSync(&#x27;.env.test&#x27;))</span><br><span class="line">for (const k in envConfig) &#123;</span><br><span class="line">    process.env[k] = envConfig[k]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="更多推荐"><a href="#更多推荐" class="headerlink" title="更多推荐"></a>更多推荐</h3><ul>
+<li><a href="https://huchengzhang.com/2020/01/16/%E3%80%8ANode%E3%80%8B-node%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD/">node安装与卸载</a></li>
+<li><a href="https://huchengzhang.com/2020/03/19/%E3%80%8ANode%E3%80%8B-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97RabbitMQ%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/">docker消息队列RabbitMQ 入门</a></li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端analysis</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#node" >
+    <span class="tag-code">node</span>
+  </a>
+
+  <a target="_blank" href="/tags#process.env" >
+    <span class="tag-code">process.env</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2020/04/12/front_skills/minapp/%E3%80%8A%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E3%80%8B-%E4%BB%8E%E8%87%AA%E5%BB%BA%E5%90%8E%E7%AB%AF%E8%BF%81%E7%A7%BB%E5%88%B0%E4%BA%91%E5%87%BD%E6%95%B0%E3%80%81%E4%BA%91%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">
+        <span class="nav-arrow">← </span>
+        
+          《微信小程序》- 从自建后端迁移到云函数、云数据库实践总结
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2020/04/13/front_package_build_skills/rollup/%E3%80%8Arollup%E3%80%8B-%20rollup%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93/">
+        
+          《rollup》- rollup实践总结
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#node%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-nav-text">node环境变量</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#process-env%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-nav-text">process.env的用法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%AE%E6%94%B9%E5%90%AF%E5%8A%A8%E7%AB%AF%E5%8F%A3"><span class="toc-nav-text">修改启动端口</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dotenv"><span class="toc-nav-text">dotenv</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dotenv%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="toc-nav-text">dotenv预加载</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%8D%E5%90%8C%E7%8E%AF%E5%A2%83%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="toc-nav-text">不同环境如何创建文件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%9B%B4%E5%A4%9A%E6%8E%A8%E8%8D%90"><span class="toc-nav-text">更多推荐</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2020/04/13/front_skills/node/《Node》- 话说process.env的那些事儿/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2026 | Proudly powered by <a target="_blank" href="/images/qrcode.jpg"> 前端analysis</a>
+    <br>
+  </p>
+   <!-- <p class="copyright">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302000213" >皖公网安备 34012302000213号</a> | <a href="http://www.beian.miit.gov.cn/" target="_blank">皖ICP备17012162号-9 </a>
+    <br>
+  </p> -->
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
