@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/11/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-docker%20v19%E7%89%88%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F/">《Docker》- docker v19版本配置镜像加速</a>
+      </h2>
+      <p class="article-date">March 11, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          docker v19配置镜像加速
+dameon.josn123456789101112# ~/.docker/daemon.json&#123;  &quot;experimental&quot; : true,  &quot;registry-mirrors&quot; : [    &q ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/11/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-docker%20v19%E7%89%88%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/11/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-docker-compose%E5%8D%87%E7%BA%A7express-mysql/">《Docker》- docker-compose升级express+mysql</a>
+      </h2>
+      <p class="article-date">March 11, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#docker compose" >
+    <span class="tag-code">docker compose</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          docker compose
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/11/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-docker-compose%E5%8D%87%E7%BA%A7express-mysql/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/10/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-redis%E3%80%81nginx%E5%8D%87%E7%BA%A7%E4%B8%BAdocker/">《Docker》- redis、nginx升级为docker</a>
+      </h2>
+      <p class="article-date">March 10, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#redis" >
+    <span class="tag-code">redis</span>
+  </a>
+
+  <a target="_blank" href="/tags#nginx" >
+    <span class="tag-code">nginx</span>
+  </a>
+
+  <a target="_blank" href="/tags#安装" >
+    <span class="tag-code">安装</span>
+  </a>
+
+  <a target="_blank" href="/tags#配置" >
+    <span class="tag-code">配置</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          redis 升级redis 镜像1$ docker pull redis
+带验证密码 1docker run -d --name myredis -p 6379:6379 redis --requirepass &quot;mypassword&quot;
+
+nginx升级nginx镜像1$ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/10/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-redis%E3%80%81nginx%E5%8D%87%E7%BA%A7%E4%B8%BAdocker/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/09/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-%E4%BB%8EmysqlServer%E5%8D%87%E7%BA%A7%E5%88%B0docker%20mysql/">《Docker》- 从mysqlServer升级到docker mysql</a>
+      </h2>
+      <p class="article-date">March 9, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#mysql" >
+    <span class="tag-code">mysql</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          查看mysql 数据库数据文件12# mysql  &gt; show variables like &#x27;%dir%&#x27;
+   
+切换目录，配置文件上传git
+git ssh生成   1$ ssh-keygen -t rsa -b 4096 -C &quot;your_ema ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/09/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-%E4%BB%8EmysqlServer%E5%8D%87%E7%BA%A7%E5%88%B0docker%20mysql/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/08/devops_skills/deploy/%E3%80%8A%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E3%80%8B-%E8%AE%B0%E4%B8%80%E6%AC%A1blog%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%A4%B1%E8%B4%A5/">《自动部署》- 记一次blog自动部署失败</a>
+      </h2>
+      <p class="article-date">March 8, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#GitHub Action" >
+    <span class="tag-code">GitHub Action</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          自动部署方案GitHub action
+action 拉取失败
+
+原因：利用github action构建，构建的public发布到xxx.github.io路径。拉取部署action失败，导致自动部署失败！
+
+解决方案fork action到自己repository下，自己修改构建sh脚本 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/08/devops_skills/deploy/%E3%80%8A%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E3%80%8B-%E8%AE%B0%E4%B8%80%E6%AC%A1blog%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E5%A4%B1%E8%B4%A5/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E7%8E%AF%E5%A2%83mongo%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/">《Docker》- linux下docker环境mongo安装和配置</a>
+      </h2>
+      <p class="article-date">March 4, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#mongo" >
+    <span class="tag-code">mongo</span>
+  </a>
+
+  <a target="_blank" href="/tags#安装" >
+    <span class="tag-code">安装</span>
+  </a>
+
+  <a target="_blank" href="/tags#配置" >
+    <span class="tag-code">配置</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          mongo 安装docker mongo镜像 1$ docker pull mongo
+  
+mongo运行 12345 # 停留在当前进程 docker run -p 27017:27017 --name mdb mongo  # 守护进程形式后端运行docker run -p 27017 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/03/04/devops_skills/docker/%E3%80%8ADocker%E3%80%8B-linux%E4%B8%8Bdocker%E7%8E%AF%E5%A2%83mongo%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/37/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/39/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

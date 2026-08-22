@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/25/ai_tools/mcp%E5%AE%89%E5%85%A8%E4%BB%8E%E6%9C%AC%E6%BA%90%E8%A7%A3%E5%86%B3%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98/">mcp安全从本源解决的工程问题</a>
+      </h2>
+      <p class="article-date">October 25, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          核心思路（一句话）
+把信任问题从模型端入手，是与外部签名&#x2F;哈希链并行的另一条关键路径。下面把可行的技术路线、实现细节、优缺点和落地顺序都列清楚，给你一套可操作的「模型可可信性增强」蓝图。
+
+除了用外部 证明 &#x2F; 哈希链 做不可篡改记录外，让模型自身产生更可靠、可解释、可验 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/25/ai_tools/mcp%E5%AE%89%E5%85%A8%E4%BB%8E%E6%9C%AC%E6%BA%90%E8%A7%A3%E5%86%B3%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/24/ai_tools/mcp%20schema%E4%B8%AD%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">mcp schema中性能问题</a>
+      </h2>
+      <p class="article-date">October 24, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#schema" >
+    <span class="tag-code">schema</span>
+  </a>
+
+  <a target="_blank" href="/tags#performance" >
+    <span class="tag-code">performance</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          “MCP schema 验证机制的核心矛盾”：
+✅ 安全性 ↑  → ❌ 性能 &#x2F; 响应延迟 ↑
+
+这其实是 AI 工具调用链（MCP）设计中最棘手的博弈点之一 - 为什么延迟不可避免、如何分层缓解、以及哪些方案能让安全与速度同时并存。
+
+🧩 一、问题本质：语义验证 ≠ 简单类型 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/24/ai_tools/mcp%20schema%E4%B8%AD%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/23/ai_tools/mcp%E5%92%8Capi%E7%9A%84%E5%8C%BA%E5%88%AB/">mcp和api的区别</a>
+      </h2>
+      <p class="article-date">October 23, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#api" >
+    <span class="tag-code">api</span>
+  </a>
+
+  <a target="_blank" href="/tags#docker" >
+    <span class="tag-code">docker</span>
+  </a>
+
+  <a target="_blank" href="/tags#copilot" >
+    <span class="tag-code">copilot</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+MCP（Model Context Protocol） ≠ API但 MCP 是为“大模型”专门设计的一种 新一代协议层，包裹和协调 API 的安全调用、上下文共享与语义控制。
+
+
+🧩 一句话区别
+
+
+对比点
+API
+MCP（Model Context Protocol）
+
+
+
+设计对象 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/23/ai_tools/mcp%E5%92%8Capi%E7%9A%84%E5%8C%BA%E5%88%AB/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/23/ai_tools/mcp%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E5%AE%89%E5%85%A8%E7%96%91%E9%97%AE/">mcp调用过程和安全疑问</a>
+      </h2>
+      <p class="article-date">October 23, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Copilot" >
+    <span class="tag-code">Copilot</span>
+  </a>
+
+  <a target="_blank" href="/tags#mcp" >
+    <span class="tag-code">mcp</span>
+  </a>
+
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          MCP（Model Context Protocol）与AI安全控制的根本难题：
+“当AI执行高风险操作时，人类虽有最终确认权，但若模型以欺骗性或模糊性描述行动目的，裁决者仍可能被误导。”
+
+
+🧠 问题本质你指出的“偷换概念”问题，是AI执行层与人类决策层之间的语义鸿沟。具体风险如下：
+
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/23/ai_tools/mcp%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B%E5%92%8C%E5%AE%89%E5%85%A8%E7%96%91%E9%97%AE/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/15/bigdata_for_analyze/Ai%E5%A4%A7%E6%A8%A1%E5%9E%8B/">Ai大模型</a>
+      </h2>
+      <p class="article-date">October 15, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧭 一、ResNet 是“深度可训练性”的转折点在 ResNet（2015）之前，深度网络最大的问题是：
+
+越深越难训练。
+
+而 ResNet 首次证明：
+
+“只要设计得当，网络可以无限加深而仍能有效学习。”
+
+这不是一个小改进，而是：
+🔹 深度学习从“经验时代”进入“可扩展时代”。换句 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/15/bigdata_for_analyze/Ai%E5%A4%A7%E6%A8%A1%E5%9E%8B/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/10/14/bigdata_for_analyze/Resnet/">Resnet</a>
+      </h2>
+      <p class="article-date">October 14, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#ai" >
+    <span class="tag-code">ai</span>
+  </a>
+
+  <a target="_blank" href="/tags#数据分析算法" >
+    <span class="tag-code">数据分析算法</span>
+  </a>
+
+  <a target="_blank" href="/tags#降维" >
+    <span class="tag-code">降维</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧠 一、ResNet 是什么？ResNet（Residual Network，残差网络）由 何恺明（Kaiming He）等人 在 2015 年提出，论文是
+
+《Deep Residual Learning for Image Recognition》
+
+ResNet 最初用于 Image ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/10/14/bigdata_for_analyze/Resnet/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/3/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/5/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

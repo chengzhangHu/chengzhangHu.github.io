@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/22/automatically_test_skills/Prometheus+grafana%E6%95%B0%E6%8D%AE%20Ui%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81/">Prometheus+grafana数据 Ui同步验证</a>
+      </h2>
+      <p class="article-date">April 22, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#selenium" >
+    <span class="tag-code">selenium</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          使用 Prometheus 和 Grafana 进行 UI 数据同步验证 的目的是通过监控和验证用户界面的数据同步状态，确保在不同的系统或数据中心之间的数据一致性。这种方案通常应用于分布式系统或多数据中心环境，其中数据需要保持同步，以避免出现数据不一致的情况。
+以下是如何使用 Prometh ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/22/automatically_test_skills/Prometheus+grafana%E6%95%B0%E6%8D%AE%20Ui%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/21/automatically_test_skills/Cypress+Playwright%E6%95%B0%E6%8D%AEUI%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81/">Cypress+Playwright数据UI同步验证</a>
+      </h2>
+      <p class="article-date">April 21, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#selenium" >
+    <span class="tag-code">selenium</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          UI 数据同步验证 是确保两个或多个数据中心（DC）在展示给用户的界面数据上一致性的重要过程。UI 层的数据通常包括页面上展示的文本、表单字段、按钮状态、图片等，而这类数据会受到前端与后端交互的影响，因此在不同数据中心之间确保 UI 数据一致性需要经过仔细的验证。
+以下是实现 UI 数据同步 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/21/automatically_test_skills/Cypress+Playwright%E6%95%B0%E6%8D%AEUI%E5%90%8C%E6%AD%A5%E9%AA%8C%E8%AF%81/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/19/automatically_test_skills/cypress%20AI%E4%BC%98%E5%8C%96/">Cypress升级路线</a>
+      </h2>
+      <p class="article-date">April 19, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#selenium" >
+    <span class="tag-code">selenium</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Cypress 和 Playwright 是现代 Web 自动化测试工具，它们各自提供了强大的功能来模拟用户行为、执行端到端测试。将这类工具与 AI 整合，能够在测试过程中实现更多智能化和自动化的处理，提升测试效率和覆盖面。以下是如何将 Cypress 和 Playwright 与 AI 技 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/19/automatically_test_skills/cypress%20AI%E4%BC%98%E5%8C%96/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/08/automatically_test_skills/cypress%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">cypress自动化测试-性能测试</a>
+      </h2>
+      <p class="article-date">April 9, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能测试" >
+    <span class="tag-code">性能测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#api测试" >
+    <span class="tag-code">api测试</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Cypress 如何进行 API 性能测试在现代 Web 开发中，API 性能是确保用户体验的关键因素之一。通过性能测试，可以发现并解决 API 在高负载情况下的瓶颈，从而提升系统的稳定性和响应速度。本文将介绍如何使用 Cypress 进行 API 性能测试，并提供一些实用的示例和最佳实践。 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/08/automatically_test_skills/cypress%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/02/do_at_workspace/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E7%9A%84%E8%BF%81%E7%A7%BB%E5%8A%9F%E8%83%BD%E4%BB%A3%E7%A0%81%E5%88%B0%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F/">如何快速的迁移功能代码到其他系统</a>
+      </h2>
+      <p class="article-date">April 2, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#编程原则" >
+    <span class="tag-code">编程原则</span>
+  </a>
+
+  <a target="_blank" href="/tags#code迁移" >
+    <span class="tag-code">code迁移</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          常见迁移办法，就Angular项目举例，Angular 如何快速迁移功能代码到其他系统迁移前的准备工作
+分析现有代码结构
+
+检查当前 Angular 项目的版本和依赖
+识别需要迁移的模块、组件、服务等
+记录项目特有的配置和自定义设置
+
+
+评估目标系统
+
+确认目标系统是否支持 Angular
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/02/do_at_workspace/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E7%9A%84%E8%BF%81%E7%A7%BB%E5%8A%9F%E8%83%BD%E4%BB%A3%E7%A0%81%E5%88%B0%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/04/01/devops_skills/docker-compose%E8%BF%81%E7%A7%BB%E5%88%B0k8s%E9%9B%86%E7%BE%A4/">多机独立Docker Compose到K8s集群动态调度</a>
+      </h2>
+      <p class="article-date">April 1, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#容器化" >
+    <span class="tag-code">容器化</span>
+  </a>
+
+  <a target="_blank" href="/tags#动态调度" >
+    <span class="tag-code">动态调度</span>
+  </a>
+
+  <a target="_blank" href="/tags#多机" >
+    <span class="tag-code">多机</span>
+  </a>
+
+  <a target="_blank" href="/tags#Cypress" >
+    <span class="tag-code">Cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#K8s" >
+    <span class="tag-code">K8s</span>
+  </a>
+
+  <a target="_blank" href="/tags#Docker Compose" >
+    <span class="tag-code">Docker Compose</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          以下是实现从多机独立Docker Compose到K8s集群动态调度的Cypress自动化测试的完整方案：
+
+架构转型路线图123456789101112131415graph LR    A[分散式] --&gt;|解耦| B[集中式]    B --&gt;|扩展| C[动态调度]    ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/04/01/devops_skills/docker-compose%E8%BF%81%E7%A7%BB%E5%88%B0k8s%E9%9B%86%E7%BE%A4/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/13/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/15/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

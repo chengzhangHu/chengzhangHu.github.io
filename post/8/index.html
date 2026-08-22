@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/23/app_develop_skills/flutter%20tab%20update/">Flutter Windows tab 自动更新</a>
+      </h2>
+      <p class="article-date">July 23, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Flutter 的 Tab 是完全可以通过配置动态更新的。可以做到：
+
+✅ Tab 的数量从 3 → 4 → 5 动态变化（甚至运行时改变）
+✅ 每个 Tab 的标题、图标、URL 都由配置文件（如 JSON）控制
+✅ 配置可以从本地或远程加载，实现远程动态更新界面结构
+
+
+✅ 实现原理概述 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/23/app_develop_skills/flutter%20tab%20update/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">Flutter Windows 开发环境搭建指南</a>
+      </h2>
+      <p class="article-date">July 22, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#flutter" >
+    <span class="tag-code">flutter</span>
+  </a>
+
+  <a target="_blank" href="/tags#App" >
+    <span class="tag-code">App</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Windows 下快速搭建 Flutter + VS Code 的开发环境，并顺利发布 Android App，给你一份一步步的高效流程，帮你省时省力：
+
+Windows 下快速搭建 Flutter + VS Code 开发环境并发布 Android App
+一、环境准备和安装1. 安装 F ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/22/app_develop_skills/window%E6%9C%80%E5%BF%ABflutter%E7%8E%AF%E5%A2%83/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/06/backend_skills/go/go%20vs%20java/">Go 与 java</a>
+      </h2>
+      <p class="article-date">July 6, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#java" >
+    <span class="tag-code">java</span>
+  </a>
+
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#jvm" >
+    <span class="tag-code">jvm</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Go 语言确实提供了屏蔽底层系统差异的能力，但与 Java JVM 的机制截然不同。它采用的是 原生编译 + 标准库抽象 的方式，而不是依赖一个虚拟机。
+Go（Golang）没有像 Java 那样的 JVM（Java Virtual Machine）机制，但它通过 自己的运行时系统（runt ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/06/backend_skills/go/go%20vs%20java/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">Angular rxjs 性能问题</a>
+      </h2>
+      <p class="article-date">July 5, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#Service Worker" >
+    <span class="tag-code">Service Worker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          分析 Angular + RxJS 性能问题，最有效的方法是结合：
+
+浏览器工具（如 Chrome DevTools）
+Angular 自带调试工具（如 Angular DevTools）
+RxJS 专项技巧（如追踪流、订阅分析、内存泄漏检查）
+
+
+🔍 一、常见 RxJS 性能问题类型
+
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/05/front_skills/angular/angular%20rxjs%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">js v8内存空间</a>
+      </h2>
+      <p class="article-date">July 3, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#内存空间" >
+    <span class="tag-code">内存空间</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          v8内存空间在 JavaScript 的 V8 引擎中（如 Chrome、Node.js 所使用的引擎），内存空间管理是高性能运行的关键之一。 V8 将内存划分为多个不同的空间（space），每个空间用于不同类型的数据存储和垃圾回收策略。
+
+V8 的主要内存空间结构V8 将内存分为两个大类： ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/03/front_skills/js/js%20v8%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/07/03/front_skills/js/js%20%E5%A0%86%E6%A0%88/">js 堆栈</a>
+      </h2>
+      <p class="article-date">July 3, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#性能" >
+    <span class="tag-code">性能</span>
+  </a>
+
+  <a target="_blank" href="/tags#内存空间" >
+    <span class="tag-code">内存空间</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+🧠 一、为何要有 栈内存 和 非堆内存（包括代码空间、MapSpace 等）？📌 1. 栈内存 vs 堆内存：性能与功能的权衡
+
+
+特性
+栈内存（Stack）
+堆内存（Heap）
+
+
+
+分配速度
+非常快（指针移动）
+相对较慢（需要查找空闲内存）
+
+
+生命周期
+函数调用期内（自动回收）
+ ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/07/03/front_skills/js/js%20%E5%A0%86%E6%A0%88/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/7/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/9/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

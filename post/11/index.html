@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/30/front_package_build_skills/vite/vite%E4%B8%BA%E4%BD%95html%E5%85%A5%E5%8F%A3/">Vite 的入口是 HTML</a>
+      </h2>
+      <p class="article-date">May 31, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#webpack" >
+    <span class="tag-code">webpack</span>
+  </a>
+
+  <a target="_blank" href="/tags#vite" >
+    <span class="tag-code">vite</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Vite 的入口是 HTML 的原因
+现代浏览器原生支持 ES 模块（ESM）加载
+
+Vite 利用了浏览器原生对 ES 模块的支持，直接在浏览器中通过 &lt;script type=&quot;module&quot; src=&quot;main.js&quot;&gt; 来加载模块。 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/30/front_package_build_skills/vite/vite%E4%B8%BA%E4%BD%95html%E5%85%A5%E5%8F%A3/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/29/automatically_test_skills/playwright%20vs%20cypress/">playwright vs cypress</a>
+      </h2>
+      <p class="article-date">May 30, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#playwright" >
+    <span class="tag-code">playwright</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Playwright 和 Cypress 的优缺点对比，以及适合的使用场景
+
+🧩 一览对比
+
+
+特性
+Playwright
+Cypress
+
+
+
+浏览器支持
+Chromium, Firefox, WebKit（Safari 引擎）
+仅支持 Chromium 和部分 Firefox（Safa ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/29/automatically_test_skills/playwright%20vs%20cypress/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/26/game/moon/%E6%B8%B8%E6%88%8F%E9%A1%B9%E7%9B%AE%E8%B0%83%E7%A0%94/">闯关类游戏适合度分析</a>
+      </h2>
+      <p class="article-date">May 26, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Cocos Creator 3.x" >
+    <span class="tag-code">Cocos Creator 3.x</span>
+  </a>
+
+  <a target="_blank" href="/tags#闯关类" >
+    <span class="tag-code">闯关类</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          ⚔️ 闯关类游戏适合度分析1. 适合的场景
+关卡数量适中关卡数十到几百个都可以，但需要合理规划资源加载和内存管理。
+2D 闯关游戏典型的横版、竖版关卡跳跃、解谜、射击等2D玩法，非常适合。
+画面资源合理图片、音效大小控制得好，能保证游戏加载快、流畅。
+逻辑复杂度适中关卡内的逻辑交互不要过于复 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/26/game/moon/%E6%B8%B8%E6%88%8F%E9%A1%B9%E7%9B%AE%E8%B0%83%E7%A0%94/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/26/game/moon/Cocos%20Creator%203.x/">Cocos Creator 3.x</a>
+      </h2>
+      <p class="article-date">May 26, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#Cocos Creator 3.x" >
+    <span class="tag-code">Cocos Creator 3.x</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          在使用 Cocos Creator 3.x 开发微信小程序时，项目初始化的流程分为以下几个步骤：
+
+
+
+对比项
+Cocos Creator 2.x
+Cocos Creator 3.x
+
+
+
+引擎架构
+基于原生渲染管线
+支持更强的现代渲染管线
+
+
+2D支持
+成熟稳定
+兼容 2D + 原生支持  ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/26/game/moon/Cocos%20Creator%203.x/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/26/automatically_test_skills/ai%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%94%9F%E6%88%90/">ai自动化测试用例生成</a>
+      </h2>
+      <p class="article-date">May 26, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          🧠 1. 输入信息收集（Prompt Design）AI 生成测试用例的前提是了解你系统的以下信息：
+
+用户故事&#x2F;业务流程：例如，“用户可以登录、搜索产品并加入购物车”。
+页面结构或 UI 元素信息：可以是 HTML、组件树或页面截图。
+可用的测试框架：如 Playwright、 ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/26/automatically_test_skills/ai%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%94%9F%E6%88%90/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2025/05/25/front_skills/react/react%20ai%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">reactjs ai大模型单元测试</a>
+      </h2>
+      <p class="article-date">May 25, 2025</p>
+      
+        
+  <a target="_blank" href="/tags#reactjs" >
+    <span class="tag-code">reactjs</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+           LLM✅ 一、你要测试的典型对象举例：你有个 React Hook 或 service 用来调用大模型 API：
+12345678910// src/services/llmService.tsexport async function callLLM(prompt: string): P ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2025/05/25/front_skills/react/react%20ai%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/10/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/12/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

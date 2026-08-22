@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      我嗒嗒家族
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>我嗒嗒家族</span>
+      <span style="font-size: .8rem;margin:0 .5rem;">| 30s,让你更了解自己的状态 </span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/knowledge/" class="item-link">知识库</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/metrics/" class="item-link">指标</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">首页</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/knowledge/" class="menu-link">知识库</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">标签</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">归档</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/metrics/" class="menu-link">指标</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">关于</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    
+<section class="portal">
+  <div class="portal-inner">
+    <div class="portal-brand">
+      <h1 class="portal-title">我嗒嗒家族</h1>
+      <p class="portal-sub">前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发</p>
+      <p class="portal-line">
+        一个围绕「AI E2E 数据驱动的 DevOps 质量控制与改进」持续自更新、可被提问的个人知识库。
+      </p>
+      <div class="portal-actions">
+        <a class="portal-btn primary" href="https://github.com/chengzhangHu/hexo-blog/issues/new?labels=ask-runtime&title=%5BAsk%5D%20%E8%AF%B7%E7%AE%80%E8%BF%B0%E4%BD%A0%E7%9A%84%E9%97%AE%E9%A2%98&body=**%E8%83%8C%E6%99%AF**%EF%BC%9A%0A%0A**%E6%83%B3%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88**%EF%BC%9A%0A%0A**%E6%9C%9F%E6%9C%9B%E7%9A%84%E7%AD%94%E6%A1%88%E5%BD%A2%E5%BC%8F**%EF%BC%9A" target="_blank" rel="noopener">问知识库</a>
+        <a class="portal-btn ghost" href="/knowledge/">浏览技能知识库</a>
+      </div>
+    </div>
+
+    <div class="portal-stats">
+      <div class="portal-stat">
+        <span class="stat-num">245</span>
+        <span class="stat-label">已沉淀文章</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">技能分类</span>
+      </div>
+      <div class="portal-stat">
+        <span class="stat-num">E2E</span>
+        <span class="stat-label">内容主线</span>
+      </div>
+    </div>
+
+    <div class="portal-skills">
+      
+        <a class="portal-skill" href="/knowledge/#2020" title="2020">
+          <span class="skill-name">2020</span>
+          <span class="skill-count">131</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2025" title="2025">
+          <span class="skill-name">2025</span>
+          <span class="skill-count">77</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2021" title="2021">
+          <span class="skill-name">2021</span>
+          <span class="skill-count">17</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2022" title="2022">
+          <span class="skill-name">2022</span>
+          <span class="skill-count">9</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2026" title="2026">
+          <span class="skill-name">2026</span>
+          <span class="skill-count">7</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2024" title="2024">
+          <span class="skill-name">2024</span>
+          <span class="skill-count">3</span>
+        </a>
+      
+        <a class="portal-skill" href="/knowledge/#2023" title="2023">
+          <span class="skill-name">2023</span>
+          <span class="skill-count">1</span>
+        </a>
+      
+    </div>
+  </div>
+</section>
+
+<main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/11/03/front_skills/ts/%E3%80%8Atypescript%E3%80%8B-%20%E7%B2%BE%E8%AF%BBtypescript/">《typescript》- 精读typescript</a>
+      </h2>
+      <p class="article-date">November 3, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#ts" >
+    <span class="tag-code">ts</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          模块export default vs export
+export default 只能出现一次，export not
+export default ,xx 可以是{},function(){},and others 
+export  ,xx可以是{}, const str  &#x3D;  ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/11/03/front_skills/ts/%E3%80%8Atypescript%E3%80%8B-%20%E7%B2%BE%E8%AF%BBtypescript/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/11/01/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8BBFC/">《Css3》- CSS进阶之BFC</a>
+      </h2>
+      <p class="article-date">November 1, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#js" >
+    <span class="tag-code">js</span>
+  </a>
+
+  <a target="_blank" href="/tags#html" >
+    <span class="tag-code">html</span>
+  </a>
+
+  <a target="_blank" href="/tags#css3" >
+    <span class="tag-code">css3</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          BFC
+Block Formatting Context (BFC)，内部自成布局，隔绝与外部
+
+形成方式
+1.float
+2.position: absolute\fixed
+3.html本身
+4.display: inline-block
+5.display: table-cell
+6. ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/11/01/front_skills/css3/%E3%80%8ACss3%E3%80%8B-%20CSS%E8%BF%9B%E9%98%B6%E4%B9%8BBFC/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/10/31/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular%E6%9C%AC%E5%9C%B0json%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E7%9A%842%E4%B8%AD%E6%96%B9%E6%B3%95/">《angular8》- angular本地json文件读取的2中方法</a>
+      </h2>
+      <p class="article-date">October 31, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#json" >
+    <span class="tag-code">json</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          常有这样的需求，一个html，然后加载json文件，替代调用api,展示日志内容。默认当前用户已安装angular-cli，就不具体的介绍环境安装了。
+环境安装mac环境下123brew install nvm nvm install v12.16.1npm i -g @angular/cl ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/10/31/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular%E6%9C%AC%E5%9C%B0json%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E7%9A%842%E4%B8%AD%E6%96%B9%E6%B3%95/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/10/30/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%20graphQL%E5%AE%9E%E8%B7%B5/">《angular8》- angular8 graphQL实践</a>
+      </h2>
+      <p class="article-date">October 31, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#angular" >
+    <span class="tag-code">angular</span>
+  </a>
+
+  <a target="_blank" href="/tags#graphQL" >
+    <span class="tag-code">graphQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          安装1.with angular-cli
+先创建angular项目，否则会出现如下错误：
+
+1The add command requires to be run in an Angular project, but a project definition could not be fou ...
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/10/30/front_skills/angular/%E3%80%8Aangular8%E3%80%8B-%20angular8%20graphQL%E5%AE%9E%E8%B7%B5/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/10/22/performace_detect_skills/wasm/%E3%80%8Awasm%E3%80%8B-%20go%E5%85%A5%E9%97%A8/">《wasm》- go入门</a>
+      </h2>
+      <p class="article-date">October 23, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#wasm" >
+    <span class="tag-code">wasm</span>
+  </a>
+
+  <a target="_blank" href="/tags#rust" >
+    <span class="tag-code">rust</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          go 概览
+go类似C，面向过程开发
+
+
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/10/22/performace_detect_skills/wasm/%E3%80%8Awasm%E3%80%8B-%20go%E5%85%A5%E9%97%A8/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a target="_blank" href="/2020/10/19/performace_detect_skills/wasm/%E3%80%8Awasm%E3%80%8B-%20wasm%E5%8E%9F%E7%90%86/">《wasm》- wasm原理</a>
+      </h2>
+      <p class="article-date">October 20, 2020</p>
+      
+        
+  <a target="_blank" href="/tags#go" >
+    <span class="tag-code">go</span>
+  </a>
+
+  <a target="_blank" href="/tags#wasm" >
+    <span class="tag-code">wasm</span>
+  </a>
+
+  <a target="_blank" href="/tags#rust" >
+    <span class="tag-code">rust</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          wasm 概览
+开发效率角度来说，大多使用GO,Rust，编译为wasm
+
+wasm 重要知识点
+        
+      </div>
+      <a class="more" target="_blank" href="/2020/10/19/performace_detect_skills/wasm/%E3%80%8Awasm%E3%80%8B-%20wasm%E5%8E%9F%E7%90%86/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/post/22/"><span class="page-arrow">← </span>上一页</a>
+  
+  
+    <a href="/post/24/">下一页<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <ul class="footer-list">
+    <li><a href="/">首页</a></li>
+    <li><a href="/knowledge/">知识库</a></li>
+    <li><a href="/metrics/">指标</a></li>
+    <li><a href="/about/">关于</a></li>
+  </ul>
+  <p class="footer-meta">
+    &copy; 2026 <a target="_blank" href="/">我嗒嗒家族</a>
+    · 以 <i class="fa fa-heart"></i> 构建的 Personal AI Runtime
+  </p>
+  <p class="footer-deploy">
+    由 GitHub Actions 自动部署 · <code>hexo g</code> 静态化 · 数据驱动持续自更新
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+  }
+  
+</script>
+<script>
+  async("https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+
+
+      
+    });
+  })
+</script>
+<script>
+  async('https://s9.cnzz.com/z_stat.php?id=1277936725&web_id=1277936725')
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
