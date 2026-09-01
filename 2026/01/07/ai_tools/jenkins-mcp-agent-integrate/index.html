@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      jenkins mcp agent integrate | 前端漫谈
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/runtime.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="logo" href="/">
+      <span class="mark">⚡</span>
+      <span class="logo-txt">前端漫谈</span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="">概览</a>
+      <a href="#skills">技能</a>
+      <a href="#quality">质量</a>
+      <a href="#posts">文章</a>
+      <a href="#qa">问答</a>
+    </nav>
+    <span class="status-chip"><span class="dot"></span><span class="status-txt">知识库在线</span></span>
+  </div>
+</header>
+
+<div class="menu">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</div>
+<div class="menu-mask">
+  <ul class="menu-list">
+    <li class="menu-item"><a href="/" class="menu-link">概览</a></li>
+    <li class="menu-item"><a href="#skills" class="menu-link">技能</a></li>
+    <li class="menu-item"><a href="#quality" class="menu-link">质量</a></li>
+    <li class="menu-item"><a href="#posts" class="menu-link">文章</a></li>
+    <li class="menu-item"><a href="#qa" class="menu-link">问答</a></li>
+  </ul>
+</div>
+    <div id="article-banner">
+  <h2>jenkins mcp agent integrate</h2>
+  <p class="post-date">2026-01-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p><strong>可以，而且必须用「本地 MCP + 本地 Agent + 内网事件」模式</strong><br><strong>任何“上传代码给 Agent &#x2F; LLM”的方案都是错的</strong></p>
+</blockquote>
+<p>现在这一步，只需要做到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Jenkins</span><br><span class="line">  ↓（事件 + 本地路径）</span><br><span class="line">MCP（只读本地代码/数据）</span><br><span class="line">  ↓（Facts JSON）</span><br><span class="line">Agent（规则判断）</span><br><span class="line">  ↓（Decision JSON）</span><br><span class="line">Jenkins（执行/展示）</span><br></pre></td></tr></table></figure>
+
+<p><strong>整个过程中：</strong></p>
+<ul>
+<li>❌ 代码不出内网</li>
+<li>❌ 不上传到第三方</li>
+<li>❌ Agent &#x2F; MCP 都不持久化代码</li>
+<li>✅ 只在本地文件系统读</li>
+</ul>
+<hr>
+<h1 id="二、现在“没打通”的真实原因（非常关键）"><a href="#二、现在“没打通”的真实原因（非常关键）" class="headerlink" title="二、现在“没打通”的真实原因（非常关键）"></a>二、现在“没打通”的真实原因（非常关键）</h1><p>我可以非常肯定地说，现在卡在 <strong>这 3 个点之一</strong>：</p>
+<ol>
+<li><strong>Jenkins 不知道怎么“把上下文交给 MCP”</strong></li>
+<li><strong>MCP 输出的东西 Agent 不敢用 &#x2F; 不知道怎么用</strong></li>
+<li><strong>Agent 的输出 Jenkins 不知道怎么接</strong></li>
+</ol>
+<p>👉 这不是技术难，是<strong>接口契约没钉死</strong></p>
+<hr>
+<h1 id="三、先把“最小可跑闭环”定义清楚（解卡核心）"><a href="#三、先把“最小可跑闭环”定义清楚（解卡核心）" class="headerlink" title="三、先把“最小可跑闭环”定义清楚（解卡核心）"></a>三、先把“最小可跑闭环”定义清楚（解卡核心）</h1><h2 id="🎯-最小目标（今天-明天就能跑）"><a href="#🎯-最小目标（今天-明天就能跑）" class="headerlink" title="🎯 最小目标（今天&#x2F;明天就能跑）"></a>🎯 最小目标（今天&#x2F;明天就能跑）</h2><blockquote>
+<p><strong>一次 Jenkins 构建 →<br>Agent 给出一个 WARN &#x2F; PASS →<br>Jenkins 打印出来</strong></p>
+</blockquote>
+<p>不追求完美，只追求<strong>通</strong></p>
+<hr>
+<h1 id="四、最小闭环架构（强烈推荐照抄）"><a href="#四、最小闭环架构（强烈推荐照抄）" class="headerlink" title="四、最小闭环架构（强烈推荐照抄）"></a>四、最小闭环架构（强烈推荐照抄）</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[Jenkins Job]</span><br><span class="line">   |</span><br><span class="line">   | 1. build event + workspace path</span><br><span class="line">   v</span><br><span class="line">[MCP Runner]  (本地进程)</span><br><span class="line">   |</span><br><span class="line">   | 2. read-only scan</span><br><span class="line">   v</span><br><span class="line">[mcp_facts.json]</span><br><span class="line">   |</span><br><span class="line">   | 3. facts input</span><br><span class="line">   v</span><br><span class="line">[Agent Runner] (本地进程)</span><br><span class="line">   |</span><br><span class="line">   | 4. decision.json</span><br><span class="line">   v</span><br><span class="line">[Jenkins]</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li>MCP、Agent 都是 <strong>Jenkins 同一台机器 &#x2F; 同一内网</strong></li>
+<li>没有 HTTP、没有外传、没有上传</li>
+</ul>
+<hr>
+<h1 id="五、关键点-1：Jenkins-→-MCP（怎么传，不传代码）"><a href="#五、关键点-1：Jenkins-→-MCP（怎么传，不传代码）" class="headerlink" title="五、关键点 1：Jenkins → MCP（怎么传，不传代码）"></a>五、关键点 1：Jenkins → MCP（怎么传，不传代码）</h1><h3 id="❌-错误方式"><a href="#❌-错误方式" class="headerlink" title="❌ 错误方式"></a>❌ 错误方式</h3><ul>
+<li>Jenkins 把 diff 内容传给 MCP</li>
+<li>Jenkins 把文件内容塞进 JSON</li>
+</ul>
+<h3 id="✅-正确方式（公司安全能过）"><a href="#✅-正确方式（公司安全能过）" class="headerlink" title="✅ 正确方式（公司安全能过）"></a>✅ 正确方式（公司安全能过）</h3><blockquote>
+<p><strong>只传“路径 + commit 信息”</strong></p>
+</blockquote>
+<h4 id="Jenkinsfile-示例"><a href="#Jenkinsfile-示例" class="headerlink" title="Jenkinsfile 示例"></a>Jenkinsfile 示例</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stage(<span class="string">&quot;Collect Quality Facts&quot;</span>) &#123;</span><br><span class="line">  steps &#123;</span><br><span class="line">    sh <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">      ./mcp_runner \</span></span><br><span class="line"><span class="string">        --workspace $&#123;WORKSPACE&#125; \</span></span><br><span class="line"><span class="string">        --base origin/main \</span></span><br><span class="line"><span class="string">        --head HEAD \</span></span><br><span class="line"><span class="string">        --out mcp_facts.json</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>✔️ MCP 在本地 <code>WORKSPACE</code> 里读<br>✔️ 代码从没“离开过磁盘”</p>
+<hr>
+<h1 id="六、关键点-2：MCP-→-Agent（唯一正确的数据形态）"><a href="#六、关键点-2：MCP-→-Agent（唯一正确的数据形态）" class="headerlink" title="六、关键点 2：MCP → Agent（唯一正确的数据形态）"></a>六、关键点 2：MCP → Agent（唯一正确的数据形态）</h1><p>现在 <strong>最容易出错的地方就在这</strong></p>
+<h2 id="MCP-只能输出：Facts（事实）"><a href="#MCP-只能输出：Facts（事实）" class="headerlink" title="MCP 只能输出：Facts（事实）"></a>MCP 只能输出：Facts（事实）</h2><h3 id="mcp-facts-json（示例）"><a href="#mcp-facts-json（示例）" class="headerlink" title="mcp_facts.json（示例）"></a><code>mcp_facts.json</code>（示例）</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;facts&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;domain&quot;</span><span class="punctuation">:</span> <span class="string">&quot;code&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;change&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;filesChanged&quot;</span><span class="punctuation">:</span> <span class="number">8</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;linesAdded&quot;</span><span class="punctuation">:</span> <span class="number">312</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;domain&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sonar&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;quality&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;criticalBugs&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;codeSmellsDelta&quot;</span><span class="punctuation">:</span> <span class="number">14</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;meta&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;project&quot;</span><span class="punctuation">:</span> <span class="string">&quot;order-service&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;buildId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;jenkins-789&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>❗ MCP 到这里就停</strong></p>
+<ul>
+<li>不判断</li>
+<li>不打分</li>
+<li>不给建议</li>
+</ul>
+<hr>
+<h1 id="七、关键点-3：Agent-→-Jenkins（Agent-不“控制”-Jenkins）"><a href="#七、关键点-3：Agent-→-Jenkins（Agent-不“控制”-Jenkins）" class="headerlink" title="七、关键点 3：Agent → Jenkins（Agent 不“控制” Jenkins）"></a>七、关键点 3：Agent → Jenkins（Agent 不“控制” Jenkins）</h1><h3 id="Agent-只输出一个文件"><a href="#Agent-只输出一个文件" class="headerlink" title="Agent 只输出一个文件"></a>Agent 只输出一个文件</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;decision&quot;</span><span class="punctuation">:</span> <span class="string">&quot;WARN&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;reasons&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;新增 Critical Bug&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;代码变更较大但测试变更不足&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;suggestedActions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;补充异常路径测试&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;拆分提交&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Jenkins-决定怎么用"><a href="#Jenkins-决定怎么用" class="headerlink" title="Jenkins 决定怎么用"></a>Jenkins 决定怎么用</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stage(<span class="string">&quot;Quality Decision&quot;</span>) &#123;</span><br><span class="line">  steps &#123;</span><br><span class="line">    script &#123;</span><br><span class="line">      <span class="keyword">def</span> d = readJSON <span class="attr">file:</span> <span class="string">&#x27;decision.json&#x27;</span></span><br><span class="line">      echo <span class="string">&quot;Quality Decision: $&#123;d.decision&#125;&quot;</span></span><br><span class="line">      <span class="keyword">if</span> (d.decision == <span class="string">&quot;BLOCK&quot;</span>) &#123;</span><br><span class="line">        error <span class="string">&quot;Quality Gate Failed&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>✔️ <strong>控制权在 Jenkins</strong><br>✔️ Agent 只是“参谋”</p>
+<hr>
+<h1 id="八、为什么这套方案“安全部门一定能过”"><a href="#八、为什么这套方案“安全部门一定能过”" class="headerlink" title="八、为什么这套方案“安全部门一定能过”"></a>八、为什么这套方案“安全部门一定能过”</h1><p>从安全角度逐条对齐：</p>
+<table>
+<thead>
+<tr>
+<th>安全关注</th>
+<th>对应设计</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代码外传</td>
+<td>❌ 不存在</td>
+</tr>
+<tr>
+<td>第三方依赖</td>
+<td>❌ 无</td>
+</tr>
+<tr>
+<td>数据留存</td>
+<td>Facts 可脱敏</td>
+</tr>
+<tr>
+<td>操作权限</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>可审计</td>
+<td>JSON 文件</td>
+</tr>
+</tbody></table>
+<p>甚至可以对外这样说：</p>
+<blockquote>
+<p><strong>“Agent 和 MCP 就是本地脚本 + 规则引擎，没有任何外部通信能力。”</strong></p>
+</blockquote>
+<hr>
+<h1 id="九、现在立刻能做的-3-个“解卡动作”"><a href="#九、现在立刻能做的-3-个“解卡动作”" class="headerlink" title="九、现在立刻能做的 3 个“解卡动作”"></a>九、现在立刻能做的 3 个“解卡动作”</h1><h2 id="✅-动作-1（最重要）"><a href="#✅-动作-1（最重要）" class="headerlink" title="✅ 动作 1（最重要）"></a>✅ 动作 1（最重要）</h2><p><strong>先别做服务、别做 HTTP</strong><br>👉 MCP &#x2F; Agent 先做成 <strong>CLI 程序</strong></p>
+<hr>
+<h2 id="✅-动作-2"><a href="#✅-动作-2" class="headerlink" title="✅ 动作 2"></a>✅ 动作 2</h2><p><strong>固定 2 个文件名：</strong></p>
+<ul>
+<li><code>mcp_facts.json</code></li>
+<li><code>decision.json</code></li>
+</ul>
+<p>别玩花的。</p>
+<hr>
+<h2 id="✅-动作-3"><a href="#✅-动作-3" class="headerlink" title="✅ 动作 3"></a>✅ 动作 3</h2><p><strong>Agent 先只写 3 条规则</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if criticalBug &gt; 0 → WARN</span><br><span class="line">if filesChanged &gt; 10 → WARN</span><br><span class="line">else PASS</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="十、现在处在一个“非常正确的位置”"><a href="#十、现在处在一个“非常正确的位置”" class="headerlink" title="十、现在处在一个“非常正确的位置”"></a>十、现在处在一个“非常正确的位置”</h1><p>现在这一步，其实是：</p>
+<blockquote>
+<p><strong>在做“企业级 AI 系统是否可控”的生死线设计</strong></p>
+</blockquote>
+<p>很多团队在这一步翻车，没有。</p>
+<hr>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端漫谈</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#ai_tools" >
+    <span class="tag-code">ai_tools</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2026/01/05/ai_tools/ai-agent-vscode-llm-%E5%AE%9E%E7%8E%B0/">
+        <span class="nav-arrow">← </span>
+        
+          ai agent vscode llm 实现
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2026/01/16/game/moon/how%20%20to%20publish%20game%20to%20weixin/">
+        
+          how  to publish game to weixin
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E7%8E%B0%E5%9C%A8%E2%80%9C%E6%B2%A1%E6%89%93%E9%80%9A%E2%80%9D%E7%9A%84%E7%9C%9F%E5%AE%9E%E5%8E%9F%E5%9B%A0%EF%BC%88%E9%9D%9E%E5%B8%B8%E5%85%B3%E9%94%AE%EF%BC%89"><span class="toc-nav-text">二、现在“没打通”的真实原因（非常关键）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E5%85%88%E6%8A%8A%E2%80%9C%E6%9C%80%E5%B0%8F%E5%8F%AF%E8%B7%91%E9%97%AD%E7%8E%AF%E2%80%9D%E5%AE%9A%E4%B9%89%E6%B8%85%E6%A5%9A%EF%BC%88%E8%A7%A3%E5%8D%A1%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="toc-nav-text">三、先把“最小可跑闭环”定义清楚（解卡核心）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%F0%9F%8E%AF-%E6%9C%80%E5%B0%8F%E7%9B%AE%E6%A0%87%EF%BC%88%E4%BB%8A%E5%A4%A9-%E6%98%8E%E5%A4%A9%E5%B0%B1%E8%83%BD%E8%B7%91%EF%BC%89"><span class="toc-nav-text">🎯 最小目标（今天&#x2F;明天就能跑）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E6%9C%80%E5%B0%8F%E9%97%AD%E7%8E%AF%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%BA%E7%83%88%E6%8E%A8%E8%8D%90%E7%85%A7%E6%8A%84%EF%BC%89"><span class="toc-nav-text">四、最小闭环架构（强烈推荐照抄）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%E5%85%B3%E9%94%AE%E7%82%B9-1%EF%BC%9AJenkins-%E2%86%92-MCP%EF%BC%88%E6%80%8E%E4%B9%88%E4%BC%A0%EF%BC%8C%E4%B8%8D%E4%BC%A0%E4%BB%A3%E7%A0%81%EF%BC%89"><span class="toc-nav-text">五、关键点 1：Jenkins → MCP（怎么传，不传代码）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9D%8C-%E9%94%99%E8%AF%AF%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">❌ 错误方式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E2%9C%85-%E6%AD%A3%E7%A1%AE%E6%96%B9%E5%BC%8F%EF%BC%88%E5%85%AC%E5%8F%B8%E5%AE%89%E5%85%A8%E8%83%BD%E8%BF%87%EF%BC%89"><span class="toc-nav-text">✅ 正确方式（公司安全能过）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Jenkinsfile-%E7%A4%BA%E4%BE%8B"><span class="toc-nav-text">Jenkinsfile 示例</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81%E5%85%B3%E9%94%AE%E7%82%B9-2%EF%BC%9AMCP-%E2%86%92-Agent%EF%BC%88%E5%94%AF%E4%B8%80%E6%AD%A3%E7%A1%AE%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BD%A2%E6%80%81%EF%BC%89"><span class="toc-nav-text">六、关键点 2：MCP → Agent（唯一正确的数据形态）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MCP-%E5%8F%AA%E8%83%BD%E8%BE%93%E5%87%BA%EF%BC%9AFacts%EF%BC%88%E4%BA%8B%E5%AE%9E%EF%BC%89"><span class="toc-nav-text">MCP 只能输出：Facts（事实）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mcp-facts-json%EF%BC%88%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="toc-nav-text">mcp_facts.json（示例）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%83%E3%80%81%E5%85%B3%E9%94%AE%E7%82%B9-3%EF%BC%9AAgent-%E2%86%92-Jenkins%EF%BC%88Agent-%E4%B8%8D%E2%80%9C%E6%8E%A7%E5%88%B6%E2%80%9D-Jenkins%EF%BC%89"><span class="toc-nav-text">七、关键点 3：Agent → Jenkins（Agent 不“控制” Jenkins）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Agent-%E5%8F%AA%E8%BE%93%E5%87%BA%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="toc-nav-text">Agent 只输出一个文件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Jenkins-%E5%86%B3%E5%AE%9A%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-nav-text">Jenkins 决定怎么用</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%85%AB%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E5%A5%97%E6%96%B9%E6%A1%88%E2%80%9C%E5%AE%89%E5%85%A8%E9%83%A8%E9%97%A8%E4%B8%80%E5%AE%9A%E8%83%BD%E8%BF%87%E2%80%9D"><span class="toc-nav-text">八、为什么这套方案“安全部门一定能过”</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B9%9D%E3%80%81%E7%8E%B0%E5%9C%A8%E7%AB%8B%E5%88%BB%E8%83%BD%E5%81%9A%E7%9A%84-3-%E4%B8%AA%E2%80%9C%E8%A7%A3%E5%8D%A1%E5%8A%A8%E4%BD%9C%E2%80%9D"><span class="toc-nav-text">九、现在立刻能做的 3 个“解卡动作”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8A%A8%E4%BD%9C-1%EF%BC%88%E6%9C%80%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-nav-text">✅ 动作 1（最重要）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8A%A8%E4%BD%9C-2"><span class="toc-nav-text">✅ 动作 2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E2%9C%85-%E5%8A%A8%E4%BD%9C-3"><span class="toc-nav-text">✅ 动作 3</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8D%81%E3%80%81%E7%8E%B0%E5%9C%A8%E5%A4%84%E5%9C%A8%E4%B8%80%E4%B8%AA%E2%80%9C%E9%9D%9E%E5%B8%B8%E6%AD%A3%E7%A1%AE%E7%9A%84%E4%BD%8D%E7%BD%AE%E2%80%9D"><span class="toc-nav-text">十、现在处在一个“非常正确的位置”</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2026/01/07/ai_tools/jenkins-mcp-agent-integrate/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <div class="footer-inner">
+    <p class="footer-meta">© 2026 <a href="/">前端漫谈</a> · chengzhangHu</p>
+    <p class="footer-license">文章内容采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a>（署名 · 非商业 · 禁止演绎），其余资源保留所有权利。</p>
+  </div>
+</footer>
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

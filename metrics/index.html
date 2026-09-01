@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      指标 | 前端漫谈
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/runtime.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="logo" href="/">
+      <span class="mark">⚡</span>
+      <span class="logo-txt">前端漫谈</span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="">概览</a>
+      <a href="#skills">技能</a>
+      <a href="#quality">质量</a>
+      <a href="#posts">文章</a>
+      <a href="#qa">问答</a>
+    </nav>
+    <span class="status-chip"><span class="dot"></span><span class="status-txt">知识库在线</span></span>
+  </div>
+</header>
+
+<div class="menu">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</div>
+<div class="menu-mask">
+  <ul class="menu-list">
+    <li class="menu-item"><a href="/" class="menu-link">概览</a></li>
+    <li class="menu-item"><a href="#skills" class="menu-link">技能</a></li>
+    <li class="menu-item"><a href="#quality" class="menu-link">质量</a></li>
+    <li class="menu-item"><a href="#posts" class="menu-link">文章</a></li>
+    <li class="menu-item"><a href="#qa" class="menu-link">问答</a></li>
+  </ul>
+</div>
+    <div id="article-banner">
+  <h2>Metrics</h2>
+  <p class="post-date">数据驱动 · 质量控制结果指标</p>
+</div>
+
+<main class="app-body">
+  <div class="metrics-intro">
+    <p>本页只展示「结果指标」：发布成功率、知识引用率、检索命中率、答疑数等；内部实施细节不在此暴露。</p>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="metric-num" data-metric="publish_rate">--</span>
+      <span class="metric-label">发布成功率</span>
+      <span class="metric-desc">草稿通过质量门禁并成功发布的比例</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-num" data-metric="cite_rate">--</span>
+      <span class="metric-label">知识引用率</span>
+      <span class="metric-desc">生成文章绑定既有知识引用的覆盖率</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-num" data-metric="hit_rate">--</span>
+      <span class="metric-label">检索命中率</span>
+      <span class="metric-desc">问答命中知识库、无需调用 LLM 的比例</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-num" data-metric="answer_count">--</span>
+      <span class="metric-label">累计答疑数</span>
+      <span class="metric-desc">Issue 问答入口沉淀的答疑条目</span>
+    </div>
+  </div>
+
+  <div class="metrics-source">
+    <p>数据来源：<code>runtime/metrics/index.json</code>（由 CI 归档，静态展示）。</p>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var base = 'https://huchengzhang.com';
+    var url = base.replace(/\/$/, '') + '/metrics/index.json';
+    fetch(url)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d) return;
+        var map = {
+          publish_rate: d.publish_rate,
+          cite_rate: d.cite_rate,
+          hit_rate: d.hit_rate,
+          answer_count: d.answer_count
+        };
+        Object.keys(map).forEach(function (k) {
+          var el = document.querySelector('[data-metric="' + k + '"]');
+          if (el && map[k] !== undefined && map[k] !== null) el.textContent = map[k];
+        });
+      })
+      .catch(function () {});
+  })();
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <div class="footer-inner">
+    <p class="footer-meta">© 2026 <a href="/">前端漫谈</a> · chengzhangHu</p>
+    <p class="footer-license">文章内容采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a>（署名 · 非商业 · 禁止演绎），其余资源保留所有权利。</p>
+  </div>
+</footer>
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

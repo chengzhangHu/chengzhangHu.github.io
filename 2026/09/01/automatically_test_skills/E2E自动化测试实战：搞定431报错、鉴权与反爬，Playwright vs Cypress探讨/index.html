@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      E2E自动化测试实战：搞定431报错、鉴权与反爬，Playwright vs Cypress探讨 | 前端漫谈
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/runtime.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="logo" href="/">
+      <span class="mark">⚡</span>
+      <span class="logo-txt">前端漫谈</span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="">概览</a>
+      <a href="#skills">技能</a>
+      <a href="#quality">质量</a>
+      <a href="#posts">文章</a>
+      <a href="#qa">问答</a>
+    </nav>
+    <span class="status-chip"><span class="dot"></span><span class="status-txt">知识库在线</span></span>
+  </div>
+</header>
+
+<div class="menu">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</div>
+<div class="menu-mask">
+  <ul class="menu-list">
+    <li class="menu-item"><a href="/" class="menu-link">概览</a></li>
+    <li class="menu-item"><a href="#skills" class="menu-link">技能</a></li>
+    <li class="menu-item"><a href="#quality" class="menu-link">质量</a></li>
+    <li class="menu-item"><a href="#posts" class="menu-link">文章</a></li>
+    <li class="menu-item"><a href="#qa" class="menu-link">问答</a></li>
+  </ul>
+</div>
+    <div id="article-banner">
+  <h2>E2E自动化测试实战：搞定431报错、鉴权与反爬，Playwright vs Cypress探讨</h2>
+  <p class="post-date">2026-09-01</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在端到端（E2E）测试中，我们常常会遭遇这样的窘境：脚本在本地跑得行云流水，一上 CI&#x2F;CD 环境就频繁“翻车”。</p>
+<ul>
+<li>🤯 <strong>Request Header Too Large (431)</strong> 导致页面直接罢工；</li>
+<li>🍪 <strong>Cookie 和 Session</strong> 状态在测试文件间难以共享，重复登录拖垮效率；</li>
+<li>🛡️ 遇到<strong>防爬策略</strong>，自动化脚本被无情拦截；</li>
+<li>🐌 <strong>API 响应与 UI 渲染</strong> 不同步，断言失败如山倒……</li>
+</ul>
+<p>这些问题的根源，往往来自<strong>网络层限制</strong>、<strong>状态管理混乱</strong>、<strong>安全策略干扰</strong>以及<strong>异步时序的疏忽</strong>。</p>
+<hr>
+<h2 id="一、💥-网络层突围：解决-“Request-Header-Too-Large”-HTTP-431"><a href="#一、💥-网络层突围：解决-“Request-Header-Too-Large”-HTTP-431" class="headerlink" title="一、💥 网络层突围：解决 “Request Header Too Large” (HTTP 431)"></a>一、💥 网络层突围：解决 “Request Header Too Large” (HTTP 431)</h2><h3 id="根本原因与通用策略"><a href="#根本原因与通用策略" class="headerlink" title="根本原因与通用策略"></a>根本原因与通用策略</h3><p>当服务器（如 Nginx）检测到请求头总大小超过其限制（默认通常为 8KB）时，会返回 <code>431 Request Header Fields Too Large</code>。在测试中，我们无需修改服务器配置，更灵活的方式是在客户端侧“瘦身”：</p>
+<ul>
+<li><strong>精简请求头</strong>：删除非必要的大字段（如冗长的追踪 ID、调试信息）。</li>
+<li><strong>数据迁移</strong>：对于 <code>POST</code> &#x2F; <code>PUT</code> 请求，将大量数据从请求头移至请求体（Body），这更符合 HTTP 规范。</li>
+</ul>
+<h3 id="Playwright-方案：page-route-拦截修改"><a href="#Playwright-方案：page-route-拦截修改" class="headerlink" title="Playwright 方案：page.route 拦截修改"></a>Playwright 方案：<code>page.route</code> 拦截修改</h3><p>Playwright 的 <code>page.route</code> 允许在请求发出前“劫持”并修改请求对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拦截所有 /api/** 的请求</span></span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">route</span>(<span class="string">&#x27;/api/**&#x27;</span>, <span class="keyword">async</span> route =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> request = route.<span class="title function_">request</span>();</span><br><span class="line">  <span class="keyword">const</span> headers = &#123; ...request.<span class="title function_">headers</span>() &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 策略1：删除不必要的大字段</span></span><br><span class="line">  <span class="keyword">delete</span> headers[<span class="string">&#x27;X-Unnecessary-Large-Header&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 策略2：若必须携带大量数据，可将其移至请求体（仅适用于 POST/PUT）</span></span><br><span class="line">  <span class="comment">// if (request.method() === &#x27;POST&#x27;) &#123;</span></span><br><span class="line">  <span class="comment">//   const originalBody = request.postDataJSON();</span></span><br><span class="line">  <span class="comment">//   // ... 修改 body 后重新设置 ...</span></span><br><span class="line">  <span class="comment">//   await route.continue(&#123; headers, postData: JSON.stringify(newBody) &#125;);</span></span><br><span class="line">  <span class="comment">// &#125; else &#123;</span></span><br><span class="line">  <span class="comment">//   await route.continue(&#123; headers &#125;);</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 继续请求，携带“瘦身”后的请求头</span></span><br><span class="line">  <span class="keyword">await</span> route.<span class="title function_">continue</span>(&#123; headers &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cypress-方案：cy-intercept-修改请求对象"><a href="#Cypress-方案：cy-intercept-修改请求对象" class="headerlink" title="Cypress 方案：cy.intercept 修改请求对象"></a>Cypress 方案：<code>cy.intercept</code> 修改请求对象</h3><p>Cypress 的 <code>cy.intercept</code> 同样能轻松修改请求头，用法更直观。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cy.<span class="title function_">intercept</span>(<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;/api/data&#x27;</span>, <span class="function">(<span class="params">req</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 直接操作 req.headers 对象</span></span><br><span class="line">  <span class="keyword">delete</span> req.<span class="property">headers</span>[<span class="string">&#x27;X-Large-Header&#x27;</span>];</span><br><span class="line">  <span class="comment">// 或设置为更小的测试专用 Token</span></span><br><span class="line">  req.<span class="property">headers</span>[<span class="string">&#x27;Authorization&#x27;</span>] = <span class="string">&#x27;Bearer test-token-small&#x27;</span>;</span><br><span class="line">&#125;).<span class="title function_">as</span>(<span class="string">&#x27;getData&#x27;</span>);</span><br><span class="line"></span><br><span class="line">cy.<span class="title function_">visit</span>(<span class="string">&#x27;/my-page&#x27;</span>);</span><br><span class="line">cy.<span class="title function_">wait</span>(<span class="string">&#x27;@getData&#x27;</span>); <span class="comment">// 等待被修改的请求完成</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 <strong>补充</strong>：调整服务器配置（如 Nginx 的 <code>large_client_header_buffers</code>）是后端方案，但在测试环境中，通过框架在客户端侧处理更为灵活和常见。</p>
+</blockquote>
+<hr>
+<h2 id="二、🔐-状态管理：Cookie-与-Session-的高效复用"><a href="#二、🔐-状态管理：Cookie-与-Session-的高效复用" class="headerlink" title="二、🔐 状态管理：Cookie 与 Session 的高效复用"></a>二、🔐 状态管理：Cookie 与 Session 的高效复用</h2><p>E2E 测试最耗时的操作之一就是“登录”。每个测试都重新登录会成倍拖慢速度，但共享状态又可能导致测试间相互污染。核心思路是：<strong>一次登录，全局复用，测试隔离</strong>。</p>
+<h3 id="Playwright-方案：storageState（官方推荐）"><a href="#Playwright-方案：storageState（官方推荐）" class="headerlink" title="Playwright 方案：storageState（官方推荐）"></a>Playwright 方案：<code>storageState</code>（官方推荐）</h3><p>Playwright 的 <code>BrowserContext</code> 相当于独立的浏览器会话，天然隔离 Cookie 和 LocalStorage。我们可以将登录后的状态保存为 JSON 文件，并在其他测试中直接加载，彻底跳过登录步骤。</p>
+<p><strong>1️⃣ 登录并保存状态（<code>auth.setup.js</code>）</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; chromium &#125; = <span class="built_in">require</span>(<span class="string">&#x27;playwright&#x27;</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> chromium.<span class="title function_">launch</span>();</span><br><span class="line">  <span class="keyword">const</span> context = <span class="keyword">await</span> browser.<span class="title function_">newContext</span>();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> context.<span class="title function_">newPage</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 执行登录操作</span></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://example.com/login&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">fill</span>(<span class="string">&#x27;#username&#x27;</span>, <span class="string">&#x27;myuser&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">fill</span>(<span class="string">&#x27;#password&#x27;</span>, <span class="string">&#x27;mypass&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">click</span>(<span class="string">&#x27;#login-btn&#x27;</span>);</span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">waitForURL</span>(<span class="string">&#x27;**/dashboard&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 保存状态到文件</span></span><br><span class="line">  <span class="keyword">await</span> context.<span class="title function_">storageState</span>(&#123; <span class="attr">path</span>: <span class="string">&#x27;auth_state.json&#x27;</span> &#125;);</span><br><span class="line">  <span class="keyword">await</span> browser.<span class="title function_">close</span>();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p><strong>2️⃣ 在其他测试中复用（<code>test_dashboard.js</code>）</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; chromium &#125; = <span class="built_in">require</span>(<span class="string">&#x27;playwright&#x27;</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> chromium.<span class="title function_">launch</span>();</span><br><span class="line">  <span class="comment">// 直接加载已保存的状态，跳过登录</span></span><br><span class="line">  <span class="keyword">const</span> context = <span class="keyword">await</span> browser.<span class="title function_">newContext</span>(&#123; <span class="attr">storageState</span>: <span class="string">&#x27;auth_state.json&#x27;</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> context.<span class="title function_">newPage</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://example.com/dashboard&#x27;</span>);</span><br><span class="line">  <span class="comment">// ... 执行测试断言 ...</span></span><br><span class="line">  <span class="keyword">await</span> browser.<span class="title function_">close</span>();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cypress-方案：cy-session-（现代标准）"><a href="#Cypress-方案：cy-session-（现代标准）" class="headerlink" title="Cypress 方案：cy.session()（现代标准）"></a>Cypress 方案：<code>cy.session()</code>（现代标准）</h3><p>Cypress 12+ 推出的 <code>cy.session()</code> 是管理会话的黄金标准。它能自动缓存、恢复和清理会话状态，并与 Cypress 的测试隔离机制完美协同。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cypress/e2e/dashboard.cy.js</span></span><br><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;用户功能测试&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">beforeEach</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果 &#x27;admin-session&#x27; 已缓存，则直接恢复；否则执行登录并缓存</span></span><br><span class="line">    cy.<span class="title function_">session</span>(<span class="string">&#x27;admin-session&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      cy.<span class="title function_">visit</span>(<span class="string">&#x27;/login&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;#username&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;admin&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;#password&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;123456&#x27;</span>);</span><br><span class="line">      cy.<span class="title function_">get</span>(<span class="string">&#x27;#login-btn&#x27;</span>).<span class="title function_">click</span>();</span><br><span class="line">      cy.<span class="title function_">url</span>().<span class="title function_">should</span>(<span class="string">&#x27;include&#x27;</span>, <span class="string">&#x27;/dashboard&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;测试个人资料页&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;/profile&#x27;</span>);</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;h1&#x27;</span>).<span class="title function_">should</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;我的个人资料&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;测试设置页&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;/settings&#x27;</span>);</span><br><span class="line">    cy.<span class="title function_">get</span>(<span class="string">&#x27;h1&#x27;</span>).<span class="title function_">should</span>(<span class="string">&#x27;contain&#x27;</span>, <span class="string">&#x27;账户设置&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 <strong>补充</strong>：Cypress 默认在每个测试前清理 Cookie&#x2F;Web Storage（<code>testIsolation</code> 机制），而 <code>cy.session()</code> 会在测试开始时自动恢复状态，测试结束后再次清理，确保测试间互不影响。<strong>切勿在 <code>afterEach</code> 中手动登出</strong>，以免因测试失败导致清理未执行，污染后续测试。</p>
+</blockquote>
+<hr>
+<h2 id="三、🕵️‍♂️-应对防爬策略：隐藏自动化特征"><a href="#三、🕵️‍♂️-应对防爬策略：隐藏自动化特征" class="headerlink" title="三、🕵️‍♂️ 应对防爬策略：隐藏自动化特征"></a>三、🕵️‍♂️ 应对防爬策略：隐藏自动化特征</h2><p>在测试或采集公开数据时，许多网站会检测 <code>navigator.webdriver</code> 等特征来拦截自动化脚本。我们需要从“伪装”和“行为”两个维度突围。</p>
+<h3 id="Playwright：底层隐蔽-Stealth-插件"><a href="#Playwright：底层隐蔽-Stealth-插件" class="headerlink" title="Playwright：底层隐蔽 + Stealth 插件"></a>Playwright：底层隐蔽 + Stealth 插件</h3><p>Playwright 通过 WebSocket 连接浏览器，比 Selenium 更底层，天生更难被检测。对于高防护网站，可结合社区插件 <strong><code>playwright-stealth</code></strong> 抹除自动化痕迹。</p>
+<p><strong>启用 Stealth 模式</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; chromium &#125; = <span class="built_in">require</span>(<span class="string">&#x27;playwright&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; stealth &#125; = <span class="built_in">require</span>(<span class="string">&#x27;playwright-stealth&#x27;</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> chromium.<span class="title function_">launch</span>(&#123; <span class="attr">headless</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> context = <span class="keyword">await</span> browser.<span class="title function_">newContext</span>();</span><br><span class="line">  <span class="comment">// 在创建 page 之前应用 stealth 补丁</span></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">stealth</span>(context);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> context.<span class="title function_">newPage</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;https://target-site.com&#x27;</span>);</span><br><span class="line">  <span class="comment">// ... 执行操作 ...</span></span><br><span class="line">  <span class="keyword">await</span> browser.<span class="title function_">close</span>();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p><strong>其他实战技巧</strong>：</p>
+<ul>
+<li><strong>模拟真人行为</strong>：在点击、滚动等操作间加入随机延迟（如 1~3 秒），或使用 <code>mouse.wheel</code> 模拟平滑滚动，避免机械化的瞬时操作。</li>
+<li><strong>User-Agent 轮换</strong>：在 <code>browser.newContext</code> 中随机传入真实 UA 列表。</li>
+<li><strong>请求头补充</strong>：通过 <code>page.route</code> 统一修改 <code>Accept-Language</code>、<code>Sec-Fetch-*</code> 等头部，使其更接近真实浏览器。</li>
+</ul>
+<h3 id="Cypress：同域策略的天然优势"><a href="#Cypress：同域策略的天然优势" class="headerlink" title="Cypress：同域策略的天然优势"></a>Cypress：同域策略的天然优势</h3><p>Cypress 运行在浏览器内部，与待测应用同源，不暴露 <code>navigator.webdriver</code> 等常见自动化特征，对基础防爬有天然免疫力。</p>
+<p><strong>拦截第三方追踪</strong>：在 <code>cypress.config.js</code> 中使用 <code>blockHosts</code> 屏蔽 Google Analytics 等第三方脚本，减少被指纹追踪的风险。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cypress.config.js</span></span><br><span class="line"><span class="keyword">const</span> &#123; defineConfig &#125; = <span class="built_in">require</span>(<span class="string">&#x27;cypress&#x27;</span>);</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">e2e</span>: &#123;</span><br><span class="line">    <span class="attr">blockHosts</span>: [<span class="string">&#x27;*.google-analytics.com&#x27;</span>, <span class="string">&#x27;*.googletagmanager.com&#x27;</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>Mock 数据</strong>：对于极度复杂的防爬验证（如验证码），最佳实践不是“破解”，而是使用 <code>cy.intercept</code> 直接 Mock 验证成功的接口响应，从源头绕过。</p>
+<hr>
+<h2 id="四、⚡-性能与稳定性：API-与-UI-的协同优化"><a href="#四、⚡-性能与稳定性：API-与-UI-的协同优化" class="headerlink" title="四、⚡ 性能与稳定性：API 与 UI 的协同优化"></a>四、⚡ 性能与稳定性：API 与 UI 的协同优化</h2><p>E2E 测试慢且不稳定的根源，往往是异步数据加载与 UI 渲染之间的时序问题。解决方案是 <strong>智能等待 + API 驱动 + AI 视觉</strong>。</p>
+<h3 id="智能等待：拒绝-sleep，拥抱“条件等待”"><a href="#智能等待：拒绝-sleep，拥抱“条件等待”" class="headerlink" title="智能等待：拒绝 sleep，拥抱“条件等待”"></a>智能等待：拒绝 <code>sleep</code>，拥抱“条件等待”</h3><p>❌ <strong>错误做法</strong>：<code>page.waitForTimeout(3000)</code> 或 <code>cy.wait(3000)</code> —— 不仅慢，网络波动时依然会超时报错。</p>
+<p>✅ <strong>Playwright 最佳实践：Web-First 断言</strong><br>Playwright 的断言自带自动重试机制，无需显式等待。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自动等待直到元素可见且文本匹配，默认超时 5s</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">expect</span>(page.<span class="title function_">locator</span>(<span class="string">&#x27;.status&#x27;</span>)).<span class="title function_">toHaveText</span>(<span class="string">&#x27;提交成功&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>✅ <strong>Cypress 最佳实践：内置重试机制</strong><br>Cypress 命令和断言均内置重试逻辑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不断重试获取 &#x27;.btn&#x27;，直到其变为 &#x27;enabled&#x27; 状态</span></span><br><span class="line">cy.<span class="title function_">get</span>(<span class="string">&#x27;.btn&#x27;</span>).<span class="title function_">should</span>(<span class="string">&#x27;be.enabled&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据准备：API-驱动-UI-验证（BFF-模式）"><a href="#数据准备：API-驱动-UI-验证（BFF-模式）" class="headerlink" title="数据准备：API 驱动 UI 验证（BFF 模式）"></a>数据准备：API 驱动 UI 验证（BFF 模式）</h3><p>不要完全依赖 UI 来准备测试数据（如“通过 UI 注册10个用户”），这极其缓慢。</p>
+<ul>
+<li><strong>策略</strong>：在 <code>beforeEach</code> 或测试脚本中，直接调用后端 API 创建所需数据（用户、订单等），然后仅在 UI 层验证最终业务流程。</li>
+<li><strong>优势</strong>：将测试执行时间从分钟级缩短至秒级，且数据可控。</li>
+</ul>
+<p><strong>示例（Playwright）</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接调用 API 创建测试用户</span></span><br><span class="line"><span class="keyword">const</span> newUser = <span class="keyword">await</span> request.<span class="title function_">post</span>(<span class="string">&#x27;/api/users&#x27;</span>, &#123; <span class="attr">data</span>: &#123; <span class="attr">name</span>: <span class="string">&#x27;test&#x27;</span> &#125; &#125;);</span><br><span class="line"><span class="comment">// 再用 UI 登录并验证</span></span><br><span class="line"><span class="keyword">await</span> page.<span class="title function_">goto</span>(<span class="string">&#x27;/dashboard&#x27;</span>);</span><br><span class="line"><span class="keyword">await</span> <span class="title function_">expect</span>(page.<span class="title function_">locator</span>(<span class="string">&#x27;.user-name&#x27;</span>)).<span class="title function_">toHaveText</span>(<span class="string">&#x27;test&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Cypress 中可用 <code>cy.request</code> 实现相同目的。</p>
+<h3 id="AI-视觉验证：终结-UI-元素不稳定的假告警"><a href="#AI-视觉验证：终结-UI-元素不稳定的假告警" class="headerlink" title="AI 视觉验证：终结 UI 元素不稳定的假告警"></a>AI 视觉验证：终结 UI 元素不稳定的假告警</h3><p>在 AI 测试时代，传统 DOM 选择器（CSS&#x2F;XPath）常因前端代码重构（如更改 class 名）而失效。</p>
+<ul>
+<li><strong>AI 视觉验证</strong>：利用多模态大模型“看”截图，像人类一样识别页面上的“订单总价”或“提交按钮”，不依赖脆弱的 DOM 结构。</li>
+<li><strong>语义匹配</strong>：将 API 返回的数据（如价格 99.9）与 UI 截图中的视觉文本（如 ¥99.90）进行语义对齐，允许格式差异，彻底解决格式化导致的断言失败。</li>
+</ul>
+<p><strong>框架选择</strong>：在实现 AI 视觉验证时，<strong>Playwright 是更优的底座</strong>。因为 Playwright 原生支持 <code>async/await</code>，可轻松将截图转为 Buffer 并传给 AI 接口；而 Cypress 的异步链式调用和上下文割裂（浏览器 vs Node），会让调用外部 AI 接口变得非常复杂（需借助 <code>cy.task</code> 桥接，代码割裂）。</p>
+<hr>
+<h2 id="五、📊-总结与决策（两大框架对比表）"><a href="#五、📊-总结与决策（两大框架对比表）" class="headerlink" title="五、📊 总结与决策（两大框架对比表）"></a>五、📊 总结与决策（两大框架对比表）</h2><table>
+<thead>
+<tr>
+<th>挑战维度</th>
+<th>Playwright 最佳实践</th>
+<th>Cypress 最佳实践</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Header 过大 (431)</strong></td>
+<td><code>page.route</code> 拦截并修改请求头</td>
+<td><code>cy.intercept</code> 修改请求对象</td>
+</tr>
+<tr>
+<td><strong>鉴权与 Session</strong></td>
+<td><code>storageState</code> 保存&#x2F;加载 JSON 状态文件</td>
+<td><code>cy.session()</code> 缓存与恢复会话</td>
+</tr>
+<tr>
+<td><strong>防爬与隐蔽性</strong></td>
+<td><code>playwright-stealth</code> + 行为模拟 + UA 轮换</td>
+<td>同域天然隐蔽 + <code>blockHosts</code> 屏蔽第三方</td>
+</tr>
+<tr>
+<td><strong>API 与 UI 协同</strong></td>
+<td><code>async/await</code> 编排 API 造数与 UI 验证</td>
+<td><code>cy.request</code> 配合 UI 命令链</td>
+</tr>
+<tr>
+<td><strong>AI 视觉验证集成</strong></td>
+<td>⭐⭐⭐⭐⭐（原生异步，极易集成 Node 逻辑）</td>
+<td>⭐⭐（需 <code>cy.task</code> 桥接，代码割裂）</td>
+</tr>
+<tr>
+<td><strong>等待机制</strong></td>
+<td>Web-First 断言（自动重试）</td>
+<td>内置重试 + 别名等待（<code>@alias</code>）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>E2E 测试的本质是用机器模拟真人，但我们要比真人更“聪明”。</p>
+<ul>
+<li>通过<strong>拦截网络层</strong>解决协议报错，</li>
+<li>通过<strong>复用状态</strong>提升执行效率，</li>
+<li>通过 <strong>API 驱动</strong>保证数据稳定性，</li>
+<li>并适时引入 <strong>AI 视觉</strong> 应对 UI 变动，</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端漫谈</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#自动化测试" >
+    <span class="tag-code">自动化测试</span>
+  </a>
+
+  <a target="_blank" href="/tags#cypress" >
+    <span class="tag-code">cypress</span>
+  </a>
+
+  <a target="_blank" href="/tags#Playwright" >
+    <span class="tag-code">Playwright</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2026/08/28/do_at_workspace/%E4%BA%A7%E5%93%81%E5%8C%96%E4%B8%8E%E5%88%9B%E4%B8%9A%E9%AA%8C%E8%AF%81-%E4%BB%8E%E6%8A%80%E6%9C%AF%E6%B4%9E%E5%AF%9F%E5%88%B0-mvp-%E4%B8%8E%E5%95%86%E4%B8%9A%E5%8C%96%E5%A4%8D%E7%9B%98-ai-research-2026-08-29/">
+        <span class="nav-arrow">← </span>
+        
+          产品化与创业验证：从技术洞察到 MVP 与商业化复盘｜AI Research（2026-08-29）
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%F0%9F%92%A5-%E7%BD%91%E7%BB%9C%E5%B1%82%E7%AA%81%E5%9B%B4%EF%BC%9A%E8%A7%A3%E5%86%B3-%E2%80%9CRequest-Header-Too-Large%E2%80%9D-HTTP-431"><span class="toc-nav-text">一、💥 网络层突围：解决 “Request Header Too Large” (HTTP 431)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%A0%B9%E6%9C%AC%E5%8E%9F%E5%9B%A0%E4%B8%8E%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5"><span class="toc-nav-text">根本原因与通用策略</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Playwright-%E6%96%B9%E6%A1%88%EF%BC%9Apage-route-%E6%8B%A6%E6%88%AA%E4%BF%AE%E6%94%B9"><span class="toc-nav-text">Playwright 方案：page.route 拦截修改</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cypress-%E6%96%B9%E6%A1%88%EF%BC%9Acy-intercept-%E4%BF%AE%E6%94%B9%E8%AF%B7%E6%B1%82%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">Cypress 方案：cy.intercept 修改请求对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%F0%9F%94%90-%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%EF%BC%9ACookie-%E4%B8%8E-Session-%E7%9A%84%E9%AB%98%E6%95%88%E5%A4%8D%E7%94%A8"><span class="toc-nav-text">二、🔐 状态管理：Cookie 与 Session 的高效复用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Playwright-%E6%96%B9%E6%A1%88%EF%BC%9AstorageState%EF%BC%88%E5%AE%98%E6%96%B9%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-nav-text">Playwright 方案：storageState（官方推荐）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cypress-%E6%96%B9%E6%A1%88%EF%BC%9Acy-session-%EF%BC%88%E7%8E%B0%E4%BB%A3%E6%A0%87%E5%87%86%EF%BC%89"><span class="toc-nav-text">Cypress 方案：cy.session()（现代标准）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%F0%9F%95%B5%EF%B8%8F%E2%80%8D%E2%99%82%EF%B8%8F-%E5%BA%94%E5%AF%B9%E9%98%B2%E7%88%AC%E7%AD%96%E7%95%A5%EF%BC%9A%E9%9A%90%E8%97%8F%E8%87%AA%E5%8A%A8%E5%8C%96%E7%89%B9%E5%BE%81"><span class="toc-nav-text">三、🕵️‍♂️ 应对防爬策略：隐藏自动化特征</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Playwright%EF%BC%9A%E5%BA%95%E5%B1%82%E9%9A%90%E8%94%BD-Stealth-%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">Playwright：底层隐蔽 + Stealth 插件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Cypress%EF%BC%9A%E5%90%8C%E5%9F%9F%E7%AD%96%E7%95%A5%E7%9A%84%E5%A4%A9%E7%84%B6%E4%BC%98%E5%8A%BF"><span class="toc-nav-text">Cypress：同域策略的天然优势</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E2%9A%A1-%E6%80%A7%E8%83%BD%E4%B8%8E%E7%A8%B3%E5%AE%9A%E6%80%A7%EF%BC%9AAPI-%E4%B8%8E-UI-%E7%9A%84%E5%8D%8F%E5%90%8C%E4%BC%98%E5%8C%96"><span class="toc-nav-text">四、⚡ 性能与稳定性：API 与 UI 的协同优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%99%BA%E8%83%BD%E7%AD%89%E5%BE%85%EF%BC%9A%E6%8B%92%E7%BB%9D-sleep%EF%BC%8C%E6%8B%A5%E6%8A%B1%E2%80%9C%E6%9D%A1%E4%BB%B6%E7%AD%89%E5%BE%85%E2%80%9D"><span class="toc-nav-text">智能等待：拒绝 sleep，拥抱“条件等待”</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87%EF%BC%9AAPI-%E9%A9%B1%E5%8A%A8-UI-%E9%AA%8C%E8%AF%81%EF%BC%88BFF-%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="toc-nav-text">数据准备：API 驱动 UI 验证（BFF 模式）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AI-%E8%A7%86%E8%A7%89%E9%AA%8C%E8%AF%81%EF%BC%9A%E7%BB%88%E7%BB%93-UI-%E5%85%83%E7%B4%A0%E4%B8%8D%E7%A8%B3%E5%AE%9A%E7%9A%84%E5%81%87%E5%91%8A%E8%AD%A6"><span class="toc-nav-text">AI 视觉验证：终结 UI 元素不稳定的假告警</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81%F0%9F%93%8A-%E6%80%BB%E7%BB%93%E4%B8%8E%E5%86%B3%E7%AD%96%EF%BC%88%E4%B8%A4%E5%A4%A7%E6%A1%86%E6%9E%B6%E5%AF%B9%E6%AF%94%E8%A1%A8%EF%BC%89"><span class="toc-nav-text">五、📊 总结与决策（两大框架对比表）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-nav-text">结语</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2026/09/01/automatically_test_skills/E2E自动化测试实战：搞定431报错、鉴权与反爬，Playwright vs Cypress探讨/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <div class="footer-inner">
+    <p class="footer-meta">© 2026 <a href="/">前端漫谈</a> · chengzhangHu</p>
+    <p class="footer-license">文章内容采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a>（署名 · 非商业 · 禁止演绎），其余资源保留所有权利。</p>
+  </div>
+</footer>
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>

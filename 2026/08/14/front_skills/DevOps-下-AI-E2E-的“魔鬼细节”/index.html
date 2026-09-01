@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  <meta name="keyword" content="前端框架、构建工具原理分析、端到端E2E测试、性能测试优化、Devops实践、大数据分析应用实践、可视化开发">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      DevOps 下 AI E2E 的“魔鬼细节” | 前端漫谈
+    
+  </title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.14.0/css/fontawesome.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="preload" as="style">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/tomorrow.min.css" rel="preload" as="style">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/runtime.css">
+
+  
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+<div class="wechat-share">
+  <img loading="lazy" src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="logo" href="/">
+      <span class="mark">⚡</span>
+      <span class="logo-txt">前端漫谈</span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="">概览</a>
+      <a href="#skills">技能</a>
+      <a href="#quality">质量</a>
+      <a href="#posts">文章</a>
+      <a href="#qa">问答</a>
+    </nav>
+    <span class="status-chip"><span class="dot"></span><span class="status-txt">知识库在线</span></span>
+  </div>
+</header>
+
+<div class="menu">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</div>
+<div class="menu-mask">
+  <ul class="menu-list">
+    <li class="menu-item"><a href="/" class="menu-link">概览</a></li>
+    <li class="menu-item"><a href="#skills" class="menu-link">技能</a></li>
+    <li class="menu-item"><a href="#quality" class="menu-link">质量</a></li>
+    <li class="menu-item"><a href="#posts" class="menu-link">文章</a></li>
+    <li class="menu-item"><a href="#qa" class="menu-link">问答</a></li>
+  </ul>
+</div>
+    <div id="article-banner">
+  <h2>DevOps 下 AI E2E 的“魔鬼细节”</h2>
+  <p class="post-date">2026-08-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box" id="article-content">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="DevOps-下-AI-E2E-的“魔鬼细节”：产线数据脱敏、登录态与运行时质量闭环实战"><a href="#DevOps-下-AI-E2E-的“魔鬼细节”：产线数据脱敏、登录态与运行时质量闭环实战" class="headerlink" title="DevOps 下 AI E2E 的“魔鬼细节”：产线数据脱敏、登录态与运行时质量闭环实战"></a>DevOps 下 AI E2E 的“魔鬼细节”：产线数据脱敏、登录态与运行时质量闭环实战</h1><blockquote>
+<p>当AI生成用例不再是难题，如何让它在生产环境“安全地跑起来”才是真正的试金石。</p>
+</blockquote>
+<ol>
+<li><strong>数据两难</strong>：用产线真实数据脱敏，关联关系易破坏；用 AI 全量 Mock，又脱离真实业务场景，测试形同虚设。</li>
+<li><strong>登录死穴</strong>：AI 脚本无法像人一样扫码或收验证码，产线的 OAuth&#x2F;SSO 登录墙怎么撞都撞不过去。</li>
+<li><strong>误报成灾</strong>：产线数据每天都在变（价格、库存、活动标签），昨天写死的断言今天全红了，PD（生产缺陷）单满天飞。</li>
+</ol>
+<h2 id="一、核心原则：把“产线主库”与“验证环境”彻底物理隔离"><a href="#一、核心原则：把“产线主库”与“验证环境”彻底物理隔离" class="headerlink" title="一、核心原则：把“产线主库”与“验证环境”彻底物理隔离"></a>一、核心原则：把“产线主库”与“验证环境”彻底物理隔离</h2><p>AI 验证容器直连了产线读库。<strong>只要连接了主库，无论你是读还是写，风险都是不可控的。</strong></p>
+<p>我们的破局思路是 <strong>“流量旁路 + 影子数据库（Shadow DB）”</strong>：</p>
+<ul>
+<li>在 K8s Pod 旁挂载 Istio Sidecar，仅拦截<strong>读请求（GET）</strong>。</li>
+<li>将请求的响应体克隆一份，发往独立的 <strong>影子容器</strong>。</li>
+<li>影子容器只连接 <strong>影子数据库</strong>（实时同步产线结构，但数据经过脱敏和加工）。</li>
+</ul>
+<p>这是所有后续操作的安全基座——<strong>产线主业务零感知，影子环境随便折腾</strong>。</p>
+<hr>
+<h2 id="二、数据供给的“三源融合”策略（解决失真与伪造弊端）"><a href="#二、数据供给的“三源融合”策略（解决失真与伪造弊端）" class="headerlink" title="二、数据供给的“三源融合”策略（解决失真与伪造弊端）"></a>二、数据供给的“三源融合”策略（解决失真与伪造弊端）</h2><p>既然不能直接用产线原始数据，也不能全靠 AI 瞎编，我们采用 <strong>“生产结构 + 合成基数 + AI变异”</strong> 三层构建法：</p>
+<h3 id="1-结构脱敏（保住关联关系）"><a href="#1-结构脱敏（保住关联关系）" class="headerlink" title="1. 结构脱敏（保住关联关系）"></a>1. 结构脱敏（保住关联关系）</h3><p>利用 <strong>Debezium + Kafka</strong> 监听产线 Binlog，将变更实时同步到影子库。同步链路上挂载一个 <strong>动态掩码网关</strong>：</p>
+<ul>
+<li>对身份证、手机号等敏感字段，使用 <code>faker.js</code> 进行不可逆替换（如保持前3位后4位格式，中间变星号）。</li>
+<li><strong>关键点</strong>：绝对保留主键 ID、外键关联和时间序列趋势。这样订单表和用户表在影子库里依然是“连得上的”，完美解决脱敏后数据孤岛的问题。</li>
+</ul>
+<h3 id="2-AI-基数补全（覆盖边界场景）"><a href="#2-AI-基数补全（覆盖边界场景）" class="headerlink" title="2. AI 基数补全（覆盖边界场景）"></a>2. AI 基数补全（覆盖边界场景）</h3><p>产线数据往往只覆盖“阳光大道”（Happy Path），但我们的 E2E 要测“羊肠小道”。</p>
+<ul>
+<li>AI 在这里的作用不是 Mock 全量数据，而是<strong>分析 Swagger&#x2F;OpenAPI 中的字段约束</strong>（min、max、enum）。</li>
+<li>AI 自动生成带有特殊标签（如 <code>test_ai_boundary_</code>）的边界数据，直接 Insert 进影子库。</li>
+<li><strong>断言策略</strong>：AI 断言时自动过滤这些标签，只校验渲染逻辑是否报错，不校验展示文本是否匹配。</li>
+</ul>
+<h3 id="3-写操作的“瞬时回滚”（解决脏数据噩梦）"><a href="#3-写操作的“瞬时回滚”（解决脏数据噩梦）" class="headerlink" title="3. 写操作的“瞬时回滚”（解决脏数据噩梦）"></a>3. 写操作的“瞬时回滚”（解决脏数据噩梦）</h3><p>对于必须验证的下单、支付等 POST&#x2F;PUT 请求，严禁直接落库。</p>
+<ul>
+<li>影子库开启<strong>延迟事务（Deferrable Constraints）</strong>，AI 执行完断言后立刻 <code>ROLLBACK</code>。</li>
+<li>这比传统的<code>@After</code>数据清理快得多，且彻底避免影子库基线被污染。</li>
+</ul>
+<hr>
+<h2 id="三、鉴权与登录态：零侵入产线认证的“旁路劫持”"><a href="#三、鉴权与登录态：零侵入产线认证的“旁路劫持”" class="headerlink" title="三、鉴权与登录态：零侵入产线认证的“旁路劫持”"></a>三、鉴权与登录态：零侵入产线认证的“旁路劫持”</h2><p>登录是 AI 自动化最大的“绊脚石”。我们在 K8s 的 <strong>Istio Envoy Filter</strong> 层做手脚，完全不走前端登录页：</p>
+<h3 id="流程拆解"><a href="#流程拆解" class="headerlink" title="流程拆解"></a>流程拆解</h3><ol>
+<li><strong>模拟 Token 预申请</strong>：Jenkins 触发 AI 任务时，先调用企业内部的 <strong>SSO Mock 网关</strong>，直接申请一个携带特定角色（<code>admin</code>、<code>vip</code>）的 JWT，有效期仅设 5 分钟。</li>
+<li><strong>流量层身份置换</strong>：在 Istio 侧写一条 Lua 规则——**如果入站请求头包含 <code>X-E2E-Test-ID</code>**，则自动剥离原鉴权头，替换为上述 Mock JWT，并将路由指向影子服务。</li>
+<li><strong>前端 UI 绕过</strong>：Playwright 启动浏览器时，通过 <code>page.addInitScript</code> 在 <code>localStorage</code> 中强行注入该 Token。AI 脚本<strong>跳过 Login 页面</strong>，直接访问业务首页（<code>/dashboard</code>）。</li>
+</ol>
+<p>这套组合拳下来，产线认证中心零改造，AI 脚本零卡顿，且 JWT 极短过期时间确保了绝对安全。</p>
+<hr>
+<h2 id="四、运行时断言升级：从“硬编码值”走向“语义相似度”"><a href="#四、运行时断言升级：从“硬编码值”走向“语义相似度”" class="headerlink" title="四、运行时断言升级：从“硬编码值”走向“语义相似度”"></a>四、运行时断言升级：从“硬编码值”走向“语义相似度”</h2><p>解决了数据和登录，最后一个大坑是<strong>数据漂移</strong>——产线价格今天打了 8 折，你代码里写死 <code>expect(price).toBe(100)</code>，明天必然误报。</p>
+<h3 id="AI-自适应断言（Fuzzy-Assertion）"><a href="#AI-自适应断言（Fuzzy-Assertion）" class="headerlink" title="AI 自适应断言（Fuzzy Assertion）"></a>AI 自适应断言（Fuzzy Assertion）</h3><ul>
+<li><strong>放弃数值全等</strong>：AI 不再断言具体数字，而是校验 <strong>“业务逻辑合理性”</strong>。</li>
+<li><strong>模型介入</strong>：例如拿到响应体后，AI 实时计算 <code>单价 × 数量 = 总价</code> 是否成立，或者判断“VIP 用户返回的折扣率是否在 0-1 之间”。</li>
+<li><strong>结构漂移检测</strong>：影子容器每天凌晨跑一次“基线快照对比”。若发现产线 API 新增了字段（如 <code>discountRate</code>），AI 自动判定为“结构演进”，<strong>不触发告警</strong>，而是自动修改影子库中的断言模板，并向 Git 提交一个“断言更新 PR”。</li>
+</ul>
+<p>这就把维护测试数据的沉重人力负担，转嫁给了 AI 的持续演进能力。</p>
+<hr>
+<h2 id="五、K8s-下的工程化落地清单"><a href="#五、K8s-下的工程化落地清单" class="headerlink" title="五、K8s 下的工程化落地清单"></a>五、K8s 下的工程化落地清单</h2><p>为了让这套“运行时质量控制”在 K8s 中稳定跑起来，你需要在集群里编排好以下资源：</p>
+<ol>
+<li><strong>VirtualService（流量镜像）</strong>：配置 <code>mirror</code> 字段，将 100% 的读流量复制一份到影子服务，但不影响主链路延迟。</li>
+<li><strong>Shadow Deployment</strong>：部署一套无状态的服务副本，环境变量指向影子数据库，资源限制为 <code>requests: 100m</code>，极低消耗。</li>
+<li><strong>CronJob 垃圾回收</strong>：AI 产生的带 <code>test_ai_</code> 标签的数据，由 K8s CronJob 定时（每 6 小时）执行 SQL 清理，防止影子库无限膨胀。</li>
+<li><strong>告警静默机制</strong>：产线告警配置中增加 <code>ignore_labels: &#123; test_source: &quot;ai-e2e&quot; &#125;</code>，避免 AI 验证失败触发即时骚扰，只在连续失败 3 次且匹配特定错误码时才生成 Jira PD 单。</li>
+</ol>
+<hr>
+<h2 id="六、总结与展望"><a href="#六、总结与展望" class="headerlink" title="六、总结与展望"></a>六、总结与展望</h2><p>当 AI 接管了代码编写、元素定位和 API 拦截后，<strong>“数据”和“权限”成了最后两道需要人类智慧攻克的堡垒</strong>。</p>
+<p>通过 <strong>“影子库脱敏同步 + 旁路身份注入 + 语义化模糊断言”</strong> 这三板斧, 产线环境的 <strong>“全天候静默值守”</strong>：</p>
+<ul>
+<li>数据是活的（实时同步结构），但又是安全的（脱敏且只读）；</li>
+<li>登录是透明的（绕过 UI），但又是合规的（模拟合法 JWT）；</li>
+<li>断言是灵活的（容忍数据漂移），但又是智能的（自动 PR 修正模板）。</li>
+</ul>
+</section>
+     <!-- 文章版权声明 start -->
+     <div class="copyright">
+      <div class="copy-item">本文作者：前端漫谈</div>
+      <div class="copy-item">联系邮箱：<a href = "mailto: cheonghu@126.com">cheonghu@126.com </a></div>
+      <div class="copy-item">版权声明： 本文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！</div>
+    </div>
+    <!-- copyright end -->
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a target="_blank" href="/tags#front_skills" >
+    <span class="tag-code">front_skills</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a target="_blank" class="nav-left" href="/2026/08/13/automatically_test_skills/DevOps%E4%B8%8B%E7%9A%84%E8%B4%A8%E9%87%8F%E9%9D%A9%E5%91%BD%EF%BC%9AAI%E9%A9%B1%E5%8A%A8%E7%9A%84E2E%E6%B5%8B%E8%AF%95%E9%97%AD%E7%8E%AF%E5%AE%9E%E8%B7%B5/">
+        <span class="nav-arrow">← </span>
+        
+          DevOps下的质量革命：AI驱动的E2E测试闭环实践
+        
+      </a>
+    
+    
+      <a target="_blank" class="nav-right" href="/2026/08/28/do_at_workspace/%E4%BA%A7%E5%93%81%E5%8C%96%E4%B8%8E%E5%88%9B%E4%B8%9A%E9%AA%8C%E8%AF%81-%E4%BB%8E%E6%8A%80%E6%9C%AF%E6%B4%9E%E5%AF%9F%E5%88%B0-mvp-%E4%B8%8E%E5%95%86%E4%B8%9A%E5%8C%96%E5%A4%8D%E7%9B%98-ai-research-2026-08-29/">
+        
+          产品化与创业验证：从技术洞察到 MVP 与商业化复盘｜AI Research（2026-08-29）
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">章节内容</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#DevOps-%E4%B8%8B-AI-E2E-%E7%9A%84%E2%80%9C%E9%AD%94%E9%AC%BC%E7%BB%86%E8%8A%82%E2%80%9D%EF%BC%9A%E4%BA%A7%E7%BA%BF%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E3%80%81%E7%99%BB%E5%BD%95%E6%80%81%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%97%B6%E8%B4%A8%E9%87%8F%E9%97%AD%E7%8E%AF%E5%AE%9E%E6%88%98"><span class="toc-nav-text">DevOps 下 AI E2E 的“魔鬼细节”：产线数据脱敏、登录态与运行时质量闭环实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99%EF%BC%9A%E6%8A%8A%E2%80%9C%E4%BA%A7%E7%BA%BF%E4%B8%BB%E5%BA%93%E2%80%9D%E4%B8%8E%E2%80%9C%E9%AA%8C%E8%AF%81%E7%8E%AF%E5%A2%83%E2%80%9D%E5%BD%BB%E5%BA%95%E7%89%A9%E7%90%86%E9%9A%94%E7%A6%BB"><span class="toc-nav-text">一、核心原则：把“产线主库”与“验证环境”彻底物理隔离</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E4%BE%9B%E7%BB%99%E7%9A%84%E2%80%9C%E4%B8%89%E6%BA%90%E8%9E%8D%E5%90%88%E2%80%9D%E7%AD%96%E7%95%A5%EF%BC%88%E8%A7%A3%E5%86%B3%E5%A4%B1%E7%9C%9F%E4%B8%8E%E4%BC%AA%E9%80%A0%E5%BC%8A%E7%AB%AF%EF%BC%89"><span class="toc-nav-text">二、数据供给的“三源融合”策略（解决失真与伪造弊端）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%E7%BB%93%E6%9E%84%E8%84%B1%E6%95%8F%EF%BC%88%E4%BF%9D%E4%BD%8F%E5%85%B3%E8%81%94%E5%85%B3%E7%B3%BB%EF%BC%89"><span class="toc-nav-text">1. 结构脱敏（保住关联关系）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-AI-%E5%9F%BA%E6%95%B0%E8%A1%A5%E5%85%A8%EF%BC%88%E8%A6%86%E7%9B%96%E8%BE%B9%E7%95%8C%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-nav-text">2. AI 基数补全（覆盖边界场景）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-%E5%86%99%E6%93%8D%E4%BD%9C%E7%9A%84%E2%80%9C%E7%9E%AC%E6%97%B6%E5%9B%9E%E6%BB%9A%E2%80%9D%EF%BC%88%E8%A7%A3%E5%86%B3%E8%84%8F%E6%95%B0%E6%8D%AE%E5%99%A9%E6%A2%A6%EF%BC%89"><span class="toc-nav-text">3. 写操作的“瞬时回滚”（解决脏数据噩梦）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E9%89%B4%E6%9D%83%E4%B8%8E%E7%99%BB%E5%BD%95%E6%80%81%EF%BC%9A%E9%9B%B6%E4%BE%B5%E5%85%A5%E4%BA%A7%E7%BA%BF%E8%AE%A4%E8%AF%81%E7%9A%84%E2%80%9C%E6%97%81%E8%B7%AF%E5%8A%AB%E6%8C%81%E2%80%9D"><span class="toc-nav-text">三、鉴权与登录态：零侵入产线认证的“旁路劫持”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%B5%81%E7%A8%8B%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">流程拆解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E8%BF%90%E8%A1%8C%E6%97%B6%E6%96%AD%E8%A8%80%E5%8D%87%E7%BA%A7%EF%BC%9A%E4%BB%8E%E2%80%9C%E7%A1%AC%E7%BC%96%E7%A0%81%E5%80%BC%E2%80%9D%E8%B5%B0%E5%90%91%E2%80%9C%E8%AF%AD%E4%B9%89%E7%9B%B8%E4%BC%BC%E5%BA%A6%E2%80%9D"><span class="toc-nav-text">四、运行时断言升级：从“硬编码值”走向“语义相似度”</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AI-%E8%87%AA%E9%80%82%E5%BA%94%E6%96%AD%E8%A8%80%EF%BC%88Fuzzy-Assertion%EF%BC%89"><span class="toc-nav-text">AI 自适应断言（Fuzzy Assertion）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BA%94%E3%80%81K8s-%E4%B8%8B%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E8%90%BD%E5%9C%B0%E6%B8%85%E5%8D%95"><span class="toc-nav-text">五、K8s 下的工程化落地清单</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-nav-text">六、总结与展望</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://huchengzhang.com/2026/08/14/front_skills/DevOps-下-AI-E2E-的“魔鬼细节”/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <div class="footer-inner">
+    <p class="footer-meta">© 2026 <a href="/">前端漫谈</a> · chengzhangHu</p>
+    <p class="footer-license">文章内容采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a>（署名 · 非商业 · 禁止演绎），其余资源保留所有权利。</p>
+  </div>
+</footer>
+
+
+<script src="/js/script.js"></script>
+
+  </body>
+</html>
